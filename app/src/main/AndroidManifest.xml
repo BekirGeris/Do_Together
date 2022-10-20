@@ -14,7 +14,7 @@
         android:theme="@style/Theme.DoTogether"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
