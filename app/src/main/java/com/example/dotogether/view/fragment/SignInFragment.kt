@@ -60,6 +60,9 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
 
         if (v != null && action != null) {
             Navigation.findNavController(v).navigate(action)
+            if (v == binding.loginBtn) {
+                activity?.finish()
+            }
         }
     }
 }

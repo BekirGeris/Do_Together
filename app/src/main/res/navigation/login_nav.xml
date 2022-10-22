@@ -24,10 +24,14 @@
         tools:layout="@layout/fragment_sign_in" >
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signInFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signInFragment_to_homeActivity"
             app:destination="@id/homeActivity" />
@@ -39,10 +43,14 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signUpFragment_to_homeActivity"
             app:destination="@id/homeActivity" />
