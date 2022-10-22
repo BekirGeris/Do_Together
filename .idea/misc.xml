@@ -9,10 +9,19 @@
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/ic_launcher_background.xml" value="0.241" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/test.xml" value="0.256" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/text.xml" value="0.256" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/activity_home.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/activity_login.xml" value="0.264" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_chat.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_first.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_home.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_login.xml" value="0.264" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_profile_fragmentent.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_search.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_share.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_sign_in.xml" value="0.264" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_sign_up.xml" value="0.264" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/menu/bottom_nav_menu.xml" value="0.24947916666666667" />
       </map>
     </option>
   </component>

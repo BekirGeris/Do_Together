@@ -29,7 +29,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
     private fun initViews() {
         binding.topBackBtn.setOnClickListener(this)
         //todo: acitonlar eklenince açılacak
-//        binding.loginBtn.setOnClickListener(this)
+        binding.loginBtn.setOnClickListener(this)
 //        binding.signUpBtn.setOnClickListener(this)
 //        binding.forgetPasswordBtn.setOnClickListener(this)
 //        binding.googleBtn.setOnClickListener(this)
@@ -45,7 +45,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
         if (v == binding.topBackBtn) {
             action = directions.actionSignInFragmentToLoginFragment()
         } else if (v == binding.loginBtn) {
-            //todo: home activity e gidilecek
+            action = directions.actionSignInFragmentToHomeActivity()
         } else if (v == binding.forgetPasswordBtn) {
             //todo: şifre yenileme ekranına gidilecek
         } else if (v == binding.googleBtn) {

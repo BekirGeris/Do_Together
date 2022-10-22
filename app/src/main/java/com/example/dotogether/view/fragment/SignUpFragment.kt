@@ -28,8 +28,8 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
 
     private fun initViews() {
         binding.topBackBtn.setOnClickListener(this)
-        //todo: acitonlar eklenince açılacak
-//        binding.signUpBtn.setOnClickListener(this)
+        //todo: actionlar eklenince açılacak
+        binding.signUpBtn.setOnClickListener(this)
 //        binding.signUpBtn.setOnClickListener(this)
 //        binding.googleBtn.setOnClickListener(this)
 //        binding.facebookBtn.setOnClickListener(this)
@@ -44,7 +44,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         if (v == binding.topBackBtn) {
             action = directions.actionSignUpFragmentToLoginFragment()
         } else if (v == binding.signUpBtn) {
-            //todo: home activity e gidilecek
+            action = directions.actionSignUpFragmentToHomeActivity()
         } else if (v == binding.googleBtn) {
             //todo: GOOGLE ile giriş
         } else if (v == binding.facebookBtn) {
