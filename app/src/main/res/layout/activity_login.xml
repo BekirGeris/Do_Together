@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.LoginActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
+    <fragment
+        android:id="@+id/loginFragmentContainerView"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"

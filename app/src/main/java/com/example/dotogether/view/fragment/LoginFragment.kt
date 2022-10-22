@@ -1,28 +1,48 @@
 package com.example.dotogether.view.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.dotogether.R
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import com.example.dotogether.databinding.FragmentLoginBinding
-import com.example.dotogether.view.activity.LoginActivity
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment(), View.OnClickListener {
 
     lateinit var binding: FragmentLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentLoginBinding.inflate(layoutInflater)
+
+        initViews()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         return binding.root
+    }
+
+    private fun initViews() {
+        binding.loginBtn.setOnClickListener(this)
+        binding.signUpBtn.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        var action: NavDirections? = null
+        val directions = LoginFragmentDirections
+
+        if (v == binding.loginBtn) {
+            action = directions.actionLoginFragmentToSignInFragment()
+        } else if (v == binding.signUpBtn) {
+            action = directions.actionLoginFragmentToSignUpFragment()
+        }
+
+        if (v != null && action != null) {
+            Navigation.findNavController(v).navigate(action)
+        }
     }
 }
