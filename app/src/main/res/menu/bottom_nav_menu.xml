@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/navigation_home"
+        android:iconTint="@color/dark_blue"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/title_home"/>
 
@@ -17,9 +19,9 @@
         android:title="Share"/>
 
     <item
-        android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_baseline_chat_bubble_24"
-        android:title="@string/title_message"/>
+        android:id="@+id/navigation_library"
+        android:icon="@drawable/ic_baseline_bookmark_24"
+        android:title="@string/title_library"/>
 
     <item
         android:id="@+id/navigation_profile"

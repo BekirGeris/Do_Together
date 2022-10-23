@@ -22,10 +22,10 @@
         android:label="fragment_share"
         tools:layout="@layout/fragment_share" />
     <fragment
-        android:id="@+id/navigation_chat"
-        android:name="com.example.dotogether.view.fragment.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        android:id="@+id/navigation_library"
+        android:name="com.example.dotogether.view.fragment.LibraryFragment"
+        android:label="fragment_library"
+        tools:layout="@layout/fragment_library" />
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.dotogether.view.fragment.ProfileFragment"

@@ -68,7 +68,7 @@
             android:layout_height="45dp"
             android:layout_marginTop="20dp"
             android:text="sign up"
-            android:textColor="#0A2168"/>
+            android:textColor="@color/dark_blue"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

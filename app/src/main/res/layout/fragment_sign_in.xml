@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Welcome !"
-        android:textColor="#0A2168"
+        android:textColor="@color/dark_blue"
         android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/email_edit_txt"
@@ -46,8 +46,8 @@
         android:ems="10"
         android:hint="e-mail"
         android:inputType="textPersonName"
-        android:textColor="#0A2168"
-        android:textColorHint="#0A2168"
+        android:textColor="@color/dark_blue"
+        android:textColorHint="@color/dark_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_message"
@@ -55,8 +55,8 @@
 
     <EditText
         android:id="@+id/password_edit_txt"
-        android:textColorHint="#0A2168"
-        android:textColor="#0A2168"
+        android:textColorHint="@color/dark_blue"
+        android:textColor="@color/dark_blue"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -82,7 +82,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/forget_password_btn"
         android:background="#00FFFFFF"
-        android:textColor="#0A2168"
+        android:textColor="@color/dark_blue"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginTop="10dp"
@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="or"
-        android:textColor="#0A2168"
+        android:textColor="@color/dark_blue"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/social_txt"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +134,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Social Media Login"
-        android:textColor="#0A2168"
+        android:textColor="@color/dark_blue"
         app:layout_constraintBottom_toTopOf="@+id/social_icons_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -185,7 +185,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't hava an acoount?"
-            android:textColor="#0A2168" />
+            android:textColor="@color/dark_blue" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/sign_up_btn"
