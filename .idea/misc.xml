@@ -6,6 +6,8 @@
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2575" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/border_button.xml" value="0.1395" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/border_button_circle.xml" value="0.2755" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/border_oval_button.xml" value="0.2575" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/full_oval_button.xml" value="0.2575" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/gradient_normal.xml" value="0.256" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.2575" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.241" />
@@ -37,7 +39,7 @@
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_home.xml" value="0.3680555555555556" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_library.xml" value="0.264" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_login.xml" value="0.264" />
-        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_profile_fragmentent.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/fragment_share.xml" value="0.25052083333333336" />
@@ -52,6 +54,7 @@
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/reels_row.xml" value="0.3" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/switch_item.xml" value="0.3546875" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/target_row.xml" value="0.264" />
+        <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/test.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/layout/user_row.xml" value="0.30104166666666665" />
         <entry key="..\:/Users/bekir.geris/StudioProjects/DoTogether/app/src/main/res/menu/bottom_nav_menu.xml" value="0.24947916666666667" />
       </map>
