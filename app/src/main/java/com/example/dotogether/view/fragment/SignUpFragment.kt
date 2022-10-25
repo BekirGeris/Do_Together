@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.dotogether.databinding.FragmentSignUpBinding
+import com.example.dotogether.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpFragment : BaseFragment(), View.OnClickListener {
 
+    private val viewModel: LoginViewModel by viewModels()
     lateinit var binding: FragmentSignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +40,8 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
 //        binding.facebookBtn.setOnClickListener(this)
 //        binding.twitterBtn.setOnClickListener(this)
         binding.signInBtn.setOnClickListener(this)
+
+        println("bekbek ${viewModel.text.value}")
     }
 
     override fun onClick(v: View?) {

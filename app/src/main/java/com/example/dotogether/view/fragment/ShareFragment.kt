@@ -5,16 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.dotogether.R
+import androidx.fragment.app.viewModels
 import com.example.dotogether.databinding.FragmentShareBinding
+import com.example.dotogether.viewmodel.ShareViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ShareFragment : Fragment() {
 
+    private val viewModel: ShareViewModel by viewModels()
     private lateinit var binding: FragmentShareBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentShareBinding.inflate(layoutInflater)
+
+        initViews()
     }
 
     override fun onCreateView(
@@ -22,5 +28,9 @@ class ShareFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         return binding.root
+    }
+
+    fun initViews() {
+        println("bekbek ${viewModel.text.value}")
     }
 }

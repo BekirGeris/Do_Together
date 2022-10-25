@@ -5,13 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.example.dotogether.databinding.FragmentLibraryBinding
 import com.example.dotogether.view.adapter.TabsPagerAdapter
+import com.example.dotogether.viewmodel.LibraryViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LibraryFragment : BaseFragment() {
 
+    private val viewModel: LibraryViewModel by viewModels()
     private lateinit var binding: FragmentLibraryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,5 +68,7 @@ class LibraryFragment : BaseFragment() {
 //                )
         }.attach()
 
+
+        println("bekbek ${viewModel.text.value}")
     }
 }

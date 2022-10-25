@@ -6,7 +6,9 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding

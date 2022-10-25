@@ -6,16 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentSearchBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.TargetAdapter
 import com.example.dotogether.view.adapter.UserAdapter
+import com.example.dotogether.viewmodel.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
+    private val viewModel: SearchViewModel by viewModels()
     private lateinit var binding: FragmentSearchBinding
 
     private lateinit var userAdapter: UserAdapter
@@ -59,5 +64,7 @@ class SearchFragment : Fragment() {
                 binding.searchRv.adapter = targetAdapter
             }
         }
+
+        println("bekbek ${viewModel.text.value}")
     }
 }
