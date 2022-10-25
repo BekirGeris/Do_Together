@@ -8,15 +8,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentProfileBinding
 import com.example.dotogether.model.Target
-import com.example.dotogether.view.adapter.TargetAdapter
+import com.example.dotogether.model.User
+import com.example.dotogether.view.adapter.ProfileAdapter
 import java.util.ArrayList
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
-    private lateinit var targetAdapter: TargetAdapter
+    private lateinit var targetAdapter: ProfileAdapter
     private val targets = ArrayList<Target>()
+    lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +35,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initViews() {
-        for (i in 1..10) {
+        for (i in 1..1000) {
             targets.add(Target())
         }
 
-        targetAdapter = TargetAdapter(targets)
+        user = User()
+
+        targetAdapter = ProfileAdapter(targets, User())
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.targetRv.adapter = targetAdapter
