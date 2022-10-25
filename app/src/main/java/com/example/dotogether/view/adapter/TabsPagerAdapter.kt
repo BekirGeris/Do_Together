@@ -11,7 +11,7 @@ import com.example.dotogether.view.fragment.FavoritesFragment
 import com.example.dotogether.view.fragment.CompletedFragment
 import kotlin.concurrent.thread
 
-class TabsPagerAdapter(fm: FragmentManager,lifecycle: Lifecycle, private var numberOfTabs: Int, val scrollView: HorizontalScrollView) : FragmentStateAdapter(fm, lifecycle) {
+class TabsPagerAdapter(fm: FragmentManager,lifecycle: Lifecycle, private var numberOfTabs: Int, private val scrollView: HorizontalScrollView) : FragmentStateAdapter(fm, lifecycle) {
 
     override fun createFragment(position: Int): Fragment {
         when (position) {

@@ -8,7 +8,7 @@ import com.example.dotogether.model.Target
 import com.example.dotogether.view.adapter.holder.TargetHolder
 import java.util.ArrayList
 
-class TargetAdapter(val targetList: ArrayList<Target>) : RecyclerView.Adapter<TargetHolder>() {
+class TargetAdapter(private val targetList: ArrayList<Target>) : RecyclerView.Adapter<TargetHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TargetHolder {
         val binding = TargetRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)

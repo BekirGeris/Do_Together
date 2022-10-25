@@ -8,7 +8,7 @@ import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.holder.MemberHolder
 import java.util.ArrayList
 
-class MemberAdapter(val members: ArrayList<User>) : RecyclerView.Adapter<MemberHolder>() {
+class MemberAdapter(private val members: ArrayList<User>) : RecyclerView.Adapter<MemberHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberHolder {
         val binding = MemberColumnBinding.inflate(LayoutInflater.from(parent.context), parent, false)
