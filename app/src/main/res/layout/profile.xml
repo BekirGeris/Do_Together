@@ -4,11 +4,11 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
+    <ImageView
         android:id="@+id/background_image"
-        android:background="@drawable/landscape"
+        android:background="@drawable/pilgrim"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,7 +18,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="-50dp"
-        android:src="@drawable/profile"
+        android:src="@drawable/ic_account"
         app:civ_border_color="@color/white"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
