@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/others_nav"
+    app:startDestination="@id/shareFragment">
+
+    <fragment
+        android:id="@+id/shareFragment"
+        android:name="com.example.dotogether.view.fragment.ShareFragment"
+        android:label="fragment_share"
+        tools:layout="@layout/fragment_share" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.dotogether.view.fragment.ProfileFragment"
+        android:label="ProfileFragment" />
+</navigation>

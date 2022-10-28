@@ -4,7 +4,6 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:iconTint="@color/dark_blue"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/title_home"/>
 
@@ -15,8 +14,9 @@
 
     <item
         android:id="@+id/navigation_share"
+        android:onClick="onNavigationItemSelected"
         android:icon="@drawable/ic_baseline_add_circle_outline_24"
-        android:title="Share"/>
+        android:title="@string/share"/>
 
     <item
         android:id="@+id/navigation_library"

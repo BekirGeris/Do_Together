@@ -1,7 +1,7 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.content.Intent
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +9,7 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.TargetRowBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.MemberAdapter
 import java.util.ArrayList
 import kotlin.random.Random
@@ -34,6 +35,7 @@ class TargetHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickList
     private fun initViews() {
         binding.holderView.setOnClickListener(this)
         binding.threeBtn.setOnClickListener(this)
+        binding.userImage.setOnClickListener(this)
         binding.postUserName.setOnClickListener(this)
         binding.postTime.setOnClickListener(this)
         binding.postImage.setOnClickListener(this)
@@ -74,8 +76,10 @@ class TargetHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickList
             binding.threeBtn-> {
 
             }
-            binding.postUserName -> {
-
+            binding.postUserName, binding.userImage -> {
+                val intent = Intent(binding.root.context, OthersActivity::class.java)
+                intent.putExtra("view_type", 1)
+                context.startActivity(intent)
             }
             binding.postTime -> {
 

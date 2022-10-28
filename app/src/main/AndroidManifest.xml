@@ -6,22 +6,27 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoTogether"
         tools:targetApi="31">
         <activity
+            android:name=".view.activity.OthersActivity"
+            android:exported="false"
+            android:label="@string/title_activity_others"
+            android:theme="@style/Theme.DoTogether.NoActionBar" />
+        <activity
             android:name=".view.activity.HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.DoTogether.NoActionBar"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.LoginActivity"
             android:exported="true">

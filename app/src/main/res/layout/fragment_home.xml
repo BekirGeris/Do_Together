@@ -5,27 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#74C6C6BC"
     tools:context=".view.fragment.HomeFragment">
 
     <ImageButton
         android:id="@+id/camera_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="#00FFFFFF"
-        android:src="@drawable/ic_baseline_photo_camera_30"
+        android:backgroundTint="#00FFFFFF"
+        app:srcCompat="@drawable/ic_baseline_photo_camera_30"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/message_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:background="#00FFFFFF"
-        android:src="@drawable/ic_baseline_chat_bubble_outline_30"
+        android:backgroundTint="#00FFFFFF"
+        app:srcCompat="@drawable/ic_baseline_chat_bubble_outline_30"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +34,10 @@
         android:id="@+id/reels_rv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/white"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

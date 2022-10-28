@@ -17,11 +17,6 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
-        android:id="@+id/navigation_share"
-        android:name="com.example.dotogether.view.fragment.ShareFragment"
-        android:label="fragment_share"
-        tools:layout="@layout/fragment_share" />
-    <fragment
         android:id="@+id/navigation_library"
         android:name="com.example.dotogether.view.fragment.LibraryFragment"
         android:label="fragment_library"

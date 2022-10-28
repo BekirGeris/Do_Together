@@ -1,9 +1,11 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.content.Intent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.UserRowBinding
 import com.example.dotogether.model.User
+import com.example.dotogether.view.activity.OthersActivity
 
 class UserHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -26,7 +28,9 @@ class UserHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListen
     override fun onClick(v: View?) {
         when(v) {
             binding.holderView -> {
-
+                val intent = Intent(binding.root.context, OthersActivity::class.java)
+                intent.putExtra("view_type", 1)
+                context.startActivity(intent)
             }
         }
     }
