@@ -11,8 +11,8 @@ import java.util.ArrayList
 class UserAdapter(private val users: ArrayList<User>) : RecyclerView.Adapter<UserHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder {
-        val bindin = UserRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserHolder(bindin.root)
+        val binding = UserRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return UserHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: UserHolder, position: Int) {

@@ -17,6 +17,8 @@
     <string name="login">Login</string>
     <string name="sign_up">sign up</string>
     <string name="login_message">Best place to write your target and share your journey experiences</string>
+    <string name="description_bold"><b><i>Description: </i></b></string>
+    <string name="target_bold"><b><i>Target: </i></b></string>
     <string name="hello">Hello !</string>
     <string name="persons">Persons</string>
     <string name="targets">Targets</string>
