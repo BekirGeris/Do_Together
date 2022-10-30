@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.OthersNavDirections
 
-abstract class BaseHolder(view: View)  : RecyclerView.ViewHolder(view) {
+abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun goToProfileFragment(navController: NavController?) {
         navController?.let {
