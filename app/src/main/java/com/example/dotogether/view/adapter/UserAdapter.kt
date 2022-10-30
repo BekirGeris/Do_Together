@@ -3,7 +3,7 @@ package com.example.dotogether.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dotogether.databinding.UserRowBinding
+import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.holder.UserHolder
 import java.util.ArrayList
@@ -11,7 +11,7 @@ import java.util.ArrayList
 class UserAdapter(private val users: ArrayList<User>) : RecyclerView.Adapter<UserHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder {
-        val binding = UserRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return UserHolder(binding.root)
     }
 

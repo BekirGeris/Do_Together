@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentProfileBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
-import com.example.dotogether.view.adapter.ProfileAdapter
+import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.viewmodel.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
@@ -21,7 +21,7 @@ class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentProfileBinding
 
-    private lateinit var targetAdapter: ProfileAdapter
+    private lateinit var targetAdapter: ProfileTargetAdapter
     private val targets = ArrayList<Target>()
     lateinit var user: User
 
@@ -46,7 +46,7 @@ class ProfileFragment : Fragment() {
 
         user = User()
 
-        targetAdapter = ProfileAdapter(targets, User())
+        targetAdapter = ProfileTargetAdapter(targets, User())
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.targetRv.adapter = targetAdapter

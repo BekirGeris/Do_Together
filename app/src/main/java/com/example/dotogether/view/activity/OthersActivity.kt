@@ -2,8 +2,8 @@ package com.example.dotogether.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.*
+import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityOthersBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,6 +13,8 @@ class OthersActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOthersBinding
     private lateinit var navController: NavController
+    private lateinit var navOptions: NavOptions
+
     private var viewType: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,19 +27,36 @@ class OthersActivity : AppCompatActivity() {
 
     private fun initViews() {
         navController = Navigation.findNavController(this, R.id.othersFragmentContainerView)
+        navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setPopUpTo(navController.graph.startDestinationId, true)
+            .build()
 
-        viewType = intent.extras?.getInt("view_type")
-        viewType?.let { startFragmentWithViewType(it) }
+        viewType = intent.extras?.getInt("viewType")
+
+        startFragmentWithViewType()
     }
 
-    private fun startFragmentWithViewType(viewType: Int) {
+    private fun startFragmentWithViewType() {
         when(viewType) {
             0 -> {
-                navController.navigate(R.id.shareFragment)
+                navController.navigate(OthersNavDirections.actionShareFragment(), navOptions)
             }
             1 -> {
-                navController.navigate(R.id.profileFragment)
+                navController.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
             }
+            2 -> {
+                navController.navigate(OthersNavDirections.actionListChatFragment(), navOptions)
+            }
+            3 -> {
+                navController.navigate(OthersNavDirections.actionChatFragment(), navOptions)
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!navController.popBackStack()) {
+            super.onBackPressed()
         }
     }
 }

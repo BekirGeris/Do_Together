@@ -4,23 +4,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.example.dotogether.databinding.ProfileBinding
-import com.example.dotogether.databinding.TargetRowBinding
+import com.example.dotogether.databinding.ItemProfileBinding
+import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.holder.TargetHolder
 import com.example.dotogether.view.adapter.holder.ProfileHolder
 
-class ProfileAdapter(private val targetList: ArrayList<Target>, private val user: User) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private val user: User) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         lateinit var binding: ViewBinding
 
         return if (viewType == 0) {
-            binding = ProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            binding = ItemProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             ProfileHolder(binding.root)
         } else {
-            binding = TargetRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             TargetHolder(binding.root)
         }
     }

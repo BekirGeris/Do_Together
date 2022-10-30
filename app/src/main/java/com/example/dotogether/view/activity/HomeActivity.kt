@@ -1,12 +1,12 @@
 package com.example.dotogether.view.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,9 +38,7 @@ class HomeActivity : AppCompatActivity() {
 
             }
             R.id.navigation_share -> {
-                val intent = Intent(this, OthersActivity::class.java)
-                intent.putExtra("view_type", 0)
-                startActivity(intent)
+                navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 0))
             }
             R.id.navigation_library -> {
 
@@ -48,6 +46,12 @@ class HomeActivity : AppCompatActivity() {
             R.id.navigation_profile -> {
 
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!navController.popBackStack()) {
+            super.onBackPressed()
         }
     }
 }

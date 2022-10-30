@@ -1,13 +1,13 @@
 package com.example.dotogether.view.adapter.holder
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import com.example.dotogether.databinding.ProfileBinding
+import androidx.navigation.findNavController
+import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.User
 
-class ProfileHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+class ProfileHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
-    private val binding = ProfileBinding.bind(view)
+    private val binding = ItemProfileBinding.bind(view)
     private val context = binding.root.context
     private lateinit var user: User
 
@@ -29,6 +29,7 @@ class ProfileHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickLis
     }
 
     override fun onClick(v: View?) {
+        val navController = v?.findNavController()
         when(v) {
             binding.backgroundImage -> {
 
@@ -46,7 +47,7 @@ class ProfileHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickLis
 
             }
             binding.messageBtn -> {
-
+                goToChatFragment(navController)
             }
         }
     }

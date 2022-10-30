@@ -5,14 +5,34 @@
     android:id="@+id/others_nav"
     app:startDestination="@id/shareFragment">
 
+    <action android:id="@+id/action_shareFragment"
+        app:destination="@id/shareFragment"/>
+
+    <action android:id="@+id/action_profileFragment"
+        app:destination="@id/profileFragment"/>
+
+    <action android:id="@+id/action_listChatFragment"
+        app:destination="@id/listChatFragment"/>
+
+    <action android:id="@+id/action_chatFragment"
+        app:destination="@id/chatFragment"/>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
         android:label="fragment_share"
         tools:layout="@layout/fragment_share" />
-
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.dotogether.view.fragment.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/listChatFragment"
+        android:name="com.example.dotogether.view.fragment.ListChatFragment"
+        android:label="fragment_chat_list"
+        tools:layout="@layout/fragment_chat_list" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.dotogether.view.fragment.ChatFragment"
+        android:label="ChatFragment" />
 </navigation>

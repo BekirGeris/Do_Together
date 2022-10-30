@@ -1,23 +1,19 @@
 package com.example.dotogether.view.adapter.holder
 
-import android.content.Intent
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.R
-import com.example.dotogether.databinding.TargetRowBinding
+import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
-import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.MemberAdapter
 import java.util.ArrayList
-import kotlin.random.Random
-import kotlin.random.nextInt
 
-class TargetHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+class TargetHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
-    private val binding = TargetRowBinding.bind(view)
+    private val binding = ItemTargetBinding.bind(view)
     private val context = binding.root.context
 
     private var memberAdapter: MemberAdapter
@@ -46,9 +42,10 @@ class TargetHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickList
     fun bind(target: Target) {
         binding.membersRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.membersRv.adapter = memberAdapter
+        binding.postImage.visibility = View.VISIBLE
 
         //todo: test bloc
-        binding.postImage.setImageDrawable(when(Random.nextInt(IntRange(1, 5))) {
+        binding.postImage.setImageDrawable(when(target.url) {
             1 -> {
                 ContextCompat.getDrawable(context, R.drawable.login_image)
             }
@@ -69,6 +66,7 @@ class TargetHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickList
     }
 
     override fun onClick(v: View?) {
+        val navController = v?.findNavController()
         when(v) {
             binding.holderView -> {
 
@@ -77,9 +75,7 @@ class TargetHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickList
 
             }
             binding.postUserName, binding.userImage -> {
-                val intent = Intent(binding.root.context, OthersActivity::class.java)
-                intent.putExtra("view_type", 1)
-                context.startActivity(intent)
+                 goToProfileFragment(navController)
             }
             binding.postTime -> {
 
