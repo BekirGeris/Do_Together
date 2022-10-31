@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:background="@drawable/full_oval_button"
+            android:background="@drawable/full_oval"
             android:text="@string/follow"
             android:textAllCaps="false"
             android:textColor="@color/white" />
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:background="@drawable/border_button_circle"
+            android:background="@drawable/border_circle"
             android:text="@string/message"
             android:textAllCaps="false"
             android:textColor="@color/dark_blue" />

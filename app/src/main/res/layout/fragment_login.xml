@@ -62,7 +62,7 @@
             android:textColor="@color/white"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:background="@drawable/border_button"
+            android:background="@drawable/border_az_oval"
             android:id="@+id/sign_up_btn"
             android:layout_width="250dp"
             android:layout_height="45dp"
