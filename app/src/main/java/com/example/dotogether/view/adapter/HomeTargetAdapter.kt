@@ -7,14 +7,15 @@ import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.ItemReelsTopBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
+import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.ReelsTopHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
 
-class HomeTargetAdapter(private val targetList: ArrayList<Target>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeTargetAdapter(private val targetList: ArrayList<Target>) : RecyclerView.Adapter<BaseHolder>() {
 
     private lateinit var binding: ViewBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         return if (viewType == 0) {
             binding = ItemReelsTopBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             ReelsTopHolder(binding.root)
@@ -24,15 +25,15 @@ class HomeTargetAdapter(private val targetList: ArrayList<Target>) : RecyclerVie
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
         when(holder.itemViewType) {
             0 -> {
-                val reelsTopHolder = holder as ReelsTopHolder
-                reelsTopHolder.bind()
+                holder as ReelsTopHolder
+                holder.bind()
             }
             else -> {
-                val targetHolder = holder as TargetHolder
-                targetHolder.bind(targetList[position - 1])
+                holder as TargetHolder
+                holder.bind(targetList[position - 1])
             }
         }
     }

@@ -9,7 +9,7 @@ import com.example.dotogether.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     lateinit var binding: ActivityLoginBinding
     lateinit var navController: NavController

@@ -35,7 +35,6 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         binding.topBackBtn.setOnClickListener(this)
         //todo: actionlar eklenince açılacak
         binding.signUpBtn.setOnClickListener(this)
-//        binding.signUpBtn.setOnClickListener(this)
 //        binding.googleBtn.setOnClickListener(this)
 //        binding.facebookBtn.setOnClickListener(this)
 //        binding.twitterBtn.setOnClickListener(this)

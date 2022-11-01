@@ -8,12 +8,13 @@ import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
 import com.example.dotogether.view.adapter.holder.ProfileHolder
 
-class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private val user: User) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private val user: User) : RecyclerView.Adapter<BaseHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         lateinit var binding: ViewBinding
 
         return if (viewType == 0) {
@@ -25,15 +26,15 @@ class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private va
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
         when(holder.itemViewType) {
             0 -> {
-                val testHolder = holder as ProfileHolder
-                testHolder.bind(user)
+                holder as ProfileHolder
+                holder.bind(user)
             }
             else -> {
-                val targetHolder = holder as TargetHolder
-                targetHolder.bind(targetList[position - 1])
+                holder as TargetHolder
+                holder.bind(targetList[position - 1])
             }
         }
     }

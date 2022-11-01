@@ -7,15 +7,16 @@ import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.ItemMessageLeftBinding
 import com.example.dotogether.databinding.ItemMessageRightBinding
 import com.example.dotogether.model.Message
+import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.LeftMessageHolder
 import com.example.dotogether.view.adapter.holder.RightMessageHolder
 import java.util.ArrayList
 
-class MessageAdapter(private val messages: ArrayList<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageAdapter(private val messages: ArrayList<Message>) : RecyclerView.Adapter<BaseHolder>() {
 
     private lateinit var binding: ViewBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         return when(viewType) {
             0 -> {
                 binding = ItemMessageRightBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,15 +29,15 @@ class MessageAdapter(private val messages: ArrayList<Message>) : RecyclerView.Ad
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
         when(holder.itemViewType) {
             0 -> {
-                val rightMessageHolder = holder as RightMessageHolder
-                rightMessageHolder.bind(messages[position])
+                holder as RightMessageHolder
+                holder.bind(messages[position])
             }
             else -> {
-                val leftMessageHolder = holder as LeftMessageHolder
-                leftMessageHolder.bind(messages[position])
+                holder as LeftMessageHolder
+                holder.bind(messages[position])
             }
         }
     }
