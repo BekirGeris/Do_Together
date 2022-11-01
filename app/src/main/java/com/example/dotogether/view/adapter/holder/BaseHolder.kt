@@ -43,4 +43,19 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
         }
     }
+
+    fun goToTargetFragment(navController: NavController?) {
+        navController?.let {
+            with(navController.graph.displayName.lowercase()) {
+                when {
+                    contains("home_nav") -> {
+                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 4))
+                    }
+                    contains("others_nav") -> {
+                        navController.navigate(OthersNavDirections.actionTargetFragment())
+                    }
+                }
+            }
+        }
+    }
 }

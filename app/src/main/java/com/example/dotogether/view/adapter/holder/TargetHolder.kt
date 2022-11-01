@@ -25,7 +25,7 @@ class TargetHolder(view: View) : BaseHolder(view), View.OnClickListener {
             members.add(User())
         }
 
-        memberAdapter = MemberAdapter(members)
+        memberAdapter = MemberAdapter(members, false)
     }
 
     private fun initViews() {
@@ -68,20 +68,14 @@ class TargetHolder(view: View) : BaseHolder(view), View.OnClickListener {
     override fun onClick(v: View?) {
         val navController = v?.findNavController()
         when(v) {
-            binding.holderView -> {
-
+            binding.holderView, binding.postImage -> {
+                goToTargetFragment(navController)
             }
             binding.threeBtn-> {
 
             }
-            binding.postUserName, binding.userImage -> {
+            binding.postUserName, binding.userImage, binding.postTime -> {
                  goToProfileFragment(navController)
-            }
-            binding.postTime -> {
-
-            }
-            binding.postImage -> {
-
             }
             binding.like -> {
 

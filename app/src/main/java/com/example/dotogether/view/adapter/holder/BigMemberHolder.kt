@@ -2,14 +2,14 @@ package com.example.dotogether.view.adapter.holder
 
 import android.view.View
 import androidx.navigation.findNavController
-import com.example.dotogether.databinding.ItemReelsBinding
-import com.example.dotogether.model.Reels
+import com.example.dotogether.databinding.ItemBigMemberBinding
+import com.example.dotogether.model.User
 
-class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
+class BigMemberHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
-    private var binding = ItemReelsBinding.bind(view)
+    private val binding = ItemBigMemberBinding.bind(view)
     private val context = binding.root.context
-    private lateinit var reels: Reels
+    private lateinit var user: User
 
     init {
         initViews()
@@ -19,8 +19,8 @@ class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
         binding.userImage.setOnClickListener(this)
     }
 
-    fun bind(reels: Reels) {
-        this.reels = reels
+    fun bind(user: User) {
+        this.user = user
     }
 
     override fun onClick(v: View?) {

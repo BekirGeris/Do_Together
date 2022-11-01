@@ -51,6 +51,9 @@ class OthersActivity : AppCompatActivity() {
             3 -> {
                 navController.navigate(OthersNavDirections.actionChatFragment(), navOptions)
             }
+            4 -> {
+                navController.navigate(OthersNavDirections.actionTargetFragment(), navOptions)
+            }
         }
     }
 

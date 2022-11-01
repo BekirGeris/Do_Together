@@ -17,7 +17,8 @@ class ProfileHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     private fun initViews() {
         binding.backgroundImage.setOnClickListener(this)
-        binding.threeBtn.setOnClickListener(this)
+        binding.backBtn.setOnClickListener(this)
+        binding.moreSettingBtn.setOnClickListener(this)
         binding.profileImage.setOnClickListener(this)
         binding.description.setOnClickListener(this)
         binding.fallowBtn.setOnClickListener(this)
@@ -34,7 +35,14 @@ class ProfileHolder(view: View) : BaseHolder(view), View.OnClickListener {
             binding.backgroundImage -> {
 
             }
-            binding.threeBtn -> {
+            binding.backBtn -> {
+                navController?.popBackStack()?.let {
+                    if (!it) {
+                        //todo: activity finish yapılmalı
+                    }
+                }
+            }
+            binding.moreSettingBtn -> {
 
             }
             binding.profileImage -> {
