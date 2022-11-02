@@ -12,9 +12,10 @@ import com.example.dotogether.view.adapter.holder.LeftMessageHolder
 import com.example.dotogether.view.adapter.holder.RightMessageHolder
 import java.util.ArrayList
 
-class MessageAdapter(private val messages: ArrayList<Message>) : RecyclerView.Adapter<BaseHolder>() {
+class MessageAdapter(private val messages: ArrayList<Message>, private val isGroup: Boolean) : RecyclerView.Adapter<BaseHolder>() {
 
     private lateinit var binding: ViewBinding
+    private var isAgainMessage = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         return when(viewType) {
@@ -30,14 +31,19 @@ class MessageAdapter(private val messages: ArrayList<Message>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+        if (isGroup && position != messages.size - 1) {
+            isAgainMessage = messages[position].userName != messages[position + 1].userName
+        } else {
+            isAgainMessage = isGroup
+        }
         when(holder.itemViewType) {
             0 -> {
                 holder as RightMessageHolder
-                holder.bind(messages[position])
+                holder.bind(messages[position], isAgainMessage)
             }
             else -> {
                 holder as LeftMessageHolder
-                holder.bind(messages[position])
+                holder.bind(messages[position], isAgainMessage)
             }
         }
     }
@@ -47,6 +53,6 @@ class MessageAdapter(private val messages: ArrayList<Message>) : RecyclerView.Ad
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(messages[position].isMe) 1 else 0
+        return if(messages[position].isMe) 0 else 1
     }
 }

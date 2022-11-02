@@ -23,6 +23,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private val messages = arrayListOf<Message>()
     private lateinit var messageAdapter: MessageAdapter
 
+    var isGroup = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentChatBinding.inflate(layoutInflater)
@@ -40,19 +42,31 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private fun initViews() {
         binding.backBtn.setOnClickListener(this)
         binding.chatsUserImage.setOnClickListener(this)
-        binding.chatsUserName.setOnClickListener(this)
-        binding.lastSeenTxt.setOnClickListener(this)
+        binding.chatName.setOnClickListener(this)
+        binding.chatDecs.setOnClickListener(this)
         binding.moreSettingBtn.setOnClickListener(this)
         binding.attachBtn.setOnClickListener(this)
         binding.sendMessageBtn.setOnClickListener(this)
 
-        for (i in 1..1000) {
-            messages.add(Message("${i % 24}:${i % 60}",
-                "Bu bir test mesajıdır sdcfvsdcvsd sdfvbsdv sdv sdfv sdv svf sv sdv swdv sv sdfv sbfsfbv sdv sdv swdv sdf svdgsdv sdd dsv ssv ssdvwsd ssv s s sf sfsf sf.",
-                i % 2 == 0
-            ))
+        isGroup = arguments?.getBoolean("isGroup") ?: false
+        binding.chatsUserImage.visibility = if (isGroup) View.GONE else View.VISIBLE
+
+        for (i in 1..100) {
+            if (i % 3 == 0) {
+                messages.add(Message("Bekir Geriş",
+                    "${i % 24}:${i % 60}",
+                    "Bu bir test mesajıdır sdcfvsdcvsd sdfvbsdv sdv sdfv sdv svf sv sdv swdv sv sdfv sbfsfbv sdv sdv swdv sdf svdgsdv sdd dsv ssv ssdvwsd ssv s s sf sfsf sf.",
+                    true
+                ))
+            } else {
+                messages.add(Message("Ömer Abi",
+                    "${i % 24}:${i % 60}",
+                    "Bu bir test mesajıdır sdcfvsdcvsd sdfvbsdv sdv sdfv sdv svf sv sdv swdv sv sdfv sbfsfbv sdv sdv swdv sdf svdgsdv sdd dsv ssv ssdvwsd ssv s s sf sfsf sf.",
+                    false
+                ))
+            }
         }
-        messageAdapter = MessageAdapter(messages)
+        messageAdapter = MessageAdapter(messages, isGroup)
 
         binding.messageRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.messageRv.adapter = messageAdapter
@@ -72,9 +86,17 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                         }
                     }
                 }
-                binding.chatsUserImage, binding.chatsUserName, binding.lastSeenTxt -> {
-                    action = ChatFragmentDirections.actionChatFragmentToProfileFragment()
-                    navController.navigate(action)
+                binding.chatsUserImage, binding.chatName, binding.chatDecs -> {
+                    if (isGroup) {
+                        navController.popBackStack().let {
+                            if (!it) {
+                                activity?.finish()
+                            }
+                        }
+                    } else {
+                        action = ChatFragmentDirections.actionChatFragmentToProfileFragment()
+                        navController.navigate(action)
+                    }
                 }
                 binding.moreSettingBtn -> {
 

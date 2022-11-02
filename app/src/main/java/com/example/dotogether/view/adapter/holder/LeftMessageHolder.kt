@@ -18,9 +18,12 @@ class LeftMessageHolder(view: View) : BaseHolder(view) {
 
     }
 
-    fun bind(message: Message) {
+    fun bind(message: Message, isGroup: Boolean) {
         this.message = message
         binding.messageTime.text = message.messageTime
         binding.messageTxt.text = message.message
+        binding.userName.text = message.userName
+
+        binding.userName.visibility = if (isGroup) View.VISIBLE else View.GONE
     }
 }

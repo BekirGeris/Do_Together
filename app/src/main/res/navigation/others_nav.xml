@@ -46,6 +46,13 @@
             app:destination="@id/listChatFragment"
             app:popUpTo="@id/chatFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="isGroup"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_chatFragment_to_targetFragment"
+            app:destination="@id/targetFragment" />
     </fragment>
     <fragment
         android:id="@+id/targetFragment"
