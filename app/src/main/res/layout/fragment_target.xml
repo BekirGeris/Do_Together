@@ -177,18 +177,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/group_message_btn"
+    <LinearLayout
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/full_oval"
-        android:text="Group Message"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/member_rv" />
+        app:layout_constraintTop_toBottomOf="@+id/member_rv" >
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/group_message_btn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/full_oval"
+            android:text="Group Message"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/member_rv" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/join_btn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/full_oval"
+            android:text="Join"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/member_rv" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

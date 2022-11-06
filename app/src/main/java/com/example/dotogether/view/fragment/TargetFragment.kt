@@ -39,6 +39,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.backBtn.setOnClickListener(this)
         binding.moreSettingBtn.setOnClickListener(this)
         binding.groupMessageBtn.setOnClickListener(this)
+        binding.joinBtn.setOnClickListener(this)
 
         for (i in 1..100) {
             members.add(User())
@@ -68,6 +69,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 }
                 binding.groupMessageBtn -> {
                     navController.navigate(TargetFragmentDirections.actionChatFragment(true))
+                }
+                binding.joinBtn -> {
+
                 }
             }
         }
