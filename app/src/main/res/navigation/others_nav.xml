@@ -20,6 +20,9 @@
     <action android:id="@+id/action_targetFragment"
         app:destination="@id/targetFragment"/>
 
+    <action android:id="@+id/action_reelsFragment"
+        app:destination="@id/reelsFragment"/>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
@@ -58,4 +61,14 @@
         android:id="@+id/targetFragment"
         android:name="com.example.dotogether.view.fragment.TargetFragment"
         android:label="TargetFragment" />
+    <fragment
+        android:id="@+id/reelsFragment"
+        android:name="com.example.dotogether.view.fragment.ReelsFragment"
+        android:label="ReelsFragment" >
+        <action
+            android:id="@+id/action_reelsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/reelsFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

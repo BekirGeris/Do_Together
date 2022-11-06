@@ -27,7 +27,7 @@ class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
         val navController = v?.findNavController()
         when(v) {
             binding.userImage -> {
-                goToProfileFragment(navController)
+                goToReelsFragment(navController)
             }
         }
     }
