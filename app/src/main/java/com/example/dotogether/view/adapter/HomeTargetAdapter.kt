@@ -11,7 +11,7 @@ import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.ReelsTopHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
 
-class HomeTargetAdapter(private val targetList: ArrayList<Target>) : RecyclerView.Adapter<BaseHolder>() {
+class HomeTargetAdapter(private val targetList: ArrayList<Target>) : BaseAdapter() {
 
     private lateinit var binding: ViewBinding
 

@@ -2,20 +2,21 @@ package com.example.dotogether.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
+import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
 import java.util.ArrayList
 
-class TargetAdapter(private val targetList: ArrayList<Target>) : RecyclerView.Adapter<TargetHolder>() {
+class TargetAdapter(private val targetList: ArrayList<Target>) : BaseAdapter() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TargetHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         val binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TargetHolder(binding.root)
     }
 
-    override fun onBindViewHolder(holder: TargetHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+        holder as TargetHolder
         holder.bind(targetList[position])
     }
 

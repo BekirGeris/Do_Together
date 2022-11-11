@@ -46,7 +46,8 @@ class ProfileHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
             }
             binding.profileImage -> {
-
+                //todo: test açmaçlı eklendi
+                getOnClickListener().holderListener(5, 12555)
             }
             binding.description -> {
 

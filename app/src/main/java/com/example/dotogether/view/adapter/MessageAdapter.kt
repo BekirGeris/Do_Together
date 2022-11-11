@@ -12,7 +12,7 @@ import com.example.dotogether.view.adapter.holder.LeftMessageHolder
 import com.example.dotogether.view.adapter.holder.RightMessageHolder
 import java.util.ArrayList
 
-class MessageAdapter(private val messages: ArrayList<Message>, private val isGroup: Boolean) : RecyclerView.Adapter<BaseHolder>() {
+class MessageAdapter(private val messages: ArrayList<Message>, private val isGroup: Boolean) : BaseAdapter() {
 
     private lateinit var binding: ViewBinding
     private var isAgainMessage = false

@@ -6,8 +6,19 @@ import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.OthersNavDirections
+import com.example.dotogether.view.callback.HolderCallback
 
 abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    private lateinit var onClickListener : HolderCallback
+
+    fun setOnClickListener(onClickListener: HolderCallback) {
+        this.onClickListener = onClickListener
+    }
+
+    fun getOnClickListener() : HolderCallback {
+        return onClickListener
+    }
 
     fun goToProfileFragment(navController: NavController?) {
         navController?.let {

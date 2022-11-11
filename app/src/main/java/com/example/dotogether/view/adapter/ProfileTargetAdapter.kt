@@ -2,7 +2,6 @@ package com.example.dotogether.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.databinding.ItemTargetBinding
@@ -12,17 +11,21 @@ import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
 import com.example.dotogether.view.adapter.holder.ProfileHolder
 
-class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private val user: User) : RecyclerView.Adapter<BaseHolder>() {
+class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private val user: User) : BaseAdapter()  {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         lateinit var binding: ViewBinding
 
         return if (viewType == 0) {
             binding = ItemProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            ProfileHolder(binding.root)
+            val profileHolder = ProfileHolder(binding.root)
+            profileHolder.setOnClickListener(getOnClickListener())
+            profileHolder
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            TargetHolder(binding.root)
+            val targetHolder = TargetHolder(binding.root)
+            targetHolder.setOnClickListener(getOnClickListener())
+            targetHolder
         }
     }
 
