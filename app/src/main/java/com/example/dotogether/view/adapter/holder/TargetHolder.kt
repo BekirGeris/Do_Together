@@ -1,20 +1,26 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
+import com.example.dotogether.databinding.BottomSheetBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.MemberAdapter
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.ArrayList
 
-class TargetHolder(view: View) : BaseHolder(view), View.OnClickListener {
+class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemTargetBinding.bind(view)
     private val context = binding.root.context
+
+    private val dialogBinding = BottomSheetBinding.inflate(layoutInflater)
+    private val dialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
 
     private var memberAdapter: MemberAdapter
     private val members = ArrayList<User>()
@@ -29,14 +35,22 @@ class TargetHolder(view: View) : BaseHolder(view), View.OnClickListener {
     }
 
     private fun initViews() {
+        dialog.setContentView(dialogBinding.root)
+
         binding.holderView.setOnClickListener(this)
-        binding.threeBtn.setOnClickListener(this)
+        binding.moreSettingBtn.setOnClickListener(this)
         binding.userImage.setOnClickListener(this)
         binding.postUserName.setOnClickListener(this)
         binding.postTime.setOnClickListener(this)
         binding.postImage.setOnClickListener(this)
         binding.like.setOnClickListener(this)
         binding.join.setOnClickListener(this)
+
+        dialogBinding.save.setOnClickListener(this)
+        dialogBinding.share.setOnClickListener(this)
+        dialogBinding.delete.setOnClickListener(this)
+        dialogBinding.edit.visibility = View.GONE
+        dialogBinding.clearChat.visibility = View.GONE
     }
 
     fun bind(target: Target) {
@@ -66,13 +80,13 @@ class TargetHolder(view: View) : BaseHolder(view), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = v?.findNavController()
+        val navController = view.findNavController()
         when(v) {
             binding.holderView, binding.postImage -> {
                 goToTargetFragment(navController)
             }
-            binding.threeBtn-> {
-
+            binding.moreSettingBtn-> {
+                dialog.show()
             }
             binding.postUserName, binding.userImage, binding.postTime -> {
                  goToProfileFragment(navController)
@@ -82,6 +96,15 @@ class TargetHolder(view: View) : BaseHolder(view), View.OnClickListener {
             }
             binding.join -> {
 
+            }
+            dialogBinding.save -> {
+                dialog.hide()
+            }
+            dialogBinding.share -> {
+                dialog.hide()
+            }
+            dialogBinding.delete -> {
+                dialog.hide()
             }
         }
     }

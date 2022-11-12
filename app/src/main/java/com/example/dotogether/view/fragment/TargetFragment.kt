@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dotogether.R
+import com.example.dotogether.databinding.BottomSheetBinding
 import com.example.dotogether.databinding.FragmentTargetBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.viewmodel.TargetViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.ArrayList
 
 class TargetFragment : BaseFragment(), View.OnClickListener {
@@ -18,13 +21,17 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     private val viewModel: TargetViewModel by viewModels()
     private lateinit var binding: FragmentTargetBinding
 
+    private lateinit var dialogBinding: BottomSheetBinding
+    private lateinit var dialog: BottomSheetDialog
+
     private lateinit var memberAdapter: MemberAdapter
     private val members = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentTargetBinding.inflate(layoutInflater)
-
+        dialogBinding = BottomSheetBinding.inflate(layoutInflater)
+        dialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
         initViews()
     }
 
@@ -36,10 +43,18 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
+        dialog.setContentView(dialogBinding.root)
+
         binding.backBtn.setOnClickListener(this)
         binding.moreSettingBtn.setOnClickListener(this)
         binding.groupMessageBtn.setOnClickListener(this)
         binding.joinBtn.setOnClickListener(this)
+
+        dialogBinding.save.setOnClickListener(this)
+        dialogBinding.share.setOnClickListener(this)
+        dialogBinding.delete.setOnClickListener(this)
+        dialogBinding.edit.setOnClickListener(this)
+        dialogBinding.clearChat.visibility = View.GONE
 
         for (i in 1..100) {
             members.add(User())
@@ -54,7 +69,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = v?.findNavController()
+        val navController = view?.findNavController()
         navController?.let {
             when(v) {
                 binding.backBtn -> {
@@ -65,13 +80,25 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 binding.moreSettingBtn -> {
-
+                    dialog.show()
                 }
                 binding.groupMessageBtn -> {
                     navController.navigate(TargetFragmentDirections.actionChatFragment(true))
                 }
                 binding.joinBtn -> {
 
+                }
+                dialogBinding.save -> {
+                    dialog.hide()
+                }
+                dialogBinding.share -> {
+                    dialog.hide()
+                }
+                dialogBinding.delete -> {
+                    dialog.hide()
+                }
+                dialogBinding.edit -> {
+                    dialog.hide()
                 }
             }
         }

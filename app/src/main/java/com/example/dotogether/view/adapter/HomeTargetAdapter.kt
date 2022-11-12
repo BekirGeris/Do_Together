@@ -21,7 +21,7 @@ class HomeTargetAdapter(private val targetList: ArrayList<Target>) : BaseAdapter
             ReelsTopHolder(binding.root)
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            TargetHolder(binding.root)
+            TargetHolder(binding.root, LayoutInflater.from(parent.context))
         }
     }
 

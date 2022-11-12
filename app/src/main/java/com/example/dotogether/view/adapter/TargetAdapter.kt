@@ -12,7 +12,7 @@ class TargetAdapter(private val targetList: ArrayList<Target>) : BaseAdapter() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         val binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TargetHolder(binding.root)
+        return TargetHolder(binding.root, LayoutInflater.from(parent.context))
     }
 
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {

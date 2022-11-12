@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/post_image" />
 
     <ImageButton
-        android:id="@+id/three_btn"
+        android:id="@+id/more_setting_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#000A2168"

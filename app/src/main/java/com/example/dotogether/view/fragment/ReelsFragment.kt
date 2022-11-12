@@ -37,7 +37,7 @@ class ReelsFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = v?.findNavController()
+        val navController = view?.findNavController()
        navController?.let {
            when(v) {
                binding.backBtn -> {

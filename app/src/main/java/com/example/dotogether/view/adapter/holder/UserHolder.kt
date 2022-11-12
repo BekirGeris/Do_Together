@@ -5,7 +5,7 @@ import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.User
 
-class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
+class UserHolder(val view: View) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemUserBinding.bind(view)
     private val context = binding.root.context
@@ -24,7 +24,7 @@ class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = v?.findNavController()
+        val navController = view.findNavController()
         when(v) {
             binding.holderView -> {
                 goToProfileFragment(navController)

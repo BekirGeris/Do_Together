@@ -18,12 +18,12 @@ class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private va
 
         return if (viewType == 0) {
             binding = ItemProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            val profileHolder = ProfileHolder(binding.root)
+            val profileHolder = ProfileHolder(binding.root, LayoutInflater.from(parent.context))
             profileHolder.setOnClickListener(getOnClickListener())
             profileHolder
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            val targetHolder = TargetHolder(binding.root)
+            val targetHolder = TargetHolder(binding.root, LayoutInflater.from(parent.context))
             targetHolder.setOnClickListener(getOnClickListener())
             targetHolder
         }

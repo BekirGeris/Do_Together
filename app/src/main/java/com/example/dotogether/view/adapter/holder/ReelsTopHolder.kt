@@ -6,7 +6,7 @@ import com.example.dotogether.databinding.ItemReelsTopBinding
 import com.example.dotogether.model.Reels
 import com.example.dotogether.view.adapter.ReelsAdapter
 
-class ReelsTopHolder(view: View) : BaseHolder(view), View.OnClickListener {
+class ReelsTopHolder(val view: View) : BaseHolder(view), View.OnClickListener {
     private val binding = ItemReelsTopBinding.bind(view)
     private val context = binding.root.context
 

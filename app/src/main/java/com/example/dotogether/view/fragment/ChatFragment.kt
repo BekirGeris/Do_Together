@@ -8,10 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dotogether.R
+import com.example.dotogether.databinding.BottomSheetBinding
 import com.example.dotogether.databinding.FragmentChatBinding
 import com.example.dotogether.model.Message
 import com.example.dotogether.view.adapter.MessageAdapter
 import com.example.dotogether.viewmodel.ChatViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +22,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: ChatViewModel by viewModels()
     private lateinit var binding: FragmentChatBinding
+
+    private lateinit var dialogBinding: BottomSheetBinding
+    private lateinit var dialog: BottomSheetDialog
 
     private val messages = arrayListOf<Message>()
     private lateinit var messageAdapter: MessageAdapter
@@ -28,6 +34,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentChatBinding.inflate(layoutInflater)
+        dialogBinding = BottomSheetBinding.inflate(layoutInflater)
+        dialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
 
         initViews()
     }
@@ -40,6 +48,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
+        dialog.setContentView(dialogBinding.root)
+
         binding.backBtn.setOnClickListener(this)
         binding.chatsUserImage.setOnClickListener(this)
         binding.chatName.setOnClickListener(this)
@@ -47,6 +57,12 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         binding.moreSettingBtn.setOnClickListener(this)
         binding.attachBtn.setOnClickListener(this)
         binding.sendMessageBtn.setOnClickListener(this)
+
+        dialogBinding.save.visibility = View.GONE
+        dialogBinding.share.visibility = View.GONE
+        dialogBinding.delete.visibility = View.GONE
+        dialogBinding.edit.visibility = View.GONE
+        dialogBinding.clearChat.setOnClickListener(this)
 
         isGroup = arguments?.getBoolean("isGroup") ?: false
         binding.chatsUserImage.visibility = if (isGroup) View.GONE else View.VISIBLE
@@ -75,7 +91,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = v?.findNavController()
+        val navController = view?.findNavController()
         var action: NavDirections
         navController?.let {
             when(v) {
@@ -99,13 +115,16 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 binding.moreSettingBtn -> {
-
+                    dialog.show()
                 }
                 binding.attachBtn -> {
 
                 }
                 binding.sendMessageBtn -> {
 
+                }
+                dialogBinding.clearChat -> {
+                    dialog.hide()
                 }
             }
         }

@@ -5,7 +5,7 @@ import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemMemberBinding
 import com.example.dotogether.model.User
 
-class MemberHolder(view: View) : BaseHolder(view), View.OnClickListener {
+class MemberHolder(val view: View) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemMemberBinding.bind(view)
     private val context = binding.root.context
@@ -24,7 +24,7 @@ class MemberHolder(view: View) : BaseHolder(view), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = v?.findNavController()
+        val navController = view.findNavController()
         when(v) {
             binding.userImage -> {
                 goToProfileFragment(navController)
