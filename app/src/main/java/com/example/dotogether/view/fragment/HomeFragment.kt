@@ -116,7 +116,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v) {
             binding.cameraBtn -> {
-                requestPermissions()
+                requestPermissionsForImagePicker()
             }
             binding.messageBtn -> {
                 navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 2))
@@ -124,7 +124,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    fun requestPermissions() {
+    fun requestPermissionsForImagePicker() {
         PermissionUtil.requestPermissions(
             requireContext(),
             requireActivity(),

@@ -32,6 +32,8 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
         binding.description.setOnClickListener(this)
         binding.fallowBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
+        binding.backgroundEditBtn.setOnClickListener(this)
+        binding.profileEditBtn.setOnClickListener(this)
 
         dialogBinding.save.visibility = View.GONE
         dialogBinding.share.visibility = View.GONE
@@ -53,7 +55,7 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
             binding.backBtn -> {
                 navController.popBackStack().let {
                     if (!it) {
-                        //todo: activity finish yapılmalı
+                        getOnClickListener().holderListener(binding, 2, adapterPosition)
                     }
                 }
             }
@@ -61,8 +63,7 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
                 dialog.show()
             }
             binding.profileImage -> {
-                //todo: test açmaçlı eklendi
-                getOnClickListener().holderListener(5, 12555)
+
             }
             binding.description -> {
 
@@ -73,9 +74,23 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
             binding.messageBtn -> {
                 goToChatFragment(navController)
             }
+            binding.backgroundEditBtn -> {
+                getOnClickListener().holderListener(binding, 0, adapterPosition)
+                invertEditVisibility()
+            }
+            binding.profileEditBtn -> {
+                getOnClickListener().holderListener(binding, 1, adapterPosition)
+                invertEditVisibility()
+            }
             dialogBinding.edit -> {
+                invertEditVisibility()
                 dialog.hide()
             }
         }
+    }
+
+    private fun invertEditVisibility() {
+        binding.backgroundEditBtn.visibility = if (binding.backgroundEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.profileEditBtn.visibility = if (binding.profileEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 }

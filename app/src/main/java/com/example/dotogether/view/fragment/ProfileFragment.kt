@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.FragmentProfileBinding
+import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.util.PermissionUtil
@@ -29,10 +31,15 @@ class ProfileFragment : Fragment(), HolderCallback {
 
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var itemProfileBinding: ItemProfileBinding
+
+    private lateinit var imagePickerBuilder: ImagePicker.Builder
 
     private lateinit var targetAdapter: ProfileTargetAdapter
     private val targets = ArrayList<Target>()
     lateinit var user: User
+
+    private var calledFromMode = -1
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
@@ -66,6 +73,11 @@ class ProfileFragment : Fragment(), HolderCallback {
             val fileUri = data?.data!!
             println("bekbek $fileUri")
 
+            when(calledFromMode) {
+                0 -> itemProfileBinding.backgroundImage.setImageURI(fileUri)
+                1 -> itemProfileBinding.profileImage.setImageURI(fileUri)
+            }
+
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
@@ -88,6 +100,7 @@ class ProfileFragment : Fragment(), HolderCallback {
     }
 
     private fun initViews() {
+        imagePickerBuilder = ImagePicker.with(this)
         for (i in 1..1000) {
             targets.add(Target())
         }
@@ -104,7 +117,7 @@ class ProfileFragment : Fragment(), HolderCallback {
         println("bekbek ${viewModel.text.value}")
     }
 
-    fun requestPermissions() {
+    fun requestPermissionsForImagePicker() {
         PermissionUtil.requestPermissions(
             requireContext(),
             requireActivity(),
@@ -118,9 +131,11 @@ class ProfileFragment : Fragment(), HolderCallback {
     }
 
     private fun startImageMaker() {
-        ImagePicker.with(this)
-            .crop(1f, 1f)
-            .compress(1024)
+        when(calledFromMode) {
+            0 -> imagePickerBuilder.crop(2f, 1f)
+            1 -> imagePickerBuilder.crop(1f, 1f)
+        }
+        imagePickerBuilder.compress(1024)
             .maxResultSize(1080, 1080)
             .saveDir(File(context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!, "ImagePicker"))
             .createIntent {
@@ -128,9 +143,20 @@ class ProfileFragment : Fragment(), HolderCallback {
             }
     }
 
-    override fun holderListener(methodType: Int, itemId: Int) {
+    override fun holderListener(binding: ViewBinding, methodType: Int, position: Int) {
+        this.itemProfileBinding = binding as ItemProfileBinding
         when(methodType) {
-            5 -> requestPermissions()
+            0 -> {
+                calledFromMode = 0
+                requestPermissionsForImagePicker()
+            }
+            1 -> {
+                calledFromMode = 1
+                requestPermissionsForImagePicker()
+            }
+            2 -> {
+                activity?.finish()
+            }
             else -> println("else")
         }
     }

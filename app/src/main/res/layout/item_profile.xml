@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -27,8 +28,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/back_btn"
+        android:id="@+id/background_edit_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="15dp"
         android:visibility="gone"
+        android:background="@drawable/full_oval"
+        android:backgroundTint="#8DC1C1C1"
+        android:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/background_image"
+        app:layout_constraintEnd_toEndOf="@+id/background_image"
+        app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/back_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/full_oval"
@@ -50,6 +63,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/background_image" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/profile_edit_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:visibility="gone"
+        android:background="@drawable/full_oval"
+        android:backgroundTint="#8DC1C1C1"
+        android:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintEnd_toEndOf="@+id/profile_image"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="@+id/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/profile_image"
+        app:srcCompat="@drawable/ic_baseline_edit_24" />
 
     <TextView
         android:id="@+id/followers_number_txt"
