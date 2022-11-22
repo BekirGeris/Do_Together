@@ -28,6 +28,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="3dp"
@@ -40,6 +41,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/share"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="3dp"
@@ -52,6 +54,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/delete"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="3dp"
@@ -64,6 +67,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/edit"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="3dp"
@@ -75,7 +79,21 @@
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/logout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_baseline_logout_24"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="Log out"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/clear_chat"
+            android:visibility="gone"
             android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -87,5 +105,8 @@
             android:text="Clear chat"
             android:textAllCaps="false" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

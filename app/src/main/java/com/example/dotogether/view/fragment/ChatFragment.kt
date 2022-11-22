@@ -9,7 +9,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
-import com.example.dotogether.databinding.BottomSheetBinding
+import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentChatBinding
 import com.example.dotogether.model.Message
 import com.example.dotogether.view.adapter.MessageAdapter
@@ -23,7 +23,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private val viewModel: ChatViewModel by viewModels()
     private lateinit var binding: FragmentChatBinding
 
-    private lateinit var dialogBinding: BottomSheetBinding
+    private lateinit var dialogBinding: BottomSheetSettingBinding
     private lateinit var dialog: BottomSheetDialog
 
     private val messages = arrayListOf<Message>()
@@ -34,7 +34,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentChatBinding.inflate(layoutInflater)
-        dialogBinding = BottomSheetBinding.inflate(layoutInflater)
+        dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
         dialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
 
         initViews()
@@ -58,10 +58,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         binding.attachBtn.setOnClickListener(this)
         binding.sendMessageBtn.setOnClickListener(this)
 
-        dialogBinding.save.visibility = View.GONE
-        dialogBinding.share.visibility = View.GONE
-        dialogBinding.delete.visibility = View.GONE
-        dialogBinding.edit.visibility = View.GONE
+        dialogBinding.clearChat.visibility = View.VISIBLE
         dialogBinding.clearChat.setOnClickListener(this)
 
         isGroup = arguments?.getBoolean("isGroup") ?: false
@@ -96,10 +93,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         navController?.let {
             when(v) {
                 binding.backBtn -> {
-                    navController.popBackStack().let {
-                        if (!it) {
-                            activity?.finish()
-                        }
+                    if (!navController.popBackStack()) {
+                        activity?.finish()
                     }
                 }
                 binding.chatsUserImage, binding.chatName, binding.chatDecs -> {

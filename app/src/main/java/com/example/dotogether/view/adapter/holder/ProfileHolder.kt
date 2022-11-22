@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.navigation.findNavController
 import com.example.dotogether.R
-import com.example.dotogether.databinding.BottomSheetBinding
+import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.User
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -15,7 +15,7 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
     private val context = binding.root.context
     private lateinit var user: User
 
-    private val dialogBinding = BottomSheetBinding.inflate(layoutInflater)
+    private val dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
     private val dialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
 
     init {
@@ -35,11 +35,10 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
         binding.backgroundEditBtn.setOnClickListener(this)
         binding.profileEditBtn.setOnClickListener(this)
 
-        dialogBinding.save.visibility = View.GONE
-        dialogBinding.share.visibility = View.GONE
-        dialogBinding.delete.visibility = View.GONE
+        dialogBinding.edit.visibility = View.VISIBLE
+        dialogBinding.logout.visibility = View.VISIBLE
         dialogBinding.edit.setOnClickListener(this)
-        dialogBinding.clearChat.visibility = View.GONE
+        dialogBinding.logout.setOnClickListener(this)
     }
 
     fun bind(user: User) {
@@ -53,10 +52,8 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
 
             }
             binding.backBtn -> {
-                navController.popBackStack().let {
-                    if (!it) {
-                        getOnClickListener().holderListener(binding, 2, adapterPosition)
-                    }
+                if (!navController.popBackStack()) {
+                    getOnClickListener().holderListener(binding, 2, adapterPosition)
                 }
             }
             binding.moreSettingBtn -> {
@@ -84,6 +81,10 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
             }
             dialogBinding.edit -> {
                 invertEditVisibility()
+                dialog.hide()
+            }
+            dialogBinding.logout -> {
+
                 dialog.hide()
             }
         }

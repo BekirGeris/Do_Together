@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
-import com.example.dotogether.databinding.BottomSheetBinding
+import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
@@ -19,7 +19,7 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
     private val binding = ItemTargetBinding.bind(view)
     private val context = binding.root.context
 
-    private val dialogBinding = BottomSheetBinding.inflate(layoutInflater)
+    private val dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
     private val dialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
 
     private var memberAdapter: MemberAdapter
@@ -46,11 +46,12 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
         binding.like.setOnClickListener(this)
         binding.join.setOnClickListener(this)
 
+        dialogBinding.save.visibility = View.VISIBLE
+        dialogBinding.share.visibility = View.VISIBLE
+        dialogBinding.delete.visibility = View.VISIBLE
         dialogBinding.save.setOnClickListener(this)
         dialogBinding.share.setOnClickListener(this)
         dialogBinding.delete.setOnClickListener(this)
-        dialogBinding.edit.visibility = View.GONE
-        dialogBinding.clearChat.visibility = View.GONE
     }
 
     fun bind(target: Target) {
@@ -61,7 +62,7 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
         //todo: test bloc
         binding.postImage.setImageDrawable(when(target.url) {
             1 -> {
-                ContextCompat.getDrawable(context, R.drawable.login_image)
+                ContextCompat.getDrawable(context, R.drawable.work)
             }
             2 -> {
                 ContextCompat.getDrawable(context, R.drawable.ic_virus)

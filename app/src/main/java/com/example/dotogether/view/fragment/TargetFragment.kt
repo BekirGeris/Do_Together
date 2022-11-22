@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
-import com.example.dotogether.databinding.BottomSheetBinding
+import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentTargetBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.MemberAdapter
@@ -21,7 +21,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     private val viewModel: TargetViewModel by viewModels()
     private lateinit var binding: FragmentTargetBinding
 
-    private lateinit var dialogBinding: BottomSheetBinding
+    private lateinit var dialogBinding: BottomSheetSettingBinding
     private lateinit var dialog: BottomSheetDialog
 
     private lateinit var memberAdapter: MemberAdapter
@@ -30,8 +30,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentTargetBinding.inflate(layoutInflater)
-        dialogBinding = BottomSheetBinding.inflate(layoutInflater)
+        dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
         dialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
+
         initViews()
     }
 
@@ -50,11 +51,14 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.groupMessageBtn.setOnClickListener(this)
         binding.joinBtn.setOnClickListener(this)
 
+        dialogBinding.save.visibility = View.VISIBLE
+        dialogBinding.share.visibility = View.VISIBLE
+        dialogBinding.delete.visibility = View.VISIBLE
+        dialogBinding.edit.visibility = View.VISIBLE
         dialogBinding.save.setOnClickListener(this)
         dialogBinding.share.setOnClickListener(this)
         dialogBinding.delete.setOnClickListener(this)
         dialogBinding.edit.setOnClickListener(this)
-        dialogBinding.clearChat.visibility = View.GONE
 
         for (i in 1..100) {
             members.add(User())
@@ -73,10 +77,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         navController?.let {
             when(v) {
                 binding.backBtn -> {
-                    navController.popBackStack().let {
-                        if (!it) {
-                            activity?.finish()
-                        }
+                    if (!navController.popBackStack()) {
+                        activity?.finish()
                     }
                 }
                 binding.moreSettingBtn -> {
