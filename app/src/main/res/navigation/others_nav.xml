@@ -23,6 +23,9 @@
     <action android:id="@+id/action_reelsFragment"
         app:destination="@id/reelsFragment"/>
 
+    <action android:id="@+id/action_followsFragment"
+        app:destination="@id/followsFragment"/>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
@@ -31,7 +34,13 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.dotogether.view.fragment.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_followsFragment"
+            app:destination="@id/followsFragment"
+            app:popUpTo="@id/followsFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/listChatFragment"
         android:name="com.example.dotogether.view.fragment.ListChatFragment"
@@ -71,4 +80,8 @@
             app:popUpTo="@id/reelsFragment"
             app:popUpToInclusive="true"/>
     </fragment>
+    <fragment
+        android:id="@+id/followsFragment"
+        android:name="com.example.dotogether.view.fragment.FollowsFragment"
+        android:label="FollowsFragment" />
 </navigation>

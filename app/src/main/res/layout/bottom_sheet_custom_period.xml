@@ -6,25 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/view"
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/full_oval"
+        android:backgroundTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/view">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/monday"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/monday_txt"
@@ -51,12 +59,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tuesday"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tuesday_txt"
@@ -83,12 +91,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/wednesday"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/wednesday_txt"
@@ -116,12 +124,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/thursday"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/thursday_txt"
@@ -148,12 +156,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/friday"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/friday_txt"
@@ -180,12 +188,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/saturday"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/saturday_txt"
@@ -212,12 +220,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/sunday"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/sunday_txt"
@@ -243,35 +251,36 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:layout_height="50dp">
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancel"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:background="@drawable/border_circle"
                 android:text="Cancel"
                 android:textColor="@color/dark_blue"
-                android:layout_gravity="center"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/confirm"
-                android:layout_margin="5dp"
-                android:textColor="@color/white"
-                android:text="Confirm"
-                android:background="@drawable/full_oval"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/full_oval"
+                android:text="Confirm"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />

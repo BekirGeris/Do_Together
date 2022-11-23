@@ -80,53 +80,69 @@
         app:layout_constraintTop_toTopOf="@+id/profile_image"
         app:srcCompat="@drawable/ic_baseline_edit_24" />
 
-    <TextView
-        android:id="@+id/followers_number_txt"
+    <LinearLayout
+        android:id="@+id/followers_lyt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="10dp"
-        android:text="@string/_0000"
-        android:textColor="@color/dark_blue"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:padding="5dp"
+        android:background="@drawable/border_az_oval_thin"
         app:layout_constraintEnd_toStartOf="@+id/profile_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background_image" />
+        app:layout_constraintTop_toBottomOf="@+id/background_image">
 
-    <TextView
-        android:id="@+id/followers_txt"
+        <TextView
+            android:id="@+id/followers_number_txt"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_0000"
+            android:textColor="@color/dark_blue"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/followers_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/followers"
+            android:textColor="#213981"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/following_lyt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/followers"
-        android:textColor="#213981"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/profile_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/followers_number_txt" />
-
-    <TextView
-        android:id="@+id/following_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/following"
-        android:textColor="#213981"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/following_number_txt" />
-
-    <TextView
-        android:id="@+id/following_number_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="10dp"
-        android:text="@string/_0000"
-        android:textColor="@color/dark_blue"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:padding="5dp"
+        android:background="@drawable/border_az_oval_thin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/background_image" />
+        app:layout_constraintTop_toBottomOf="@+id/background_image" >
+
+        <TextView
+            android:id="@+id/following_number_txt"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_0000"
+            android:textColor="@color/dark_blue"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/following_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/following"
+            android:textColor="#213981"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/user_name_txt"
@@ -141,18 +157,53 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
-    <TextView
+    <EditText
         android:id="@+id/description"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:maxWidth="280dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="75dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="75dp"
-        android:text="dscsdcdssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:enabled="false"
+        android:background="@color/transparent"
+        android:hint="Description"
+        android:textSize="15dp"
+        android:text="ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name_txt" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/close_btn"
+        android:visibility="gone"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/full_oval"
+        android:backgroundTint="#D81313"
+        android:src="@drawable/ic_baseline_close_24"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/description"
+        app:layout_constraintEnd_toStartOf="@+id/description"
+        app:layout_constraintTop_toTopOf="@+id/description" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/confirm_btn"
+        android:visibility="gone"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/full_oval"
+        android:backgroundTint="#27D813"
+        android:src="@drawable/ic_baseline_check_24"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/description"
+        app:layout_constraintStart_toEndOf="@+id/description"
+        app:layout_constraintTop_toTopOf="@+id/description" />
 
     <LinearLayout
         android:id="@+id/btn_layout"

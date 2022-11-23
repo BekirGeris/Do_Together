@@ -30,10 +30,14 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
         binding.moreSettingBtn.setOnClickListener(this)
         binding.profileImage.setOnClickListener(this)
         binding.description.setOnClickListener(this)
+        binding.followersLyt.setOnClickListener(this)
+        binding.followingLyt.setOnClickListener(this)
         binding.fallowBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
         binding.backgroundEditBtn.setOnClickListener(this)
         binding.profileEditBtn.setOnClickListener(this)
+        binding.closeBtn.setOnClickListener(this)
+        binding.confirmBtn.setOnClickListener(this)
 
         dialogBinding.edit.visibility = View.VISIBLE
         dialogBinding.logout.visibility = View.VISIBLE
@@ -65,6 +69,12 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
             binding.description -> {
 
             }
+            binding.followersLyt -> {
+                goToFollowsFragment(navController)
+            }
+            binding.followingLyt -> {
+                goToFollowsFragment(navController)
+            }
             binding.fallowBtn -> {
 
             }
@@ -84,8 +94,13 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
                 dialog.hide()
             }
             dialogBinding.logout -> {
-
-                dialog.hide()
+                getOnClickListener().holderListener(binding, 2, adapterPosition)
+            }
+            binding.closeBtn -> {
+                invertEditVisibility()
+            }
+            binding.confirmBtn -> {
+                invertEditVisibility()
             }
         }
     }
@@ -93,5 +108,11 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
     private fun invertEditVisibility() {
         binding.backgroundEditBtn.visibility = if (binding.backgroundEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         binding.profileEditBtn.visibility = if (binding.profileEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.closeBtn.visibility = if (binding.closeBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.confirmBtn.visibility = if (binding.confirmBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.description.isFocusableInTouchMode = !binding.description.isEnabled
+        binding.description.isFocusable = !binding.description.isEnabled
+        binding.description.isCursorVisible = !binding.description.isEnabled
+        binding.description.isEnabled = !binding.description.isEnabled
     }
 }

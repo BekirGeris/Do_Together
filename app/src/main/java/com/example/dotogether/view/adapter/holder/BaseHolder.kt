@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.view.callback.HolderCallback
+import com.example.dotogether.view.fragment.ProfileFragmentDirections
 
 abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -79,6 +80,21 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
                     }
                     contains("others_nav") -> {
                         navController.navigate(OthersNavDirections.actionTargetFragment())
+                    }
+                }
+            }
+        }
+    }
+
+    fun goToFollowsFragment(navController: NavController?) {
+        navController?.let {
+            with(navController.graph.displayName.lowercase()) {
+                when {
+                    contains("home_nav") -> {
+                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 6))
+                    }
+                    contains("others_nav") -> {
+                        navController.navigate(ProfileFragmentDirections.actionProfileFragmentToFollowsFragment())
                     }
                 }
             }

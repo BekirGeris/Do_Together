@@ -57,6 +57,9 @@ class OthersActivity : BaseActivity() {
             5 -> {
                 navController.navigate(OthersNavDirections.actionReelsFragment(), navOptions)
             }
+            6 -> {
+                navController.navigate(OthersNavDirections.actionFollowsFragment(), navOptions)
+            }
         }
     }
 

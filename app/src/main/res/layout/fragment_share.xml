@@ -64,14 +64,14 @@
         android:layout_marginTop="16dp"
         android:padding="10dp"
         android:orientation="vertical"
-        android:background="@drawable/border_az_oval"
+        android:background="@drawable/border_az_oval_thin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/period_lyt" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Başlangıç"
+            android:text="@string/start"
             android:textColor="@color/dark_blue"
             android:textSize="20sp"
             android:textStyle="bold"/>
@@ -81,13 +81,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="----/--/--"
+            android:text="@string/default_date"
             android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/finish_lyt"
-        android:background="@drawable/border_az_oval"
+        android:background="@drawable/border_az_oval_thin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -101,17 +101,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="Bitiş"
+            android:text="@string/finish"
             android:textColor="@color/dark_blue"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/finish_date_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Sonsuz"
+            android:text="@string/forever"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -193,7 +193,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="horizontal"
-        android:background="@drawable/border_az_oval"
+        android:background="@drawable/border_az_oval_thin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_edit_txt">
