@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentChatListBinding
 import com.example.dotogether.model.Chat
@@ -13,7 +14,7 @@ import com.example.dotogether.viewmodel.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ListChatFragment : BaseFragment() {
+class ListChatFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: ChatViewModel by viewModels()
     private lateinit var binding: FragmentChatListBinding
@@ -36,6 +37,8 @@ class ListChatFragment : BaseFragment() {
     }
 
     private fun initViews() {
+        binding.backBtn.setOnClickListener(this)
+
         for (i in 1..100) {
             chats.add(Chat())
         }
@@ -44,5 +47,18 @@ class ListChatFragment : BaseFragment() {
         binding.chatsRv.layoutManager = LinearLayoutManager(context)
         binding.chatsRv.adapter = chatAdapter
         println("bekbek ${viewModel.text.value}")
+    }
+
+    override fun onClick(v: View?) {
+        val navController = view?.findNavController()
+        navController?.let {
+            when (v) {
+                binding.backBtn -> {
+                    if (!navController.popBackStack()) {
+                        activity?.finish()
+                    }
+                }
+            }
+        }
     }
 }
