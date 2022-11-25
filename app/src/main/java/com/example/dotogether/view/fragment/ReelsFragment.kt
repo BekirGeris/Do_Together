@@ -41,13 +41,12 @@ class ReelsFragment : BaseFragment(), View.OnClickListener {
        navController?.let {
            when(v) {
                binding.backBtn -> {
-                   if (!navController.popBackStack()) {
-                       activity?.finish()
-                   }
+                   activity?.onBackPressed()
                }
                binding.reelsUserName -> {
                     navController.navigate(ReelsFragmentDirections.actionReelsFragmentToProfileFragment())
                }
+               else -> {}
            }
        }
     }

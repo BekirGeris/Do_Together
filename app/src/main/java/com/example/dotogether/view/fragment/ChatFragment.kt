@@ -93,17 +93,11 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         navController?.let {
             when(v) {
                 binding.backBtn -> {
-                    if (!navController.popBackStack()) {
-                        activity?.finish()
-                    }
+                    activity?.onBackPressed()
                 }
                 binding.chatsUserImage, binding.chatName, binding.chatDecs -> {
                     if (isGroup) {
-                        navController.popBackStack().let {
-                            if (!it) {
-                                activity?.finish()
-                            }
-                        }
+                        activity?.onBackPressed()
                     } else {
                         action = ChatFragmentDirections.actionChatFragmentToProfileFragment()
                         navController.navigate(action)
@@ -121,6 +115,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 dialogBinding.clearChat -> {
                     dialog.hide()
                 }
+                else -> {}
             }
         }
     }

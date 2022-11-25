@@ -135,9 +135,7 @@ class ShareFragment : Fragment(), View.OnClickListener, DateCallback {
         navController?.let {
             when(v) {
                 binding.backBtn -> {
-                    if (!navController.popBackStack()) {
-                        activity?.finish()
-                    }
+                    activity?.onBackPressed()
                 }
                 binding.selectImage -> {
                     requestPermissionsForImagePicker()
@@ -163,9 +161,7 @@ class ShareFragment : Fragment(), View.OnClickListener, DateCallback {
                     binding.finishDateTxt.text = getString(R.string.forever)
                 }
                 binding.closeBtn -> {
-                    if (!navController.popBackStack()) {
-                        activity?.finish()
-                    }
+                    activity?.onBackPressed()
                 }
                 periodDialogBinding.daily -> {
                      viewModel.period.value = "Daily"
@@ -195,6 +191,7 @@ class ShareFragment : Fragment(), View.OnClickListener, DateCallback {
                     setPeriodCheckView(periodDialogBinding.customCheck)
                     customPeriodDialog.hide()
                 }
+                else -> {}
             }
         }
     }

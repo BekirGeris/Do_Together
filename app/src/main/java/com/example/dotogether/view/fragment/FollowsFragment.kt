@@ -50,10 +50,9 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
         navController?.let {
             when (v) {
                 binding.backBtn -> {
-                    if (!navController.popBackStack()) {
-                        activity?.finish()
-                    }
+                    activity?.onBackPressed()
                 }
+                else -> {}
             }
         }
     }
