@@ -60,7 +60,7 @@
             android:drawablePadding="10dp"
             android:drawableTint="@color/dark_blue"
             android:paddingStart="50dp"
-            android:text="Beğen"
+            android:text="@string/like"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/dark_blue"
@@ -77,7 +77,7 @@
             android:drawablePadding="10dp"
             android:drawableTint="@color/dark_blue"
             android:paddingStart="50dp"
-            android:text="Katıl"
+            android:text="@string/join"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/dark_blue" />

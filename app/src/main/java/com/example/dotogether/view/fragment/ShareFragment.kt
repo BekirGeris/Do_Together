@@ -160,7 +160,7 @@ class ShareFragment : Fragment(), View.OnClickListener, DateCallback {
                 }
                 binding.finishDateClear -> {
                     binding.finishDateClear.visibility = View.GONE
-                    binding.finishDateTxt.text = "Sonsuz"
+                    binding.finishDateTxt.text = getString(R.string.forever)
                 }
                 binding.closeBtn -> {
                     if (!navController.popBackStack()) {
