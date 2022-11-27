@@ -8,6 +8,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityHomeBinding
+import com.example.dotogether.util.Constants.ViewType
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,7 +38,7 @@ class HomeActivity : BaseActivity() {
 
             }
             R.id.navigation_share -> {
-                navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 0))
+                navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_SHARE_FRAGMENT))
             }
             R.id.navigation_library -> {
 

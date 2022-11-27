@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.OthersNavDirections
+import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.view.callback.HolderCallback
 import com.example.dotogether.view.fragment.ProfileFragmentDirections
 
@@ -31,7 +32,7 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
             with(navController.graph.displayName.lowercase()) {
                 when {
                     contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 1))
+                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_PROFILE_FRAGMENT))
                     }
                     contains("others_nav") -> {
                         navController.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
@@ -46,7 +47,7 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
             with(navController.graph.displayName.lowercase()) {
                 when {
                     contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 3))
+                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_CHAT_FRAGMENT))
                     }
                     contains("others_nav") -> {
                         navController.navigate(OthersNavDirections.actionChatFragment())
@@ -61,7 +62,7 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
             with(navController.graph.displayName.lowercase()) {
                 when {
                     contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 4))
+                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_TARGET_FRAGMENT))
                     }
                     contains("others_nav") -> {
                         navController.navigate(OthersNavDirections.actionTargetFragment())
@@ -76,7 +77,7 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
             with(navController.graph.displayName.lowercase()) {
                 when {
                     contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 5))
+                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_REELS_FRAGMENT))
                     }
                     contains("others_nav") -> {
                         navController.navigate(OthersNavDirections.actionTargetFragment())
@@ -91,7 +92,7 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
             with(navController.graph.displayName.lowercase()) {
                 when {
                     contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 6))
+                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_FOLLOWS_FRAGMENT))
                     }
                     contains("others_nav") -> {
                         navController.navigate(ProfileFragmentDirections.actionProfileFragmentToFollowsFragment())

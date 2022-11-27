@@ -47,18 +47,25 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         var action: NavDirections? = null
         val directions = SignUpFragmentDirections
 
-        if (v == binding.topBackBtn) {
-            action = directions.actionSignUpFragmentToLoginFragment()
-        } else if (v == binding.signUpBtn) {
-            action = directions.actionSignUpFragmentToHomeActivity()
-        } else if (v == binding.googleBtn) {
-            //todo: GOOGLE ile giriş
-        } else if (v == binding.facebookBtn) {
-            //todo: FACEBOOK ile giriş
-        } else if (v == binding.twitterBtn) {
-            //todo: TWITTER ile giriş
-        } else if (v == binding.signInBtn) {
-            action = directions.actionSignUpFragmentToSignInFragment()
+        when (v) {
+            binding.topBackBtn -> {
+                action = directions.actionSignUpFragmentToLoginFragment()
+            }
+            binding.signUpBtn -> {
+                action = directions.actionSignUpFragmentToHomeActivity()
+            }
+            binding.googleBtn -> {
+                //todo: GOOGLE ile giriş
+            }
+            binding.facebookBtn -> {
+                //todo: FACEBOOK ile giriş
+            }
+            binding.twitterBtn -> {
+                //todo: TWITTER ile giriş
+            }
+            binding.signInBtn -> {
+                action = directions.actionSignUpFragmentToSignInFragment()
+            }
         }
 
         if (v != null && action != null) {

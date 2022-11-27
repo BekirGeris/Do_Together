@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.model.Target
+import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.viewmodel.HomeViewModel
@@ -119,7 +120,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 requestPermissionsForImagePicker()
             }
             binding.messageBtn -> {
-                navController.navigate(HomeNavDirections.actionGlobalOthersActivity(viewType = 2))
+                navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_LIST_CHAT_FRAGMENT))
             }
         }
     }

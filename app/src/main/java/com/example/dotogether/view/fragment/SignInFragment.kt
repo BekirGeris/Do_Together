@@ -49,20 +49,28 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
         var action: NavDirections? = null
         val directions = SignInFragmentDirections
 
-        if (v == binding.topBackBtn) {
-            action = directions.actionSignInFragmentToLoginFragment()
-        } else if (v == binding.loginBtn) {
-            action = directions.actionSignInFragmentToHomeActivity()
-        } else if (v == binding.forgetPasswordBtn) {
-            //todo: şifre yenileme ekranına gidilecek
-        } else if (v == binding.googleBtn) {
-            //todo: GOOGLE ile giriş
-        } else if (v == binding.facebookBtn) {
-            //todo: FACEBOOK ile giriş
-        } else if (v == binding.twitterBtn) {
-            //todo: TWITTER ile giriş
-        } else if (v == binding.signUpBtn) {
-            action = directions.actionSignInFragmentToSignUpFragment()
+        when (v) {
+            binding.topBackBtn -> {
+                action = directions.actionSignInFragmentToLoginFragment()
+            }
+            binding.loginBtn -> {
+                action = directions.actionSignInFragmentToHomeActivity()
+            }
+            binding.forgetPasswordBtn -> {
+                //todo: şifre yenileme ekranına gidilecek
+            }
+            binding.googleBtn -> {
+                //todo: GOOGLE ile giriş
+            }
+            binding.facebookBtn -> {
+                //todo: FACEBOOK ile giriş
+            }
+            binding.twitterBtn -> {
+                //todo: TWITTER ile giriş
+            }
+            binding.signUpBtn -> {
+                action = directions.actionSignInFragmentToSignUpFragment()
+            }
         }
 
         if (v != null && action != null) {

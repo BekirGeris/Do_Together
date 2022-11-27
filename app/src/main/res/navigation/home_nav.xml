@@ -37,7 +37,7 @@
         android:label="OthersActivity" >
         <argument
             android:name="viewType"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="com.example.dotogether.util.Constants$ViewType"
+            android:defaultValue="VIEW_SHARE_FRAGMENT" />
     </activity>
 </navigation>
