@@ -17,6 +17,7 @@ import com.example.dotogether.databinding.FragmentProfileBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.util.Constants.MethodType
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.callback.HolderCallback
@@ -143,21 +144,20 @@ class ProfileFragment : Fragment(), HolderCallback {
             }
     }
 
-    override fun holderListener(binding: ViewBinding, methodType: Int, position: Int) {
+    override fun holderListener(binding: ViewBinding, methodType: MethodType, position: Int) {
         this.itemProfileBinding = binding as ItemProfileBinding
         when(methodType) {
-            0 -> {
+            MethodType.METHOD_BACKGROUND_EDIT -> {
                 calledFromMode = 0
                 requestPermissionsForImagePicker()
             }
-            1 -> {
+            MethodType.METHOD_PROFILE_EDIT -> {
                 calledFromMode = 1
                 requestPermissionsForImagePicker()
             }
-            2 -> {
+            MethodType.METHOD_LOGOUT -> {
                 activity?.finish()
             }
-            else -> println("else")
         }
     }
 }

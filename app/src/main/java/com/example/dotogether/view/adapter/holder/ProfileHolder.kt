@@ -7,6 +7,7 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.User
+import com.example.dotogether.util.Constants.MethodType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
@@ -57,7 +58,7 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
             }
             binding.backBtn -> {
                 if (!navController.popBackStack()) {
-                    getOnClickListener().holderListener(binding, 2, adapterPosition)
+                    getOnClickListener().holderListener(binding, MethodType.METHOD_LOGOUT, adapterPosition)
                 }
             }
             binding.moreSettingBtn -> {
@@ -82,11 +83,11 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
                 goToChatFragment(navController)
             }
             binding.backgroundEditBtn -> {
-                getOnClickListener().holderListener(binding, 0, adapterPosition)
+                getOnClickListener().holderListener(binding, MethodType.METHOD_BACKGROUND_EDIT, adapterPosition)
                 invertEditVisibility()
             }
             binding.profileEditBtn -> {
-                getOnClickListener().holderListener(binding, 1, adapterPosition)
+                getOnClickListener().holderListener(binding, MethodType.METHOD_PROFILE_EDIT, adapterPosition)
                 invertEditVisibility()
             }
             dialogBinding.edit -> {
@@ -94,7 +95,7 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
                 dialog.hide()
             }
             dialogBinding.logout -> {
-                getOnClickListener().holderListener(binding, 2, adapterPosition)
+                getOnClickListener().holderListener(binding, MethodType.METHOD_LOGOUT, adapterPosition)
             }
             binding.closeBtn -> {
                 invertEditVisibility()

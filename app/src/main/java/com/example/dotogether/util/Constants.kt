@@ -17,4 +17,10 @@ object Constants {
         VIEW_REELS_FRAGMENT,
         VIEW_FOLLOWS_FRAGMENT
     }
+
+    enum class MethodType {
+        METHOD_LOGOUT,
+        METHOD_BACKGROUND_EDIT,
+        METHOD_PROFILE_EDIT
+    }
 }
