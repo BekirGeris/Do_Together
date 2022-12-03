@@ -92,7 +92,7 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
             }
             dialogBinding.edit -> {
                 invertEditVisibility()
-                dialog.hide()
+                dialog.dismiss()
             }
             dialogBinding.logout -> {
                 getOnClickListener().holderListener(binding, MethodType.METHOD_LOGOUT, adapterPosition)
