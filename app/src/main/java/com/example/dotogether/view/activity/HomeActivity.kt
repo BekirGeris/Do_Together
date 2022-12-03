@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    
     private lateinit var navView: BottomNavigationView
     private lateinit var navController: NavController
 
