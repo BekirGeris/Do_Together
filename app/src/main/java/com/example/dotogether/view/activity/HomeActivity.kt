@@ -24,6 +24,8 @@ class HomeActivity : BaseActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         navView = binding.navView
         navController = findNavController(R.id.homeFragmentContainerView)
         NavigationUI.setupWithNavController(navView, navController)
