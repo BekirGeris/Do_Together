@@ -1,4 +1,4 @@
-package com.example.dotogether.util
+package com.example.dotogether.view.fragment
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -21,7 +21,9 @@ class DatePickerFragment(val dateCallback: DateCallback) : DialogFragment(), Dat
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of DatePickerDialog and return it
-        return DatePickerDialog(requireContext(), this, year, month, day)
+        val dataPickerDialog = DatePickerDialog(requireContext(), this, year, month, day)
+        dataPickerDialog.datePicker.minDate = System.currentTimeMillis()
+        return dataPickerDialog
     }
 
     override fun show(manager: FragmentManager, tag: String?) {

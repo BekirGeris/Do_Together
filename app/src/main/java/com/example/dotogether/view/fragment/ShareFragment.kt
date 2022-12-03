@@ -17,7 +17,6 @@ import com.example.dotogether.databinding.BottomSheetCustomPeriodBinding
 import com.example.dotogether.databinding.BottomSheetPeriodBinding
 import com.example.dotogether.databinding.FragmentShareBinding
 import com.example.dotogether.util.Constants
-import com.example.dotogether.util.DatePickerFragment
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.view.callback.DateCallback
 import com.example.dotogether.viewmodel.ShareViewModel
