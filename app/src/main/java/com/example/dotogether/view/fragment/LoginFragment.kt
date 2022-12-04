@@ -34,8 +34,6 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     private fun initViews() {
         binding.loginBtn.setOnClickListener(this)
         binding.signUpBtn.setOnClickListener(this)
-
-        println("bekbek ${viewModel.text.value}")
     }
 
     override fun onClick(v: View?) {

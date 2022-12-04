@@ -197,4 +197,26 @@
             android:textColor="#1545DD" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/email_error_txt"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:text="wrong email"
+        android:textColor="#F40000"
+        app:layout_constraintStart_toStartOf="@+id/email_edit_txt"
+        app:layout_constraintTop_toBottomOf="@+id/email_edit_txt" />
+
+    <TextView
+        android:id="@+id/password_error_txt"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:text="wrong password"
+        android:textColor="#F40000"
+        app:layout_constraintStart_toStartOf="@+id/password_edit_txt"
+        app:layout_constraintTop_toBottomOf="@+id/password_edit_txt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
