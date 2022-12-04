@@ -66,6 +66,8 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                 action = directions.actionSignInFragmentToLoginFragment()
             }
             binding.loginBtn -> {
+                validEmail()
+                validPassword()
                 if (validEmail() && validPassword()) {
                     action = directions.actionSignInFragmentToHomeActivity()
                 }
