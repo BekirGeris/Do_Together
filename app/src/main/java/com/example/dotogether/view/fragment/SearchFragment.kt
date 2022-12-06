@@ -64,7 +64,5 @@ class SearchFragment : Fragment() {
                 binding.searchRv.adapter = targetAdapter
             }
         }
-
-        println("bekbek ${viewModel.text.value}")
     }
 }

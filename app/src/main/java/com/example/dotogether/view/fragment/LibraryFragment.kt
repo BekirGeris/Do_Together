@@ -67,8 +67,5 @@ class LibraryFragment : BaseFragment() {
 //                    BlendModeCompat.SRC_ATOP
 //                )
         }.attach()
-
-
-        println("bekbek ${viewModel.text.value}")
     }
 }

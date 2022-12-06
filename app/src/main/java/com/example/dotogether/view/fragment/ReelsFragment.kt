@@ -31,7 +31,6 @@ class ReelsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
-        println("bekbek ${viewModel.text}")
         binding.backBtn.setOnClickListener(this)
         binding.reelsUserName.setOnClickListener(this)
     }

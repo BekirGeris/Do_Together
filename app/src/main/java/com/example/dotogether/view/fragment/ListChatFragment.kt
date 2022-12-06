@@ -46,7 +46,6 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
 
         binding.chatsRv.layoutManager = LinearLayoutManager(context)
         binding.chatsRv.adapter = chatAdapter
-        println("bekbek ${viewModel.text.value}")
     }
 
     override fun onClick(v: View?) {

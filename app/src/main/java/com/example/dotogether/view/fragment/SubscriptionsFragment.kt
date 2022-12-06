@@ -45,7 +45,5 @@ class SubscriptionsFragment : BaseFragment() {
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.targetRv.adapter = targetAdapter
-
-        println("bekbek ${viewModel.text.value}")
     }
 }

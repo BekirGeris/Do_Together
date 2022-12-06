@@ -114,8 +114,6 @@ class ProfileFragment : Fragment(), HolderCallback {
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.targetRv.adapter = targetAdapter
-
-        println("bekbek ${viewModel.text.value}")
     }
 
     fun requestPermissionsForImagePicker() {

@@ -68,8 +68,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
         binding.memberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.memberRv.adapter = memberAdapter
-
-        println("bekbek ${viewModel.text.value}")
     }
 
     override fun onClick(v: View?) {

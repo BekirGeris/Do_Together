@@ -83,8 +83,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
         binding.messageRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.messageRv.adapter = messageAdapter
-
-        println("bekbek ${viewModel.text.value}")
     }
 
     override fun onClick(v: View?) {
