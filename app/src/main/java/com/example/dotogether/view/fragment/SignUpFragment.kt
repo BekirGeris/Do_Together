@@ -106,25 +106,31 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
             }
             binding.emailEditTxt -> {
                 email = v.text.toString()
-                validEmail()
+                binding.emailEditLyt.error?.let {
+                    validEmail()
+                }
             }
             binding.passwordEditTxt -> {
                 password = v.text.toString()
-                validPassword()
+                binding.passwordEditLyt.error?.let {
+                    validPassword()
+                }
             }
             binding.passwordAgainEditTxt -> {
                 passwordAgain = v.text.toString()
-                validPasswordAgain()
+                binding.passwordAgainEditLyt.error?.let {
+                    validPasswordAgain()
+                }
             }
         }
     }
 
     private fun validUserName() : Boolean {
         return if (userName.isEmpty()) {
-            binding.usernameErrorTxt.visibility = View.VISIBLE
+            binding.usernameEditLyt.error = "Wrong username"
             false
         } else {
-            binding.usernameErrorTxt.visibility = View.GONE
+            binding.usernameEditLyt.error = null
             true
         }
     }
@@ -132,11 +138,11 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
     private fun validEmail() : Boolean {
         when (ValidationFactory.validMail(email)) {
             is Resource.Success -> {
-                binding.emailErrorTxt.visibility = View.GONE
+                binding.emailEditLyt.error = null
                 return true
             }
             is Resource.Error -> {
-                binding.emailErrorTxt.visibility = View.VISIBLE
+                binding.emailEditLyt.error = "Wrong email"
                 return false
             }
             else -> {}
@@ -147,11 +153,11 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
     private fun validPassword() : Boolean {
         when (ValidationFactory.validPassword(password)) {
             is Resource.Success -> {
-                binding.passwordErrorTxt.visibility = View.GONE
+                binding.passwordEditLyt.error = null
                 return true
             }
             is Resource.Error -> {
-                binding.passwordErrorTxt.visibility = View.VISIBLE
+                binding.passwordEditLyt.error = "Wrong password"
                 return false
             }
             else -> {}
@@ -161,10 +167,10 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
 
     private fun validPasswordAgain() : Boolean {
         return if (passwordAgain.isEmpty() || password != passwordAgain || ValidationFactory.validPassword(passwordAgain) is Resource.Error) {
-            binding.passwordAgainErrorTxt.visibility = View.VISIBLE
+            binding.passwordAgainEditLyt.error = "Wrong password again"
             false
         } else {
-            binding.passwordAgainErrorTxt.visibility = View.GONE
+            binding.passwordAgainEditLyt.error = null
             true
         }
     }

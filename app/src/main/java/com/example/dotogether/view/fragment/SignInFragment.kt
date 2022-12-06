@@ -76,7 +76,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                 if (validEmail()) {
                     Toast.makeText(requireContext(), "Email Sent", Toast.LENGTH_LONG).show()
                 }
-                binding.passwordErrorTxt.visibility = View.GONE
+                binding.passwordEditLyt.error = null
             }
             binding.googleBtn -> {
                 //todo: GOOGLE ile giriş
@@ -104,11 +104,15 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
         when(v) {
             binding.emailEditTxt -> {
                 email = v.text.toString()
-                validEmail()
+                binding.emailEditLyt.error?.let {
+                    validEmail()
+                }
             }
             binding.passwordEditTxt -> {
                 password = v.text.toString()
-                validPassword()
+                binding.passwordEditLyt.error?.let {
+                    validPassword()
+                }
             }
         }
     }
@@ -116,11 +120,11 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
     private fun validEmail() : Boolean {
         when (ValidationFactory.validMail(email)) {
             is Resource.Success -> {
-                binding.emailErrorTxt.visibility = View.GONE
+                binding.emailEditLyt.error = null
                 return true
             }
             is Resource.Error -> {
-                binding.emailErrorTxt.visibility = View.VISIBLE
+                binding.emailEditLyt.error = "Wrong email"
                 return false
             }
             else -> {}
@@ -131,11 +135,11 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
     private fun validPassword() : Boolean {
         when (ValidationFactory.validPassword(password)) {
             is Resource.Success -> {
-                binding.passwordErrorTxt.visibility = View.GONE
+                binding.passwordEditLyt.error = null
                 return true
             }
             is Resource.Error -> {
-                binding.passwordErrorTxt.visibility = View.VISIBLE
+                binding.passwordEditLyt.error = "Wrong password"
                 return false
             }
             else -> {}
