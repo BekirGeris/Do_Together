@@ -60,4 +60,6 @@
     <string name="monthly">Monthly</string>
     <string name="monday_to_friday">Monday To Friday</string>
     <string name="custom">Custom</string>
+    <string name="password_again">password again</string>
+    <string name="error_genel_message">Bir şeyler ters gitti.</string>
 </resources>

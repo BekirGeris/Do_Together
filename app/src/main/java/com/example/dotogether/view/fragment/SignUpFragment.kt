@@ -19,6 +19,7 @@ import com.example.dotogether.BuildConfig
 import com.example.dotogether.databinding.FragmentSignUpBinding
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.ValidationFactory
+import com.example.dotogether.view.dialog.CustomProgressDialog
 import com.example.dotogether.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -36,6 +37,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: LoginViewModel by viewModels()
     lateinit var binding: FragmentSignUpBinding
+    lateinit var dialog: CustomProgressDialog
 
     private var userName: String = ""
     private var email: String = ""
@@ -46,7 +48,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
     private lateinit var signUpRequest: BeginSignInRequest
 
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
-        Log.d(TAG, "resultCode : ${it.resultCode}")
+        dialog.hide()
         if (it.resultCode == Activity.RESULT_OK) {
             val data = it.data
 
@@ -110,6 +112,8 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initObserve() {
+        dialog = CustomProgressDialog(requireActivity())
+
         oneTapClient = Identity.getSignInClient(requireActivity())
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
@@ -141,6 +145,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
                 }
             }
             binding.googleBtn -> {
+                dialog.shoe()
                 signUp()
             }
             binding.facebookBtn -> {
@@ -249,11 +254,13 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
                         .build()
                     resultLauncher.launch(intentSender)
                 } catch (e: IntentSender.SendIntentException) {
+                    dialog.hide()
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
             .addOnFailureListener {
-                Log.d(TAG, it.localizedMessage ?: "Error: not sign in")
+                dialog.hide()
+                Log.d(TAG, "Error : ${it.localizedMessage}")
                 Toast.makeText(requireContext(), it.localizedMessage, Toast.LENGTH_LONG).show()
             }
     }

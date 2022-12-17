@@ -16,9 +16,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.dotogether.BuildConfig
+import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentSignInBinding
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.ValidationFactory
+import com.example.dotogether.view.dialog.CustomProgressDialog
 import com.example.dotogether.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -35,6 +37,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: LoginViewModel by viewModels()
     lateinit var binding: FragmentSignInBinding
+    lateinit var dialog: CustomProgressDialog
 
     private var email: String = ""
     private var password: String = ""
@@ -43,6 +46,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
     private lateinit var signInRequest: BeginSignInRequest
 
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+        dialog.hide()
         Log.d(TAG, "resultCode : ${it.resultCode}")
         if (it.resultCode == Activity.RESULT_OK) {
             val data = it.data
@@ -106,6 +110,8 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initObserve() {
+        dialog = CustomProgressDialog(requireActivity())
+
         oneTapClient = Identity.getSignInClient(requireActivity())
         signInRequest = BeginSignInRequest.builder()
             .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
@@ -145,6 +151,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                 binding.passwordEditLyt.error = null
             }
             binding.googleBtn -> {
+                dialog.shoe()
                 signIn()
             }
             binding.facebookBtn -> {
@@ -223,10 +230,13 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                         .build()
                     resultLauncher.launch(intentSender)
                 } catch (e: IntentSender.SendIntentException) {
+                    dialog.hide()
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    Toast.makeText(requireContext(), resources.getString(R.string.error_genel_message), Toast.LENGTH_LONG).show()
                 }
             }
             .addOnFailureListener {
+                dialog.hide()
                 Log.d(TAG, it.localizedMessage ?: "Error: not sign in")
                 Toast.makeText(requireContext(), it.localizedMessage, Toast.LENGTH_LONG).show()
             }
