@@ -4,9 +4,24 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\bekir.geris\\Desktop\\dotogetherkeystore.jks')
+            storePassword '116116'
+            keyAlias 'key0'
+            keyPassword '116116'
+        }
+        release {
+            storeFile file('C:\\Users\\bekir.geris\\Desktop\\dotogetherkeystore.jks')
+            storePassword '116116'
+            keyAlias 'key0'
+            keyPassword '116116'
+        }
+    }
     compileSdk 32
 
     defaultConfig {
@@ -17,12 +32,22 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "CLIENT_ID", '"60642158129-3tufc48g19i7lkrjjqmkcur2cvscmrej.apps.googleusercontent.com"'
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "CLIENT_ID", '"60642158129-3tufc48g19i7lkrjjqmkcur2cvscmrej.apps.googleusercontent.com"'
         }
     }
     compileOptions {
@@ -32,7 +57,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     buildFeatures {
         viewBinding true
     }
@@ -59,4 +83,9 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 }
