@@ -20,18 +20,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_image" />
 
-    <EditText
-        android:id="@+id/target_edit_txt"
-        android:hint="Target"
-        android:maxLength="150"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/target_edit_lyt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/target_edit_txt"
+            android:maxLength="150"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Target"
+            android:inputType="text"
+            android:textColor="?colorPrimary"
+            tools:ignore="TextFields" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/textView6"
@@ -44,19 +52,28 @@
         android:textStyle="bold"
         android:textColor="?colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/target_edit_txt" />
+        app:layout_constraintTop_toBottomOf="@+id/target_edit_lyt" />
 
-    <EditText
-        android:id="@+id/description_edit_txt"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/description_edit_lyt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:hint="Description"
-        android:maxLength="300"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/description_edit_txt"
+            android:maxLength="150"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="text"
+            android:textColor="?colorPrimary"
+            tools:ignore="TextFields" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/start_lyt"
@@ -194,11 +211,12 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:background="@drawable/border_az_oval_thin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_edit_txt">
+        app:layout_constraintTop_toBottomOf="@+id/description_edit_lyt">
 
         <TextView
             android:id="@+id/period_txt"
