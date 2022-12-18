@@ -1,10 +1,12 @@
 package com.example.dotogether.data.repostory.local
 
-import retrofit2.http.GET
-import retrofit2.http.Query
+import com.example.dotogether.model.User
 
 interface LocalRepository {
 
-    @GET("prices")
-    suspend fun localtest(@Query("key") key: String)
+    suspend fun insertUser(user: User)
+
+    suspend fun deleteAllUser()
+
+    suspend fun getUser() : User?
 }

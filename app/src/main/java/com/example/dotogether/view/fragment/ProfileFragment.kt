@@ -21,11 +21,13 @@ import com.example.dotogether.util.Constants.MethodType
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.callback.HolderCallback
+import com.example.dotogether.view.dialog.CustomProgressDialog
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.ArrayList
+import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), HolderCallback {
@@ -33,6 +35,8 @@ class ProfileFragment : Fragment(), HolderCallback {
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentProfileBinding
     private lateinit var itemProfileBinding: ItemProfileBinding
+
+    lateinit var dialog: CustomProgressDialog
 
     private lateinit var imagePickerBuilder: ImagePicker.Builder
 
@@ -97,7 +101,12 @@ class ProfileFragment : Fragment(), HolderCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        initField()
         return binding.root
+    }
+
+    private fun initField() {
+        dialog = CustomProgressDialog(requireActivity())
     }
 
     private fun initViews() {
@@ -154,7 +163,12 @@ class ProfileFragment : Fragment(), HolderCallback {
                 requestPermissionsForImagePicker()
             }
             MethodType.METHOD_LOGOUT -> {
-                activity?.finish()
+                dialog.shoe()
+                viewModel.logout()
+                thread {
+                    Thread.sleep(2000)
+                    activity?.finish()
+                }
             }
         }
     }

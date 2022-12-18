@@ -22,81 +22,71 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
         return onClickListener
     }
 
-    fun goToProfileFragment(navController: NavController?) {
-        navController?.let {
-            val navOptions = NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .setPopUpTo(navController.graph.startDestinationId, true)
-                .build()
+    fun goToProfileFragment(navController: NavController) {
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setPopUpTo(navController.graph.startDestinationId, true)
+            .build()
 
-            with(navController.graph.displayName.lowercase()) {
-                when {
-                    contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_PROFILE_FRAGMENT))
-                    }
-                    contains("others_nav") -> {
-                        navController.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
-                    }
+        with(navController.graph.displayName.lowercase()) {
+            when {
+                contains("home_nav") -> {
+                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_PROFILE_FRAGMENT))
+                }
+                contains("others_nav") -> {
+                    navController.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
                 }
             }
         }
     }
 
-    fun goToChatFragment(navController: NavController?) {
-        navController?.let {
-            with(navController.graph.displayName.lowercase()) {
-                when {
-                    contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_CHAT_FRAGMENT))
-                    }
-                    contains("others_nav") -> {
-                        navController.navigate(OthersNavDirections.actionChatFragment())
-                    }
+    fun goToChatFragment(navController: NavController) {
+        with(navController.graph.displayName.lowercase()) {
+            when {
+                contains("home_nav") -> {
+                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_CHAT_FRAGMENT))
+                }
+                contains("others_nav") -> {
+                    navController.navigate(OthersNavDirections.actionChatFragment())
                 }
             }
         }
     }
 
-    fun goToTargetFragment(navController: NavController?) {
-        navController?.let {
-            with(navController.graph.displayName.lowercase()) {
-                when {
-                    contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_TARGET_FRAGMENT))
-                    }
-                    contains("others_nav") -> {
-                        navController.navigate(OthersNavDirections.actionTargetFragment())
-                    }
+    fun goToTargetFragment(navController: NavController) {
+        with(navController.graph.displayName.lowercase()) {
+            when {
+                contains("home_nav") -> {
+                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_TARGET_FRAGMENT))
+                }
+                contains("others_nav") -> {
+                    navController.navigate(OthersNavDirections.actionTargetFragment())
                 }
             }
         }
     }
 
-    fun goToReelsFragment(navController: NavController?) {
-        navController?.let {
-            with(navController.graph.displayName.lowercase()) {
-                when {
-                    contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_REELS_FRAGMENT))
-                    }
-                    contains("others_nav") -> {
-                        navController.navigate(OthersNavDirections.actionTargetFragment())
-                    }
+    fun goToReelsFragment(navController: NavController) {
+        with(navController.graph.displayName.lowercase()) {
+            when {
+                contains("home_nav") -> {
+                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_REELS_FRAGMENT))
+                }
+                contains("others_nav") -> {
+                    navController.navigate(OthersNavDirections.actionTargetFragment())
                 }
             }
         }
     }
 
-    fun goToFollowsFragment(navController: NavController?) {
-        navController?.let {
-            with(navController.graph.displayName.lowercase()) {
-                when {
-                    contains("home_nav") -> {
-                        navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_FOLLOWS_FRAGMENT))
-                    }
-                    contains("others_nav") -> {
-                        navController.navigate(ProfileFragmentDirections.actionProfileFragmentToFollowsFragment())
-                    }
+    fun goToFollowsFragment(navController: NavController) {
+        with(navController.graph.displayName.lowercase()) {
+            when {
+                contains("home_nav") -> {
+                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_FOLLOWS_FRAGMENT))
+                }
+                contains("others_nav") -> {
+                    navController.navigate(ProfileFragmentDirections.actionProfileFragmentToFollowsFragment())
                 }
             }
         }
