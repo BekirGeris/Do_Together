@@ -161,6 +161,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         viewModel.login.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
+                    Toast.makeText(requireContext(), "Bu hesap zaten mevcut. Giriş yapıldı.", Toast.LENGTH_LONG).show()
                     val action = SignUpFragmentDirections.actionSignUpFragmentToHomeActivity()
                     Navigation.findNavController(requireView()).navigate(action)
                     requireActivity().finish()
