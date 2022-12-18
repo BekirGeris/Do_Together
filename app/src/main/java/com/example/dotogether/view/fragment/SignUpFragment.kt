@@ -44,6 +44,8 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
     private var password: String = ""
     private var passwordAgain: String = ""
 
+    private var idToken: String? = null
+
     private lateinit var oneTapClient: SignInClient
     private lateinit var signUpRequest: BeginSignInRequest
 
@@ -56,7 +58,9 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
                 REQ_ONE_TAP -> {
                     try {
                         val credential = oneTapClient.getSignInCredentialFromIntent(data)
-                        val idToken = credential.googleIdToken
+                        idToken = credential.googleIdToken ?: credential.password
+                        email = credential.id
+                        userName = credential.displayName ?: email.split("@")[0]
 
                         when {
                             idToken != null -> {
@@ -64,9 +68,11 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
                                 // with Firebase.
 
                                 Log.d(TAG, "Got ID token." +
-                                        "\n email: ${credential.id}" +
-                                        "\n token: ${credential.googleIdToken}" +
-                                        "\n displayName : ${credential.displayName}")
+                                        "\n email: $email" +
+                                        "\n token: $idToken" +
+                                        "\n userName : $userName")
+
+                                viewModel.login(email, idToken!!)
                             }
                             else -> {
                                 // Shouldn't happen.
@@ -93,6 +99,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        initField()
         initObserve()
         return binding.root
     }
@@ -111,7 +118,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         binding.signInBtn.setOnClickListener(this)
     }
 
-    private fun initObserve() {
+    private fun initField() {
         dialog = CustomProgressDialog(requireActivity())
 
         oneTapClient = Identity.getSignInClient(requireActivity())
@@ -124,7 +131,50 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
                     // Show all accounts on the device.
                     .setFilterByAuthorizedAccounts(false)
                     .build())
+            .setPasswordRequestOptions(
+                BeginSignInRequest.PasswordRequestOptions.builder()
+                    .setSupported(true)
+                    .build()
+            )
             .build()
+    }
+
+    private fun initObserve() {
+        viewModel.register.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    val action = SignUpFragmentDirections.actionSignUpFragmentToHomeActivity()
+                    Navigation.findNavController(requireView()).navigate(action)
+                    requireActivity().finish()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    Log.d(TAG, "Error: ${it.message}")
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+            }
+        }
+
+        viewModel.login.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    val action = SignUpFragmentDirections.actionSignUpFragmentToHomeActivity()
+                    Navigation.findNavController(requireView()).navigate(action)
+                    requireActivity().finish()
+                }
+                is Resource.Error -> {
+                    idToken?.let { pass ->
+                        viewModel.register(userName, userName, email, pass, pass)
+                    }
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -141,7 +191,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
                 validPassword()
                 validPasswordAgain()
                 if (validUserName() && validEmail() && validPassword() && validPasswordAgain()) {
-                    action = directions.actionSignUpFragmentToHomeActivity()
+                    viewModel.register(userName, userName, email, password, passwordAgain)
                 }
             }
             binding.googleBtn -> {

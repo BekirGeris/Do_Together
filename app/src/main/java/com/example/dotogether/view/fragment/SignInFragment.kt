@@ -56,6 +56,8 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                     try {
                         val credential = oneTapClient.getSignInCredentialFromIntent(data)
                         val idToken = credential.googleIdToken
+                        val email = credential.id
+                        val password = credential.password
 
                         when {
                             idToken != null -> {
@@ -63,13 +65,17 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                                 // with Firebase.
 
                                 Log.d(TAG, "Got ID token." +
-                                        "\n email: ${credential.id}" +
-                                        "\n token: ${credential.googleIdToken}" +
+                                        "\n email: $email" +
+                                        "\n token: $idToken" +
                                         "\n displayName : ${credential.displayName}")
+                                viewModel.login(email, idToken)
                             }
                             else -> {
                                 // Shouldn't happen.
                                 Log.d(TAG, "No ID token!")
+                                if (email.isNotEmpty() && !password.isNullOrEmpty()) {
+                                    viewModel.login(email, password)
+                                }
                             }
                         }
                     } catch (e: ApiException) {
@@ -92,6 +98,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        initField()
         initObserve()
         return binding.root
     }
@@ -109,7 +116,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
         binding.signUpBtn.setOnClickListener(this)
     }
 
-    private fun initObserve() {
+    private fun initField() {
         dialog = CustomProgressDialog(requireActivity())
 
         oneTapClient = Identity.getSignInClient(requireActivity())
@@ -129,6 +136,26 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
             .build()
     }
 
+    private fun initObserve() {
+        viewModel.login.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    val action = SignInFragmentDirections.actionSignInFragmentToHomeActivity()
+                    Navigation.findNavController(requireView()).navigate(action)
+                    requireActivity().finish()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    Log.d(TAG, "Error: ${it.message}")
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+            }
+        }
+    }
+
     override fun onClick(v: View?) {
         var action: NavDirections? = null
         val directions = SignInFragmentDirections
@@ -141,7 +168,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                 validEmail()
                 validPassword()
                 if (validEmail() && validPassword()) {
-                    action = directions.actionSignInFragmentToHomeActivity()
+                    viewModel.login(email, password)
                 }
             }
             binding.forgetPasswordBtn -> {

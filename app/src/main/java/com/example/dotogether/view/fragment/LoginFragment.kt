@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.dotogether.databinding.FragmentLoginBinding
+import com.example.dotogether.util.Resource
 import com.example.dotogether.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,12 +29,29 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        initObserve()
         return binding.root
     }
 
     private fun initViews() {
         binding.loginBtn.setOnClickListener(this)
         binding.signUpBtn.setOnClickListener(this)
+    }
+
+    private fun initObserve() {
+        viewModel.login.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+
+                }
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
