@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="?colorOnSecondary"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -22,7 +22,6 @@
         android:background="@drawable/full_oval"
         android:backgroundTint="#8DC1C1C1"
         android:layout_margin="5dp"
-        android:tint="@color/black"
         app:srcCompat="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +34,6 @@
         android:visibility="gone"
         android:background="@drawable/full_oval"
         android:backgroundTint="#8DC1C1C1"
-        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/background_image"
         app:layout_constraintEnd_toEndOf="@+id/background_image"
         app:srcCompat="@drawable/ic_baseline_edit_24" />
@@ -47,7 +45,6 @@
         android:background="@drawable/full_oval"
         android:backgroundTint="#8DC1C1C1"
         android:layout_margin="5dp"
-        android:tint="@color/black"
         app:srcCompat="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +69,6 @@
         android:visibility="gone"
         android:background="@drawable/full_oval"
         android:backgroundTint="#8DC1C1C1"
-        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
         app:layout_constraintEnd_toEndOf="@+id/profile_image"
         app:layout_constraintHorizontal_bias="0.483"
@@ -98,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/_0000"
-            android:textColor="@color/dark_blue"
+            android:textColor="?colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -107,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/followers"
-            android:textColor="#213981"
+            android:textColor="?colorPrimary"
             android:textSize="18sp"/>
 
     </LinearLayout>
@@ -130,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/_0000"
-            android:textColor="@color/dark_blue"
+            android:textColor="?colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
@@ -139,7 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/following"
-            android:textColor="#213981"
+            android:textColor="?colorPrimary"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -150,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="@string/user_name"
-        android:textColor="@color/dark_blue"
+        android:textColor="?colorPrimary"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -238,7 +234,7 @@
             android:background="@drawable/border_circle"
             android:text="@string/message"
             android:textAllCaps="false"
-            android:textColor="@color/dark_blue" />
+            android:textColor="?colorPrimary" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

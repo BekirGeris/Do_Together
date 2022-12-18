@@ -100,6 +100,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     fun initViews() {
         binding.cameraBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
+        binding.searchBtn.setOnClickListener(this)
 
         navController = findNavController()
 
@@ -119,6 +120,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             }
             binding.messageBtn -> {
                 navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_LIST_CHAT_FRAGMENT))
+            }
+            binding.searchBtn -> {
+                //navController.navigate(HomeFragmentDirections.actionNavigationHomeToNavigationSearch())
             }
         }
     }

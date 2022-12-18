@@ -12,7 +12,7 @@
         android:layout_height="5dp"
         android:layout_margin="10dp"
         android:background="@drawable/full_oval"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="?colorTertiary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -267,7 +267,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/border_circle"
                 android:text="@string/cancel"
-                android:textColor="@color/dark_blue"
+                android:textColor="?colorPrimary"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
