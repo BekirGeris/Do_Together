@@ -2,7 +2,6 @@ package com.example.dotogether.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.dotogether.data.repostory.local.LocalRepositoryImpl
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
@@ -14,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val localRepositoryImpl: LocalRepositoryImpl) : BaseViewModel() {
+class LoginViewModel @Inject constructor() : BaseViewModel() {
 
     private val _login = MutableLiveData<Resource<LoginResponse>>()
     val login: MutableLiveData<Resource<LoginResponse>> = _login
@@ -24,7 +23,7 @@ class LoginViewModel @Inject constructor(private val localRepositoryImpl: LocalR
 
     fun autoLogin() {
         viewModelScope.launch {
-            val user = localRepositoryImpl.getUser()
+            val user = appRepository.localRepositoryImpl.getUser()
 
             if (user?.email != null && user.password != null) {
                 login(user.email!!, user.password!!)
@@ -39,7 +38,7 @@ class LoginViewModel @Inject constructor(private val localRepositoryImpl: LocalR
             appRepository.remoteRepositoryImpl.login(loginRequest).collect {
                 _login.value = it
                 if (it is Resource.Success) {
-                    localRepositoryImpl.insertUser(User("", "", email, password, it.data?.token))
+                    appRepository.localRepositoryImpl.insertUser(User("", "", email, password, it.data?.token))
                 }
             }
         }
@@ -49,10 +48,10 @@ class LoginViewModel @Inject constructor(private val localRepositoryImpl: LocalR
         val registerRequest = RegisterRequest(name, username, email, password, passwordAgain)
 
         viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.regitser(registerRequest).collect {
+            appRepository.remoteRepositoryImpl.register(registerRequest).collect {
                 _register.value = it
                 if (it is Resource.Success) {
-                    localRepositoryImpl.insertUser(User(name, username, email, password, it.data?.token))
+                    appRepository.localRepositoryImpl.insertUser(User(name, username, email, password, it.data?.token))
                 }
             }
         }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val localRepositoryImpl: LocalRepositoryImpl) : BaseViewModel() {
+class ProfileViewModel @Inject constructor() : BaseViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is ProfileViewModel"
@@ -18,7 +18,7 @@ class ProfileViewModel @Inject constructor(private val localRepositoryImpl: Loca
 
     fun logout() {
         viewModelScope.launch {
-            localRepositoryImpl.deleteAllUser()
+            appRepository.localRepositoryImpl.deleteAllUser()
         }
     }
 }

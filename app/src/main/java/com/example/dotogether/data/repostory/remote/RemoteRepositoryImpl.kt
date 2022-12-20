@@ -31,7 +31,7 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun regitser(registerRequest: RegisterRequest): Flow<Resource<RegisterResponse>> {
+    suspend fun register(registerRequest: RegisterRequest): Flow<Resource<RegisterResponse>> {
         return flow {
             emit(Resource.Loading())
             try {

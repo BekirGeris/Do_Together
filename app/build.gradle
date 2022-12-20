@@ -10,13 +10,13 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\bekir.geris\\Desktop\\dotogetherkeystore.jks')
+            storeFile file('C:\\Users\\bekir.geris\\Desktop\\my home\\birlikte yapalım app\\imza\\dotogetherkeystore.jks')
             storePassword '116116'
             keyAlias 'key0'
             keyPassword '116116'
         }
         release {
-            storeFile file('C:\\Users\\bekir.geris\\Desktop\\dotogetherkeystore.jks')
+            storeFile file('C:\\Users\\bekir.geris\\Desktop\\my home\\birlikte yapalım app\\imza\\dotogetherkeystore.jks')
             storePassword '116116'
             keyAlias 'key0'
             keyPassword '116116'
