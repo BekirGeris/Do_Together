@@ -23,4 +23,10 @@ object Constants {
         METHOD_BACKGROUND_EDIT,
         METHOD_PROFILE_EDIT
     }
+
+    enum class Status(val type: Int) {
+        FAILED(-1),
+        SUCCESS(0),
+        NO_AUTO_LOGIN(1)
+    }
 }

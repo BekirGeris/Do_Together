@@ -4,6 +4,7 @@ import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.Dispatchers
@@ -21,12 +22,12 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             try {
                 val result = repository.login(loginRequest)
                 if (result.success) {
-                    emit(Resource.Success(result.message, result.data))
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {
-                    emit(Resource.Error(result.message))
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
                 }
             } catch (e: Exception) {
-                emit(Resource.Error("Error: ${e.localizedMessage}"))
+                emit(Resource.Error(Constants.Status.FAILED,"Error: ${e.localizedMessage}"))
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -37,12 +38,12 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             try {
                 val result = repository.register(registerRequest)
                 if (result.success) {
-                    emit(Resource.Success(result.message, result.data))
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {
-                    emit(Resource.Error(result.message))
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
                 }
             } catch (e: Exception) {
-                emit(Resource.Error("Error: ${e.localizedMessage}"))
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
             }
         }.flowOn(Dispatchers.IO)
     }

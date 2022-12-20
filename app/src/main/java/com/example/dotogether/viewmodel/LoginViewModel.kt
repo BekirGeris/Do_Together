@@ -7,6 +7,7 @@ import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,6 +28,8 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
 
             if (user?.email != null && user.password != null) {
                 login(user.email!!, user.password!!)
+            } else {
+                login.value = Resource.Error(Constants.Status.NO_AUTO_LOGIN)
             }
         }
     }
