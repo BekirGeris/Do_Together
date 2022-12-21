@@ -14,25 +14,21 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorOnTertiary</item>
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="Theme.DoTogether.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.DoTogether.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.DoTogether.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="colorOnTertiary">#DFDFDF</item>
+        <item name="android:statusBarColor">?colorOnTertiary</item>
     </style>
 </resources>

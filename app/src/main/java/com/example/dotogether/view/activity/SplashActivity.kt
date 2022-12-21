@@ -46,13 +46,10 @@ class SplashActivity : BaseActivity() {
                 }
                 is Resource.Loading -> {}
             }
-            setTheme(R.style.Theme_DoTogether)
         }
 
         thread {
-            if (isDarkThemeOn()) {
-                Thread.sleep(1000)
-            }
+            Thread.sleep(1000)
             viewModel.autoLogin()
         }
     }

@@ -32,17 +32,14 @@
         </activity>
         <activity
             android:name=".view.activity.OthersActivity"
-            android:exported="false"
-            android:theme="@style/Theme.DoTogether.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.HomeActivity"
             android:exported="false"
-            android:theme="@style/Theme.DoTogether.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"/>
     </application>
 
 </manifest>

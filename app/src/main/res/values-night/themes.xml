@@ -14,9 +14,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?attr/colorOnTertiary</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="colorOnTertiary">@color/black</item>
+        <item name="android:statusBarColor">?colorOnTertiary</item>
     </style>
 </resources>

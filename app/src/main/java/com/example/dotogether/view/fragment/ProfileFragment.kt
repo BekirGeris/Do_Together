@@ -73,20 +73,22 @@ class ProfileFragment : Fragment(), HolderCallback {
         val resultCode = result.resultCode
         val data = result.data
 
-        if (resultCode == Activity.RESULT_OK) {
-            //Image Uri will not be null for RESULT_OK
-            val fileUri = data?.data!!
-            println("bekbek $fileUri")
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                //Image Uri will not be null for RESULT_OK
+                val fileUri = data?.data!!
 
-            when(calledFromMode) {
-                0 -> itemProfileBinding.backgroundImage.setImageURI(fileUri)
-                1 -> itemProfileBinding.profileImage.setImageURI(fileUri)
+                when(calledFromMode) {
+                    0 -> itemProfileBinding.backgroundImage.setImageURI(fileUri)
+                    1 -> itemProfileBinding.profileImage.setImageURI(fileUri)
+                }
             }
-
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -166,7 +168,7 @@ class ProfileFragment : Fragment(), HolderCallback {
                 dialog.shoe()
                 viewModel.logout()
                 thread {
-                    Thread.sleep(2000)
+                    Thread.sleep(1000)
                     activity?.finish()
                 }
             }
