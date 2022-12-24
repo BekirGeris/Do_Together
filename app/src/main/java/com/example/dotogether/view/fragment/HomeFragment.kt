@@ -18,6 +18,7 @@ import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.util.PermissionUtil
+import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -53,7 +54,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         if (isGrantedGalleryAndCamera) {
             startImageMaker()
         } else {
-            Toast.makeText(requireContext(), "Gallery and camera permission must be granted!", Toast.LENGTH_SHORT).show()
+            showToast("Gallery and camera permission must be granted!")
         }
     }
 
@@ -76,9 +77,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             }.start()
 
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            showToast(ImagePicker.getError(data))
         } else {
-            Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            showToast("Task Cancelled")
         }
     }
 

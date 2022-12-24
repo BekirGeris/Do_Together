@@ -30,13 +30,11 @@ import java.util.ArrayList
 import kotlin.concurrent.thread
 
 @AndroidEntryPoint
-class ProfileFragment : Fragment(), HolderCallback {
+class ProfileFragment : BaseFragment(), HolderCallback {
 
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentProfileBinding
     private lateinit var itemProfileBinding: ItemProfileBinding
-
-    lateinit var dialog: CustomProgressDialog
 
     private lateinit var imagePickerBuilder: ImagePicker.Builder
 
@@ -65,7 +63,7 @@ class ProfileFragment : Fragment(), HolderCallback {
         if (isGrantedGalleryAndCamera) {
             startImageMaker()
         } else {
-            Toast.makeText(requireContext(), "Gallery and camera permission must be granted!", Toast.LENGTH_SHORT).show()
+            showToast("Gallery and camera permission must be granted!")
         }
     }
 
@@ -84,10 +82,10 @@ class ProfileFragment : Fragment(), HolderCallback {
                 }
             }
             ImagePicker.RESULT_ERROR -> {
-                Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                showToast(ImagePicker.getError(data))
             }
             else -> {
-                Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                showToast("Task Cancelled")
             }
         }
     }
@@ -108,7 +106,7 @@ class ProfileFragment : Fragment(), HolderCallback {
     }
 
     private fun initField() {
-        dialog = CustomProgressDialog(requireActivity())
+
     }
 
     private fun initViews() {

@@ -17,9 +17,13 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.dotogether.BuildConfig
 import com.example.dotogether.R
+import com.example.dotogether.data.callback.LoginCallback
 import com.example.dotogether.databinding.FragmentSignInBinding
+import com.example.dotogether.model.response.LoginResponse
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.ValidationFactory
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.dialog.CustomProgressDialog
 import com.example.dotogether.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -29,7 +33,7 @@ import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInFragment : BaseFragment(), View.OnClickListener {
+class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
 
     private val TAG = "BEKBEK"
     private val REQ_ONE_TAP = 1
@@ -37,7 +41,6 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: LoginViewModel by viewModels()
     lateinit var binding: FragmentSignInBinding
-    lateinit var dialog: CustomProgressDialog
 
     private var email: String = ""
     private var password: String = ""
@@ -117,8 +120,6 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initField() {
-        dialog = CustomProgressDialog(requireActivity())
-
         oneTapClient = Identity.getSignInClient(requireActivity())
         signInRequest = BeginSignInRequest.builder()
             .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
@@ -140,14 +141,10 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
         viewModel.login.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
-                    val action = SignInFragmentDirections.actionSignInFragmentToHomeActivity()
-                    Navigation.findNavController(requireView()).navigate(action)
-                    requireActivity().finish()
+                    this.loginSuccess(it)
                 }
                 is Resource.Error -> {
-                    dialog.hide()
-                    Log.d(TAG, "Error: ${it.message}")
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                    this.loginFailed(it)
                 }
                 is Resource.Loading -> {
                     dialog.shoe()
@@ -173,7 +170,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
             }
             binding.forgetPasswordBtn -> {
                 if (validEmail()) {
-                    Toast.makeText(requireContext(), "Email Sent", Toast.LENGTH_LONG).show()
+                    showToast("Email Sent")
                 }
                 binding.passwordEditLyt.error = null
             }
@@ -259,13 +256,26 @@ class SignInFragment : BaseFragment(), View.OnClickListener {
                 } catch (e: IntentSender.SendIntentException) {
                     dialog.hide()
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
-                    Toast.makeText(requireContext(), resources.getString(R.string.error_genel_message), Toast.LENGTH_LONG).show()
+                    showToast(resources.getString(R.string.error_genel_message))
                 }
             }
             .addOnFailureListener {
                 dialog.hide()
                 Log.d(TAG, it.localizedMessage ?: "Error: not sign in")
-                Toast.makeText(requireContext(), it.localizedMessage, Toast.LENGTH_LONG).show()
+                showToast(it.localizedMessage)
             }
+    }
+
+    override fun loginSuccess(resource: Resource<LoginResponse>) {
+        RuntimeHelper.TOKEN = resource.data?.token!!
+        val action = SignInFragmentDirections.actionSignInFragmentToHomeActivity()
+        Navigation.findNavController(requireView()).navigate(action)
+        requireActivity().finish()
+    }
+
+    override fun loginFailed(resource: Resource<LoginResponse>) {
+        dialog.hide()
+        Log.d(TAG, "Error: ${resource.message}")
+        showToast(resource.message)
     }
 }

@@ -22,7 +22,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     private lateinit var binding: FragmentTargetBinding
 
     private lateinit var dialogBinding: BottomSheetSettingBinding
-    private lateinit var dialog: BottomSheetDialog
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private lateinit var memberAdapter: MemberAdapter
     private val members = ArrayList<User>()
@@ -31,7 +31,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = FragmentTargetBinding.inflate(layoutInflater)
         dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
-        dialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
+        bottomSheetDialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
 
         initViews()
     }
@@ -44,7 +44,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
-        dialog.setContentView(dialogBinding.root)
+        bottomSheetDialog.setContentView(dialogBinding.root)
 
         binding.backBtn.setOnClickListener(this)
         binding.moreSettingBtn.setOnClickListener(this)
@@ -78,7 +78,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     activity?.onBackPressed()
                 }
                 binding.moreSettingBtn -> {
-                    dialog.show()
+                    bottomSheetDialog.show()
                 }
                 binding.groupMessageBtn -> {
                     navController.navigate(TargetFragmentDirections.actionChatFragment(true))
@@ -87,16 +87,16 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
                 }
                 dialogBinding.save -> {
-                    dialog.hide()
+                    bottomSheetDialog.hide()
                 }
                 dialogBinding.share -> {
-                    dialog.hide()
+                    bottomSheetDialog.hide()
                 }
                 dialogBinding.delete -> {
-                    dialog.hide()
+                    bottomSheetDialog.hide()
                 }
                 dialogBinding.edit -> {
-                    dialog.hide()
+                    bottomSheetDialog.hide()
                 }
                 else -> {}
             }

@@ -24,7 +24,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private lateinit var binding: FragmentChatBinding
 
     private lateinit var dialogBinding: BottomSheetSettingBinding
-    private lateinit var dialog: BottomSheetDialog
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private val messages = arrayListOf<Message>()
     private lateinit var messageAdapter: MessageAdapter
@@ -35,7 +35,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = FragmentChatBinding.inflate(layoutInflater)
         dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
-        dialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
+        bottomSheetDialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
 
         initViews()
     }
@@ -48,7 +48,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
-        dialog.setContentView(dialogBinding.root)
+        bottomSheetDialog.setContentView(dialogBinding.root)
 
         binding.backBtn.setOnClickListener(this)
         binding.chatsUserImage.setOnClickListener(this)
@@ -102,7 +102,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 binding.moreSettingBtn -> {
-                    dialog.show()
+                    bottomSheetDialog.show()
                 }
                 binding.attachBtn -> {
 
@@ -111,7 +111,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
                 }
                 dialogBinding.clearChat -> {
-                    dialog.hide()
+                    bottomSheetDialog.hide()
                 }
                 else -> {}
             }

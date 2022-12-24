@@ -8,15 +8,18 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.dotogether.R
+import com.example.dotogether.data.callback.LoginCallback
+import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.concurrent.thread
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class SplashActivity : BaseActivity() {
+class SplashActivity : BaseActivity(), LoginCallback {
 
     private val viewModel: LoginViewModel by viewModels()
 
@@ -31,18 +34,10 @@ class SplashActivity : BaseActivity() {
         viewModel.login.observe(this) {
             when (it) {
                 is Resource.Success -> {
-                    val i = Intent(this@SplashActivity, HomeActivity::class.java)
-                    startActivity(i)
-                    finish()
+                    this.loginSuccess(it)
                 }
                 is Resource.Error -> {
-                    if (it.code == Constants.Status.NO_AUTO_LOGIN) {
-                        val i = Intent(this@SplashActivity, LoginActivity::class.java)
-                        startActivity(i)
-                        finish()
-                    } else {
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                    }
+                    this.loginFailed(it)
                 }
                 is Resource.Loading -> {}
             }
@@ -54,7 +49,20 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun isDarkThemeOn(): Boolean {
-        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES
+    override fun loginSuccess(resource: Resource<LoginResponse>) {
+        RuntimeHelper.TOKEN = resource.data?.token!!
+        val i = Intent(this@SplashActivity, HomeActivity::class.java)
+        startActivity(i)
+        finish()
+    }
+
+    override fun loginFailed(resource: Resource<LoginResponse>) {
+        if (resource.code == Constants.Status.NO_AUTO_LOGIN) {
+            val i = Intent(this@SplashActivity, LoginActivity::class.java)
+            startActivity(i)
+            finish()
+        } else {
+            showToast(resource.message)
+        }
     }
 }

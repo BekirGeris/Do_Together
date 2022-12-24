@@ -27,7 +27,7 @@ import java.io.File
 import java.util.*
 
 @AndroidEntryPoint
-class ShareFragment : Fragment(), View.OnClickListener, DateCallback {
+class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     private val viewModel: ShareViewModel by viewModels()
     private lateinit var binding: FragmentShareBinding
@@ -58,7 +58,7 @@ class ShareFragment : Fragment(), View.OnClickListener, DateCallback {
         if (isGrantedGalleryAndCamera) {
             startImageMaker()
         } else {
-            Toast.makeText(requireContext(), "Gallery and camera permission must be granted!", Toast.LENGTH_SHORT).show()
+            showToast("Gallery and camera permission must be granted!")
         }
     }
 
@@ -73,9 +73,9 @@ class ShareFragment : Fragment(), View.OnClickListener, DateCallback {
             binding.selectImage.setPadding(20, 5, 20, 5)
 
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            showToast(ImagePicker.getError(data))
         } else {
-            Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            showToast("Task Cancelled")
         }
     }
 

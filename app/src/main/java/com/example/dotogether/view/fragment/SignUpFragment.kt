@@ -16,9 +16,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.dotogether.BuildConfig
+import com.example.dotogether.data.callback.LoginCallback
+import com.example.dotogether.data.callback.RegisterCallback
 import com.example.dotogether.databinding.FragmentSignUpBinding
+import com.example.dotogether.model.response.LoginResponse
+import com.example.dotogether.model.response.RegisterResponse
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.ValidationFactory
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.dialog.CustomProgressDialog
 import com.example.dotogether.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -29,7 +35,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class SignUpFragment : BaseFragment(), View.OnClickListener {
+class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, LoginCallback {
 
     private val TAG = "BEKBEK"
     private val REQ_ONE_TAP = 1
@@ -37,7 +43,6 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: LoginViewModel by viewModels()
     lateinit var binding: FragmentSignUpBinding
-    lateinit var dialog: CustomProgressDialog
 
     private var userName: String = ""
     private var email: String = ""
@@ -119,8 +124,6 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initField() {
-        dialog = CustomProgressDialog(requireActivity())
-
         oneTapClient = Identity.getSignInClient(requireActivity())
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
@@ -143,14 +146,10 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         viewModel.register.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
-                    val action = SignUpFragmentDirections.actionSignUpFragmentToHomeActivity()
-                    Navigation.findNavController(requireView()).navigate(action)
-                    requireActivity().finish()
+                    this.registerSuccess(it)
                 }
                 is Resource.Error -> {
-                    dialog.hide()
-                    Log.d(TAG, "Error: ${it.message}")
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                    this.registerFailed(it)
                 }
                 is Resource.Loading -> {
                     dialog.shoe()
@@ -161,15 +160,10 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         viewModel.login.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "Bu hesap zaten mevcut. Giriş yapıldı.", Toast.LENGTH_LONG).show()
-                    val action = SignUpFragmentDirections.actionSignUpFragmentToHomeActivity()
-                    Navigation.findNavController(requireView()).navigate(action)
-                    requireActivity().finish()
+                    this.loginSuccess(it)
                 }
                 is Resource.Error -> {
-                    idToken?.let { pass ->
-                        viewModel.register(userName, userName, email, pass, pass)
-                    }
+                    this.loginFailed(it)
                 }
                 is Resource.Loading -> {
                     dialog.shoe()
@@ -245,6 +239,55 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    private fun signUp() {
+        oneTapClient.beginSignIn(signUpRequest)
+            .addOnSuccessListener {
+                try {
+                    Log.d(TAG, "sign up")
+                    signUpType = REQ_ONE_TAP
+                    val intentSender = IntentSenderRequest.Builder(it.pendingIntent.intentSender)
+                        .build()
+                    resultLauncher.launch(intentSender)
+                } catch (e: IntentSender.SendIntentException) {
+                    dialog.hide()
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                }
+            }
+            .addOnFailureListener {
+                dialog.hide()
+                Log.d(TAG, "Error : ${it.localizedMessage}")
+                showToast(it.localizedMessage)
+            }
+    }
+
+    override fun registerSuccess(resource: Resource<RegisterResponse>) {
+        goToHomeActivity()
+    }
+
+    override fun registerFailed(resource: Resource<RegisterResponse>) {
+        dialog.hide()
+        Log.d(TAG, "Error: ${resource.message}")
+        showToast(resource.message)
+    }
+
+    override fun loginSuccess(resource: Resource<LoginResponse>) {
+        RuntimeHelper.TOKEN = resource.data?.token!!
+        showToast("Bu hesap zaten mevcut. Giriş yapıldı.")
+        goToHomeActivity()
+    }
+
+    private fun goToHomeActivity() {
+        val action = SignUpFragmentDirections.actionSignUpFragmentToHomeActivity()
+        Navigation.findNavController(requireView()).navigate(action)
+        requireActivity().finish()
+    }
+
+    override fun loginFailed(resource: Resource<LoginResponse>) {
+        idToken?.let { pass ->
+            viewModel.register(userName, userName, email, pass, pass)
+        }
+    }
+
     private fun validUserName() : Boolean {
         return if (userName.isEmpty()) {
             binding.usernameEditLyt.error = "Wrong username"
@@ -293,26 +336,5 @@ class SignUpFragment : BaseFragment(), View.OnClickListener {
             binding.passwordAgainEditLyt.error = null
             true
         }
-    }
-
-    private fun signUp() {
-        oneTapClient.beginSignIn(signUpRequest)
-            .addOnSuccessListener {
-                try {
-                    Log.d(TAG, "sign up")
-                    signUpType = REQ_ONE_TAP
-                    val intentSender = IntentSenderRequest.Builder(it.pendingIntent.intentSender)
-                        .build()
-                    resultLauncher.launch(intentSender)
-                } catch (e: IntentSender.SendIntentException) {
-                    dialog.hide()
-                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
-                }
-            }
-            .addOnFailureListener {
-                dialog.hide()
-                Log.d(TAG, "Error : ${it.localizedMessage}")
-                Toast.makeText(requireContext(), it.localizedMessage, Toast.LENGTH_LONG).show()
-            }
     }
 }
