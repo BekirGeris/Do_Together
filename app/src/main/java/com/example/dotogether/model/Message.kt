@@ -1,8 +1,8 @@
 package com.example.dotogether.model
 
-class Message(
-    val userName: String,
-    val messageTime: String,
-    val message: String,
-    val isMe: Boolean
+class Message (
+    var userName: String? = null,
+    var messageTime: String? = null,
+    var message: String? = null,
+    var isMe: Boolean = false
 )

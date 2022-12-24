@@ -1,9 +1,25 @@
 package com.example.dotogether.model
 
+import java.util.ArrayList
 import kotlin.random.Random
 import kotlin.random.nextInt
 
 class Target {
-
-    val url = Random.nextInt(IntRange(1, 5))
+    var admin: User? = null
+    var created_at: String? = null
+    var description: String? = null
+    var end_date: String? = null
+    var id: Int? = null
+    var img: String? = null
+    var is_done: Int? = null
+    var is_joined: Boolean? = null
+    var is_liked: Boolean? = null
+    var period: String? = null
+    var room_id: Int? = null
+    var start_date: String? = null
+    var target: String? = null
+    var updated_at: String? = null
+    var user_id: Int? = null
+    var users: List<User>? = null
+    var url = Random.nextInt(IntRange(1, 5))
 }

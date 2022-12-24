@@ -97,6 +97,35 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObserve()
+    }
+
+    private fun initObserve() {
+        viewModel.targets.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.data?.let { targets ->
+                        targets.mapTo(targetList) {target -> target}
+                        homeTargetAdapter = HomeTargetAdapter(targetList)
+                        binding.targetRv.layoutManager = LinearLayoutManager(context)
+                        binding.targetRv.adapter = homeTargetAdapter
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
+        viewModel.getAllTargets()
+    }
 
     fun initViews() {
         binding.cameraBtn.setOnClickListener(this)

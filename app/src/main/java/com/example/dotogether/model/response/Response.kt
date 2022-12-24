@@ -1,8 +1,10 @@
 package com.example.dotogether.model.response
 
-class Response<T>(
-    val success: Boolean,
-    val message: String,
-    val data: T,
-    val errors: Errors
-)
+import com.example.dotogether.model.Errors
+
+class Response<T> {
+    var success: Boolean = false
+    var message: String = ""
+    var data: T? = null
+    var errors: Errors? = null
+}
