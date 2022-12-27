@@ -7,6 +7,7 @@ import com.example.dotogether.model.response.Response
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface RemoteRepository {
@@ -17,7 +18,7 @@ interface RemoteRepository {
     @POST("register")
     suspend fun register(@Body registerRequest: RegisterRequest) : Response<RegisterResponse>
 
-    @POST("activity")
+    @GET("activity")
     suspend fun getAllTargets() : Response<GetAllTargetsResponse>
 
 }

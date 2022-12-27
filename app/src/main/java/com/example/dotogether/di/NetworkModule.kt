@@ -43,7 +43,7 @@ object NetworkModule {
     fun provideHeaderInterceptor(): Interceptor {
         val interceptor = Interceptor {
             val request = it.request().newBuilder()
-                .header("Authorization", RuntimeHelper.TOKEN)
+                .header("Authorization", "Bearer ${RuntimeHelper.TOKEN}")
                 .build()
             it.proceed(request)
         }

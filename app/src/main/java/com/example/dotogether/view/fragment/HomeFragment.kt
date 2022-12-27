@@ -7,7 +7,6 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -35,7 +34,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private var targetList = ArrayList<Target>()
 
-    private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
+    private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         var isGrantedGalleryAndCamera = true
 
         permissions.forEach { actionMap ->
@@ -134,13 +133,13 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
         navController = findNavController()
 
-        for (i in 1..10000) {
-            targetList.add(Target())
-        }
-
-        homeTargetAdapter = HomeTargetAdapter(targetList)
-        binding.targetRv.layoutManager = LinearLayoutManager(context)
-        binding.targetRv.adapter = homeTargetAdapter
+//        for (i in 1..10000) {
+//            targetList.add(Target())
+//        }
+//
+//        homeTargetAdapter = HomeTargetAdapter(targetList)
+//        binding.targetRv.layoutManager = LinearLayoutManager(context)
+//        binding.targetRv.adapter = homeTargetAdapter
     }
 
     override fun onClick(v: View?) {

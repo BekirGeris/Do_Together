@@ -10,6 +10,7 @@ import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.ArrayList
@@ -55,6 +56,7 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
     }
 
     fun bind(target: Target) {
+        val user = target.admin
         binding.membersRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.membersRv.adapter = memberAdapter
         binding.postImage.visibility = View.VISIBLE
@@ -78,6 +80,12 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
                 null
             }
         })
+
+        user?.let {
+            binding.postUserName.text = it.username
+            //glide.load(it.img).into(binding.userImage)
+            RuntimeHelper.glide(context).load(it.img).into(binding.userImage)
+        }
     }
 
     override fun onClick(v: View?) {
