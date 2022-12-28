@@ -16,6 +16,8 @@ class ReelsFragment : BaseFragment(), View.OnClickListener {
     private val viewModel: ReelsViewModel by viewModels()
     private lateinit var binding: FragmentReelsBinding
 
+    private var justOneWork = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentReelsBinding.inflate(layoutInflater)
@@ -30,9 +32,21 @@ class ReelsFragment : BaseFragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
+    }
+
     private fun initViews() {
         binding.backBtn.setOnClickListener(this)
         binding.reelsUserName.setOnClickListener(this)
+    }
+
+    private fun initObserve() {
+
     }
 
     override fun onClick(v: View?) {

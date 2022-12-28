@@ -34,6 +34,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private var targetList = ArrayList<Target>()
 
+    private var justOneWork = true
+
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         var isGrantedGalleryAndCamera = true
 
@@ -85,7 +87,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
+        justOneWork = true
         initViews()
     }
 
@@ -98,7 +100,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObserve()
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
     }
 
     private fun initObserve() {

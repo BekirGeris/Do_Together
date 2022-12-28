@@ -22,6 +22,8 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     private lateinit var chatAdapter: ChatAdapter
     private val chats = arrayListOf<Chat>()
 
+    private var justOneWork = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentChatListBinding.inflate(layoutInflater)
@@ -36,6 +38,14 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
+    }
+
     private fun initViews() {
         binding.backBtn.setOnClickListener(this)
 
@@ -46,6 +56,10 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
 
         binding.chatsRv.layoutManager = LinearLayoutManager(context)
         binding.chatsRv.adapter = chatAdapter
+    }
+
+    private fun initObserve() {
+
     }
 
     override fun onClick(v: View?) {

@@ -48,6 +48,8 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
 
+    private var justOneWork = true
+
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
         dialog.hide()
         Log.d(TAG, "resultCode : ${it.resultCode}")
@@ -97,13 +99,13 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
         initViews()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        initField()
-        initObserve()
-        return binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initField()
+            initObserve()
+            justOneWork = false
+        }
     }
 
     private fun initViews() {

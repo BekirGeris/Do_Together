@@ -27,6 +27,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     private lateinit var memberAdapter: MemberAdapter
     private val members = ArrayList<User>()
 
+    private var justOneWork = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentTargetBinding.inflate(layoutInflater)
@@ -41,6 +43,14 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
     }
 
     private fun initViews() {
@@ -68,6 +78,10 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
         binding.memberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.memberRv.adapter = memberAdapter
+    }
+
+    private fun initObserve() {
+
     }
 
     override fun onClick(v: View?) {

@@ -19,6 +19,8 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
 
     private val users = ArrayList<User>()
 
+    private var justOneWork = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentFollowsBinding.inflate(layoutInflater)
@@ -33,6 +35,14 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
+    }
+
     private fun initViews() {
         binding.backBtn.setOnClickListener(this)
 
@@ -43,6 +53,10 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
         userAdapter = UserAdapter(users)
         binding.followRv.layoutManager = LinearLayoutManager(context)
         binding.followRv.adapter = userAdapter
+    }
+
+    private fun initObserve() {
+
     }
 
     override fun onClick(v: View?) {

@@ -2,7 +2,6 @@ package com.example.dotogether.view.adapter.holder
 
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
@@ -61,30 +60,15 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
         binding.membersRv.adapter = memberAdapter
         binding.postImage.visibility = View.VISIBLE
 
-        //todo: test bloc
-        binding.postImage.setImageDrawable(when(target.url) {
-            1 -> {
-                ContextCompat.getDrawable(context, R.drawable.work)
-            }
-            2 -> {
-                ContextCompat.getDrawable(context, R.drawable.ic_virus)
-            }
-            3 -> {
-                ContextCompat.getDrawable(context, R.drawable.mechanic)
-            }
-            4 -> {
-                ContextCompat.getDrawable(context, R.drawable.ic_watering_the_plants)
-            }
-            else -> {
-                binding.postImage.visibility = View.GONE
-                null
-            }
-        })
-
         user?.let {
             binding.postUserName.text = it.username
-            //glide.load(it.img).into(binding.userImage)
-            RuntimeHelper.glide(context).load(it.img).into(binding.userImage)
+            RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)
+        }
+
+        if (target.img != null) {
+            RuntimeHelper.glideForImage(context).load(target.img).into(binding.postImage)
+        } else {
+            binding.postImage.visibility = View.GONE
         }
     }
 

@@ -14,6 +14,8 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
 
     lateinit var binding: FragmentLoginBinding
 
+    private var justOneWork = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentLoginBinding.inflate(layoutInflater)
@@ -28,9 +30,21 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
+    }
+
     private fun initViews() {
         binding.loginBtn.setOnClickListener(this)
         binding.signUpBtn.setOnClickListener(this)
+    }
+
+    private fun initObserve() {
+
     }
 
     override fun onClick(v: View?) {

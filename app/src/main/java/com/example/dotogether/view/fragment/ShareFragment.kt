@@ -39,6 +39,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     val datePickerFragment = DatePickerFragment(this)
 
+    private var justOneWork = true
+
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
 
@@ -81,23 +83,32 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentShareBinding.inflate(layoutInflater)
-        periodDialogBinding = BottomSheetPeriodBinding.inflate(layoutInflater)
-        customPeriodBinding = BottomSheetCustomPeriodBinding.inflate(layoutInflater)
-
-        periodDialog = BottomSheetDialog(periodDialogBinding.root.context, R.style.BottomSheetDialogTheme)
-        customPeriodDialog = BottomSheetDialog(customPeriodBinding.root.context, R.style.BottomSheetDialogTheme)
+        initViews()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initViews()
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
+    }
+
     fun initViews() {
+        binding = FragmentShareBinding.inflate(layoutInflater)
+        periodDialogBinding = BottomSheetPeriodBinding.inflate(layoutInflater)
+        customPeriodBinding = BottomSheetCustomPeriodBinding.inflate(layoutInflater)
+
+        periodDialog = BottomSheetDialog(periodDialogBinding.root.context, R.style.BottomSheetDialogTheme)
+        customPeriodDialog = BottomSheetDialog(customPeriodBinding.root.context, R.style.BottomSheetDialogTheme)
+
         periodDialog.setContentView(periodDialogBinding.root)
         customPeriodDialog.setContentView(customPeriodBinding.root)
 
@@ -119,11 +130,9 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
         customPeriodBinding.cancel.setOnClickListener(this)
         customPeriodBinding.confirm.setOnClickListener(this)
-
-        observableData()
     }
 
-    private fun observableData() {
+    private fun initObserve() {
         viewModel.period.observe(viewLifecycleOwner) {
             binding.periodDecs.text = it
         }
