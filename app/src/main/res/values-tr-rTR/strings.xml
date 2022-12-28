@@ -62,4 +62,5 @@
     <string name="custom">Custom</string>
     <string name="password_again">password again</string>
     <string name="error_genel_message">Bir şeyler ters gitti.</string>
+    <string name="error_message">Gösterilecek Bir Şey Yok</string>
 </resources>

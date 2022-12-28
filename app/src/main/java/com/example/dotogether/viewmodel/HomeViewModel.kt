@@ -11,13 +11,13 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _targets = MutableLiveData<Resource<GetAllTargetsResponse>>()
-    val targets: MutableLiveData<Resource<GetAllTargetsResponse>> = _targets
+    private val _allTargets = MutableLiveData<Resource<GetAllTargetsResponse>>()
+    val allTargets: MutableLiveData<Resource<GetAllTargetsResponse>> = _allTargets
 
     fun getAllTargets() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getAllTargets().collect {
-                _targets.value = it
+                _allTargets.value = it
             }
         }
     }

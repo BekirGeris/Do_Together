@@ -19,6 +19,8 @@ class LibraryFragment : BaseFragment() {
     private val viewModel: LibraryViewModel by viewModels()
     private lateinit var binding: FragmentLibraryBinding
 
+    private var justOneWork = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentLibraryBinding.inflate(layoutInflater)
@@ -31,6 +33,14 @@ class LibraryFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initObserve()
+            justOneWork = false
+        }
     }
 
     private fun initViews() {
@@ -48,24 +58,19 @@ class LibraryFragment : BaseFragment() {
             when (position) {
                 0 -> {
                     tab.text = "Subscriptions"
-                    //tab.setIcon(R.drawable.ic_music)
                 }
                 1 -> {
                     tab.text = "Favorites"
-                    //tab.setIcon(R.drawable.ic_movie)
 
                 }
                 2 -> {
                     tab.text = "Completed"
-                    //tab.setIcon(R.drawable.ic_book)
                 }
             }
-//             Change color of the icons
-//            tab.icon?.colorFilter =
-//                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
-//                    Color.WHITE,
-//                    BlendModeCompat.SRC_ATOP
-//                )
         }.attach()
+    }
+
+    private fun initObserve() {
+
     }
 }

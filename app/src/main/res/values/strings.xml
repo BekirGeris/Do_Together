@@ -61,4 +61,5 @@
     <string name="custom">Custom</string>
     <string name="password_again">password again</string>
     <string name="error_genel_message">Something went wrong.</string>
+    <string name="error_message">Nothing to Show</string>
 </resources>

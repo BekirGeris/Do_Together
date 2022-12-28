@@ -21,4 +21,15 @@ interface RemoteRepository {
     @GET("activity")
     suspend fun getAllTargets() : Response<GetAllTargetsResponse>
 
+    @GET("activity/joined/active")
+    suspend fun getMyJoinedTargets() : Response<GetAllTargetsResponse>
+
+    @GET("activity/likes")
+    suspend fun getMyLikeTargets() : Response<GetAllTargetsResponse>
+
+    @GET("activity/my/done")
+    suspend fun getMyDoneTargets() : Response<GetAllTargetsResponse>
+
+    @GET("activity/my")
+    suspend fun getMyTargets() : Response<GetAllTargetsResponse>
 }

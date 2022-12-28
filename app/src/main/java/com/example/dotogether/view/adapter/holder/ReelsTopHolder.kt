@@ -6,18 +6,14 @@ import com.example.dotogether.databinding.ItemReelsTopBinding
 import com.example.dotogether.model.Reels
 import com.example.dotogether.view.adapter.ReelsAdapter
 
-class ReelsTopHolder(val view: View) : BaseHolder(view), View.OnClickListener {
-    private val binding = ItemReelsTopBinding.bind(view)
-    private val context = binding.root.context
+class ReelsTopHolder(val view: View, reelsList: ArrayList<Reels>) : BaseHolder(view), View.OnClickListener {
+    val binding = ItemReelsTopBinding.bind(view)
+    val context = binding.root.context
 
-    private var reelsAdapter: ReelsAdapter
-    private var reelsList = java.util.ArrayList<Reels>()
+    var reelsAdapter: ReelsAdapter
 
     init {
         initViews()
-        for (i in 1..100) {
-            reelsList.add(Reels())
-        }
 
         reelsAdapter = ReelsAdapter(reelsList)
         binding.reelsRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

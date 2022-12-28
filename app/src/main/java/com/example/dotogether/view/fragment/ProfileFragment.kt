@@ -1,6 +1,7 @@
 package com.example.dotogether.view.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
@@ -19,9 +20,9 @@ import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants.MethodType
 import com.example.dotogether.util.PermissionUtil
+import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.callback.HolderCallback
-import com.example.dotogether.view.dialog.CustomProgressDialog
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +44,8 @@ class ProfileFragment : BaseFragment(), HolderCallback {
     lateinit var user: User
 
     private var calledFromMode = -1
+
+    private var justOneWork = true
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
@@ -101,8 +104,16 @@ class ProfileFragment : BaseFragment(), HolderCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initField()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (justOneWork) {
+            initField()
+            initObserve()
+            justOneWork = false
+        }
     }
 
     private fun initField() {
@@ -111,9 +122,6 @@ class ProfileFragment : BaseFragment(), HolderCallback {
 
     private fun initViews() {
         imagePickerBuilder = ImagePicker.with(this)
-        for (i in 1..1000) {
-            targets.add(Target())
-        }
 
         user = User()
 
@@ -123,6 +131,31 @@ class ProfileFragment : BaseFragment(), HolderCallback {
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.targetRv.adapter = targetAdapter
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initObserve() {
+        viewModel.myTargets.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.data?.let { list ->
+                        list.mapTo(targets) { target -> target}
+                        targetAdapter.notifyDataSetChanged()
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
+
+        viewModel.getMyTargets()
     }
 
     fun requestPermissionsForImagePicker() {

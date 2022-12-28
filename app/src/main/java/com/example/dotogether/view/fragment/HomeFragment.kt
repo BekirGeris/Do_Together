@@ -1,6 +1,7 @@
 package com.example.dotogether.view.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.databinding.FragmentHomeBinding
+import com.example.dotogether.model.Reels
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.util.PermissionUtil
@@ -32,7 +34,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var navController: NavController
 
     private lateinit var homeTargetAdapter: HomeTargetAdapter
-    private var targetList = ArrayList<Target>()
+    private var targets = ArrayList<Target>()
+    private var reelsList = ArrayList<Reels>()
 
     private var justOneWork = true
 
@@ -106,19 +109,43 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    fun initViews() {
+        binding.cameraBtn.setOnClickListener(this)
+        binding.messageBtn.setOnClickListener(this)
+        binding.searchBtn.setOnClickListener(this)
+
+        navController = findNavController()
+
+        homeTargetAdapter = HomeTargetAdapter(targets, reelsList)
+        binding.targetRv.layoutManager = LinearLayoutManager(context)
+        binding.targetRv.adapter = homeTargetAdapter
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        viewModel.targets.observe(viewLifecycleOwner) {
+        viewModel.allTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    it.data?.data?.let { targets ->
-                        targets.mapTo(targetList) {target -> target}
-                        homeTargetAdapter = HomeTargetAdapter(targetList)
-                        binding.targetRv.layoutManager = LinearLayoutManager(context)
-                        binding.targetRv.adapter = homeTargetAdapter
+                    it.data?.data?.let { list ->
+                        if (list.isEmpty()) {
+                            binding.activityErrorView.visibility = View.VISIBLE
+                        }
+                        list.mapTo(targets) { target -> target}
+                        homeTargetAdapter.notifyDataSetChanged()
+                        //todo: **************test test****************
+                        for (i in 1..100) {
+                            reelsList.add(Reels())
+                        }
+                        if (reelsList.isEmpty()) {
+                            homeTargetAdapter.reelsTopHolder.binding.reelsRv.visibility = View.GONE
+                        }
+                        homeTargetAdapter.reelsTopHolder.reelsAdapter.notifyDataSetChanged()
+                        //todo: **************test test****************
                     }
                     dialog.hide()
                 }
                 is Resource.Error -> {
+                    binding.activityErrorView.visibility = View.VISIBLE
                     dialog.hide()
                     showToast(it.message)
                 }
@@ -129,22 +156,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             }
         }
         viewModel.getAllTargets()
-    }
-
-    fun initViews() {
-        binding.cameraBtn.setOnClickListener(this)
-        binding.messageBtn.setOnClickListener(this)
-        binding.searchBtn.setOnClickListener(this)
-
-        navController = findNavController()
-
-//        for (i in 1..10000) {
-//            targetList.add(Target())
-//        }
-//
-//        homeTargetAdapter = HomeTargetAdapter(targetList)
-//        binding.targetRv.layoutManager = LinearLayoutManager(context)
-//        binding.targetRv.adapter = homeTargetAdapter
     }
 
     override fun onClick(v: View?) {

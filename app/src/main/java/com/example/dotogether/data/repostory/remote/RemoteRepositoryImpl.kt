@@ -64,4 +64,68 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    suspend fun getMyJoinedTargets(): Flow<Resource<GetAllTargetsResponse>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getMyJoinedTargets()
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMyLikeTargets(): Flow<Resource<GetAllTargetsResponse>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getMyLikeTargets()
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMyDoneTargets(): Flow<Resource<GetAllTargetsResponse>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getMyDoneTargets()
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMyTargets(): Flow<Resource<GetAllTargetsResponse>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getMyTargets()
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 }
