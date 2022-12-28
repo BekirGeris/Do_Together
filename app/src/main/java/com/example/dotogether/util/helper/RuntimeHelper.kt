@@ -26,11 +26,7 @@ object RuntimeHelper {
                     centerRadius = 40f
                     start()
                 })
-            .error(CircularProgressDrawable(context).apply {
-                strokeWidth = 8f
-                centerRadius = 40f
-                start()
-            })
+            .error(R.drawable.error_image_background)
     )
 
     private fun glide(context: Context, requestOptions: RequestOptions): RequestManager {
