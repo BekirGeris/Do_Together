@@ -21,7 +21,10 @@ object Constants {
     enum class MethodType {
         METHOD_LOGOUT,
         METHOD_BACKGROUND_EDIT,
-        METHOD_PROFILE_EDIT
+        METHOD_PROFILE_EDIT,
+        METHOD_JOIN_TARGET,
+        METHOD_LIKE_TARGET,
+        METHOD_REELS
     }
 
     enum class Status(val type: Int) {

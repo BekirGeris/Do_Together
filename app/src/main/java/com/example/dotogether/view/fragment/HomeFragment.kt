@@ -13,21 +13,26 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.databinding.FragmentHomeBinding
+import com.example.dotogether.databinding.ItemReelsTopBinding
+import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Reels
 import com.example.dotogether.model.Target
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.HomeTargetAdapter
+import com.example.dotogether.view.callback.HolderCallback
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment(), View.OnClickListener {
+class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
@@ -117,6 +122,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         navController = findNavController()
 
         homeTargetAdapter = HomeTargetAdapter(targets, reelsList)
+        homeTargetAdapter.setOnClickListener(this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
         binding.targetRv.adapter = homeTargetAdapter
     }
@@ -195,5 +201,67 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             .createIntent {
                 resultLauncher.launch(it)
             }
+    }
+
+    override fun holderListener(binding: ViewBinding, methodType: Constants.MethodType, position: Int) {
+        when(binding) {
+            is ItemReelsTopBinding -> {
+                reelsTopHolderClick(binding, methodType, position)
+            }
+            is ItemTargetBinding -> {
+                targetHolderClick(binding, methodType, position)
+            }
+        }
+    }
+
+    private fun reelsTopHolderClick(binding: ItemReelsTopBinding, methodType: Constants.MethodType, position: Int) {
+        when(methodType) {
+            Constants.MethodType.METHOD_REELS -> {
+
+            }
+            else -> {}
+        }
+    }
+
+    private fun targetHolderClick(binding: ItemTargetBinding, methodType: Constants.MethodType, position: Int) {
+        when(methodType) {
+            Constants.MethodType.METHOD_LIKE_TARGET -> {
+                viewModel.likeTarget.observe(viewLifecycleOwner) {
+                    when(it) {
+                        is Resource.Success -> {
+                            dialog.hide()
+                            viewModel.getAllTargets()
+                        }
+                        is Resource.Error -> {
+                            dialog.hide()
+                        }
+                        is Resource.Loading -> {
+                            dialog.shoe()
+                        }
+                        else -> {}
+                    }
+                }
+                viewModel.likeTarget(targets[position].id!!)
+            }
+            Constants.MethodType.METHOD_JOIN_TARGET -> {
+                viewModel.joinTarget.observe(viewLifecycleOwner) {
+                    when(it) {
+                        is Resource.Success -> {
+                            dialog.hide()
+                            viewModel.getAllTargets()
+                        }
+                        is Resource.Error -> {
+                            dialog.hide()
+                        }
+                        is Resource.Loading -> {
+                            dialog.shoe()
+                        }
+                        else -> {}
+                    }
+                }
+                viewModel.joinTarget(targets[position].id!!)
+            }
+            else -> {}
+        }
     }
 }

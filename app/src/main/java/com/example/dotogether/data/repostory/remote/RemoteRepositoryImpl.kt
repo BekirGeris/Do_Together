@@ -1,5 +1,7 @@
 package com.example.dotogether.data.repostory.remote
 
+import com.example.dotogether.model.Target
+import com.example.dotogether.model.request.CreateTargetRequest
 import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.response.GetAllTargetsResponse
@@ -38,6 +40,22 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             emit(Resource.Loading())
             try {
                 val result = repository.register(registerRequest)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun createTarget(createTargetRequest: CreateTargetRequest): Flow<Resource<Target>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.createTarget(createTargetRequest)
                 if (result.success) {
                     emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {
@@ -118,6 +136,38 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             emit(Resource.Loading())
             try {
                 val result = repository.getMyTargets()
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun joinTarget(targetId: Int): Flow<Resource<Target>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.joinTarget(targetId)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun likeTarget(targetId: Int): Flow<Resource<Target>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.likeTarget(targetId)
                 if (result.success) {
                     emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {

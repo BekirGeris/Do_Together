@@ -201,6 +201,7 @@ class ProfileFragment : BaseFragment(), HolderCallback {
                     activity?.finish()
                 }
             }
+            else -> {}
         }
     }
 }

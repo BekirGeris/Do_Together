@@ -7,17 +7,17 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetCustomPeriodBinding
 import com.example.dotogether.databinding.BottomSheetPeriodBinding
 import com.example.dotogether.databinding.FragmentShareBinding
+import com.example.dotogether.model.request.CreateTargetRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
+import com.example.dotogether.util.Resource
 import com.example.dotogether.view.callback.DateCallback
 import com.example.dotogether.viewmodel.ShareViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -149,7 +149,14 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                     requestPermissionsForImagePicker()
                 }
                 binding.uploadBtn -> {
-
+                    shareTarget(
+                        binding.targetEditTxt.text.toString(),
+                        binding.descriptionEditTxt.text.toString(),
+                        binding.periodDecs.text.toString(),
+                        binding.startDateTxt.text.toString(),
+                        binding.finishDateTxt.text.toString(),
+                        ""
+                    )
                 }
                 binding.periodLyt -> {
                     periodDialog.show()
@@ -273,5 +280,26 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 binding.finishDateClear.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun shareTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String) {
+        val createTargetRequest = CreateTargetRequest(target, description, period, start_date, end_date, img)
+        viewModel.createTarget.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    showToast(it.message)
+                    requireActivity().finish()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+            }
+        }
+        viewModel.createTarget(createTargetRequest)
     }
 }

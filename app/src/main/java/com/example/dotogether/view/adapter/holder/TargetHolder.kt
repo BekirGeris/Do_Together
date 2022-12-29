@@ -1,5 +1,6 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import androidx.navigation.findNavController
@@ -8,11 +9,10 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
-import com.example.dotogether.model.User
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.util.ArrayList
 
 class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
 
@@ -23,7 +23,6 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
     private val dialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
 
     private lateinit var memberAdapter: MemberAdapter
-    private val members = ArrayList<User>()
 
     init {
         initViews()
@@ -50,8 +49,16 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
         dialogBinding.delete.setOnClickListener(this)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     fun bind(target: Target) {
         val user = target.admin
+        if (target.is_joined!!) {
+            binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
+        }
+
+        if (target.is_liked!!) {
+            binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_alt_24), null, null, null)
+        }
 
         target.users?.let {
             memberAdapter = MemberAdapter(it, false)
@@ -83,10 +90,10 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
                  goToProfileFragment(navController)
             }
             binding.like -> {
-
+                getOnClickListener().holderListener(binding, Constants.MethodType.METHOD_LIKE_TARGET, adapterPosition - 1)
             }
             binding.join -> {
-
+                getOnClickListener().holderListener(binding, Constants.MethodType.METHOD_JOIN_TARGET, adapterPosition - 1)
             }
             dialogBinding.save -> {
                 dialog.hide()

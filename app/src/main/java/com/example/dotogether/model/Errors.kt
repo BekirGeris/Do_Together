@@ -5,4 +5,5 @@ import java.util.ArrayList
 class Errors {
     var username: ArrayList<String>? = null
     var email: ArrayList<String>? = null
+    var description: ArrayList<String>? = null
 }

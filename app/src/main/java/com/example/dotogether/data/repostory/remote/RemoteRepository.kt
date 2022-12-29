@@ -1,5 +1,7 @@
 package com.example.dotogether.data.repostory.remote
 
+import com.example.dotogether.model.Target
+import com.example.dotogether.model.request.CreateTargetRequest
 import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.response.GetAllTargetsResponse
@@ -9,6 +11,7 @@ import com.example.dotogether.model.response.RegisterResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface RemoteRepository {
 
@@ -17,6 +20,9 @@ interface RemoteRepository {
 
     @POST("register")
     suspend fun register(@Body registerRequest: RegisterRequest) : Response<RegisterResponse>
+
+    @POST("/activity/create")
+    suspend fun createTarget(@Body createTargetRequest: CreateTargetRequest) : Response<Target>
 
     @GET("activity")
     suspend fun getAllTargets() : Response<GetAllTargetsResponse>
@@ -32,4 +38,11 @@ interface RemoteRepository {
 
     @GET("activity/my")
     suspend fun getMyTargets() : Response<GetAllTargetsResponse>
+
+    @GET("activity/my/{targetId}")
+    suspend fun joinTarget(@Path("targetId") targetId: Int) : Response<Target>
+
+    @GET("/activity/like/{targetId}")
+    suspend fun likeTarget(@Path("targetId") targetId: Int) : Response<Target>
+
 }

@@ -21,10 +21,13 @@ class HomeTargetAdapter(private val targetList: ArrayList<Target>, private val r
         return if (viewType == 0) {
             binding = ItemReelsTopBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             reelsTopHolder = ReelsTopHolder(binding.root, reelsList)
+            reelsTopHolder!!.setOnClickListener(getOnClickListener())
             reelsTopHolder!!
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            TargetHolder(binding.root, LayoutInflater.from(parent.context))
+            val targetHolder = TargetHolder(binding.root, LayoutInflater.from(parent.context))
+            targetHolder.setOnClickListener(getOnClickListener())
+            targetHolder
         }
     }
 
