@@ -63,6 +63,7 @@ class CompletedFragment : BaseFragment() {
                         if (list.isEmpty()) {
                             binding.activityErrorView.visibility = View.VISIBLE
                         }
+                        targets.clear()
                         list.mapTo(targets) { target -> target}
                         targetAdapter.notifyDataSetChanged()
                     }

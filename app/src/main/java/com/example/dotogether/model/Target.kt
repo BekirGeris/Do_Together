@@ -1,6 +1,5 @@
 package com.example.dotogether.model
 
-import java.util.ArrayList
 import kotlin.random.Random
 import kotlin.random.nextInt
 

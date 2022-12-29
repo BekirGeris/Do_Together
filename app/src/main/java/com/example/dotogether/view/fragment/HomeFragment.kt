@@ -34,8 +34,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private lateinit var navController: NavController
 
     private lateinit var homeTargetAdapter: HomeTargetAdapter
-    private var targets = ArrayList<Target>()
-    private var reelsList = ArrayList<Reels>()
+    private val targets = ArrayList<Target>()
+    private val reelsList = ArrayList<Reels>()
 
     private var justOneWork = true
 
@@ -130,6 +130,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                         if (list.isEmpty()) {
                             binding.activityErrorView.visibility = View.VISIBLE
                         }
+                        targets.clear()
                         list.mapTo(targets) { target -> target}
                         homeTargetAdapter.notifyDataSetChanged()
                         //todo: **************test test****************

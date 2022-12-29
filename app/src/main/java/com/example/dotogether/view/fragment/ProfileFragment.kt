@@ -5,11 +5,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -96,7 +94,6 @@ class ProfileFragment : BaseFragment(), HolderCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentProfileBinding.inflate(layoutInflater)
-
         initViews()
     }
 
@@ -139,6 +136,7 @@ class ProfileFragment : BaseFragment(), HolderCallback {
             when(it) {
                 is Resource.Success -> {
                     it.data?.data?.let { list ->
+                        targets.clear()
                         list.mapTo(targets) { target -> target}
                         targetAdapter.notifyDataSetChanged()
                     }
