@@ -8,7 +8,7 @@ import com.example.dotogether.databinding.CustomProgressDialogBinding
 class CustomProgressDialog(activity: Activity) {
 
     private var binding: CustomProgressDialogBinding
-    private var dialog: Dialog
+    var dialog: Dialog
 
     init {
         val inflater = activity.layoutInflater

@@ -64,7 +64,7 @@ class SubscriptionsFragment : BaseFragment() {
                             binding.activityErrorView.visibility = View.VISIBLE
                         }
                         targets.clear()
-                        list.mapTo(targets) { target -> target}
+                        targets.addAll(list)
                         targetAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()
@@ -75,7 +75,9 @@ class SubscriptionsFragment : BaseFragment() {
                     showToast(it.message)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    if (!dialog.dialog.isShowing) {
+                        dialog.shoe()
+                    }
                 }
                 else -> {}
             }

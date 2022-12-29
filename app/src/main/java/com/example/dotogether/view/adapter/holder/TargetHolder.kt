@@ -22,19 +22,15 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
     private val dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
     private val dialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
 
-    private var memberAdapter: MemberAdapter
+    private lateinit var memberAdapter: MemberAdapter
     private val members = ArrayList<User>()
 
     init {
         initViews()
-        for (i in 1..100) {
-            members.add(User())
-        }
-
-        memberAdapter = MemberAdapter(members, false)
     }
 
     private fun initViews() {
+        binding.membersRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         dialog.setContentView(dialogBinding.root)
 
         binding.holderView.setOnClickListener(this)
@@ -56,9 +52,11 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
 
     fun bind(target: Target) {
         val user = target.admin
-        binding.membersRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.membersRv.adapter = memberAdapter
-        binding.postImage.visibility = View.VISIBLE
+
+        target.users?.let {
+            memberAdapter = MemberAdapter(it, false)
+            binding.membersRv.adapter = memberAdapter
+        }
 
         user?.let {
             binding.postUserName.text = it.username

@@ -15,12 +15,13 @@ class HomeTargetAdapter(private val targetList: ArrayList<Target>, private val r
 
     private lateinit var binding: ViewBinding
 
-    lateinit var reelsTopHolder: ReelsTopHolder
+    var reelsTopHolder: ReelsTopHolder? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         return if (viewType == 0) {
             binding = ItemReelsTopBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            ReelsTopHolder(binding.root, reelsList)
+            reelsTopHolder = ReelsTopHolder(binding.root, reelsList)
+            reelsTopHolder!!
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             TargetHolder(binding.root, LayoutInflater.from(parent.context))
@@ -31,7 +32,6 @@ class HomeTargetAdapter(private val targetList: ArrayList<Target>, private val r
         when(holder.itemViewType) {
             0 -> {
                 holder as ReelsTopHolder
-                reelsTopHolder = holder
                 holder.bind()
             }
             else -> {

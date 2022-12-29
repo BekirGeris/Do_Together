@@ -137,7 +137,7 @@ class ProfileFragment : BaseFragment(), HolderCallback {
                 is Resource.Success -> {
                     it.data?.data?.let { list ->
                         targets.clear()
-                        list.mapTo(targets) { target -> target}
+                        targets.addAll(list)
                         targetAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()

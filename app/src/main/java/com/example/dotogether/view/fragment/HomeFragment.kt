@@ -131,16 +131,16 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                             binding.activityErrorView.visibility = View.VISIBLE
                         }
                         targets.clear()
-                        list.mapTo(targets) { target -> target}
+                        targets.addAll(list)
                         homeTargetAdapter.notifyDataSetChanged()
                         //todo: **************test test****************
                         for (i in 1..100) {
                             reelsList.add(Reels())
                         }
                         if (reelsList.isEmpty()) {
-                            homeTargetAdapter.reelsTopHolder.binding.reelsRv.visibility = View.GONE
+                            homeTargetAdapter.reelsTopHolder?.binding?.reelsRv?.visibility = View.GONE
                         }
-                        homeTargetAdapter.reelsTopHolder.reelsAdapter.notifyDataSetChanged()
+                        homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
                         //todo: **************test test****************
                     }
                     dialog.hide()

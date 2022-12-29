@@ -5,7 +5,7 @@ import com.example.dotogether.model.Target
 
 class GetAllTargetsResponse(
     var current_page: Int? = null,
-    var data: List<Target>? = null,
+    var data: ArrayList<Target>? = null,
     var first_page_url: String? = null,
     var from: Int? = null,
     var last_page: Int? = null,

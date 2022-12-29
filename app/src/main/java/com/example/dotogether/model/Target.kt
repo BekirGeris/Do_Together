@@ -19,6 +19,6 @@ class Target {
     var target: String? = null
     var updated_at: String? = null
     var user_id: Int? = null
-    var users: List<User>? = null
+    var users: ArrayList<User>? = null
     var url = Random.nextInt(IntRange(1, 5))
 }
