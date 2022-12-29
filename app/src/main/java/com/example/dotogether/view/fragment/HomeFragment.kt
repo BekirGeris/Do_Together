@@ -138,6 +138,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
                         }
                         targets.clear()
                         targets.addAll(list)
+                        targets.reverse()
                         homeTargetAdapter.notifyDataSetChanged()
                         //todo: **************test test****************
                         for (i in 1..100) {

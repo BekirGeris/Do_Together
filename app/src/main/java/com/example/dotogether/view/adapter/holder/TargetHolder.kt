@@ -49,9 +49,11 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
         dialogBinding.delete.setOnClickListener(this)
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     fun bind(target: Target) {
         val user = target.admin
+        binding.targetTitle.text = target.target
+        binding.description.text = target.description
         if (target.is_joined!!) {
             binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
         }
