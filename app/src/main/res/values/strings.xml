@@ -62,4 +62,5 @@
     <string name="password_again">password again</string>
     <string name="error_genel_message">Something went wrong.</string>
     <string name="error_message">Nothing to Show</string>
+    <string name="name">name</string>
 </resources>

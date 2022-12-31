@@ -94,7 +94,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 val imageBytes = Base64.decode(imageBase64, 0)
                 val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-                imageBase64 = "data:image/png;base64," + imageBase64.replace("\n", "")
+                imageBase64 = "data:image/jpeg;base64," + imageBase64.replace("\n", "")
                 binding.selectImage.setImageBitmap(image)
                 binding.selectImage.setPadding(20, 5, 20, 5)
             } catch (e: Exception) {

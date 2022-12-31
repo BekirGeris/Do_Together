@@ -9,6 +9,7 @@ import javax.inject.Inject
 class LocalRepositoryImpl @Inject constructor(private val userDao: UserDao) : LocalRepository {
 
     override suspend fun insertUser(user: User) {
+        userDao.deleteAll()
         userDao.insert(user)
     }
 

@@ -1,16 +1,16 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.content.Intent
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.util.Constants.ViewType
+import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.callback.HolderCallback
-import com.example.dotogether.view.fragment.ProfileFragmentDirections
 
-abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
+abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
     private lateinit var onClickListener : HolderCallback
 
@@ -22,72 +22,97 @@ abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view) {
         return onClickListener
     }
 
-    fun goToProfileFragment(navController: NavController) {
-        val navOptions = NavOptions.Builder()
-            .setLaunchSingleTop(true)
-            .setPopUpTo(navController.graph.startDestinationId, true)
-            .build()
+    fun goToProfileFragment(navController: NavController?) {
+        navController.let {
+            if (it != null) {
+                val navOptions = NavOptions.Builder()
+                    .setLaunchSingleTop(true)
+                    .setPopUpTo(it.graph.startDestinationId, true)
+                    .build()
 
-        with(navController.graph.displayName.lowercase()) {
-            when {
-                contains("home_nav") -> {
-                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_PROFILE_FRAGMENT))
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
+                        }
+                    }
                 }
-                contains("others_nav") -> {
-                    navController.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
-                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_PROFILE_FRAGMENT.type)
+                view.context.startActivity(intent)
             }
         }
     }
 
-    fun goToChatFragment(navController: NavController) {
-        with(navController.graph.displayName.lowercase()) {
-            when {
-                contains("home_nav") -> {
-                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_CHAT_FRAGMENT))
+    fun goToChatFragment(navController: NavController?) {
+        navController.let {
+            if (it != null) {
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionChatFragment())
+                        }
+                    }
                 }
-                contains("others_nav") -> {
-                    navController.navigate(OthersNavDirections.actionChatFragment())
-                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_CHAT_FRAGMENT.type)
+                view.context.startActivity(intent)
             }
         }
     }
 
-    fun goToTargetFragment(navController: NavController) {
-        with(navController.graph.displayName.lowercase()) {
-            when {
-                contains("home_nav") -> {
-                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_TARGET_FRAGMENT))
+    fun goToTargetFragment(navController: NavController?) {
+        navController.let {
+            if (it != null) {
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionTargetFragment())
+                        }
+                    }
                 }
-                contains("others_nav") -> {
-                    navController.navigate(OthersNavDirections.actionTargetFragment())
-                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_TARGET_FRAGMENT.type)
+                view.context.startActivity(intent)
             }
         }
     }
 
-    fun goToReelsFragment(navController: NavController) {
-        with(navController.graph.displayName.lowercase()) {
-            when {
-                contains("home_nav") -> {
-                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_REELS_FRAGMENT))
+    fun goToReelsFragment(navController: NavController?) {
+        navController.let {
+            if (it != null) {
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionReelsFragment())
+                        }
+                    }
                 }
-                contains("others_nav") -> {
-                    navController.navigate(OthersNavDirections.actionTargetFragment())
-                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_REELS_FRAGMENT.type)
+                view.context.startActivity(intent)
             }
         }
     }
 
-    fun goToFollowsFragment(navController: NavController) {
-        with(navController.graph.displayName.lowercase()) {
-            when {
-                contains("home_nav") -> {
-                    navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_FOLLOWS_FRAGMENT))
+    fun goToFollowsFragment(navController: NavController?) {
+        navController.let {
+            if (it != null) {
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionFollowsFragment())
+                        }
+                    }
                 }
-                contains("others_nav") -> {
-                    navController.navigate(ProfileFragmentDirections.actionProfileFragmentToFollowsFragment())
-                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_FOLLOWS_FRAGMENT.type)
+                view.context.startActivity(intent)
             }
         }
     }

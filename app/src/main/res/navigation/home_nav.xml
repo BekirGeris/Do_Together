@@ -6,19 +6,19 @@
     android:id="@+id/home_nav"
     app:startDestination="@id/navigation_home">
 
-    <action android:id="@+id/action_global_othersActivity"
-        app:destination="@id/othersActivity"
-        app:popUpTo="@id/othersActivity"
-        app:popUpToInclusive="true"/>
+<!--    <action android:id="@+id/action_global_othersActivity"-->
+<!--        app:destination="@id/othersActivity"-->
+<!--        app:popUpTo="@id/othersActivity"-->
+<!--        app:popUpToInclusive="true"/>-->
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.dotogether.view.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_search"
-            app:destination="@id/navigation_search" />
+<!--        <action-->
+<!--            android:id="@+id/action_navigation_home_to_navigation_search"-->
+<!--            app:destination="@id/navigation_search" />-->
     </fragment>
     <fragment
         android:id="@+id/navigation_search"
@@ -35,13 +35,13 @@
         android:name="com.example.dotogether.view.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
-    <activity
-        android:id="@+id/othersActivity"
-        android:name="com.example.dotogether.view.activity.OthersActivity"
-        android:label="OthersActivity" >
-        <argument
-            android:name="viewType"
-            app:argType="com.example.dotogether.util.Constants$ViewType"
-            android:defaultValue="VIEW_SHARE_FRAGMENT" />
-    </activity>
+<!--    <activity-->
+<!--        android:id="@+id/othersActivity"-->
+<!--        android:name="com.example.dotogether.view.activity.OthersActivity"-->
+<!--        android:label="OthersActivity" >-->
+<!--        <argument-->
+<!--            android:name="viewType"-->
+<!--            app:argType="com.example.dotogether.util.Constants$ViewType"-->
+<!--            android:defaultValue="VIEW_SHARE_FRAGMENT" />-->
+<!--    </activity>-->
 </navigation>

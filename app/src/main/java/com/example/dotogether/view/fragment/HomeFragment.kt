@@ -3,6 +3,7 @@ package com.example.dotogether.view.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -10,12 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.databinding.ItemReelsTopBinding
 import com.example.dotogether.databinding.ItemTargetBinding
@@ -25,6 +23,7 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
+import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.view.callback.HolderCallback
 import com.example.dotogether.viewmodel.HomeViewModel
@@ -37,14 +36,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var navController: NavController
 
-    private var nextPage = "2"
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private val targets = ArrayList<Target>()
     private val reelsList = ArrayList<Reels>()
 
     private var justOneWork = true
+
+    private var nextPage = "2"
     private lateinit var scrollListener: RecyclerView.OnScrollListener
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -113,7 +112,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
         super.onViewCreated(view, savedInstanceState)
         if (justOneWork) {
             initObserve()
-            justOneWork = true
+            justOneWork = false
         }
     }
 
@@ -121,8 +120,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
         binding.cameraBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
         binding.searchBtn.setOnClickListener(this)
-
-        navController = findNavController()
 
         homeTargetAdapter = HomeTargetAdapter(targets, reelsList)
         homeTargetAdapter.setOnClickListener(this)
@@ -163,7 +160,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
                             }
                             targets.clear()
                             targets.addAll(list)
-                            targets.reverse()
                             homeTargetAdapter.notifyDataSetChanged()
                             //todo: **************test test****************
                             for (i in 1..100) {
@@ -223,10 +219,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
                 requestPermissionsForImagePicker()
             }
             binding.messageBtn -> {
-                navController.navigate(HomeNavDirections.actionGlobalOthersActivity(ViewType.VIEW_LIST_CHAT_FRAGMENT))
+                val intent = Intent(requireActivity(), OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_LIST_CHAT_FRAGMENT.type)
+                startActivity(intent)
             }
             binding.searchBtn -> {
-                //navController.navigate(HomeFragmentDirections.actionNavigationHomeToNavigationSearch())
+
             }
         }
     }

@@ -5,12 +5,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.FragmentProfileBinding
 import com.example.dotogether.databinding.ItemProfileBinding
@@ -44,6 +46,9 @@ class ProfileFragment : BaseFragment(), HolderCallback {
     private var calledFromMode = -1
 
     private var justOneWork = true
+
+    private var nextPage = "2"
+    private lateinit var scrollListener: RecyclerView.OnScrollListener
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
@@ -135,10 +140,19 @@ class ProfileFragment : BaseFragment(), HolderCallback {
         viewModel.myTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    it.data?.data?.let { list ->
-                        targets.clear()
-                        targets.addAll(list)
-                        targetAdapter.notifyDataSetChanged()
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            if (list.isEmpty()) {
+                                //binding.activityErrorView.visibility = View.VISIBLE
+                            }
+                            targets.clear()
+                            targets.addAll(list)
+                            targetAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
                     }
                     dialog.hide()
                 }
@@ -152,8 +166,43 @@ class ProfileFragment : BaseFragment(), HolderCallback {
                 else -> {}
             }
         }
-
         viewModel.getMyTargets()
+        viewModel.nextMyTargets.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            targets.addAll(list)
+                            targetAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun setRecyclerViewScrollListener() {
+        scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!recyclerView.canScrollVertically(1)) {
+                    viewModel.getNextMyTargets(nextPage)
+                    Log.d("bekbek", "setRecyclerViewScrollListener 1")
+                    binding.targetRv.removeOnScrollListener(scrollListener)
+                }
+            }
+        }
+        Log.d("bekbek", "setRecyclerViewScrollListener 2")
+        binding.targetRv.addOnScrollListener(scrollListener)
     }
 
     fun requestPermissionsForImagePicker() {

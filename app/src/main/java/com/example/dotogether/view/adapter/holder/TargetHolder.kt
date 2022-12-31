@@ -3,6 +3,7 @@ package com.example.dotogether.view.adapter.holder
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
@@ -14,7 +15,7 @@ import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
+class TargetHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
 
     private lateinit var target: Target
     private val binding = ItemTargetBinding.bind(view)
@@ -91,7 +92,12 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
     }
 
     override fun onClick(v: View?) {
-        val navController = view.findNavController()
+        var navController: NavController? = null
+        try {
+            navController = view.findNavController()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         when(v) {
             binding.holderView, binding.postImage -> {
                 goToTargetFragment(navController)

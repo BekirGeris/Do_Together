@@ -1,11 +1,12 @@
 package com.example.dotogether.view.adapter.holder
 
 import android.view.View
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.model.Reels
 
-class ReelsHolder(val view: View) : BaseHolder(view), View.OnClickListener {
+class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     private var binding = ItemReelsBinding.bind(view)
     private val context = binding.root.context
@@ -24,7 +25,12 @@ class ReelsHolder(val view: View) : BaseHolder(view), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = view.findNavController()
+        var navController: NavController? = null
+        try {
+            navController = view.findNavController()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         when(v) {
             binding.userImage -> {
                 goToReelsFragment(navController)

@@ -8,14 +8,14 @@ object Constants {
 
     val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd")
 
-    enum class ViewType {
-        VIEW_SHARE_FRAGMENT,
-        VIEW_PROFILE_FRAGMENT,
-        VIEW_LIST_CHAT_FRAGMENT,
-        VIEW_CHAT_FRAGMENT,
-        VIEW_TARGET_FRAGMENT,
-        VIEW_REELS_FRAGMENT,
-        VIEW_FOLLOWS_FRAGMENT
+    enum class ViewType(val type: Int) {
+        VIEW_SHARE_FRAGMENT(1),
+        VIEW_PROFILE_FRAGMENT(2),
+        VIEW_LIST_CHAT_FRAGMENT(3),
+        VIEW_CHAT_FRAGMENT(4),
+        VIEW_TARGET_FRAGMENT(5),
+        VIEW_REELS_FRAGMENT(6),
+        VIEW_FOLLOWS_FRAGMENT(7)
     }
 
     enum class MethodType {

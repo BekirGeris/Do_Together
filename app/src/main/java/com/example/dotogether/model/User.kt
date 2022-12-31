@@ -1,6 +1,7 @@
 package com.example.dotogether.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "user")
@@ -20,6 +21,10 @@ class User() {
     var updated_at: String? = null
     var username: String? = null
     var password: String? = null
+    @Ignore
+    var active_statuses: ArrayList<Reels>? = null
+    @Ignore
+    var activities: ArrayList<Target>? = null
     var token: String? = null
 
     constructor(

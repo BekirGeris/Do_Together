@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
 
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var binding: FragmentSearchBinding

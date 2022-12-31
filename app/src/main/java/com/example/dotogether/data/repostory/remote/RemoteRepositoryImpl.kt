@@ -1,10 +1,11 @@
 package com.example.dotogether.data.repostory.remote
 
+import com.example.dotogether.model.Connection
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.request.CreateTargetRequest
 import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
-import com.example.dotogether.model.response.GetAllTargetsResponse
+import com.example.dotogether.model.Page
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
 import com.example.dotogether.util.Constants
@@ -67,7 +68,7 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getAllTargets(): Flow<Resource<GetAllTargetsResponse>> {
+    suspend fun getAllTargets(): Flow<Resource<Page<Target>>> {
         return flow {
             emit(Resource.Loading())
             try {
@@ -83,7 +84,7 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getNextAllTargets(pageNo: String): Flow<Resource<GetAllTargetsResponse>> {
+    suspend fun getNextAllTargets(pageNo: String): Flow<Resource<Page<Target>>> {
         return flow {
             emit(Resource.Loading())
             try {
@@ -99,7 +100,7 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getMyJoinedTargets(): Flow<Resource<GetAllTargetsResponse>> {
+    suspend fun getMyJoinedTargets(): Flow<Resource<Page<Target>>> {
         return flow {
             emit(Resource.Loading())
             try {
@@ -115,7 +116,23 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getMyLikeTargets(): Flow<Resource<GetAllTargetsResponse>> {
+    suspend fun getNextMyJoinedTargets(pageNo: String): Flow<Resource<Page<Target>>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getNextMyJoinedTargets(pageNo)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMyLikeTargets(): Flow<Resource<Page<Target>>> {
         return flow {
             emit(Resource.Loading())
             try {
@@ -131,7 +148,23 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getMyDoneTargets(): Flow<Resource<GetAllTargetsResponse>> {
+    suspend fun getNextMyLikeTargets(pageNo: String): Flow<Resource<Page<Target>>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getNextMyLikeTargets(pageNo)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMyDoneTargets(): Flow<Resource<Page<Target>>> {
         return flow {
             emit(Resource.Loading())
             try {
@@ -147,11 +180,43 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getMyTargets(): Flow<Resource<GetAllTargetsResponse>> {
+    suspend fun getNextMyDoneTargets(pageNo: String): Flow<Resource<Page<Target>>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getNextMyDoneTargets(pageNo)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getMyTargets(): Flow<Resource<Page<Target>>> {
         return flow {
             emit(Resource.Loading())
             try {
                 val result = repository.getMyTargets()
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getNextMyTargets(pageNo: String): Flow<Resource<Page<Target>>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getNextMyTargets(pageNo)
                 if (result.success) {
                     emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {
@@ -216,6 +281,38 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             emit(Resource.Loading())
             try {
                 val result = repository.unLikeTarget(targetId)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getFollowers(): Flow<Resource<Page<Connection>>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getFollowers()
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getFollowings(): Flow<Resource<Page<Connection>>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getFollowings()
                 if (result.success) {
                     emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {

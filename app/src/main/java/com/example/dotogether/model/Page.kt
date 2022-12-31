@@ -1,11 +1,8 @@
-package com.example.dotogether.model.response
+package com.example.dotogether.model
 
-import com.example.dotogether.model.Link
-import com.example.dotogether.model.Target
-
-class GetAllTargetsResponse(
+class Page<T>(
     var current_page: Int? = null,
-    var data: ArrayList<Target>? = null,
+    var data: ArrayList<T>? = null,
     var first_page_url: String? = null,
     var from: Int? = null,
     var last_page: Int? = null,

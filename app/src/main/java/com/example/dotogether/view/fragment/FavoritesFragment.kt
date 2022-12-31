@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentFavoritesBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
@@ -25,6 +26,9 @@ class FavoritesFragment : BaseFragment() {
     private val targets = ArrayList<Target>()
 
     private var justOneWork = true
+
+    private var nextPage = "2"
+    private lateinit var scrollListener: RecyclerView.OnScrollListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +63,19 @@ class FavoritesFragment : BaseFragment() {
         viewModel.likeTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    it.data?.data?.let { list ->
-                        if (list.isEmpty()) {
-                            binding.activityErrorView.visibility = View.VISIBLE
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            if (list.isEmpty()) {
+                                binding.activityErrorView.visibility = View.VISIBLE
+                            }
+                            targets.clear()
+                            targets.addAll(list)
+                            targetAdapter.notifyDataSetChanged()
                         }
-                        targets.clear()
-                        targets.addAll(list)
-                        targetAdapter.notifyDataSetChanged()
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
                     }
                     dialog.hide()
                 }
@@ -82,7 +92,40 @@ class FavoritesFragment : BaseFragment() {
                 else -> {}
             }
         }
-
         viewModel.getMyLikeTargets()
+        viewModel.nextLikeTargets.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            targets.addAll(list)
+                            targetAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun setRecyclerViewScrollListener() {
+        scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!recyclerView.canScrollVertically(1)) {
+                    viewModel.getNextMyLikeTargets(nextPage)
+                    binding.targetRv.removeOnScrollListener(scrollListener)
+                }
+            }
+        }
+        binding.targetRv.addOnScrollListener(scrollListener)
     }
 }

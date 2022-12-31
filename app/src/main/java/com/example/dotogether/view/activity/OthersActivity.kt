@@ -15,7 +15,7 @@ class OthersActivity : BaseActivity() {
     private lateinit var navController: NavController
     private lateinit var navOptions: NavOptions
 
-    private lateinit var viewType: ViewType
+    private var viewType: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,32 +32,32 @@ class OthersActivity : BaseActivity() {
             .setPopUpTo(navController.graph.startDestinationId, true)
             .build()
 
-        viewType = intent.extras?.get("viewType") as ViewType
+        viewType = intent.getIntExtra("viewType", 0)
 
         startFragmentWithViewType()
     }
 
     private fun startFragmentWithViewType() {
         when(viewType) {
-            ViewType.VIEW_SHARE_FRAGMENT -> {
+            ViewType.VIEW_SHARE_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionShareFragment(), navOptions)
             }
-            ViewType.VIEW_PROFILE_FRAGMENT -> {
+            ViewType.VIEW_PROFILE_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
             }
-            ViewType.VIEW_LIST_CHAT_FRAGMENT -> {
+            ViewType.VIEW_LIST_CHAT_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionListChatFragment(), navOptions)
             }
-            ViewType.VIEW_CHAT_FRAGMENT -> {
+            ViewType.VIEW_CHAT_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionChatFragment(), navOptions)
             }
-            ViewType.VIEW_TARGET_FRAGMENT -> {
+            ViewType.VIEW_TARGET_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionTargetFragment(), navOptions)
             }
-            ViewType.VIEW_REELS_FRAGMENT -> {
+            ViewType.VIEW_REELS_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionReelsFragment(), navOptions)
             }
-            ViewType.VIEW_FOLLOWS_FRAGMENT -> {
+            ViewType.VIEW_FOLLOWS_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionFollowsFragment(), navOptions)
             }
         }

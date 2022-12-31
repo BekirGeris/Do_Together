@@ -44,6 +44,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     private val viewModel: LoginViewModel by viewModels()
     lateinit var binding: FragmentSignUpBinding
 
+    private var name: String = ""
     private var userName: String = ""
     private var email: String = ""
     private var password: String = ""
@@ -67,7 +68,8 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
                         val credential = oneTapClient.getSignInCredentialFromIntent(data)
                         idToken = credential.googleIdToken ?: credential.password
                         email = credential.id
-                        userName = credential.displayName ?: email.split("@")[0]
+                        userName = email.split("@")[0]
+                        name = credential.displayName ?: email.split("@")[0]
 
                         when {
                             idToken != null -> {
@@ -119,6 +121,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     }
 
     private fun initViews() {
+        binding.nameEditTxt.addTextChangedListener{ editTextChange(binding.nameEditTxt) }
         binding.usernameEditTxt.addTextChangedListener{ editTextChange(binding.usernameEditTxt) }
         binding.emailEditTxt.addTextChangedListener{ editTextChange(binding.emailEditTxt) }
         binding.passwordEditTxt.addTextChangedListener{ editTextChange(binding.passwordEditTxt) }
@@ -190,12 +193,13 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
                 action = directions.actionSignUpFragmentToLoginFragment()
             }
             binding.signUpBtn -> {
+                validName()
                 validUserName()
                 validEmail()
                 validPassword()
                 validPasswordAgain()
-                if (validUserName() && validEmail() && validPassword() && validPasswordAgain()) {
-                    viewModel.register(userName, userName, email, password, passwordAgain)
+                if (validName() && validUserName() && validEmail() && validPassword() && validPasswordAgain()) {
+                    viewModel.register(name, userName, email, password, passwordAgain)
                 }
             }
             binding.googleBtn -> {
@@ -223,6 +227,10 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     private fun editTextChange(v: EditText) {
         when(v) {
+            binding.nameEditTxt -> {
+                name = v.text.toString()
+                validName()
+            }
             binding.usernameEditTxt -> {
                 userName = v.text.toString()
                 validUserName()
@@ -270,6 +278,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     }
 
     override fun registerSuccess(resource: Resource<RegisterResponse>) {
+        RuntimeHelper.TOKEN = resource.data?.token!!
         goToHomeActivity()
     }
 
@@ -293,7 +302,17 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     override fun loginFailed(resource: Resource<LoginResponse>) {
         idToken?.let { pass ->
-            viewModel.register(userName, userName, email, pass, pass)
+            viewModel.register(name, userName, email, pass, pass)
+        }
+    }
+
+    private fun validName() : Boolean {
+        return if (name.isEmpty()) {
+            binding.nameEditLyt.error = "Wrong username"
+            false
+        } else {
+            binding.nameEditLyt.error = null
+            true
         }
     }
 

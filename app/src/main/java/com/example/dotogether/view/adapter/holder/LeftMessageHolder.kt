@@ -4,7 +4,7 @@ import android.view.View
 import com.example.dotogether.databinding.ItemMessageLeftBinding
 import com.example.dotogether.model.Message
 
-class LeftMessageHolder(val view: View) : BaseHolder(view) {
+class LeftMessageHolder(view: View) : BaseHolder(view) {
 
     private val binding = ItemMessageLeftBinding.bind(view)
     private val context = binding.root.context

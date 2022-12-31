@@ -1,11 +1,12 @@
 package com.example.dotogether.view.adapter.holder
 
 import android.view.View
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemChatBinding
 import com.example.dotogether.model.Chat
 
-class ChatHolder(val view: View) : BaseHolder(view), View.OnClickListener {
+class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemChatBinding.bind(view)
     private val context = binding.root.context
@@ -24,7 +25,12 @@ class ChatHolder(val view: View) : BaseHolder(view), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = view.findNavController()
+        var navController: NavController? = null
+        try {
+            navController = view.findNavController()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         when(v) {
             binding.holderView -> {
                 goToChatFragment(navController)

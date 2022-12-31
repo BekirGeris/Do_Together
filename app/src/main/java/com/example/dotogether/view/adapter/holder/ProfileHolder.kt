@@ -2,6 +2,7 @@ package com.example.dotogether.view.adapter.holder
 
 import android.view.LayoutInflater
 import android.view.View
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
@@ -10,7 +11,7 @@ import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants.MethodType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
+class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemProfileBinding.bind(view)
     private val context = binding.root.context
@@ -51,14 +52,21 @@ class ProfileHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHo
     }
 
     override fun onClick(v: View?) {
-        val navController = view.findNavController()
+        var navController: NavController? = null
+        try {
+            navController = view.findNavController()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         when(v) {
             binding.backgroundImage -> {
 
             }
             binding.backBtn -> {
-                if (!navController.popBackStack()) {
-                    getOnClickListener().holderListener(binding, MethodType.METHOD_LOGOUT, adapterPosition)
+                navController?.let {
+                    if (!it.popBackStack()) {
+                        getOnClickListener().holderListener(binding, MethodType.METHOD_LOGOUT, adapterPosition)
+                    }
                 }
             }
             binding.moreSettingBtn -> {
