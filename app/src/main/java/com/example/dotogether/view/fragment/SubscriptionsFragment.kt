@@ -9,15 +9,17 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentSubscriptionsBinding
+import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.TargetAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.LibraryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
 @AndroidEntryPoint
-class SubscriptionsFragment : BaseFragment() {
+class SubscriptionsFragment : BaseFragment(), HolderListener.TargetHolderListener {
 
     private val viewModel: LibraryViewModel by viewModels()
     private lateinit var binding: FragmentSubscriptionsBinding
@@ -53,7 +55,7 @@ class SubscriptionsFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        targetAdapter = TargetAdapter(targets)
+        targetAdapter = TargetAdapter(targets, this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
         binding.targetRv.adapter = targetAdapter
 
@@ -64,6 +66,27 @@ class SubscriptionsFragment : BaseFragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { updateTarget ->
+                        val newTargets = ArrayList<Target>()
+                        targets.mapTo(newTargets) {t -> if (updateTarget.id == t.id) updateTarget else t}
+                        targets.clear()
+                        targets.addAll(newTargets)
+                        targetAdapter.notifyDataSetChanged()
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
         viewModel.joinedTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -131,5 +154,21 @@ class SubscriptionsFragment : BaseFragment() {
             }
         }
         binding.targetRv.addOnScrollListener(scrollListener)
+    }
+
+    override fun like(binding: ItemTargetBinding, target: Target) {
+        viewModel.likeTarget(target.id!!)
+    }
+
+    override fun join(binding: ItemTargetBinding, target: Target) {
+        viewModel.joinTarget(target.id!!)
+    }
+
+    override fun unLike(binding: ItemTargetBinding, target: Target) {
+        viewModel.unLikeTarget(target.id!!)
+    }
+
+    override fun unJoin(binding: ItemTargetBinding, target: Target) {
+        viewModel.unJoinTarget(target.id!!)
     }
 }

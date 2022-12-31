@@ -10,8 +10,13 @@ import com.example.dotogether.model.Target
 import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.ReelsTopHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 
-class HomeTargetAdapter(private val targetList: ArrayList<Target>, private val reelsList: ArrayList<Reels>) : BaseAdapter() {
+class HomeTargetAdapter(
+    private val targetList: ArrayList<Target>,
+    private val reelsList: ArrayList<Reels>,
+    private val targetHolderListener: HolderListener.TargetHolderListener
+) : BaseAdapter() {
 
     private lateinit var binding: ViewBinding
 
@@ -21,18 +26,16 @@ class HomeTargetAdapter(private val targetList: ArrayList<Target>, private val r
         return if (viewType == 0) {
             binding = ItemReelsTopBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             reelsTopHolder = ReelsTopHolder(binding.root, reelsList)
-            reelsTopHolder!!.setOnClickListener(getOnClickListener())
             reelsTopHolder!!
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            val targetHolder = TargetHolder(binding.root, LayoutInflater.from(parent.context))
-            targetHolder.setOnClickListener(getOnClickListener())
+            val targetHolder = TargetHolder(binding.root, LayoutInflater.from(parent.context), targetHolderListener)
             targetHolder
         }
     }
 
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {
-        when(holder.itemViewType) {
+        when (holder.itemViewType) {
             0 -> {
                 holder as ReelsTopHolder
                 holder.bind()

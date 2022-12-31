@@ -9,16 +9,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentSearchBinding
+import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.TargetAdapter
 import com.example.dotogether.view.adapter.UserAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragment(), HolderListener.TargetHolderListener{
 
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var binding: FragmentSearchBinding
@@ -52,7 +54,7 @@ class SearchFragment : BaseFragment() {
         }
 
         userAdapter = UserAdapter(users)
-        targetAdapter = TargetAdapter(targets)
+        targetAdapter = TargetAdapter(targets, this)
 
         binding.searchRv.layoutManager = LinearLayoutManager(context)
         binding.searchRv.adapter = userAdapter
@@ -64,5 +66,21 @@ class SearchFragment : BaseFragment() {
                 binding.searchRv.adapter = targetAdapter
             }
         }
+    }
+
+    override fun like(binding: ItemTargetBinding, target: Target) {
+
+    }
+
+    override fun join(binding: ItemTargetBinding, target: Target) {
+
+    }
+
+    override fun unLike(binding: ItemTargetBinding, target: Target) {
+
+    }
+
+    override fun unJoin(binding: ItemTargetBinding, target: Target) {
+
     }
 }

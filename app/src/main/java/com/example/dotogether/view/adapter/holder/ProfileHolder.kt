@@ -9,11 +9,15 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.User
-import com.example.dotogether.util.Constants.MethodType
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
+class ProfileHolder(
+    view: View,
+    val layoutInflater: LayoutInflater,
+    private val listener: HolderListener.ProfileHolderListener
+) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemProfileBinding.bind(view)
     private val context = binding.root.context
@@ -52,6 +56,11 @@ class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder
     fun bind(user: User) {
         this.user = user
 
+        if (listener.itIsMe(binding, user)) {
+            binding.moreSettingBtn.visibility = View.VISIBLE
+            binding.btnLayout.visibility = View.GONE
+        }
+
         binding.userNameTxt.text = user.username
         binding.description.setText(user.description)
         binding.followersNumberTxt.text = user.follower_number.toString()
@@ -72,14 +81,14 @@ class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        when(v) {
+        when (v) {
             binding.backgroundImage -> {
 
             }
             binding.backBtn -> {
                 navController?.let {
                     if (!it.popBackStack()) {
-                        getOnClickListener().holderListener(binding, MethodType.METHOD_LOGOUT, adapterPosition)
+                        listener.finishActivity(binding, user)
                     }
                 }
             }
@@ -105,11 +114,11 @@ class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder
                 goToChatFragment(navController)
             }
             binding.backgroundEditBtn -> {
-                getOnClickListener().holderListener(binding, MethodType.METHOD_BACKGROUND_EDIT, adapterPosition)
+                listener.backgroundImageEdit(binding, user)
                 invertEditVisibility()
             }
             binding.profileEditBtn -> {
-                getOnClickListener().holderListener(binding, MethodType.METHOD_PROFILE_EDIT, adapterPosition)
+                listener.profileImageEdit(binding, user)
                 invertEditVisibility()
             }
             dialogBinding.edit -> {
@@ -117,7 +126,7 @@ class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder
                 dialog.dismiss()
             }
             dialogBinding.logout -> {
-                getOnClickListener().holderListener(binding, MethodType.METHOD_LOGOUT, adapterPosition)
+                listener.logout(binding, user)
             }
             binding.closeBtn -> {
                 invertEditVisibility()

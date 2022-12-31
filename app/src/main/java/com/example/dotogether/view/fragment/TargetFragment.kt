@@ -1,7 +1,6 @@
 package com.example.dotogether.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,7 +98,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
-        viewModel.joinTarget.observe(viewLifecycleOwner) {
+        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { target ->

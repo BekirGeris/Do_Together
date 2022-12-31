@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +12,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.FragmentProfileBinding
 import com.example.dotogether.databinding.ItemProfileBinding
+import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
-import com.example.dotogether.util.Constants.MethodType
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
-import com.example.dotogether.view.callback.HolderCallback
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +29,7 @@ import java.util.ArrayList
 import kotlin.concurrent.thread
 
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment(), HolderCallback {
+class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, HolderListener.TargetHolderListener {
 
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentProfileBinding
@@ -41,7 +39,7 @@ class ProfileFragment : BaseFragment(), HolderCallback {
 
     private lateinit var targetAdapter: ProfileTargetAdapter
     private val targets = ArrayList<Target>()
-    private lateinit var myUser: User
+    private var myUser: User? = null
 
     var userId: Int? = null
 
@@ -143,7 +141,7 @@ class ProfileFragment : BaseFragment(), HolderCallback {
     private fun initObserve() {
         viewModel.myUser.observe(viewLifecycleOwner) { user ->
             myUser = user
-            userId = myUser.id
+            userId = myUser?.id
             user.id?.let { viewModel.getUser(it) }
         }
         viewModel.user.observe(viewLifecycleOwner) {
@@ -152,10 +150,12 @@ class ProfileFragment : BaseFragment(), HolderCallback {
                     binding.swipeLyt.isRefreshing = false
                     dialog.hide()
                     it.data?.let { user ->
-                        targetAdapter = ProfileTargetAdapter(user.activities!!, user)
-                        targetAdapter.setOnClickListener(this)
-                        binding.targetRv.adapter = targetAdapter
-                        //viewModel.getMyTargets()
+                        user.activities?.let { list ->
+                            targets.clear()
+                            targets.addAll(list)
+                            targetAdapter = ProfileTargetAdapter(targets, user, this, this)
+                            binding.targetRv.adapter = targetAdapter
+                        }
                     }
                 }
                 is Resource.Error -> {
@@ -175,55 +175,76 @@ class ProfileFragment : BaseFragment(), HolderCallback {
         } else {
             viewModel.getMyUser()
         }
-        viewModel.myTargets.observe(viewLifecycleOwner) {
+//        viewModel.myTargets.observe(viewLifecycleOwner) {
+//            when(it) {
+//                is Resource.Success -> {
+//                    binding.swipeLyt.isRefreshing = false
+//                    it.data?.let { response ->
+//                        response.data?.let { list ->
+//                            //binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
+//                            targets.clear()
+//                            targets.addAll(list)
+//                            targetAdapter.notifyDataSetChanged()
+//                        }
+//                        response.next_page_url?.let { next_page_url ->
+//                            nextPage = next_page_url.last().toString()
+//                            setRecyclerViewScrollListener()
+//                        }
+//                    }
+//                    dialog.hide()
+//                }
+//                is Resource.Error -> {
+//                    //binding.activityErrorView.visibility = View.VISIBLE
+//                    binding.swipeLyt.isRefreshing = false
+//                    dialog.hide()
+//                    showToast(it.message)
+//                }
+//                is Resource.Loading -> {
+//                    if (!binding.swipeLyt.isRefreshing) {
+//                        dialog.shoe()
+//                    }
+//                }
+//                else -> {}
+//            }
+//        }
+//        viewModel.nextMyTargets.observe(viewLifecycleOwner) {
+//            when(it) {
+//                is Resource.Success -> {
+//                    it.data?.let { response ->
+//                        response.data?.let { list ->
+//                            targets.addAll(list)
+//                            targetAdapter.notifyDataSetChanged()
+//                        }
+//                        response.next_page_url?.let { next_page_url ->
+//                            nextPage = next_page_url.last().toString()
+//                            setRecyclerViewScrollListener()
+//                        }
+//                    }
+//                }
+//                is Resource.Error -> {
+//                }
+//                is Resource.Loading -> {
+//                }
+//                else -> {}
+//            }
+//        }
+        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    binding.swipeLyt.isRefreshing = false
-                    it.data?.let { response ->
-                        response.data?.let { list ->
-                            //binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
-                            targets.clear()
-                            targets.addAll(list)
-                            targetAdapter.notifyDataSetChanged()
-                        }
-                        response.next_page_url?.let { next_page_url ->
-                            nextPage = next_page_url.last().toString()
-                            setRecyclerViewScrollListener()
-                        }
+                    it.data?.let { updateTarget ->
+                        val newTargets = ArrayList<Target>()
+                        targets.mapTo(newTargets) {t -> if (updateTarget.id == t.id) updateTarget else t}
+                        targets.clear()
+                        targets.addAll(newTargets)
+                        targetAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()
                 }
                 is Resource.Error -> {
-                    //binding.activityErrorView.visibility = View.VISIBLE
-                    binding.swipeLyt.isRefreshing = false
                     dialog.hide()
-                    showToast(it.message)
                 }
                 is Resource.Loading -> {
-                    if (!binding.swipeLyt.isRefreshing) {
-                        dialog.shoe()
-                    }
-                }
-                else -> {}
-            }
-        }
-        viewModel.nextMyTargets.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    it.data?.let { response ->
-                        response.data?.let { list ->
-                            targets.addAll(list)
-                            targetAdapter.notifyDataSetChanged()
-                        }
-                        response.next_page_url?.let { next_page_url ->
-                            nextPage = next_page_url.last().toString()
-                            setRecyclerViewScrollListener()
-                        }
-                    }
-                }
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> {
+                    dialog.shoe()
                 }
                 else -> {}
             }
@@ -269,26 +290,46 @@ class ProfileFragment : BaseFragment(), HolderCallback {
             }
     }
 
-    override fun holderListener(binding: ViewBinding, methodType: MethodType, position: Int) {
-        this.itemProfileBinding = binding as ItemProfileBinding
-        when(methodType) {
-            MethodType.METHOD_BACKGROUND_EDIT -> {
-                calledFromMode = 0
-                requestPermissionsForImagePicker()
-            }
-            MethodType.METHOD_PROFILE_EDIT -> {
-                calledFromMode = 1
-                requestPermissionsForImagePicker()
-            }
-            MethodType.METHOD_LOGOUT -> {
-                dialog.shoe()
-                viewModel.logout()
-                thread {
-                    Thread.sleep(1000)
-                    activity?.finish()
-                }
-            }
-            else -> {}
+    override fun itIsMe(binding: ItemProfileBinding, user: User): Boolean {
+        return user.id == myUser?.id
+    }
+
+    override fun backgroundImageEdit(binding: ItemProfileBinding, user: User) {
+        calledFromMode = 0
+        requestPermissionsForImagePicker()
+    }
+
+    override fun profileImageEdit(binding: ItemProfileBinding, user: User) {
+        calledFromMode = 1
+        requestPermissionsForImagePicker()
+    }
+
+    override fun finishActivity(binding: ItemProfileBinding, user: User) {
+        requireActivity().finish()
+    }
+
+    override fun logout(binding: ItemProfileBinding, user: User) {
+        dialog.shoe()
+        viewModel.logout()
+        thread {
+            Thread.sleep(1000)
+            activity?.finish()
         }
+    }
+
+    override fun like(binding: ItemTargetBinding, target: Target) {
+        viewModel.likeTarget(target.id!!)
+    }
+
+    override fun join(binding: ItemTargetBinding, target: Target) {
+        viewModel.joinTarget(target.id!!)
+    }
+
+    override fun unLike(binding: ItemTargetBinding, target: Target) {
+        viewModel.unLikeTarget(target.id!!)
+    }
+
+    override fun unJoin(binding: ItemTargetBinding, target: Target) {
+        viewModel.unJoinTarget(target.id!!)
     }
 }

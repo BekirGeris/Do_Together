@@ -25,14 +25,14 @@ import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.HomeTargetAdapter
-import com.example.dotogether.view.callback.HolderCallback
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
+class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
@@ -121,8 +121,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
         binding.messageBtn.setOnClickListener(this)
         binding.searchBtn.setOnClickListener(this)
 
-        homeTargetAdapter = HomeTargetAdapter(targets, reelsList)
-        homeTargetAdapter.setOnClickListener(this)
+        homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
         binding.targetRv.adapter = homeTargetAdapter
 
@@ -272,41 +271,19 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
             }
     }
 
-    override fun holderListener(binding: ViewBinding, methodType: Constants.MethodType, position: Int) {
-        when(binding) {
-            is ItemReelsTopBinding -> {
-                reelsTopHolderClick(binding, methodType, position)
-            }
-            is ItemTargetBinding -> {
-                targetHolderClick(binding, methodType, position)
-            }
-        }
+    override fun like(binding: ItemTargetBinding, target: Target) {
+        viewModel.likeTarget(target.id!!)
     }
 
-    private fun reelsTopHolderClick(binding: ItemReelsTopBinding, methodType: Constants.MethodType, position: Int) {
-        when(methodType) {
-            Constants.MethodType.METHOD_REELS -> {
-
-            }
-            else -> {}
-        }
+    override fun join(binding: ItemTargetBinding, target: Target) {
+        viewModel.joinTarget(target.id!!)
     }
 
-    private fun targetHolderClick(binding: ItemTargetBinding, methodType: Constants.MethodType, position: Int) {
-        when(methodType) {
-            Constants.MethodType.METHOD_LIKE_TARGET -> {
-                viewModel.likeTarget(targets[position].id!!)
-            }
-            Constants.MethodType.METHOD_JOIN_TARGET -> {
-                viewModel.joinTarget(targets[position].id!!)
-            }
-            Constants.MethodType.METHOD_UN_LIKE_TARGET -> {
-                viewModel.unLikeTarget(targets[position].id!!)
-            }
-            Constants.MethodType.METHOD_UN_JOIN_TARGET -> {
-                viewModel.unJoinTarget(targets[position].id!!)
-            }
-            else -> {}
-        }
+    override fun unLike(binding: ItemTargetBinding, target: Target) {
+        viewModel.unLikeTarget(target.id!!)
+    }
+
+    override fun unJoin(binding: ItemTargetBinding, target: Target) {
+        viewModel.unJoinTarget(target.id!!)
     }
 }

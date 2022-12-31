@@ -10,12 +10,16 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
-import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.MemberAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class TargetHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
+class TargetHolder(
+    view: View,
+    val layoutInflater: LayoutInflater,
+    private val listener: HolderListener.TargetHolderListener
+) : BaseHolder(view), View.OnClickListener {
 
     private lateinit var target: Target
     private val binding = ItemTargetBinding.bind(view)
@@ -98,27 +102,27 @@ class TargetHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        when(v) {
+        when (v) {
             binding.holderView, binding.postImage -> {
                 goToTargetFragment(navController, target.id!!)
             }
-            binding.moreSettingBtn-> {
+            binding.moreSettingBtn -> {
                 dialog.show()
             }
             binding.postUserName, binding.userImage, binding.postTime -> {
                 target.admin?.id?.let { goToProfileFragment(navController, it) }
             }
             binding.like -> {
-                getOnClickListener().holderListener(
-                    binding,
-                    if(target.is_liked == false) Constants.MethodType.METHOD_LIKE_TARGET else Constants.MethodType.METHOD_UN_LIKE_TARGET,
-                    adapterPosition - 1)
+                if (target.is_liked == false)
+                    listener.like(binding, target)
+                else
+                    listener.unLike(binding, target)
             }
             binding.join -> {
-                getOnClickListener().holderListener(
-                    binding,
-                    if(target.is_joined == false) Constants.MethodType.METHOD_JOIN_TARGET else Constants.MethodType.METHOD_UN_JOIN_TARGET,
-                    adapterPosition - 1)
+                if (target.is_joined == false)
+                    listener.join(binding, target)
+                else
+                    listener.unJoin(binding, target)
             }
             dialogBinding.save -> {
                 dialog.hide()

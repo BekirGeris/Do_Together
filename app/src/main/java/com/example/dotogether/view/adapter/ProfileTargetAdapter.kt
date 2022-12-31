@@ -10,21 +10,25 @@ import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
 import com.example.dotogether.view.adapter.holder.ProfileHolder
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 
-class ProfileTargetAdapter(private val targetList: ArrayList<Target>, private val user: User) : BaseAdapter()  {
+class ProfileTargetAdapter(
+    private val targetList: ArrayList<Target>,
+    private val user: User,
+    private val profileHolderListener: HolderListener.ProfileHolderListener,
+    private val targetHolderListener: HolderListener.TargetHolderListener
+) : BaseAdapter()  {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         lateinit var binding: ViewBinding
 
         return if (viewType == 0) {
             binding = ItemProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            val profileHolder = ProfileHolder(binding.root, LayoutInflater.from(parent.context))
-            profileHolder.setOnClickListener(getOnClickListener())
+            val profileHolder = ProfileHolder(binding.root, LayoutInflater.from(parent.context), profileHolderListener)
             profileHolder
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            val targetHolder = TargetHolder(binding.root, LayoutInflater.from(parent.context))
-            targetHolder.setOnClickListener(getOnClickListener())
+            val targetHolder = TargetHolder(binding.root, LayoutInflater.from(parent.context), targetHolderListener)
             targetHolder
         }
     }

@@ -18,9 +18,6 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
     private val _nextAllTargets = MutableLiveData<Resource<Page<Target>>>()
     val nextAllTargets: MutableLiveData<Resource<Page<Target>>> = _nextAllTargets
 
-    private val _likeJoinLiveData = MutableLiveData<Resource<Target>>()
-    val likeJoinLiveData: MutableLiveData<Resource<Target>> = _likeJoinLiveData
-
     fun getAllTargets() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getAllTargets().collect {
@@ -33,38 +30,6 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getNextAllTargets(pageNo).collect {
                 _nextAllTargets.value = it
-            }
-        }
-    }
-
-    fun joinTarget(targetId: Int) {
-        viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.joinTarget(targetId).collect{
-                _likeJoinLiveData.value = it
-            }
-        }
-    }
-
-    fun likeTarget(targetId: Int) {
-        viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.likeTarget(targetId).collect{
-                _likeJoinLiveData.value = it
-            }
-        }
-    }
-
-    fun unJoinTarget(targetId: Int) {
-        viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.unJoinTarget(targetId).collect{
-                _likeJoinLiveData.value = it
-            }
-        }
-    }
-
-    fun unLikeTarget(targetId: Int) {
-        viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.unLikeTarget(targetId).collect{
-                _likeJoinLiveData.value = it
             }
         }
     }
