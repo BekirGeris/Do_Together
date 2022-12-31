@@ -41,7 +41,9 @@ class ProfileFragment : BaseFragment(), HolderCallback {
 
     private lateinit var targetAdapter: ProfileTargetAdapter
     private val targets = ArrayList<Target>()
-    lateinit var user: User
+    private lateinit var myUser: User
+
+    var userId: Int? = null
 
     private var calledFromMode = -1
 
@@ -125,22 +127,54 @@ class ProfileFragment : BaseFragment(), HolderCallback {
     private fun initViews() {
         imagePickerBuilder = ImagePicker.with(this)
 
-        user = User()
-
-        targetAdapter = ProfileTargetAdapter(targets, User())
-
-        targetAdapter.setOnClickListener(this)
+        userId = arguments?.getInt("userId", -1)
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
-        binding.targetRv.adapter = targetAdapter
 
         binding.swipeLyt.setOnRefreshListener {
-            viewModel.getMyTargets()
+            //viewModel.getMyTargets()
+            userId?.let {
+                viewModel.getUser(it)
+            }
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.myUser.observe(viewLifecycleOwner) { user ->
+            myUser = user
+            userId = myUser.id
+            user.id?.let { viewModel.getUser(it) }
+        }
+        viewModel.user.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    binding.swipeLyt.isRefreshing = false
+                    dialog.hide()
+                    it.data?.let { user ->
+                        targetAdapter = ProfileTargetAdapter(user.activities!!, user)
+                        targetAdapter.setOnClickListener(this)
+                        binding.targetRv.adapter = targetAdapter
+                        //viewModel.getMyTargets()
+                    }
+                }
+                is Resource.Error -> {
+                    binding.swipeLyt.isRefreshing = false
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    if (!binding.swipeLyt.isRefreshing) {
+                        dialog.shoe()
+                    }
+                }
+                else -> {}
+            }
+        }
+        if (userId != null) {
+            viewModel.getUser(userId!!)
+        } else {
+            viewModel.getMyUser()
+        }
         viewModel.myTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -173,7 +207,6 @@ class ProfileFragment : BaseFragment(), HolderCallback {
                 else -> {}
             }
         }
-        viewModel.getMyTargets()
         viewModel.nextMyTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -203,12 +236,10 @@ class ProfileFragment : BaseFragment(), HolderCallback {
                 super.onScrollStateChanged(recyclerView, newState)
                 if(!recyclerView.canScrollVertically(1)) {
                     viewModel.getNextMyTargets(nextPage)
-                    Log.d("bekbek", "setRecyclerViewScrollListener 1")
                     binding.targetRv.removeOnScrollListener(scrollListener)
                 }
             }
         }
-        Log.d("bekbek", "setRecyclerViewScrollListener 2")
         binding.targetRv.addOnScrollListener(scrollListener)
     }
 

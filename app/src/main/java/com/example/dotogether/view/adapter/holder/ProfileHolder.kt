@@ -2,6 +2,7 @@ package com.example.dotogether.view.adapter.holder
 
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.dotogether.R
@@ -9,6 +10,7 @@ import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants.MethodType
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
@@ -49,6 +51,18 @@ class ProfileHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder
 
     fun bind(user: User) {
         this.user = user
+
+        binding.userNameTxt.text = user.username
+        binding.description.setText(user.description)
+        binding.followersNumberTxt.text = user.follower_number.toString()
+        binding.followingNumberTxt.text = user.following_number.toString()
+        RuntimeHelper.glideForPersonImage(context).load(user.img).into(binding.profileImage)
+
+        if (user.background_img != null) {
+            RuntimeHelper.glideForImage(context).load(user.background_img).into(binding.backgroundImage)
+        } else {
+            binding.backgroundImage.background = ContextCompat.getDrawable(context, R.drawable.pilgrim)
+        }
     }
 
     override fun onClick(v: View?) {

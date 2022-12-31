@@ -68,6 +68,9 @@ interface RemoteRepository {
     @GET("activity/get/{targetId}")
     suspend fun getTarget(@Path("targetId") targetId: Int) : Response<Target>
 
+    @GET("user/get/{userId}")
+    suspend fun getUser(@Path("userId") userId: Int) : Response<User>
+
     @GET("user/followers")
     suspend fun getFollowers() : Response<Page<Connection>>
 

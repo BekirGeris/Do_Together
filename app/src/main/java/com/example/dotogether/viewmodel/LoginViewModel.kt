@@ -2,7 +2,6 @@ package com.example.dotogether.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.dotogether.model.User
 import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.response.LoginResponse
@@ -41,7 +40,8 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
             appRepository.remoteRepositoryImpl.login(loginRequest).collect {
                 _login.value = it
                 if (it is Resource.Success) {
-                    appRepository.localRepositoryImpl.insertUser(User("", "", email, password, it.data?.token))
+                    it.data?.user?.password = password
+                    it.data?.user?.let { it1 -> appRepository.localRepositoryImpl.insertUser(it1) }
                 }
             }
         }
@@ -54,7 +54,8 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
             appRepository.remoteRepositoryImpl.register(registerRequest).collect {
                 _register.value = it
                 if (it is Resource.Success) {
-                    appRepository.localRepositoryImpl.insertUser(User(name, username, email, password, it.data?.token))
+                    it.data?.user?.password = password
+                    it.data?.user?.let { it1 -> appRepository.localRepositoryImpl.insertUser(it1) }
                 }
             }
         }

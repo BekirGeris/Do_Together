@@ -99,6 +99,23 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
+        viewModel.joinTarget.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { target ->
+                        setViewWithTarget(target)
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
         targetId?.let {
             viewModel.getTarget(it)
         }
@@ -154,7 +171,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     navController.navigate(TargetFragmentDirections.actionChatFragment(true))
                 }
                 binding.joinBtn -> {
-
+                    viewModel.joinTarget(targetId!!)
                 }
                 dialogBinding.save -> {
                     bottomSheetDialog.hide()

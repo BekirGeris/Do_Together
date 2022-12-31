@@ -43,7 +43,8 @@ class OthersActivity : BaseActivity() {
                 navController.navigate(OthersNavDirections.actionShareFragment(), navOptions)
             }
             ViewType.VIEW_PROFILE_FRAGMENT.type -> {
-                navController.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
+                val userId = intent.getIntExtra("userId", -1)
+                navController.navigate(OthersNavDirections.actionProfileFragment(userId), navOptions)
             }
             ViewType.VIEW_LIST_CHAT_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionListChatFragment(), navOptions)

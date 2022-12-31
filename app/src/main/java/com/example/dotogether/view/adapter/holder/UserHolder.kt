@@ -33,7 +33,7 @@ class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
         }
         when(v) {
             binding.holderView -> {
-                goToProfileFragment(navController)
+                user.id?.let { goToProfileFragment(navController, it) }
             }
         }
     }

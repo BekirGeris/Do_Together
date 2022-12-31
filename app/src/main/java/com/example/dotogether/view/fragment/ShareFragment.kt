@@ -31,6 +31,8 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 import android.util.Base64;
+import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
 
 @AndroidEntryPoint
 class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
@@ -156,6 +158,11 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
         customPeriodBinding.cancel.setOnClickListener(this)
         customPeriodBinding.confirm.setOnClickListener(this)
+
+        binding.startDateTxt.text = Constants.DATE_FORMAT.format(System.currentTimeMillis())
+
+        binding.targetEditTxt.addTextChangedListener{ editTextChange(binding.targetEditTxt) }
+        binding.descriptionEditTxt.addTextChangedListener{ editTextChange(binding.descriptionEditTxt) }
     }
 
     private fun initObserve() {
@@ -166,15 +173,17 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     override fun onClick(v: View?) {
         val navController = view?.findNavController()
-        navController?.let {
-            when(v) {
-                binding.backBtn -> {
-                    activity?.onBackPressed()
-                }
-                binding.selectImage -> {
-                    requestPermissionsForImagePicker()
-                }
-                binding.uploadBtn -> {
+        when(v) {
+            binding.backBtn -> {
+                activity?.onBackPressed()
+            }
+            binding.selectImage -> {
+                requestPermissionsForImagePicker()
+            }
+            binding.uploadBtn -> {
+                validTarget()
+                validDescription()
+                if (validTarget() && validDescription()) {
                     shareTarget(
                         binding.targetEditTxt.text.toString(),
                         binding.descriptionEditTxt.text.toString(),
@@ -184,55 +193,54 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                         imageBase64
                     )
                 }
-                binding.periodLyt -> {
-                    periodDialog.show()
-                }
-                binding.startLyt -> {
-                    datePickerFragment.show(parentFragmentManager, "start")
-                }
-                binding.finishLyt -> {
-                    datePickerFragment.show(parentFragmentManager, "finish")
-                }
-                binding.startDateClear -> {
-                    binding.startDateClear.visibility = View.GONE
-                    binding.startDateTxt.text = "----/--/--"
-                }
-                binding.finishDateClear -> {
-                    binding.finishDateClear.visibility = View.GONE
-                    binding.finishDateTxt.text = getString(R.string.forever)
-                }
-                binding.closeBtn -> {
-                    activity?.onBackPressed()
-                }
-                periodDialogBinding.daily -> {
-                     viewModel.period.value = "Daily"
-                    setPeriodCheckView(periodDialogBinding.dailyCheck)
-                }
-                periodDialogBinding.weekly -> {
-                     viewModel.period.value = "Weekly"
-                    setPeriodCheckView(periodDialogBinding.weeklyCheck)
-                }
-                periodDialogBinding.monthly -> {
-                     viewModel.period.value = "Monthly"
-                    setPeriodCheckView(periodDialogBinding.monthlyCheck)
-                }
-                periodDialogBinding.mondayToFriday -> {
-                     viewModel.period.value = "Monday to Friday"
-                    setPeriodCheckView(periodDialogBinding.mondayToFridayCheck)
-                }
-                periodDialogBinding.custom -> {
-                    customPeriodDialog.show()
-                    periodDialog.hide()
-                }
-                customPeriodBinding.cancel -> {
-                    customPeriodDialog.hide()
-                }
-                customPeriodBinding.confirm -> {
-                    fillPeriodDescWithCheckBox()
-                    setPeriodCheckView(periodDialogBinding.customCheck)
-                    customPeriodDialog.hide()
-                }
-                else -> {}
+            }
+            binding.periodLyt -> {
+                periodDialog.show()
+            }
+            binding.startLyt -> {
+                datePickerFragment.show(parentFragmentManager, "start")
+            }
+            binding.finishLyt -> {
+                datePickerFragment.show(parentFragmentManager, "finish")
+            }
+            binding.startDateClear -> {
+                binding.startDateClear.visibility = View.GONE
+                binding.startDateTxt.text = Constants.DATE_FORMAT.format(System.currentTimeMillis())
+            }
+            binding.finishDateClear -> {
+                binding.finishDateClear.visibility = View.GONE
+                binding.finishDateTxt.text = getString(R.string.forever)
+            }
+            binding.closeBtn -> {
+                activity?.onBackPressed()
+            }
+            periodDialogBinding.daily -> {
+                 viewModel.period.value = "Daily"
+                setPeriodCheckView(periodDialogBinding.dailyCheck)
+            }
+            periodDialogBinding.weekly -> {
+                 viewModel.period.value = "Weekly"
+                setPeriodCheckView(periodDialogBinding.weeklyCheck)
+            }
+            periodDialogBinding.monthly -> {
+                 viewModel.period.value = "Monthly"
+                setPeriodCheckView(periodDialogBinding.monthlyCheck)
+            }
+            periodDialogBinding.mondayToFriday -> {
+                 viewModel.period.value = "Monday to Friday"
+                setPeriodCheckView(periodDialogBinding.mondayToFridayCheck)
+            }
+            periodDialogBinding.custom -> {
+                customPeriodDialog.show()
+                periodDialog.hide()
+            }
+            customPeriodBinding.cancel -> {
+                customPeriodDialog.hide()
+            }
+            customPeriodBinding.confirm -> {
+                fillPeriodDescWithCheckBox()
+                setPeriodCheckView(periodDialogBinding.customCheck)
+                customPeriodDialog.hide()
             }
         }
     }
@@ -327,5 +335,36 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             }
         }
         viewModel.createTarget(createTargetRequest)
+    }
+
+    private fun editTextChange(v: EditText) {
+        when(v) {
+            binding.targetEditTxt -> {
+                validTarget()
+            }
+            binding.descriptionEditTxt -> {
+                validDescription()
+            }
+        }
+    }
+
+    private fun validTarget() : Boolean {
+        return if (binding.targetEditTxt.text.toString().isEmpty()) {
+            binding.targetEditLyt.error = "Requaried"
+            false
+        } else {
+            binding.targetEditLyt.error = null
+            true
+        }
+    }
+
+    private fun validDescription() : Boolean {
+        return if (binding.descriptionEditTxt.text.toString().isEmpty()) {
+            binding.descriptionEditLyt.error = "Requaried"
+            false
+        } else {
+            binding.descriptionEditLyt.error = null
+            true
+        }
     }
 }

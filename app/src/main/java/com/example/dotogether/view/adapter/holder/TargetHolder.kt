@@ -106,7 +106,7 @@ class TargetHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(
                 dialog.show()
             }
             binding.postUserName, binding.userImage, binding.postTime -> {
-                 goToProfileFragment(navController)
+                target.admin?.id?.let { goToProfileFragment(navController, it) }
             }
             binding.like -> {
                 getOnClickListener().holderListener(

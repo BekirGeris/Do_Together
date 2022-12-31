@@ -308,7 +308,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     private fun validName() : Boolean {
         return if (name.isEmpty()) {
-            binding.nameEditLyt.error = "Wrong username"
+            binding.nameEditLyt.error = "Wrong name"
             false
         } else {
             binding.nameEditLyt.error = null

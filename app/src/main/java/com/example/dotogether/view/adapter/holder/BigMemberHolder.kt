@@ -25,7 +25,7 @@ class BigMemberHolder(view: View) : BaseHolder(view), View.OnClickListener {
         this.user = user
 
         user.img?.let {
-            RuntimeHelper.glideForImage(context).load(it).into(binding.userImage)
+            RuntimeHelper.glideForPersonImage(context).load(it).into(binding.userImage)
         }
         user.username?.let {
             binding.userNameTxt.text = it
@@ -41,7 +41,7 @@ class BigMemberHolder(view: View) : BaseHolder(view), View.OnClickListener {
         }
         when(v) {
             binding.userImage -> {
-                goToProfileFragment(navController)
+                user.id?.let { goToProfileFragment(navController, it) }
             }
         }
     }

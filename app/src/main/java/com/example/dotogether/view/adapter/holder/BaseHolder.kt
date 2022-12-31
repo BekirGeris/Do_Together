@@ -22,7 +22,7 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         return onClickListener
     }
 
-    fun goToProfileFragment(navController: NavController?) {
+    fun goToProfileFragment(navController: NavController?, userId: Int) {
         navController.let {
             if (it != null) {
                 val navOptions = NavOptions.Builder()
@@ -33,13 +33,14 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 with(it.graph.displayName.lowercase()) {
                     when {
                         contains("others_nav") -> {
-                            it.navigate(OthersNavDirections.actionProfileFragment(), navOptions)
+                            it.navigate(OthersNavDirections.actionProfileFragment(userId), navOptions)
                         }
                     }
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
                 intent.putExtra("viewType", ViewType.VIEW_PROFILE_FRAGMENT.type)
+                intent.putExtra("userId", userId)
                 view.context.startActivity(intent)
             }
         }

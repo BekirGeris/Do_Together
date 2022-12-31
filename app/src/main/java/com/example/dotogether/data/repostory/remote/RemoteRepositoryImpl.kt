@@ -6,6 +6,7 @@ import com.example.dotogether.model.request.CreateTargetRequest
 import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.Page
+import com.example.dotogether.model.User
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
 import com.example.dotogether.util.Constants
@@ -297,6 +298,22 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             emit(Resource.Loading())
             try {
                 val result = repository.getTarget(targetId)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getUser(userId: Int): Flow<Resource<User>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getUser(userId)
                 if (result.success) {
                     emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {
