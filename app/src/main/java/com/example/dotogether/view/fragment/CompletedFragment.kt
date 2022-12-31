@@ -56,6 +56,10 @@ class CompletedFragment : BaseFragment() {
         targetAdapter = TargetAdapter(targets)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
         binding.targetRv.adapter = targetAdapter
+
+        binding.swipeLyt.setOnRefreshListener {
+            viewModel.getMyDoneTargets()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -63,11 +67,10 @@ class CompletedFragment : BaseFragment() {
         viewModel.doneTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
+                    binding.swipeLyt.isRefreshing = false
                     it.data?.let { response ->
                         response.data?.let { list ->
-                            if (list.isEmpty()) {
-                                binding.activityErrorView.visibility = View.VISIBLE
-                            }
+                            binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
                             targets.clear()
                             targets.addAll(list)
                             targetAdapter.notifyDataSetChanged()
@@ -80,12 +83,13 @@ class CompletedFragment : BaseFragment() {
                     dialog.hide()
                 }
                 is Resource.Error -> {
+                    binding.swipeLyt.isRefreshing = false
                     binding.activityErrorView.visibility = View.VISIBLE
                     dialog.hide()
                     showToast(it.message)
                 }
                 is Resource.Loading -> {
-                    if (!dialog.dialog.isShowing) {
+                    if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
                         dialog.shoe()
                     }
                 }

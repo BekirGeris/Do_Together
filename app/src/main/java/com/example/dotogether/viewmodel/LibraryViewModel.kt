@@ -30,7 +30,7 @@ class LibraryViewModel @Inject constructor() : BaseViewModel() {
     private val _nextDoneTargets = MutableLiveData<Resource<Page<Target>>>()
     val nextDoneTargets: MutableLiveData<Resource<Page<Target>>> = _nextDoneTargets
 
-    fun getJoinedTargets() {
+    fun getMyJoinedTargets() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getMyJoinedTargets().collect {
                 _joinedTargets.value = it

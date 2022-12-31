@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemBigMemberBinding
 import com.example.dotogether.model.User
+import com.example.dotogether.util.helper.RuntimeHelper
 
 class BigMemberHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
@@ -22,6 +23,13 @@ class BigMemberHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     fun bind(user: User) {
         this.user = user
+
+        user.img?.let {
+            RuntimeHelper.glideForImage(context).load(it).into(binding.userImage)
+        }
+        user.username?.let {
+            binding.userNameTxt.text = it
+        }
     }
 
     override fun onClick(v: View?) {

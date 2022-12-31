@@ -125,6 +125,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
         homeTargetAdapter.setOnClickListener(this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
         binding.targetRv.adapter = homeTargetAdapter
+
+        binding.swipeLyt.setOnRefreshListener {
+            viewModel.getAllTargets()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -153,11 +157,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
         viewModel.allTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
+                    binding.swipeLyt.isRefreshing = false
                     it.data?.let { response ->
                         response.data?.let { list ->
-                            if (list.isEmpty()) {
-                                binding.activityErrorView.visibility = View.VISIBLE
-                            }
+                            binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
                             targets.clear()
                             targets.addAll(list)
                             homeTargetAdapter.notifyDataSetChanged()
@@ -179,12 +182,15 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
                     dialog.hide()
                 }
                 is Resource.Error -> {
+                    binding.swipeLyt.isRefreshing = false
                     binding.activityErrorView.visibility = View.VISIBLE
                     dialog.hide()
                     showToast(it.message)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    if (!binding.swipeLyt.isRefreshing) {
+                        dialog.shoe()
+                    }
                 }
                 else -> {}
             }

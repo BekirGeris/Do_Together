@@ -292,6 +292,22 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getTarget(targetId: Int): Flow<Resource<Target>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getTarget(targetId)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
     suspend fun getFollowers(): Flow<Resource<Page<Connection>>> {
         return flow {
             emit(Resource.Loading())

@@ -17,7 +17,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/target_image" />
 
     <TextView
         android:id="@+id/textView8"
@@ -30,7 +30,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <TextView
         android:id="@+id/textView14"
@@ -43,7 +43,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/start_date" />
 
     <TextView
         android:id="@+id/textView10"
@@ -56,7 +56,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/period" />
 
     <TextView
         android:id="@+id/textView12"
@@ -69,10 +69,10 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/period" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/target"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -94,10 +94,10 @@
         android:textStyle="bold"
         android:textColor="?colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/target" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/period"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -119,7 +119,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_date"
@@ -128,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/end_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_date"
@@ -136,14 +136,14 @@
         app:layout_constraintEnd_toEndOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/target_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/pilgrim"
+        android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/more_setting_btn"

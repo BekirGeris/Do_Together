@@ -63,19 +63,20 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun goToTargetFragment(navController: NavController?) {
+    fun goToTargetFragment(navController: NavController?, targetId: Int) {
         navController.let {
             if (it != null) {
                 with(it.graph.displayName.lowercase()) {
                     when {
                         contains("others_nav") -> {
-                            it.navigate(OthersNavDirections.actionTargetFragment())
+                            it.navigate(OthersNavDirections.actionTargetFragment(targetId))
                         }
                     }
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
                 intent.putExtra("viewType", ViewType.VIEW_TARGET_FRAGMENT.type)
+                intent.putExtra("targetId", targetId)
                 view.context.startActivity(intent)
             }
         }

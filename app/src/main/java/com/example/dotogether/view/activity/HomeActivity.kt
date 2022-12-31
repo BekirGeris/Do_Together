@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity() {
 //        NavigationUI.setupWithNavController(navView, navController)
 
         fragmentManager.beginTransaction().apply {
-            add(R.id.container, homeFragment)
+            add(R.id.container, activeFragment)
             add(R.id.container, searchFragment).hide(searchFragment)
             add(R.id.container, libraryFragment).hide(libraryFragment)
             add(R.id.container, profileFragment).hide(profileFragment)

@@ -65,6 +65,9 @@ interface RemoteRepository {
     @GET("activity/unlike/{targetId}")
     suspend fun unLikeTarget(@Path("targetId") targetId: Int) : Response<Target>
 
+    @GET("activity/get/{targetId}")
+    suspend fun getTarget(@Path("targetId") targetId: Int) : Response<Target>
+
     @GET("user/followers")
     suspend fun getFollowers() : Response<Page<Connection>>
 

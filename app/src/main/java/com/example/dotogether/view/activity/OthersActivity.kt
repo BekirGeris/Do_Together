@@ -52,7 +52,8 @@ class OthersActivity : BaseActivity() {
                 navController.navigate(OthersNavDirections.actionChatFragment(), navOptions)
             }
             ViewType.VIEW_TARGET_FRAGMENT.type -> {
-                navController.navigate(OthersNavDirections.actionTargetFragment(), navOptions)
+                val targetId = intent.getIntExtra("targetId", -1)
+                navController.navigate(OthersNavDirections.actionTargetFragment(targetId), navOptions)
             }
             ViewType.VIEW_REELS_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionReelsFragment(), navOptions)

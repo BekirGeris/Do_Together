@@ -37,7 +37,7 @@
         android:layout_margin="5dp"
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/target_rv"
+        app:layout_constraintBottom_toTopOf="@+id/swipe_lyt"
         app:layout_constraintEnd_toStartOf="@+id/message_btn"
         app:layout_constraintStart_toEndOf="@+id/camera_btn"
         app:layout_constraintTop_toTopOf="parent">
@@ -76,22 +76,33 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/target_rv"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_lyt"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/camera_btn" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/target_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ImageView
         android:id="@+id/image"
         android:visibility="gone"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="@+id/target_rv"
+        app:layout_constraintBottom_toBottomOf="@+id/swipe_lyt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

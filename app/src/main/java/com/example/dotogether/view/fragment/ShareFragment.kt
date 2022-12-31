@@ -283,7 +283,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     private fun startImageMaker() {
         ImagePicker.with(this)
-            .crop(2f, 1f)
+            .crop(6f, 4f)
             .compress(1024)
             .maxResultSize(1080, 1080)
             .saveDir(File(context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!, "ImagePicker"))

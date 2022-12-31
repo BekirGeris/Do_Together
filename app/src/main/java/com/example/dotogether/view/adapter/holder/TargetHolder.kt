@@ -100,7 +100,7 @@ class TargetHolder(view: View, val layoutInflater: LayoutInflater) : BaseHolder(
         }
         when(v) {
             binding.holderView, binding.postImage -> {
-                goToTargetFragment(navController)
+                goToTargetFragment(navController, target.id!!)
             }
             binding.moreSettingBtn-> {
                 dialog.show()

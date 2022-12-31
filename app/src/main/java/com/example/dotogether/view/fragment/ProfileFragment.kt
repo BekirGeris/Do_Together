@@ -133,6 +133,10 @@ class ProfileFragment : BaseFragment(), HolderCallback {
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.targetRv.adapter = targetAdapter
+
+        binding.swipeLyt.setOnRefreshListener {
+            viewModel.getMyTargets()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -140,11 +144,10 @@ class ProfileFragment : BaseFragment(), HolderCallback {
         viewModel.myTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
+                    binding.swipeLyt.isRefreshing = false
                     it.data?.let { response ->
                         response.data?.let { list ->
-                            if (list.isEmpty()) {
-                                //binding.activityErrorView.visibility = View.VISIBLE
-                            }
+                            //binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
                             targets.clear()
                             targets.addAll(list)
                             targetAdapter.notifyDataSetChanged()
@@ -157,11 +160,15 @@ class ProfileFragment : BaseFragment(), HolderCallback {
                     dialog.hide()
                 }
                 is Resource.Error -> {
+                    //binding.activityErrorView.visibility = View.VISIBLE
+                    binding.swipeLyt.isRefreshing = false
                     dialog.hide()
                     showToast(it.message)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    if (!binding.swipeLyt.isRefreshing) {
+                        dialog.shoe()
+                    }
                 }
                 else -> {}
             }
