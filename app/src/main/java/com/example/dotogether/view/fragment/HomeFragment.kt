@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.dotogether.HomeNavDirections
 import com.example.dotogether.databinding.FragmentHomeBinding
@@ -38,11 +39,13 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var navController: NavController
 
+    private var nextPage = "2"
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private val targets = ArrayList<Target>()
     private val reelsList = ArrayList<Reels>()
 
     private var justOneWork = true
+    private lateinit var scrollListener: RecyclerView.OnScrollListener
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         var isGrantedGalleryAndCamera = true
@@ -110,7 +113,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
         super.onViewCreated(view, savedInstanceState)
         if (justOneWork) {
             initObserve()
-            justOneWork = false
+            justOneWork = true
         }
     }
 
@@ -129,26 +132,53 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { updateTarget ->
+                        val newTargets = ArrayList<Target>()
+                        targets.mapTo(newTargets) {t -> if (updateTarget.id == t.id) updateTarget else t}
+                        targets.clear()
+                        targets.addAll(newTargets)
+                        homeTargetAdapter.notifyDataSetChanged()
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
         viewModel.allTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    it.data?.data?.let { list ->
-                        if (list.isEmpty()) {
-                            binding.activityErrorView.visibility = View.VISIBLE
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            if (list.isEmpty()) {
+                                binding.activityErrorView.visibility = View.VISIBLE
+                            }
+                            targets.clear()
+                            targets.addAll(list)
+                            targets.reverse()
+                            homeTargetAdapter.notifyDataSetChanged()
+                            //todo: **************test test****************
+                            for (i in 1..100) {
+                                reelsList.add(Reels())
+                            }
+                            if (reelsList.isEmpty()) {
+                                homeTargetAdapter.reelsTopHolder?.binding?.reelsRv?.visibility = View.GONE
+                            }
+                            homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
+                            //todo: **************test test****************
                         }
-                        targets.clear()
-                        targets.addAll(list)
-                        targets.reverse()
-                        homeTargetAdapter.notifyDataSetChanged()
-                        //todo: **************test test****************
-                        for (i in 1..100) {
-                            reelsList.add(Reels())
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
                         }
-                        if (reelsList.isEmpty()) {
-                            homeTargetAdapter.reelsTopHolder?.binding?.reelsRv?.visibility = View.GONE
-                        }
-                        homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
-                        //todo: **************test test****************
                     }
                     dialog.hide()
                 }
@@ -164,6 +194,27 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
             }
         }
         viewModel.getAllTargets()
+        viewModel.nextAllTargets.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            targets.addAll(list)
+                            homeTargetAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -178,6 +229,19 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
                 //navController.navigate(HomeFragmentDirections.actionNavigationHomeToNavigationSearch())
             }
         }
+    }
+
+    private fun setRecyclerViewScrollListener() {
+        scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!recyclerView.canScrollVertically(1)) {
+                    viewModel.getNextAllTargets(nextPage)
+                    binding.targetRv.removeOnScrollListener(scrollListener)
+                }
+            }
+        }
+        binding.targetRv.addOnScrollListener(scrollListener)
     }
 
     fun requestPermissionsForImagePicker() {
@@ -227,40 +291,16 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderCallback {
     private fun targetHolderClick(binding: ItemTargetBinding, methodType: Constants.MethodType, position: Int) {
         when(methodType) {
             Constants.MethodType.METHOD_LIKE_TARGET -> {
-                viewModel.likeTarget.observe(viewLifecycleOwner) {
-                    when(it) {
-                        is Resource.Success -> {
-                            dialog.hide()
-                            viewModel.getAllTargets()
-                        }
-                        is Resource.Error -> {
-                            dialog.hide()
-                        }
-                        is Resource.Loading -> {
-                            dialog.shoe()
-                        }
-                        else -> {}
-                    }
-                }
                 viewModel.likeTarget(targets[position].id!!)
             }
             Constants.MethodType.METHOD_JOIN_TARGET -> {
-                viewModel.joinTarget.observe(viewLifecycleOwner) {
-                    when(it) {
-                        is Resource.Success -> {
-                            dialog.hide()
-                            viewModel.getAllTargets()
-                        }
-                        is Resource.Error -> {
-                            dialog.hide()
-                        }
-                        is Resource.Loading -> {
-                            dialog.shoe()
-                        }
-                        else -> {}
-                    }
-                }
                 viewModel.joinTarget(targets[position].id!!)
+            }
+            Constants.MethodType.METHOD_UN_LIKE_TARGET -> {
+                viewModel.unLikeTarget(targets[position].id!!)
+            }
+            Constants.MethodType.METHOD_UN_JOIN_TARGET -> {
+                viewModel.unJoinTarget(targets[position].id!!)
             }
             else -> {}
         }

@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHolder(view), View.OnClickListener {
 
+    private lateinit var target: Target
     private val binding = ItemTargetBinding.bind(view)
     private val context = binding.root.context
 
@@ -51,15 +52,25 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
 
     @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
     fun bind(target: Target) {
+        this.target = target
         val user = target.admin
         binding.targetTitle.text = target.target
         binding.description.text = target.description
-        if (target.is_joined!!) {
-            binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
+
+        target.is_joined?.let {
+            if (it) {
+                binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
+            } else {
+                binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_outline_24), null, null, null)
+            }
         }
 
-        if (target.is_liked!!) {
-            binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_alt_24), null, null, null)
+        target.is_liked?.let {
+            if (it) {
+                binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_alt_24), null, null, null)
+            } else {
+                binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_off_alt_24), null, null, null)
+            }
         }
 
         target.users?.let {
@@ -92,10 +103,16 @@ class TargetHolder(val view: View, val layoutInflater: LayoutInflater) : BaseHol
                  goToProfileFragment(navController)
             }
             binding.like -> {
-                getOnClickListener().holderListener(binding, Constants.MethodType.METHOD_LIKE_TARGET, adapterPosition - 1)
+                getOnClickListener().holderListener(
+                    binding,
+                    if(target.is_liked == false) Constants.MethodType.METHOD_LIKE_TARGET else Constants.MethodType.METHOD_UN_LIKE_TARGET,
+                    adapterPosition - 1)
             }
             binding.join -> {
-                getOnClickListener().holderListener(binding, Constants.MethodType.METHOD_JOIN_TARGET, adapterPosition - 1)
+                getOnClickListener().holderListener(
+                    binding,
+                    if(target.is_joined == false) Constants.MethodType.METHOD_JOIN_TARGET else Constants.MethodType.METHOD_UN_JOIN_TARGET,
+                    adapterPosition - 1)
             }
             dialogBinding.save -> {
                 dialog.hide()

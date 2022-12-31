@@ -15,11 +15,11 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
     private val _allTargets = MutableLiveData<Resource<GetAllTargetsResponse>>()
     val allTargets: MutableLiveData<Resource<GetAllTargetsResponse>> = _allTargets
 
-    private val _joinTarget = MutableLiveData<Resource<Target>>()
-    val joinTarget: MutableLiveData<Resource<Target>> = _joinTarget
+    private val _nextAllTargets = MutableLiveData<Resource<GetAllTargetsResponse>>()
+    val nextAllTargets: MutableLiveData<Resource<GetAllTargetsResponse>> = _nextAllTargets
 
-    private val _likeTarget = MutableLiveData<Resource<Target>>()
-    val likeTarget: MutableLiveData<Resource<Target>> = _likeTarget
+    private val _likeJoinLiveData = MutableLiveData<Resource<Target>>()
+    val likeJoinLiveData: MutableLiveData<Resource<Target>> = _likeJoinLiveData
 
     fun getAllTargets() {
         viewModelScope.launch {
@@ -29,10 +29,18 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
+    fun getNextAllTargets(pageNo: String) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.getNextAllTargets(pageNo).collect {
+                _nextAllTargets.value = it
+            }
+        }
+    }
+
     fun joinTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.joinTarget(targetId).collect{
-                _joinTarget.value = it
+                _likeJoinLiveData.value = it
             }
         }
     }
@@ -40,7 +48,23 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
     fun likeTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.likeTarget(targetId).collect{
-                _likeTarget.value = it
+                _likeJoinLiveData.value = it
+            }
+        }
+    }
+
+    fun unJoinTarget(targetId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.unJoinTarget(targetId).collect{
+                _likeJoinLiveData.value = it
+            }
+        }
+    }
+
+    fun unLikeTarget(targetId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.unLikeTarget(targetId).collect{
+                _likeJoinLiveData.value = it
             }
         }
     }

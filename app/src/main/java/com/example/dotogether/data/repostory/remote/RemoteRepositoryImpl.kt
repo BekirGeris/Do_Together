@@ -83,6 +83,22 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getNextAllTargets(pageNo: String): Flow<Resource<GetAllTargetsResponse>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.getNextAllTargets(pageNo)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
     suspend fun getMyJoinedTargets(): Flow<Resource<GetAllTargetsResponse>> {
         return flow {
             emit(Resource.Loading())
@@ -168,6 +184,38 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
             emit(Resource.Loading())
             try {
                 val result = repository.likeTarget(targetId)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun unJoinTarget(targetId: Int): Flow<Resource<Target>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.unJoinTarget(targetId)
+                if (result.success) {
+                    emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
+                } else {
+                    emit(Resource.Error(Constants.Status.SUCCESS, result.message))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun unLikeTarget(targetId: Int): Flow<Resource<Target>> {
+        return flow {
+            emit(Resource.Loading())
+            try {
+                val result = repository.unLikeTarget(targetId)
                 if (result.success) {
                     emit(Resource.Success(Constants.Status.SUCCESS, result.message, result.data))
                 } else {

@@ -2,8 +2,12 @@ package com.example.dotogether.view.fragment
 
 import android.Manifest
 import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
+import android.util.Base64.encodeToString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +27,10 @@ import com.example.dotogether.viewmodel.ShareViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
+import android.util.Base64;
 
 @AndroidEntryPoint
 class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
@@ -40,6 +46,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     val datePickerFragment = DatePickerFragment(this)
 
     private var justOneWork = true
+    private lateinit var imageBase64: String
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
@@ -70,10 +77,29 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
         if (resultCode == Activity.RESULT_OK) {
             //Image Uri will not be null for RESULT_OK
-            val fileUri = data?.data!!
-            binding.selectImage.setImageURI(fileUri)
-            binding.selectImage.setPadding(20, 5, 20, 5)
+            var fileUri = data?.data!!
+            var filePath = fileUri.toString().replace("file://", "")
+            Log.d("bekbek", "file: $filePath")
+            try {
+                val bitmap = BitmapFactory.decodeFile(filePath)
+                // initialize byte stream
+                val stream = ByteArrayOutputStream()
+                // compress Bitmap
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+                // Initialize byte array
+                val bytes: ByteArray = stream.toByteArray()
+                // get base64 encoded string
+                imageBase64 = encodeToString(bytes, Base64.DEFAULT)
 
+                val imageBytes = Base64.decode(imageBase64, 0)
+                val image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                imageBase64 = "data:image/png;base64," + imageBase64.replace("\n", "")
+                binding.selectImage.setImageBitmap(image)
+                binding.selectImage.setPadding(20, 5, 20, 5)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             showToast(ImagePicker.getError(data))
         } else {
@@ -155,7 +181,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                         binding.periodDecs.text.toString(),
                         binding.startDateTxt.text.toString(),
                         binding.finishDateTxt.text.toString(),
-                        ""
+                        imageBase64
                     )
                 }
                 binding.periodLyt -> {

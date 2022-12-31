@@ -23,7 +23,9 @@ object Constants {
         METHOD_BACKGROUND_EDIT,
         METHOD_PROFILE_EDIT,
         METHOD_JOIN_TARGET,
+        METHOD_UN_JOIN_TARGET,
         METHOD_LIKE_TARGET,
+        METHOD_UN_LIKE_TARGET,
         METHOD_REELS
     }
 
