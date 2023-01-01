@@ -146,7 +146,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         }
 
         target.end_date?.let {
-            binding.endDate.text = it
+            binding.endDate.text = if (it == getString(R.string.forever_date)) getString(R.string.forever) else it
         }
 
         if (target.img != null) {

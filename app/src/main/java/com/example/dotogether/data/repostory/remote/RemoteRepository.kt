@@ -47,11 +47,11 @@ interface RemoteRepository {
     @GET("activity/my/done?page")
     suspend fun getNextMyDoneTargets(@Query("page") pageNo: String) : Response<Page<Target>>
 
-    @GET("activity/my")
-    suspend fun getMyTargets() : Response<Page<Target>>
+    @GET("activity/my/{userId}")
+    suspend fun getTargetsWithUserId(@Path("userId") userId: Int) : Response<Page<Target>>
 
-    @GET("activity/my?page")
-    suspend fun getNextMyTargets(@Query("page") pageNo: String) : Response<Page<Target>>
+    @GET("activity/my/{userId}?page")
+    suspend fun getNextTargetsWithUserId(@Path("userId") userId: Int, @Query("page") pageNo: String) : Response<Page<Target>>
 
     @GET("activity/join/{targetId}")
     suspend fun joinTarget(@Path("targetId") targetId: Int) : Response<Target>
@@ -76,4 +76,10 @@ interface RemoteRepository {
 
     @GET("user/followings")
     suspend fun getFollowings() : Response<Page<Connection>>
+
+    @GET("user/follow/{userId}")
+    suspend fun follow(@Path("userId") userId: Int) : Response<User>
+
+    @GET("user/unfollow/{userId}")
+    suspend fun unFollow(@Path("userId") userId: Int) : Response<User>
 }

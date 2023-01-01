@@ -1,6 +1,5 @@
 package com.example.dotogether.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dotogether.model.Page
@@ -20,11 +19,11 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
     private val _user = MutableLiveData<Resource<User>>()
     val user: MutableLiveData<Resource<User>> = _user
 
-    private val _myTargets = MutableLiveData<Resource<Page<Target>>>()
-    val myTargets: MutableLiveData<Resource<Page<Target>>> = _myTargets
+    private val _targets = MutableLiveData<Resource<Page<Target>>>()
+    val targets: MutableLiveData<Resource<Page<Target>>> = _targets
 
-    private val _nextMyTargets = MutableLiveData<Resource<Page<Target>>>()
-    val nextMyTargets: MutableLiveData<Resource<Page<Target>>> = _nextMyTargets
+    private val _nextTargets = MutableLiveData<Resource<Page<Target>>>()
+    val nextTargets: MutableLiveData<Resource<Page<Target>>> = _nextTargets
 
     fun logout() {
         viewModelScope.launch {
@@ -41,18 +40,18 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    fun getMyTargets() {
+    fun getTargetsWithUserId(userId: Int) {
         viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.getMyTargets().collect {
-                _myTargets.value = it
+            appRepository.remoteRepositoryImpl.getTargetsWithUserId(userId).collect {
+                _targets.value = it
             }
         }
     }
 
-    fun getNextMyTargets(pageNo: String) {
+    fun getNextTargetsWithUserId(userId: Int, pageNo: String) {
         viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.getNextMyTargets(pageNo).collect {
-                _nextMyTargets.value = it
+            appRepository.remoteRepositoryImpl.getNextTargetsWithUserId(userId, pageNo).collect {
+                _nextTargets.value = it
             }
         }
     }

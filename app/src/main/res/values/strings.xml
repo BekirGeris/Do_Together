@@ -36,6 +36,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="forever">Forever</string>
+    <string name="forever_date">"2050/01/01"</string>
     <string name="finish">Finish</string>
     <string name="start">Start</string>
     <string name="default_date">----/--/--</string>

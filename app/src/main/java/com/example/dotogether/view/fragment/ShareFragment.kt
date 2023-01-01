@@ -184,12 +184,16 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 validTarget()
                 validDescription()
                 if (validTarget() && validDescription()) {
+                    var endDate = binding.finishDateTxt.text.toString()
+                    if (endDate == getString(R.string.forever)) {
+                        endDate = "2050/01/01"
+                    }
                     shareTarget(
                         binding.targetEditTxt.text.toString(),
                         binding.descriptionEditTxt.text.toString(),
                         binding.periodDecs.text.toString(),
                         binding.startDateTxt.text.toString(),
-                        binding.finishDateTxt.text.toString(),
+                        endDate,
                         imageBase64
                     )
                 }

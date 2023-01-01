@@ -130,7 +130,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
 
         binding.swipeLyt.setOnRefreshListener {
-            //viewModel.getMyTargets()
             userId?.let {
                 viewModel.getUser(it)
             }
@@ -141,30 +140,28 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     private fun initObserve() {
         viewModel.myUser.observe(viewLifecycleOwner) { user ->
             if (userId == null || user.id == userId) {
+                userId = user.id
                 itIsMe = true
                 user.id?.let { viewModel.getUser(it) }
             } else {
                 itIsMe = false
-                user.id?.let { viewModel.getUser(it) }
+                viewModel.getUser(userId!!)
             }
         }
         viewModel.getMyUser()
         viewModel.user.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    binding.swipeLyt.isRefreshing = false
                     dialog.hide()
                     it.data?.let { user ->
                         user.activities?.let { list ->
-                            targets.clear()
-                            targets.addAll(list)
                             targetAdapter = ProfileTargetAdapter(targets, user, this, this)
                             binding.targetRv.adapter = targetAdapter
                         }
                     }
+                    userId?.let { it1 -> viewModel.getTargetsWithUserId(it1) }
                 }
                 is Resource.Error -> {
-                    binding.swipeLyt.isRefreshing = false
                     dialog.hide()
                 }
                 is Resource.Loading -> {
@@ -175,7 +172,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
-/*        viewModel.myTargets.observe(viewLifecycleOwner) {
+        viewModel.targets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
                     binding.swipeLyt.isRefreshing = false
@@ -207,7 +204,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
-        viewModel.nextMyTargets.observe(viewLifecycleOwner) {
+        viewModel.nextTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { response ->
@@ -227,7 +224,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 }
                 else -> {}
             }
-        }*/
+        }
         viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -256,7 +253,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if(!recyclerView.canScrollVertically(1)) {
-                    viewModel.getNextMyTargets(nextPage)
+                    userId?.let { viewModel.getNextTargetsWithUserId(it, nextPage) }
                     binding.targetRv.removeOnScrollListener(scrollListener)
                 }
             }
