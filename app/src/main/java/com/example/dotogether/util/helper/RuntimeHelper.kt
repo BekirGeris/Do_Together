@@ -1,11 +1,15 @@
 package com.example.dotogether.util.helper
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
+import java.io.ByteArrayOutputStream
 
 object RuntimeHelper {
     var TOKEN = ""
@@ -33,5 +37,13 @@ object RuntimeHelper {
         return Glide
             .with(context)
             .setDefaultRequestOptions(requestOptions)
+    }
+
+    fun imageToBase64(filePath: String) : String {
+        val bitmap = BitmapFactory.decodeFile(filePath)
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+        val bytes: ByteArray = stream.toByteArray()
+        return  "data:image/jpeg;base64," + Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 }

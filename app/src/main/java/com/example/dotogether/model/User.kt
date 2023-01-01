@@ -25,6 +25,8 @@ class User() {
     var active_statuses: ArrayList<Reels>? = null
     @Ignore
     var activities: ArrayList<Target>? = null
+    @Ignore
+    var is_followed: Boolean? = null
     var token: String? = null
 
     constructor(

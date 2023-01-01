@@ -40,12 +40,12 @@ class ProfileHolder(
         binding.description.setOnClickListener(this)
         binding.followersLyt.setOnClickListener(this)
         binding.followingLyt.setOnClickListener(this)
-        binding.fallowBtn.setOnClickListener(this)
+        binding.followBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
         binding.backgroundEditBtn.setOnClickListener(this)
         binding.profileEditBtn.setOnClickListener(this)
-        binding.closeBtn.setOnClickListener(this)
-        binding.confirmBtn.setOnClickListener(this)
+        binding.descriptionCloseBtn.setOnClickListener(this)
+        binding.descriptionConfirmBtn.setOnClickListener(this)
 
         dialogBinding.edit.visibility = View.VISIBLE
         dialogBinding.logout.visibility = View.VISIBLE
@@ -72,6 +72,8 @@ class ProfileHolder(
         } else {
             binding.backgroundImage.background = ContextCompat.getDrawable(context, R.drawable.pilgrim)
         }
+
+        binding.followBtn.text = context.getString(if (user.is_followed == true) R.string.un_follow else R.string.follow)
     }
 
     override fun onClick(v: View?) {
@@ -107,8 +109,11 @@ class ProfileHolder(
             binding.followingLyt -> {
                 goToFollowsFragment(navController)
             }
-            binding.fallowBtn -> {
-                listener.follow(binding, user)
+            binding.followBtn -> {
+                if (user.is_followed == true)
+                    listener.unFollow(binding, user)
+                else
+                    listener.follow(binding, user)
             }
             binding.messageBtn -> {
                 goToChatFragment(navController)
@@ -128,11 +133,14 @@ class ProfileHolder(
             dialogBinding.logout -> {
                 listener.logout(binding, user)
             }
-            binding.closeBtn -> {
+            binding.descriptionCloseBtn -> {
+                binding.description.setText(user.description)
                 invertEditVisibility()
             }
-            binding.confirmBtn -> {
+            binding.descriptionConfirmBtn -> {
                 invertEditVisibility()
+                user.description = binding.description.text.toString()
+                listener.descriptionImageEdit(binding, user)
             }
         }
     }
@@ -140,8 +148,8 @@ class ProfileHolder(
     private fun invertEditVisibility() {
         binding.backgroundEditBtn.visibility = if (binding.backgroundEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         binding.profileEditBtn.visibility = if (binding.profileEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        binding.closeBtn.visibility = if (binding.closeBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        binding.confirmBtn.visibility = if (binding.confirmBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.descriptionCloseBtn.visibility = if (binding.descriptionCloseBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.descriptionConfirmBtn.visibility = if (binding.descriptionConfirmBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         binding.description.isFocusableInTouchMode = !binding.description.isEnabled
         binding.description.isFocusable = !binding.description.isEnabled
         binding.description.isCursorVisible = !binding.description.isEnabled

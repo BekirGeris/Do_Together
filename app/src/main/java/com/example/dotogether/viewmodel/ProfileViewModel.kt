@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.dotogether.model.Page
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,8 +20,8 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
     private val _user = MutableLiveData<Resource<User>>()
     val user: MutableLiveData<Resource<User>> = _user
 
-    private val _followUnFollow = MutableLiveData<Resource<User>>()
-    val followUnFollow: MutableLiveData<Resource<User>> = _followUnFollow
+    private val _updateUser = MutableLiveData<Resource<User>>()
+    val updateUser: MutableLiveData<Resource<User>> = _updateUser
 
     private val _targets = MutableLiveData<Resource<Page<Target>>>()
     val targets: MutableLiveData<Resource<Page<Target>>> = _targets
@@ -70,7 +71,7 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
     fun follow(userId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.follow(userId).collect {
-                _user.value = it
+                _updateUser.value = it
             }
         }
     }
@@ -78,7 +79,15 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
     fun unFollow(userId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.unFollow(userId).collect {
-                _followUnFollow.value = it
+                _updateUser.value = it
+            }
+        }
+    }
+
+    fun updateUser(updateUserRequest: UpdateUserRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.updateUser(updateUserRequest).collect {
+                _updateUser.value = it
             }
         }
     }

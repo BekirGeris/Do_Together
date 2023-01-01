@@ -7,6 +7,7 @@ import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.Page
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
 import com.example.dotogether.model.response.Response
@@ -28,6 +29,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun register(registerRequest: RegisterRequest): Flow<Resource<RegisterResponse>> {
         return generateFlow { (repository.register(registerRequest)) }
+    }
+
+    suspend fun updateUser(updateUserRequest: UpdateUserRequest): Flow<Resource<User>> {
+        return generateFlow { (repository.updateUser(updateUserRequest)) }
     }
 
     suspend fun createTarget(createTargetRequest: CreateTargetRequest): Flow<Resource<Target>> {
@@ -111,7 +116,7 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
     }
 
     suspend fun unFollow(userId: Int): Flow<Resource<User>> {
-        return generateFlow { repository.follow(userId) }
+        return generateFlow { repository.unFollow(userId) }
     }
 
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {

@@ -17,8 +17,10 @@ import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.ProfileViewModel
@@ -83,8 +85,8 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 val fileUri = data?.data!!
 
                 when(calledFromMode) {
-                    0 -> itemProfileBinding.backgroundImage.setImageURI(fileUri)
-                    1 -> itemProfileBinding.profileImage.setImageURI(fileUri)
+                    0 -> changeBackgroundImage(fileUri.toString())
+                    1 -> changeProfileImage(fileUri.toString())
                 }
             }
             ImagePicker.RESULT_ERROR -> {
@@ -150,7 +152,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         viewModel.user.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    dialog.hide()
                     it.data?.let { user ->
                         user.activities?.let { list ->
                             targetAdapter = ProfileTargetAdapter(targets, user, this, this)
@@ -160,10 +161,10 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     userId?.let { it1 -> viewModel.getTargetsWithUserId(it1) }
                 }
                 is Resource.Error -> {
-                    dialog.hide()
+
                 }
                 is Resource.Loading -> {
-                    if (!binding.swipeLyt.isRefreshing) {
+                    if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
                         dialog.shoe()
                     }
                 }
@@ -195,7 +196,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     showToast(it.message)
                 }
                 is Resource.Loading -> {
-                    if (!binding.swipeLyt.isRefreshing) {
+                    if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
                         dialog.shoe()
                     }
                 }
@@ -244,17 +245,14 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
-        viewModel.followUnFollow.observe(viewLifecycleOwner) { resource ->
+        viewModel.updateUser.observe(viewLifecycleOwner) { resource ->
             when(resource) {
                 is Resource.Success -> {
-                    dialog.hide()
                     userId?.let { viewModel.getUser(it) }
                 }
                 is Resource.Error -> {
-                    dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
                 }
                 else -> {}
             }
@@ -300,6 +298,30 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             }
     }
 
+    private fun changeBackgroundImage(fileUri: String) {
+        val updateUserRequest = UpdateUserRequest()
+        val filePath = fileUri.replace("file://", "")
+
+        try {
+            updateUserRequest.background_img = RuntimeHelper.imageToBase64(filePath)
+            viewModel.updateUser(updateUserRequest)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun changeProfileImage(fileUri: String) {
+        val updateUserRequest = UpdateUserRequest()
+        val filePath = fileUri.replace("file://", "")
+
+        try {
+            updateUserRequest.img = RuntimeHelper.imageToBase64(filePath)
+            viewModel.updateUser(updateUserRequest)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     override fun itIsMe(binding: ItemProfileBinding, user: User): Boolean {
         return itIsMe
     }
@@ -312,6 +334,12 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     override fun profileImageEdit(binding: ItemProfileBinding, user: User) {
         calledFromMode = 1
         requestPermissionsForImagePicker()
+    }
+
+    override fun descriptionImageEdit(binding: ItemProfileBinding, user: User) {
+        val updateUserRequest = UpdateUserRequest()
+        updateUserRequest.description = user.description
+        viewModel.updateUser(updateUserRequest)
     }
 
     override fun finishActivity(binding: ItemProfileBinding, user: User) {
