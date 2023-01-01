@@ -38,6 +38,7 @@ class HolderListener {
         fun join(binding: ItemTargetBinding, target: Target)
         fun unLike(binding: ItemTargetBinding, target: Target)
         fun unJoin(binding: ItemTargetBinding, target: Target)
+        fun deleteTarget(binding: ItemTargetBinding, target: Target) {}
     }
     interface ReelsHolderListener{
         fun callback(binding: ItemReelsBinding, reels: Reels)

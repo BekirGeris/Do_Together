@@ -68,18 +68,24 @@ interface RemoteRepository {
     @GET("activity/get/{targetId}")
     suspend fun getTarget(@Path("targetId") targetId: Int) : Response<Target>
 
+    @GET("activity/delete/{targetId}")
+    suspend fun deleteTarget(@Path("targetId") targetId: Int) : Response<Target>
+
     @GET("user/get/{userId}")
     suspend fun getUser(@Path("userId") userId: Int) : Response<User>
 
-    @GET("user/followers")
-    suspend fun getFollowers() : Response<Page<Connection>>
+    @GET("user/followers/{userId}")
+    suspend fun getFollowers(@Path("userId") userId: Int) : Response<Page<User>>
 
-    @GET("user/followings")
-    suspend fun getFollowings() : Response<Page<Connection>>
+    @GET("user/followings/{userId}")
+    suspend fun getFollowings(@Path("userId") userId: Int) : Response<Page<User>>
 
     @GET("user/follow/{userId}")
     suspend fun follow(@Path("userId") userId: Int) : Response<User>
 
     @GET("user/unfollow/{userId}")
     suspend fun unFollow(@Path("userId") userId: Int) : Response<User>
+
+    @GET("user/followings/statuses")
+    suspend fun getFollowingsReels() : Response<ArrayList<User>>
 }

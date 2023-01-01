@@ -28,6 +28,8 @@ class User() {
     @Ignore
     var is_followed: Boolean? = null
     var token: String? = null
+    @Ignore
+    var pivot: Pivot? = null
 
     constructor(
         name: String?,

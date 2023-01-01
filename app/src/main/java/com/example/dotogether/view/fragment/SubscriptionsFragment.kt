@@ -66,7 +66,7 @@ class SubscriptionsFragment : BaseFragment(), HolderListener.TargetHolderListene
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) { resource ->
+        viewModel.updateTarget.observe(viewLifecycleOwner) { resource ->
             when(resource) {
                 is Resource.Success -> {
                     resource.data?.let { updateTarget ->

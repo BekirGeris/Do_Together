@@ -153,10 +153,8 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { user ->
-                        user.activities?.let { list ->
-                            targetAdapter = ProfileTargetAdapter(targets, user, this, this)
-                            binding.targetRv.adapter = targetAdapter
-                        }
+                        targetAdapter = ProfileTargetAdapter(targets, user, this, this)
+                        binding.targetRv.adapter = targetAdapter
                     }
                     userId?.let { it1 -> viewModel.getTargetsWithUserId(it1) }
                 }
@@ -224,7 +222,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
-        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
+        viewModel.updateTarget.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { updateTarget ->
@@ -251,8 +249,31 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     userId?.let { viewModel.getUser(it) }
                 }
                 is Resource.Error -> {
+                    dialog.hide()
                 }
                 is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
+        viewModel.deleteTarget.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    resource.data?.let { updateTarget ->
+                        val newTargets = ArrayList<Target>()
+                        targets.filter { updateTarget.id != it.id }.mapTo(newTargets) { it }
+                        targets.clear()
+                        targets.addAll(newTargets)
+                        targetAdapter.notifyDataSetChanged()
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
                 }
                 else -> {}
             }
@@ -377,5 +398,10 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     override fun unJoin(binding: ItemTargetBinding, target: Target) {
         viewModel.unJoinTarget(target.id!!)
+    }
+
+    override fun deleteTarget(binding: ItemTargetBinding, target: Target) {
+        super.deleteTarget(binding, target)
+        target.id?.let { viewModel.deleteTarget(it) }
     }
 }

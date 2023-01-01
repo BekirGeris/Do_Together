@@ -26,7 +26,7 @@ class TargetHolder(
     private val context = binding.root.context
 
     private val dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
-    private val dialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
+    private val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
 
     private lateinit var memberAdapter: MemberAdapter
 
@@ -36,7 +36,7 @@ class TargetHolder(
 
     private fun initViews() {
         binding.membersRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        dialog.setContentView(dialogBinding.root)
+        bottomSheetDialog.setContentView(dialogBinding.root)
 
         binding.holderView.setOnClickListener(this)
         binding.moreSettingBtn.setOnClickListener(this)
@@ -107,7 +107,7 @@ class TargetHolder(
                 goToTargetFragment(navController, target.id!!)
             }
             binding.moreSettingBtn -> {
-                dialog.show()
+                bottomSheetDialog.show()
             }
             binding.postUserName, binding.userImage, binding.postTime -> {
                 target.admin?.id?.let { goToProfileFragment(navController, it) }
@@ -125,13 +125,14 @@ class TargetHolder(
                     listener.unJoin(binding, target)
             }
             dialogBinding.save -> {
-                dialog.hide()
+                bottomSheetDialog.hide()
             }
             dialogBinding.share -> {
-                dialog.hide()
+                bottomSheetDialog.hide()
             }
             dialogBinding.delete -> {
-                dialog.hide()
+                bottomSheetDialog.hide()
+                listener.deleteTarget(binding, target)
             }
         }
     }

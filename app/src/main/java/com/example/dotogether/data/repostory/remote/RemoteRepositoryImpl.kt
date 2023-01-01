@@ -1,13 +1,10 @@
 package com.example.dotogether.data.repostory.remote
 
-import com.example.dotogether.model.Connection
 import com.example.dotogether.model.Target
-import com.example.dotogether.model.request.CreateTargetRequest
-import com.example.dotogether.model.request.LoginRequest
-import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.Page
+import com.example.dotogether.model.Reels
 import com.example.dotogether.model.User
-import com.example.dotogether.model.request.UpdateUserRequest
+import com.example.dotogether.model.request.*
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
 import com.example.dotogether.model.response.Response
@@ -33,6 +30,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun updateUser(updateUserRequest: UpdateUserRequest): Flow<Resource<User>> {
         return generateFlow { (repository.updateUser(updateUserRequest)) }
+    }
+
+    suspend fun createReels(createReelsRequest: CreateReelsRequest): Flow<Resource<Reels>> {
+        return generateFlow { (repository.createReels(createReelsRequest)) }
     }
 
     suspend fun createTarget(createTargetRequest: CreateTargetRequest): Flow<Resource<Target>> {
@@ -99,16 +100,20 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { (repository.getTarget(targetId)) }
     }
 
+    suspend fun deleteTarget(targetId: Int): Flow<Resource<Target>> {
+        return generateFlow { (repository.deleteTarget(targetId)) }
+    }
+
     suspend fun getUser(userId: Int): Flow<Resource<User>> {
         return generateFlow { (repository.getUser(userId)) }
     }
 
-    suspend fun getFollowers(): Flow<Resource<Page<Connection>>> {
-        return generateFlow { (repository.getFollowers()) }
+    suspend fun getFollowers(userId: Int): Flow<Resource<Page<User>>> {
+        return generateFlow { (repository.getFollowers(userId)) }
     }
 
-    suspend fun getFollowings(): Flow<Resource<Page<Connection>>> {
-        return generateFlow { (repository.getFollowings()) }
+    suspend fun getFollowings(userId: Int): Flow<Resource<Page<User>>> {
+        return generateFlow { (repository.getFollowings(userId)) }
     }
 
     suspend fun follow(userId: Int): Flow<Resource<User>> {
@@ -117,6 +122,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun unFollow(userId: Int): Flow<Resource<User>> {
         return generateFlow { repository.unFollow(userId) }
+    }
+
+    suspend fun getFollowingsReels(): Flow<Resource<ArrayList<User>>> {
+        return generateFlow { repository.getFollowingsReels() }
     }
 
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {

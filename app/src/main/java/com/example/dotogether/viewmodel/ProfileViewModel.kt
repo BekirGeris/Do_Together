@@ -29,6 +29,9 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
     private val _nextTargets = MutableLiveData<Resource<Page<Target>>>()
     val nextTargets: MutableLiveData<Resource<Page<Target>>> = _nextTargets
 
+    private val _deleteTarget = MutableLiveData<Resource<Target>>()
+    val deleteTarget: MutableLiveData<Resource<Target>> = _deleteTarget
+
     fun logout() {
         viewModelScope.launch {
             appRepository.localRepositoryImpl.deleteAllUser()
@@ -88,6 +91,14 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.updateUser(updateUserRequest).collect {
                 _updateUser.value = it
+            }
+        }
+    }
+
+    fun deleteTarget(targetId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.deleteTarget(targetId).collect{
+                _deleteTarget.value = it
             }
         }
     }

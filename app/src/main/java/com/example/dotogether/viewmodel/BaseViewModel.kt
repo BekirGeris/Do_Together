@@ -16,13 +16,13 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var appRepository: AppRepository
 
-    private val _likeJoinLiveData = MutableLiveData<Resource<Target>>()
-    val likeJoinLiveData: MutableLiveData<Resource<Target>> = _likeJoinLiveData
+    private val _updateTarget = MutableLiveData<Resource<Target>>()
+    val updateTarget: MutableLiveData<Resource<Target>> = _updateTarget
 
     fun joinTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.joinTarget(targetId).collect{
-                _likeJoinLiveData.value = it
+                _updateTarget.value = it
             }
         }
     }
@@ -30,7 +30,7 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     fun likeTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.likeTarget(targetId).collect{
-                _likeJoinLiveData.value = it
+                _updateTarget.value = it
             }
         }
     }
@@ -38,7 +38,7 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     fun unJoinTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.unJoinTarget(targetId).collect{
-                _likeJoinLiveData.value = it
+                _updateTarget.value = it
             }
         }
     }
@@ -46,7 +46,7 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     fun unLikeTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.unLikeTarget(targetId).collect{
-                _likeJoinLiveData.value = it
+                _updateTarget.value = it
             }
         }
     }

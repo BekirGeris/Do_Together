@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.ItemReelsTopBinding
 import com.example.dotogether.databinding.ItemTargetBinding
-import com.example.dotogether.model.Reels
 import com.example.dotogether.model.Target
+import com.example.dotogether.model.User
 import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.ReelsTopHolder
 import com.example.dotogether.view.adapter.holder.TargetHolder
@@ -14,7 +14,7 @@ import com.example.dotogether.view.adapter.holderListener.HolderListener
 
 class HomeTargetAdapter(
     private val targetList: ArrayList<Target>,
-    private val reelsList: ArrayList<Reels>,
+    private val reelsList: ArrayList<User>,
     private val targetHolderListener: HolderListener.TargetHolderListener
 ) : BaseAdapter() {
 

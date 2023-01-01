@@ -13,16 +13,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.FragmentHomeBinding
-import com.example.dotogether.databinding.ItemReelsTopBinding
 import com.example.dotogether.databinding.ItemTargetBinding
-import com.example.dotogether.model.Reels
 import com.example.dotogether.model.Target
-import com.example.dotogether.util.Constants
+import com.example.dotogether.model.User
+import com.example.dotogether.model.request.CreateReelsRequest
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
@@ -39,7 +38,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private val targets = ArrayList<Target>()
-    private val reelsList = ArrayList<Reels>()
+    private val reelsList = ArrayList<User>()
 
     private var justOneWork = true
 
@@ -73,24 +72,29 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         val resultCode = result.resultCode
         val data = result.data
 
-        if (resultCode == Activity.RESULT_OK) {
-            //Image Uri will not be null for RESULT_OK
-            val fileUri = data?.data!!
-            //todo: test amaçlı eklendi silinecek
-            binding.image.setImageURI(fileUri)
-            binding.image.visibility = View.VISIBLE
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                //Image Uri will not be null for RESULT_OK
+                val fileUri = data?.data!!
+                createReels(fileUri.toString())
+            }
+            ImagePicker.RESULT_ERROR -> {
+                showToast(ImagePicker.getError(data))
+            }
+            else -> {
+                showToast("Task Cancelled")
+            }
+        }
+    }
 
-            Thread {
-                Thread.sleep(3000)
-                activity?.runOnUiThread {
-                    binding.image.visibility = View.GONE
-                }
-            }.start()
+    private fun createReels(fileUri: String) {
+        val filePath = fileUri.replace("file://", "")
 
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            showToast(ImagePicker.getError(data))
-        } else {
-            showToast("Task Cancelled")
+        try {
+            val createReelsRequest = CreateReelsRequest(RuntimeHelper.imageToBase64(filePath))
+            viewModel.createReels(createReelsRequest)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -126,13 +130,31 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         binding.targetRv.adapter = homeTargetAdapter
 
         binding.swipeLyt.setOnRefreshListener {
+            viewModel.getFollowingsReels()
             viewModel.getAllTargets()
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
+        viewModel.reels.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { list ->
+                        reelsList.clear()
+                        reelsList.addAll(list)
+                        homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }
+        viewModel.getFollowingsReels()
+        viewModel.updateTarget.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { updateTarget ->
@@ -163,15 +185,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                             targets.clear()
                             targets.addAll(list)
                             homeTargetAdapter.notifyDataSetChanged()
-                            //todo: **************test test****************
-                            for (i in 1..100) {
-                                reelsList.add(Reels())
-                            }
-                            if (reelsList.isEmpty()) {
-                                homeTargetAdapter.reelsTopHolder?.binding?.reelsRv?.visibility = View.GONE
-                            }
-                            homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
-                            //todo: **************test test****************
                         }
                         response.next_page_url?.let { next_page_url ->
                             nextPage = next_page_url.last().toString()
@@ -212,6 +225,20 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 is Resource.Error -> {
                 }
                 is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }
+        viewModel.createReels.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    viewModel.getFollowingsReels()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
                 }
                 else -> {}
             }

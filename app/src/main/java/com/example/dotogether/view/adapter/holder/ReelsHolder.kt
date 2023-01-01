@@ -4,13 +4,14 @@ import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemReelsBinding
-import com.example.dotogether.model.Reels
+import com.example.dotogether.model.User
+import com.example.dotogether.util.helper.RuntimeHelper
 
 class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     private var binding = ItemReelsBinding.bind(view)
     private val context = binding.root.context
-    private lateinit var reels: Reels
+    private lateinit var user: User
 
     init {
         initViews()
@@ -20,8 +21,14 @@ class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
         binding.userImage.setOnClickListener(this)
     }
 
-    fun bind(reels: Reels) {
-        this.reels = reels
+    fun bind(user: User) {
+        this.user = user
+
+        binding.userNameTxt.text = user.username
+
+        user.img?.let {
+            RuntimeHelper.glideForPersonImage(context).load(it).into(binding.userImage)
+        }
     }
 
     override fun onClick(v: View?) {

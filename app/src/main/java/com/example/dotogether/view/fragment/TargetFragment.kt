@@ -98,7 +98,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
-        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
+        viewModel.updateTarget.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { target ->
