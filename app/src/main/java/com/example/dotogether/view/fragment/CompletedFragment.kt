@@ -66,14 +66,14 @@ class CompletedFragment : BaseFragment(), HolderListener.TargetHolderListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
-            when(it) {
+        viewModel.likeJoinLiveData.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
                 is Resource.Success -> {
-                    it.data?.let { updateTarget ->
+                    resource.data?.let { updateTarget ->
                         val newTargets = ArrayList<Target>()
                         targets.mapTo(newTargets) {t -> if (updateTarget.id == t.id) updateTarget else t}
                         targets.clear()
-                        targets.addAll(newTargets)
+                        targets.addAll(newTargets.filter {it.is_done == 1})
                         targetAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()

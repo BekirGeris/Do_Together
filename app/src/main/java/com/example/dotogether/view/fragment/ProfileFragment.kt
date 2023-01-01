@@ -39,8 +39,8 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     private lateinit var targetAdapter: ProfileTargetAdapter
     private val targets = ArrayList<Target>()
-    private var myUser: User? = null
 
+    private var itIsMe: Boolean = false
     var userId: Int? = null
 
     private var calledFromMode = -1
@@ -140,10 +140,15 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
         viewModel.myUser.observe(viewLifecycleOwner) { user ->
-            myUser = user
-            userId = myUser?.id
-            user.id?.let { viewModel.getUser(it) }
+            if (userId == null || user.id == userId) {
+                itIsMe = true
+                user.id?.let { viewModel.getUser(it) }
+            } else {
+                itIsMe = false
+                user.id?.let { viewModel.getUser(it) }
+            }
         }
+        viewModel.getMyUser()
         viewModel.user.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -170,64 +175,59 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
-        if (userId != null) {
-            viewModel.getUser(userId!!)
-        } else {
-            viewModel.getMyUser()
+/*        viewModel.myTargets.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    binding.swipeLyt.isRefreshing = false
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            //binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
+                            targets.clear()
+                            targets.addAll(list)
+                            targetAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    //binding.activityErrorView.visibility = View.VISIBLE
+                    binding.swipeLyt.isRefreshing = false
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    if (!binding.swipeLyt.isRefreshing) {
+                        dialog.shoe()
+                    }
+                }
+                else -> {}
+            }
         }
-//        viewModel.myTargets.observe(viewLifecycleOwner) {
-//            when(it) {
-//                is Resource.Success -> {
-//                    binding.swipeLyt.isRefreshing = false
-//                    it.data?.let { response ->
-//                        response.data?.let { list ->
-//                            //binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
-//                            targets.clear()
-//                            targets.addAll(list)
-//                            targetAdapter.notifyDataSetChanged()
-//                        }
-//                        response.next_page_url?.let { next_page_url ->
-//                            nextPage = next_page_url.last().toString()
-//                            setRecyclerViewScrollListener()
-//                        }
-//                    }
-//                    dialog.hide()
-//                }
-//                is Resource.Error -> {
-//                    //binding.activityErrorView.visibility = View.VISIBLE
-//                    binding.swipeLyt.isRefreshing = false
-//                    dialog.hide()
-//                    showToast(it.message)
-//                }
-//                is Resource.Loading -> {
-//                    if (!binding.swipeLyt.isRefreshing) {
-//                        dialog.shoe()
-//                    }
-//                }
-//                else -> {}
-//            }
-//        }
-//        viewModel.nextMyTargets.observe(viewLifecycleOwner) {
-//            when(it) {
-//                is Resource.Success -> {
-//                    it.data?.let { response ->
-//                        response.data?.let { list ->
-//                            targets.addAll(list)
-//                            targetAdapter.notifyDataSetChanged()
-//                        }
-//                        response.next_page_url?.let { next_page_url ->
-//                            nextPage = next_page_url.last().toString()
-//                            setRecyclerViewScrollListener()
-//                        }
-//                    }
-//                }
-//                is Resource.Error -> {
-//                }
-//                is Resource.Loading -> {
-//                }
-//                else -> {}
-//            }
-//        }
+        viewModel.nextMyTargets.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            targets.addAll(list)
+                            targetAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }*/
         viewModel.likeJoinLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -291,7 +291,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     }
 
     override fun itIsMe(binding: ItemProfileBinding, user: User): Boolean {
-        return user.id == myUser?.id
+        return itIsMe
     }
 
     override fun backgroundImageEdit(binding: ItemProfileBinding, user: User) {
