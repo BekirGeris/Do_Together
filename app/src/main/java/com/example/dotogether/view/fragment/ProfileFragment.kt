@@ -130,9 +130,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
 
         binding.swipeLyt.setOnRefreshListener {
-            userId?.let {
-                viewModel.getUser(it)
-            }
+            userId?.let { viewModel.getUser(it) }
         }
     }
 
@@ -246,6 +244,21 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
+        viewModel.followUnFollow.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    userId?.let { viewModel.getUser(it) }
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
     }
 
     private fun setRecyclerViewScrollListener() {
@@ -312,6 +325,14 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             Thread.sleep(1000)
             activity?.finish()
         }
+    }
+
+    override fun follow(binding: ItemProfileBinding, user: User) {
+        user.id?.let { viewModel.follow(it) }
+    }
+
+    override fun unFollow(binding: ItemProfileBinding, user: User) {
+        user.id?.let { viewModel.unFollow(it) }
     }
 
     override fun like(binding: ItemTargetBinding, target: Target) {

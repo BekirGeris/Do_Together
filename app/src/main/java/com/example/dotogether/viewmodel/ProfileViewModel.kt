@@ -19,6 +19,9 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
     private val _user = MutableLiveData<Resource<User>>()
     val user: MutableLiveData<Resource<User>> = _user
 
+    private val _followUnFollow = MutableLiveData<Resource<User>>()
+    val followUnFollow: MutableLiveData<Resource<User>> = _followUnFollow
+
     private val _targets = MutableLiveData<Resource<Page<Target>>>()
     val targets: MutableLiveData<Resource<Page<Target>>> = _targets
 
@@ -60,6 +63,22 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getUser(userId).collect {
                 _user.value = it
+            }
+        }
+    }
+
+    fun follow(userId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.follow(userId).collect {
+                _user.value = it
+            }
+        }
+    }
+
+    fun unFollow(userId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.unFollow(userId).collect {
+                _followUnFollow.value = it
             }
         }
     }

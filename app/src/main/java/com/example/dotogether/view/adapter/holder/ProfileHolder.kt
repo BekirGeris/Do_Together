@@ -108,7 +108,7 @@ class ProfileHolder(
                 goToFollowsFragment(navController)
             }
             binding.fallowBtn -> {
-
+                listener.follow(binding, user)
             }
             binding.messageBtn -> {
                 goToChatFragment(navController)

@@ -29,6 +29,8 @@ class HolderListener {
         fun profileImageEdit(binding: ItemProfileBinding, user: User)
         fun finishActivity(binding: ItemProfileBinding, user: User)
         fun logout(binding: ItemProfileBinding, user: User)
+        fun follow(binding: ItemProfileBinding, user: User)
+        fun unFollow(binding: ItemProfileBinding, user: User)
     }
     interface TargetHolderListener{
         fun like(binding: ItemTargetBinding, target: Target)
