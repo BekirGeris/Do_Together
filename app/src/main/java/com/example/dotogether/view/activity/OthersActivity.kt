@@ -57,10 +57,13 @@ class OthersActivity : BaseActivity() {
                 navController.navigate(OthersNavDirections.actionTargetFragment(targetId), navOptions)
             }
             ViewType.VIEW_REELS_FRAGMENT.type -> {
-                navController.navigate(OthersNavDirections.actionReelsFragment(), navOptions)
+                val userId = intent.getIntExtra("userId", -1)
+                navController.navigate(OthersNavDirections.actionReelsFragment(userId), navOptions)
             }
             ViewType.VIEW_FOLLOWS_FRAGMENT.type -> {
-                navController.navigate(OthersNavDirections.actionFollowsFragment(), navOptions)
+                val userId = intent.getIntExtra("userId", -1)
+                val followsType = intent.getIntExtra("followsType", -1)
+                navController.navigate(OthersNavDirections.actionFollowsFragment(userId, followsType), navOptions)
             }
         }
     }

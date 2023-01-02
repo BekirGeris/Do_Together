@@ -30,7 +30,15 @@ class FavoritesFragment : BaseFragment(), HolderListener.TargetHolderListener {
     private var justOneWork = true
 
     private var nextPage = "2"
-    private lateinit var scrollListener: RecyclerView.OnScrollListener
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(!recyclerView.canScrollVertically(1)) {
+                viewModel.getNextMyLikeTargets(nextPage)
+                binding.targetRv.removeOnScrollListener(this)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,15 +152,6 @@ class FavoritesFragment : BaseFragment(), HolderListener.TargetHolderListener {
     }
 
     private fun setRecyclerViewScrollListener() {
-        scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if(!recyclerView.canScrollVertically(1)) {
-                    viewModel.getNextMyLikeTargets(nextPage)
-                    binding.targetRv.removeOnScrollListener(scrollListener)
-                }
-            }
-        }
         binding.targetRv.addOnScrollListener(scrollListener)
     }
 

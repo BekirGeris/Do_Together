@@ -12,13 +12,16 @@ import javax.inject.Inject
 @HiltViewModel
 class FollowsViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _user = MutableLiveData<Resource<Page<User>>>()
-    val user: MutableLiveData<Resource<Page<User>>> = _user
+    private val _users = MutableLiveData<Resource<Page<User>>>()
+    val users: MutableLiveData<Resource<Page<User>>> = _users
+
+    private val _nextUsers = MutableLiveData<Resource<Page<User>>>()
+    val nextUsers: MutableLiveData<Resource<Page<User>>> = _nextUsers
 
     fun getFollowers(userId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getFollowers(userId).collect {
-                _user.value = it
+                _users.value = it
             }
         }
     }
@@ -26,7 +29,23 @@ class FollowsViewModel @Inject constructor() : BaseViewModel() {
     fun getFollowings(userId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getFollowings(userId).collect {
-                _user.value = it
+                _users.value = it
+            }
+        }
+    }
+
+    fun getNextFollowers(userId: Int, pageNo: String) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.getNextFollowers(userId, pageNo).collect {
+                _nextUsers.value = it
+            }
+        }
+    }
+
+    fun getNextFollowings(userId: Int, pageNo: String) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.getNextFollowings(userId, pageNo).collect {
+                _nextUsers.value = it
             }
         }
     }

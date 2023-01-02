@@ -80,12 +80,18 @@ interface RemoteRepository {
     @GET("user/followings/{userId}")
     suspend fun getFollowings(@Path("userId") userId: Int) : Response<Page<User>>
 
+    @GET("user/followers/{userId}?page")
+    suspend fun getNextFollowers(@Path("userId") userId: Int, @Query("page") pageNo: String) : Response<Page<User>>
+
+    @GET("user/followings/{userId}?page")
+    suspend fun getNextFollowings(@Path("userId") userId: Int, @Query("page") pageNo: String) : Response<Page<User>>
+
     @GET("user/follow/{userId}")
     suspend fun follow(@Path("userId") userId: Int) : Response<User>
 
     @GET("user/unfollow/{userId}")
     suspend fun unFollow(@Path("userId") userId: Int) : Response<User>
 
-    @GET("user/followings/statuses")
+    @GET("user/followings-statuses")
     suspend fun getFollowingsReels() : Response<ArrayList<User>>
 }

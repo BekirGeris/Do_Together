@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.User
+import com.example.dotogether.util.helper.RuntimeHelper
 
 class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
@@ -22,6 +23,11 @@ class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     fun bind(user: User) {
         this.user = user
+
+        RuntimeHelper.glideForPersonImage(context).load(user.img).into(binding.userImage)
+
+        binding.username.text = user.username
+        binding.name.text = user.name
     }
 
     override fun onClick(v: View?) {

@@ -72,13 +72,13 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun goToReelsFragment(navController: NavController?) {
+    fun goToReelsFragment(navController: NavController?, userId: Int) {
         navController.let {
             if (it != null) {
                 with(it.graph.displayName.lowercase()) {
                     when {
                         contains("others_nav") -> {
-                            it.navigate(OthersNavDirections.actionReelsFragment())
+                            it.navigate(OthersNavDirections.actionReelsFragment(userId))
                         }
                     }
                 }
@@ -90,19 +90,21 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun goToFollowsFragment(navController: NavController?) {
+    fun goToFollowsFragment(navController: NavController?, userId: Int, followsType: Int) {
         navController.let {
             if (it != null) {
                 with(it.graph.displayName.lowercase()) {
                     when {
                         contains("others_nav") -> {
-                            it.navigate(OthersNavDirections.actionFollowsFragment())
+                            it.navigate(OthersNavDirections.actionFollowsFragment(userId = userId, followsType = followsType))
                         }
                     }
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
                 intent.putExtra("viewType", ViewType.VIEW_FOLLOWS_FRAGMENT.type)
+                intent.putExtra("userId", userId)
+                intent.putExtra("followsType", followsType)
                 view.context.startActivity(intent)
             }
         }

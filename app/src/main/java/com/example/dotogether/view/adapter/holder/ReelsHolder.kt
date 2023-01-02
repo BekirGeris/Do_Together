@@ -40,7 +40,7 @@ class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
         }
         when(v) {
             binding.userImage -> {
-                goToReelsFragment(navController)
+                user.id?.let { goToReelsFragment(navController, it) }
             }
         }
     }

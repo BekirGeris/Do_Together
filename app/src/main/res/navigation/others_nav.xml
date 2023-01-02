@@ -90,9 +90,22 @@
             app:destination="@id/profileFragment"
             app:popUpTo="@id/reelsFragment"
             app:popUpToInclusive="true"/>
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/followsFragment"
         android:name="com.example.dotogether.view.fragment.FollowsFragment"
-        android:label="FollowsFragment" />
+        android:label="FollowsFragment" >
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="followsType"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>

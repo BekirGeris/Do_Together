@@ -5,7 +5,6 @@ class Reels(
     var id: Int,
     var img: String,
     var updated_at: String,
-    var user_id: Int
-) {
-    constructor() : this("", 0, "", "", 0)
-}
+    var user_id: Int,
+    var userName: String,
+)

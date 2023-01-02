@@ -116,6 +116,14 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { (repository.getFollowings(userId)) }
     }
 
+    suspend fun getNextFollowers(userId: Int, pageNo: String): Flow<Resource<Page<User>>> {
+        return generateFlow { (repository.getNextFollowers(userId, pageNo)) }
+    }
+
+    suspend fun getNextFollowings(userId: Int, pageNo: String): Flow<Resource<Page<User>>> {
+        return generateFlow { (repository.getNextFollowings(userId, pageNo)) }
+    }
+
     suspend fun follow(userId: Int): Flow<Resource<User>> {
         return generateFlow { (repository.follow(userId)) }
     }

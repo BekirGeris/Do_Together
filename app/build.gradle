@@ -37,7 +37,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "CLIENT_ID", '"60642158129-3tufc48g19i7lkrjjqmkcur2cvscmrej.apps.googleusercontent.com"'
@@ -45,7 +45,7 @@ android {
         }
 
         debug {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "CLIENT_ID", '"60642158129-3tufc48g19i7lkrjjqmkcur2cvscmrej.apps.googleusercontent.com"'

@@ -33,9 +33,9 @@
     <ImageView
         android:id="@+id/reels_image"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:src="@drawable/pilgrim"
+        android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

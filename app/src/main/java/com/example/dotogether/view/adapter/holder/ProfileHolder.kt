@@ -104,10 +104,10 @@ class ProfileHolder(
 
             }
             binding.followersLyt -> {
-                goToFollowsFragment(navController)
+                user.id?.let { goToFollowsFragment(navController, it, 1) }
             }
             binding.followingLyt -> {
-                goToFollowsFragment(navController)
+                user.id?.let { goToFollowsFragment(navController, it, 2) }
             }
             binding.followBtn -> {
                 if (user.is_followed == true)

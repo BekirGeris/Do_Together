@@ -43,7 +43,15 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private var justOneWork = true
 
     private var nextPage = "2"
-    private lateinit var scrollListener: RecyclerView.OnScrollListener
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(!recyclerView.canScrollVertically(1)) {
+                viewModel.getNextAllTargets(nextPage)
+                binding.targetRv.removeOnScrollListener(this)
+            }
+        }
+    }
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         var isGrantedGalleryAndCamera = true
@@ -233,6 +241,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             when(resource) {
                 is Resource.Success -> {
                     viewModel.getFollowingsReels()
+                    dialog.hide()
                 }
                 is Resource.Error -> {
                     dialog.hide()
@@ -262,15 +271,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     private fun setRecyclerViewScrollListener() {
-        scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if(!recyclerView.canScrollVertically(1)) {
-                    viewModel.getNextAllTargets(nextPage)
-                    binding.targetRv.removeOnScrollListener(scrollListener)
-                }
-            }
-        }
         binding.targetRv.addOnScrollListener(scrollListener)
     }
 
