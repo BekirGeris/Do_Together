@@ -48,8 +48,6 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
 
-    private var justOneWork = true
-
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
         dialog.hide()
         Log.d(TAG, "resultCode : ${it.resultCode}")
@@ -108,27 +106,10 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initField()
-            initObserve()
-            justOneWork = false
-        }
+        initObserve()
     }
 
     private fun initViews() {
-        binding.emailEditTxt.addTextChangedListener { editTextChange(binding.emailEditTxt) }
-        binding.passwordEditTxt.addTextChangedListener { editTextChange(binding.passwordEditTxt) }
-        binding.topBackBtn.setOnClickListener(this)
-        //todo: acitonlar eklenince açılacak
-        binding.loginBtn.setOnClickListener(this)
-        binding.forgetPasswordBtn.setOnClickListener(this)
-        binding.googleBtn.setOnClickListener(this)
-//        binding.facebookBtn.setOnClickListener(this)
-//        binding.twitterBtn.setOnClickListener(this)
-        binding.signUpBtn.setOnClickListener(this)
-    }
-
-    private fun initField() {
         oneTapClient = Identity.getSignInClient(requireActivity())
         signInRequest = BeginSignInRequest.builder()
             .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
@@ -144,7 +125,19 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
                     .build())
             .setAutoSelectEnabled(true)
             .build()
+
+        binding.emailEditTxt.addTextChangedListener { editTextChange(binding.emailEditTxt) }
+        binding.passwordEditTxt.addTextChangedListener { editTextChange(binding.passwordEditTxt) }
+        binding.topBackBtn.setOnClickListener(this)
+        //todo: acitonlar eklenince açılacak
+        binding.loginBtn.setOnClickListener(this)
+        binding.forgetPasswordBtn.setOnClickListener(this)
+        binding.googleBtn.setOnClickListener(this)
+//        binding.facebookBtn.setOnClickListener(this)
+//        binding.twitterBtn.setOnClickListener(this)
+        binding.signUpBtn.setOnClickListener(this)
     }
+
 
     private fun initObserve() {
         viewModel.login.observe(viewLifecycleOwner) {

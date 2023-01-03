@@ -47,8 +47,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     private var calledFromMode = -1
 
-    private var justOneWork = true
-
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -121,15 +119,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initField()
-            initObserve()
-            justOneWork = false
-        }
-    }
-
-    private fun initField() {
-
+        initObserve()
     }
 
     private fun initViews() {

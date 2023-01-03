@@ -3,9 +3,11 @@ package com.example.dotogether.view.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,8 +41,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private val targets = ArrayList<Target>()
     private val reelsList = ArrayList<User>()
-
-    private var justOneWork = true
 
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -109,7 +109,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        justOneWork = true
         initViews()
     }
 
@@ -122,10 +121,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initObserve()
-            justOneWork = false
-        }
+        initObserve()
     }
 
     fun initViews() {
@@ -265,7 +261,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 startActivity(intent)
             }
             binding.searchBtn -> {
-
+                val intent = Intent(requireActivity(), OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_SEARCH_FRAGMENT.type)
+                startActivity(intent)
             }
         }
     }

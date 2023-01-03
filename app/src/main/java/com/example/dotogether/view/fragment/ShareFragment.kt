@@ -46,8 +46,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     private lateinit var customPeriodDialog: BottomSheetDialog
 
     val datePickerFragment = DatePickerFragment(this)
-
-    private var justOneWork = true
     private lateinit var imageBase64: String
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
@@ -118,10 +116,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initObserve()
-            justOneWork = false
-        }
+        initObserve()
     }
 
     fun initViews() {

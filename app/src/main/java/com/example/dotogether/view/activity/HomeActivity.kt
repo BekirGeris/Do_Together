@@ -20,7 +20,7 @@ class HomeActivity : BaseActivity() {
     private lateinit var navController: NavController
 
     private val homeFragment = HomeFragment()
-    private val searchFragment = SearchFragment()
+    private val discoverFragment = DiscoverFragment()
     private val libraryFragment = LibraryFragment()
     private val profileFragment = ProfileFragment()
     private val fragmentManager = supportFragmentManager
@@ -38,7 +38,7 @@ class HomeActivity : BaseActivity() {
 
         fragmentManager.beginTransaction().apply {
             add(R.id.container, activeFragment)
-            add(R.id.container, searchFragment).hide(searchFragment)
+            add(R.id.container, discoverFragment).hide(discoverFragment)
             add(R.id.container, libraryFragment).hide(libraryFragment)
             add(R.id.container, profileFragment).hide(profileFragment)
         }.commit()
@@ -51,8 +51,8 @@ class HomeActivity : BaseActivity() {
                     true
                 }
                 R.id.navigation_search -> {
-                    fragmentManager.beginTransaction().hide(activeFragment).show(searchFragment).commit()
-                    activeFragment = searchFragment
+                    fragmentManager.beginTransaction().hide(activeFragment).show(discoverFragment).commit()
+                    activeFragment = discoverFragment
                     true
                 }
                 R.id.navigation_library -> {
@@ -75,7 +75,7 @@ class HomeActivity : BaseActivity() {
             R.id.navigation_home -> {
 
             }
-            R.id.navigation_search -> {
+            R.id.navigation_discover -> {
 
             }
             R.id.navigation_share -> {

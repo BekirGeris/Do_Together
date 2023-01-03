@@ -21,111 +21,111 @@ import javax.inject.Inject
 class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRepository) {
 
     suspend fun login(loginRequest: LoginRequest): Flow<Resource<LoginResponse>> {
-        return generateFlow { (repository.login(loginRequest)) }
+        return generateFlow { repository.login(loginRequest) }
     }
 
     suspend fun register(registerRequest: RegisterRequest): Flow<Resource<RegisterResponse>> {
-        return generateFlow { (repository.register(registerRequest)) }
+        return generateFlow { repository.register(registerRequest) }
     }
 
     suspend fun updateUser(updateUserRequest: UpdateUserRequest): Flow<Resource<User>> {
-        return generateFlow { (repository.updateUser(updateUserRequest)) }
+        return generateFlow { repository.updateUser(updateUserRequest) }
     }
 
     suspend fun createReels(createReelsRequest: CreateReelsRequest): Flow<Resource<Reels>> {
-        return generateFlow { (repository.createReels(createReelsRequest)) }
+        return generateFlow { repository.createReels(createReelsRequest) }
     }
 
     suspend fun createTarget(createTargetRequest: CreateTargetRequest): Flow<Resource<Target>> {
-        return generateFlow { (repository.createTarget(createTargetRequest)) }
+        return generateFlow { repository.createTarget(createTargetRequest) }
     }
 
     suspend fun getAllTargets(): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getAllTargets()) }
+        return generateFlow { repository.getAllTargets() }
     }
 
     suspend fun getNextAllTargets(pageNo: String): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getNextAllTargets(pageNo)) }
+        return generateFlow { repository.getNextAllTargets(pageNo) }
     }
 
     suspend fun getMyJoinedTargets(): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getMyJoinedTargets()) }
+        return generateFlow { repository.getMyJoinedTargets() }
     }
 
     suspend fun getNextMyJoinedTargets(pageNo: String): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getNextMyJoinedTargets(pageNo)) }
+        return generateFlow { repository.getNextMyJoinedTargets(pageNo) }
     }
 
     suspend fun getMyLikeTargets(): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getMyLikeTargets()) }
+        return generateFlow { repository.getMyLikeTargets() }
     }
 
     suspend fun getNextMyLikeTargets(pageNo: String): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getNextMyLikeTargets(pageNo)) }
+        return generateFlow { repository.getNextMyLikeTargets(pageNo) }
     }
 
     suspend fun getMyDoneTargets(): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getMyDoneTargets()) }
+        return generateFlow { repository.getMyDoneTargets() }
     }
 
     suspend fun getNextMyDoneTargets(pageNo: String): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getNextMyDoneTargets(pageNo)) }
+        return generateFlow { repository.getNextMyDoneTargets(pageNo) }
     }
 
     suspend fun getTargetsWithUserId(userId: Int): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getTargetsWithUserId(userId)) }
+        return generateFlow { repository.getTargetsWithUserId(userId) }
     }
 
     suspend fun getNextTargetsWithUserId(userId: Int, pageNo: String): Flow<Resource<Page<Target>>> {
-        return generateFlow { (repository.getNextTargetsWithUserId(userId, pageNo)) }
+        return generateFlow { repository.getNextTargetsWithUserId(userId, pageNo) }
     }
 
     suspend fun joinTarget(targetId: Int): Flow<Resource<Target>> {
-        return generateFlow { (repository.joinTarget(targetId)) }
+        return generateFlow { repository.joinTarget(targetId) }
     }
 
     suspend fun likeTarget(targetId: Int): Flow<Resource<Target>> {
-        return generateFlow { (repository.likeTarget(targetId)) }
+        return generateFlow { repository.likeTarget(targetId) }
     }
 
     suspend fun unJoinTarget(targetId: Int): Flow<Resource<Target>> {
-        return generateFlow { (repository.unJoinTarget(targetId)) }
+        return generateFlow { repository.unJoinTarget(targetId) }
     }
 
     suspend fun unLikeTarget(targetId: Int): Flow<Resource<Target>> {
-        return generateFlow { (repository.unLikeTarget(targetId)) }
+        return generateFlow { repository.unLikeTarget(targetId) }
     }
 
     suspend fun getTarget(targetId: Int): Flow<Resource<Target>> {
-        return generateFlow { (repository.getTarget(targetId)) }
+        return generateFlow { repository.getTarget(targetId) }
     }
 
     suspend fun deleteTarget(targetId: Int): Flow<Resource<Target>> {
-        return generateFlow { (repository.deleteTarget(targetId)) }
+        return generateFlow { repository.deleteTarget(targetId) }
     }
 
     suspend fun getUser(userId: Int): Flow<Resource<User>> {
-        return generateFlow { (repository.getUser(userId)) }
+        return generateFlow { repository.getUser(userId) }
     }
 
     suspend fun getFollowers(userId: Int): Flow<Resource<Page<User>>> {
-        return generateFlow { (repository.getFollowers(userId)) }
+        return generateFlow { repository.getFollowers(userId) }
     }
 
     suspend fun getFollowings(userId: Int): Flow<Resource<Page<User>>> {
-        return generateFlow { (repository.getFollowings(userId)) }
+        return generateFlow { repository.getFollowings(userId) }
     }
 
     suspend fun getNextFollowers(userId: Int, pageNo: String): Flow<Resource<Page<User>>> {
-        return generateFlow { (repository.getNextFollowers(userId, pageNo)) }
+        return generateFlow { repository.getNextFollowers(userId, pageNo) }
     }
 
     suspend fun getNextFollowings(userId: Int, pageNo: String): Flow<Resource<Page<User>>> {
-        return generateFlow { (repository.getNextFollowings(userId, pageNo)) }
+        return generateFlow { repository.getNextFollowings(userId, pageNo) }
     }
 
     suspend fun follow(userId: Int): Flow<Resource<User>> {
-        return generateFlow { (repository.follow(userId)) }
+        return generateFlow { repository.follow(userId) }
     }
 
     suspend fun unFollow(userId: Int): Flow<Resource<User>> {

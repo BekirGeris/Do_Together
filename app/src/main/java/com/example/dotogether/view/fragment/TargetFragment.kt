@@ -30,8 +30,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var memberAdapter: MemberAdapter
 
-    private var justOneWork = true
-
     var targetId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +50,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initObserve()
-            justOneWork = false
-        }
+        initObserve()
     }
 
     private fun initViews() {

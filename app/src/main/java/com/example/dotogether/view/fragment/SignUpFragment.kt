@@ -55,8 +55,6 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     private lateinit var oneTapClient: SignInClient
     private lateinit var signUpRequest: BeginSignInRequest
 
-    private var justOneWork = true
-
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
         dialog.hide()
         if (it.resultCode == Activity.RESULT_OK) {
@@ -113,29 +111,10 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initField()
-            initObserve()
-            justOneWork = false
-        }
+        initObserve()
     }
 
     private fun initViews() {
-        binding.nameEditTxt.addTextChangedListener{ editTextChange(binding.nameEditTxt) }
-        binding.usernameEditTxt.addTextChangedListener{ editTextChange(binding.usernameEditTxt) }
-        binding.emailEditTxt.addTextChangedListener{ editTextChange(binding.emailEditTxt) }
-        binding.passwordEditTxt.addTextChangedListener{ editTextChange(binding.passwordEditTxt) }
-        binding.passwordAgainEditTxt.addTextChangedListener{ editTextChange(binding.passwordAgainEditTxt) }
-        binding.topBackBtn.setOnClickListener(this)
-        //todo: actionlar eklenince açılacak
-        binding.signUpBtn.setOnClickListener(this)
-        binding.googleBtn.setOnClickListener(this)
-//        binding.facebookBtn.setOnClickListener(this)
-//        binding.twitterBtn.setOnClickListener(this)
-        binding.signInBtn.setOnClickListener(this)
-    }
-
-    private fun initField() {
         oneTapClient = Identity.getSignInClient(requireActivity())
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
@@ -152,6 +131,19 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
                     .build()
             )
             .build()
+
+        binding.nameEditTxt.addTextChangedListener{ editTextChange(binding.nameEditTxt) }
+        binding.usernameEditTxt.addTextChangedListener{ editTextChange(binding.usernameEditTxt) }
+        binding.emailEditTxt.addTextChangedListener{ editTextChange(binding.emailEditTxt) }
+        binding.passwordEditTxt.addTextChangedListener{ editTextChange(binding.passwordEditTxt) }
+        binding.passwordAgainEditTxt.addTextChangedListener{ editTextChange(binding.passwordAgainEditTxt) }
+        binding.topBackBtn.setOnClickListener(this)
+        //todo: actionlar eklenince açılacak
+        binding.signUpBtn.setOnClickListener(this)
+        binding.googleBtn.setOnClickListener(this)
+//        binding.facebookBtn.setOnClickListener(this)
+//        binding.twitterBtn.setOnClickListener(this)
+        binding.signInBtn.setOnClickListener(this)
     }
 
     private fun initObserve() {

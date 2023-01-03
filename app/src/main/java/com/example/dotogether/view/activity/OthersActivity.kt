@@ -65,6 +65,9 @@ class OthersActivity : BaseActivity() {
                 val followsType = intent.getIntExtra("followsType", -1)
                 navController.navigate(OthersNavDirections.actionFollowsFragment(userId, followsType), navOptions)
             }
+            ViewType.VIEW_SEARCH_FRAGMENT.type -> {
+                navController.navigate(OthersNavDirections.actionSearchFragment(), navOptions)
+            }
         }
     }
 

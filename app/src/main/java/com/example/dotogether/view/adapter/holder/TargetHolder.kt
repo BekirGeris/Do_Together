@@ -1,8 +1,10 @@
 package com.example.dotogether.view.adapter.holder
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,10 +12,13 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class TargetHolder(
     view: View,
@@ -61,20 +66,28 @@ class TargetHolder(
         val user = target.admin
         binding.targetTitle.text = target.target
         binding.description.text = target.description
+        target.created_at?.let {
+            val date = Constants.DATE_FORMAT_3.parse(it)
+            binding.postTime.text = date?.let { it1 -> Constants.DATE_FORMAT_2.format(it1) }
+        }
 
         target.is_joined?.let {
             if (it) {
                 binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
+                binding.join.text = context.getString(R.string.leave)
             } else {
                 binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_outline_24), null, null, null)
+                binding.join.text = context.getString(R.string.join)
             }
         }
 
         target.is_liked?.let {
             if (it) {
                 binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_alt_24), null, null, null)
+                binding.like.text = context.getString(R.string.un_like)
             } else {
                 binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_off_alt_24), null, null, null)
+                binding.like.text = context.getString(R.string.like)
             }
         }
 

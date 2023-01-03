@@ -10,8 +10,8 @@
 
     <ImageButton
         android:id="@+id/camera_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/transparent"
@@ -21,8 +21,8 @@
 
     <ImageButton
         android:id="@+id/message_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/transparent"
@@ -33,7 +33,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/search_btn"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="40dp"
         android:layout_margin="5dp"
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
@@ -80,20 +80,18 @@
         android:id="@+id/swipe_lyt"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_btn" >
+        app:layout_constraintTop_toBottomOf="@+id/camera_btn"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/target_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginTop="8dp" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

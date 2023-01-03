@@ -2,11 +2,11 @@ package com.example.dotogether.view.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentSearchBinding
 import com.example.dotogether.databinding.ItemTargetBinding
@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment(), HolderListener.TargetHolderListener{
+class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener{
 
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var binding: FragmentSearchBinding
@@ -45,8 +45,15 @@ class SearchFragment : BaseFragment(), HolderListener.TargetHolderListener{
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObserve()
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun initViews() {
+        binding.searchView.onActionViewExpanded()
+        binding.backBtn.setOnClickListener(this)
 
         for (i in 1..100) {
             users.add(User())
@@ -66,6 +73,22 @@ class SearchFragment : BaseFragment(), HolderListener.TargetHolderListener{
                 binding.searchRv.adapter = targetAdapter
             }
         }
+    }
+
+    override fun onClick(v: View?) {
+        val navController = view?.findNavController()
+        navController?.let {
+            when (v) {
+                binding.backBtn -> {
+                    activity?.onBackPressed()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun initObserve() {
+
     }
 
     override fun like(binding: ItemTargetBinding, target: Target) {

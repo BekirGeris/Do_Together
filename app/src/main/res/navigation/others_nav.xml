@@ -36,6 +36,9 @@
     <action android:id="@+id/action_followsFragment"
         app:destination="@id/followsFragment"/>
 
+    <action android:id="@+id/action_searchFragment"
+        app:destination="@id/searchFragment"/>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
@@ -108,4 +111,9 @@
             app:argType="integer"
             android:defaultValue="-1" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.dotogether.view.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 </navigation>

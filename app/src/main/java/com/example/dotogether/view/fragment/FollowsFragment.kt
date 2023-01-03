@@ -29,8 +29,6 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
     var userId: Int? = null
     var followsType: Int? = null
 
-    private var justOneWork = true
-
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -64,10 +62,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initObserve()
-            justOneWork = false
-        }
+        initObserve()
     }
 
     private fun initViews() {

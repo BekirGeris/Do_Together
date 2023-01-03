@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat
 object Constants {
 
     val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd")
+    val DATE_FORMAT_2 = SimpleDateFormat("yyyy/MM/dd HH:mm")
+    val DATE_FORMAT_3 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
 
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),
@@ -15,7 +17,8 @@ object Constants {
         VIEW_CHAT_FRAGMENT(4),
         VIEW_TARGET_FRAGMENT(5),
         VIEW_REELS_FRAGMENT(6),
-        VIEW_FOLLOWS_FRAGMENT(7)
+        VIEW_FOLLOWS_FRAGMENT(7),
+        VIEW_SEARCH_FRAGMENT(8)
     }
 
     enum class MethodType {

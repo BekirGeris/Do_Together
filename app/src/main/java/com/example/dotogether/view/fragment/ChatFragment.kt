@@ -30,7 +30,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private lateinit var messageAdapter: MessageAdapter
 
     var isGroup = false
-    private var justOneWork = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +49,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (justOneWork) {
-            initObserve()
-            justOneWork = false
-        }
+        initObserve()
     }
 
     private fun initViews() {
