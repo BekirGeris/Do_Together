@@ -10,6 +10,9 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import java.io.ByteArrayOutputStream
+import java.text.DateFormat
+import java.text.ParseException
+import java.util.*
 
 object RuntimeHelper {
     var TOKEN = ""
@@ -45,5 +48,14 @@ object RuntimeHelper {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
         val bytes: ByteArray = stream.toByteArray()
         return  "data:image/jpeg;base64," + Base64.encodeToString(bytes, Base64.DEFAULT)
+    }
+
+    fun DateFormat.tryParse(source: String) : Date? {
+        try {
+            return this.parse(source)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

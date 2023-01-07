@@ -3,11 +3,8 @@ package com.example.dotogether.view.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,24 +13,28 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentHomeBinding
+import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.CreateReelsRequest
-import com.example.dotogether.util.Constants.ViewType
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
-import com.example.dotogether.view.activity.OthersActivity
+import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
+import omari.hamza.storyview.StoryView
+import omari.hamza.storyview.callback.StoryClickListeners
+import omari.hamza.storyview.model.MyStory
 import java.io.File
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener {
+class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener, HolderListener.ReelsHolderListener {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
@@ -42,11 +43,13 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private val targets = ArrayList<Target>()
     private val reelsList = ArrayList<User>()
 
+    lateinit var storyViewBuilder: StoryView.Builder
+
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if(!recyclerView.canScrollVertically(1)) {
+            if (!recyclerView.canScrollVertically(1)) {
                 viewModel.getNextAllTargets(nextPage)
                 binding.targetRv.removeOnScrollListener(this)
             }
@@ -129,7 +132,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         binding.messageBtn.setOnClickListener(this)
         binding.searchBtn.setOnClickListener(this)
 
-        homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this)
+        homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this, this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
         binding.targetRv.adapter = homeTargetAdapter
 
@@ -142,7 +145,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
         viewModel.reels.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     it.data?.let { list ->
                         reelsList.clear()
@@ -159,11 +162,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         }
         viewModel.getFollowingsReels()
         viewModel.updateTarget.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     it.data?.let { updateTarget ->
                         val newTargets = ArrayList<Target>()
-                        targets.mapTo(newTargets) {t -> if (updateTarget.id == t.id) updateTarget else t}
+                        targets.mapTo(newTargets) { t -> if (updateTarget.id == t.id) updateTarget else t }
                         targets.clear()
                         targets.addAll(newTargets)
                         homeTargetAdapter.notifyDataSetChanged()
@@ -180,7 +183,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             }
         }
         viewModel.allTargets.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     binding.swipeLyt.isRefreshing = false
                     it.data?.let { response ->
@@ -213,7 +216,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         }
         viewModel.getAllTargets()
         viewModel.nextAllTargets.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Resource.Success -> {
                     it.data?.let { response ->
                         response.data?.let { list ->
@@ -234,7 +237,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             }
         }
         viewModel.createReels.observe(viewLifecycleOwner) { resource ->
-            when(resource) {
+            when (resource) {
                 is Resource.Success -> {
                     viewModel.getFollowingsReels()
                     dialog.hide()
@@ -251,19 +254,15 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     override fun onClick(v: View?) {
-        when(v) {
+        when (v) {
             binding.cameraBtn -> {
                 requestPermissionsForImagePicker()
             }
             binding.messageBtn -> {
-                val intent = Intent(requireActivity(), OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_LIST_CHAT_FRAGMENT.type)
-                startActivity(intent)
+                goToChatFragment()
             }
             binding.searchBtn -> {
-                val intent = Intent(requireActivity(), OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_SEARCH_FRAGMENT.type)
-                startActivity(intent)
+                goToSearchFragment()
             }
         }
     }
@@ -310,5 +309,44 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     override fun unJoin(binding: ItemTargetBinding, target: Target) {
         viewModel.unJoinTarget(target.id!!)
+    }
+
+    override fun onClickReels(binding: ItemReelsBinding, user: User) {
+        showStories(user)
+    }
+
+    fun showStories(user: User) {
+        val myStories: ArrayList<MyStory> = ArrayList()
+
+        user.active_statuses?.forEach {
+            val date = Constants.DATE_FORMAT_3.tryParse(it.created_at)
+
+            myStories.add(
+                MyStory(
+                    it.img,
+                    date
+                )
+            )
+        }
+
+        storyViewBuilder = StoryView.Builder(parentFragmentManager)
+            .setStoriesList(myStories)
+            .setStoryDuration(5000)
+            .setTitleLogoUrl(user.img)
+            .setTitleText(user.username)
+            .setStoryClickListeners(object : StoryClickListeners {
+                override fun onDescriptionClickListener(position: Int) {
+
+                }
+
+                override fun onTitleIconClickListener(position: Int) {
+                    user.id?.let { goToProfileFragment(it) }
+                    storyViewBuilder.dismiss()
+                }
+            })
+            .setStartingIndex(0)
+            .build()
+
+        storyViewBuilder.show()
     }
 }

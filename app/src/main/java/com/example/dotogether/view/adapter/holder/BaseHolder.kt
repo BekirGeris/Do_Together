@@ -72,24 +72,6 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun goToReelsFragment(navController: NavController?, userId: Int) {
-        navController.let {
-            if (it != null) {
-                with(it.graph.displayName.lowercase()) {
-                    when {
-                        contains("others_nav") -> {
-                            it.navigate(OthersNavDirections.actionReelsFragment(userId))
-                        }
-                    }
-                }
-            } else {
-                val intent = Intent(view.context, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_REELS_FRAGMENT.type)
-                view.context.startActivity(intent)
-            }
-        }
-    }
-
     fun goToFollowsFragment(navController: NavController?, userId: Int, followsType: Int) {
         navController.let {
             if (it != null) {

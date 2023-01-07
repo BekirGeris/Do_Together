@@ -14,6 +14,7 @@ import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -67,8 +68,8 @@ class TargetHolder(
         binding.targetTitle.text = target.target
         binding.description.text = target.description
         target.created_at?.let {
-            val date = Constants.DATE_FORMAT_3.parse(it)
-            binding.postTime.text = date?.let { it1 -> Constants.DATE_FORMAT_2.format(it1) }
+            val date = Constants.DATE_FORMAT_3.tryParse(it)
+            binding.postTime.text = date?.let { d -> Constants.DATE_FORMAT_2.format(d) }
         }
 
         target.is_joined?.let {
@@ -92,6 +93,7 @@ class TargetHolder(
         }
 
         target.users?.let {
+            it.reverse()
             memberAdapter = MemberAdapter(it, false)
             binding.membersRv.adapter = memberAdapter
         }

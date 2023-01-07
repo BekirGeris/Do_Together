@@ -3,7 +3,6 @@ package com.example.dotogether.view.activity
 import android.os.Bundle
 import androidx.navigation.*
 import com.example.dotogether.OthersNavDirections
-import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityOthersBinding
 import com.example.dotogether.util.Constants.ViewType
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,10 +54,6 @@ class OthersActivity : BaseActivity() {
             ViewType.VIEW_TARGET_FRAGMENT.type -> {
                 val targetId = intent.getIntExtra("targetId", -1)
                 navController.navigate(OthersNavDirections.actionTargetFragment(targetId), navOptions)
-            }
-            ViewType.VIEW_REELS_FRAGMENT.type -> {
-                val userId = intent.getIntExtra("userId", -1)
-                navController.navigate(OthersNavDirections.actionReelsFragment(userId), navOptions)
             }
             ViewType.VIEW_FOLLOWS_FRAGMENT.type -> {
                 val userId = intent.getIntExtra("userId", -1)

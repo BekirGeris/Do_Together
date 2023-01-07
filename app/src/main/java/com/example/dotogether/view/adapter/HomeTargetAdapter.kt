@@ -15,7 +15,8 @@ import com.example.dotogether.view.adapter.holderListener.HolderListener
 class HomeTargetAdapter(
     private val targetList: ArrayList<Target>,
     private val reelsList: ArrayList<User>,
-    private val targetHolderListener: HolderListener.TargetHolderListener
+    private val targetHolderListener: HolderListener.TargetHolderListener,
+    private val reelsHolderListener: HolderListener.ReelsHolderListener
 ) : BaseAdapter() {
 
     private lateinit var binding: ViewBinding
@@ -25,7 +26,7 @@ class HomeTargetAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         return if (viewType == 0) {
             binding = ItemReelsTopBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            reelsTopHolder = ReelsTopHolder(binding.root, reelsList)
+            reelsTopHolder = ReelsTopHolder(binding.root, reelsList, reelsHolderListener)
             reelsTopHolder!!
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)

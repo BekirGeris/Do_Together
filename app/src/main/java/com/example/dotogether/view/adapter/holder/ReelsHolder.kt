@@ -6,8 +6,9 @@ import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 
-class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
+class ReelsHolder(view: View, val reelsHolderListener: HolderListener.ReelsHolderListener) : BaseHolder(view), View.OnClickListener {
 
     private var binding = ItemReelsBinding.bind(view)
     private val context = binding.root.context
@@ -40,7 +41,8 @@ class ReelsHolder(view: View) : BaseHolder(view), View.OnClickListener {
         }
         when(v) {
             binding.userImage -> {
-                user.id?.let { goToReelsFragment(navController, it) }
+//                user.id?.let { goToReelsFragment(navController, it) }
+                reelsHolderListener.onClickReels(binding, user)
             }
         }
     }

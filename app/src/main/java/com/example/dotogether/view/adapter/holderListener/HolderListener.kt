@@ -41,7 +41,7 @@ class HolderListener {
         fun deleteTarget(binding: ItemTargetBinding, target: Target) {}
     }
     interface ReelsHolderListener{
-        fun callback(binding: ItemReelsBinding, reels: Reels)
+        fun onClickReels(binding: ItemReelsBinding, user: User)
     }
     interface ReelsTopHolderListener{
         fun callback(binding: ItemReelsTopBinding, reels: Reels)
