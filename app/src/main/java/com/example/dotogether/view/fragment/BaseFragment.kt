@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.dotogether.util.Constants
+import com.example.dotogether.view.activity.LoginActivity
 import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.dialog.CustomProgressDialog
 
@@ -37,6 +38,11 @@ open class BaseFragment : Fragment() {
     fun goToSearchFragment() {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
         intent.putExtra("viewType", Constants.ViewType.VIEW_SEARCH_FRAGMENT.type)
+        startActivity(intent)
+    }
+
+    fun goToLoginFragment() {
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
         startActivity(intent)
     }
 }

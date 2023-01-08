@@ -3,6 +3,7 @@ package com.example.dotogether.view.activity
 import android.os.Bundle
 import androidx.navigation.*
 import com.example.dotogether.OthersNavDirections
+import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityOthersBinding
 import com.example.dotogether.util.Constants.ViewType
 import dagger.hilt.android.AndroidEntryPoint

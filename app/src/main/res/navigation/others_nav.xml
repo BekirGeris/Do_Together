@@ -30,9 +30,6 @@
             android:defaultValue="-1" />
     </action>
 
-    <action android:id="@+id/action_reelsFragment"
-        app:destination="@id/reelsFragment"/>
-
     <action android:id="@+id/action_followsFragment"
         app:destination="@id/followsFragment"/>
 

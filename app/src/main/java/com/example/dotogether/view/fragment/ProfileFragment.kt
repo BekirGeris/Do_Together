@@ -361,6 +361,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         viewModel.logout()
         thread {
             Thread.sleep(1000)
+            goToLoginFragment()
             activity?.finish()
         }
     }
