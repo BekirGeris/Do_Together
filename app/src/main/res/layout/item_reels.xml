@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="90dp"
-    android:layout_height="110dp"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -22,9 +22,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:maxHeight="30dp"
         android:text="@string/user_name"
         android:textAlignment="center"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_image"

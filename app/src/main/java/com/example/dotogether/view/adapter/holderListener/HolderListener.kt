@@ -24,7 +24,7 @@ class HolderListener {
         fun callback(binding: ItemMessageRightBinding, message: Message)
     }
     interface ProfileHolderListener{
-        fun itIsMe(binding: ItemProfileBinding, user: User) : Boolean
+        fun isMe(binding: ItemProfileBinding, user: User) : Boolean
         fun backgroundImageEdit(binding: ItemProfileBinding, user: User)
         fun profileImageEdit(binding: ItemProfileBinding, user: User)
         fun descriptionImageEdit(binding: ItemProfileBinding, user: User)
@@ -32,6 +32,10 @@ class HolderListener {
         fun logout(binding: ItemProfileBinding, user: User)
         fun follow(binding: ItemProfileBinding, user: User)
         fun unFollow(binding: ItemProfileBinding, user: User)
+        fun showReels(binding: ItemProfileBinding, user: User)
+        fun isOtherActivity() : Boolean {
+            return false
+        }
     }
     interface TargetHolderListener{
         fun like(binding: ItemTargetBinding, target: Target)
@@ -44,6 +48,6 @@ class HolderListener {
         fun onClickReels(binding: ItemReelsBinding, user: User)
     }
     interface ReelsTopHolderListener{
-        fun callback(binding: ItemReelsTopBinding, reels: Reels)
+        fun addReels()
     }
 }

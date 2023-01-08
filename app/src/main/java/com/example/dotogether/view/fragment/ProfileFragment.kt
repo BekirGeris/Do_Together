@@ -21,11 +21,13 @@ import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
+import omari.hamza.storyview.callback.StoryClickListeners
 import java.io.File
 import java.util.ArrayList
 import kotlin.concurrent.thread
@@ -332,7 +334,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         }
     }
 
-    override fun itIsMe(binding: ItemProfileBinding, user: User): Boolean {
+    override fun isMe(binding: ItemProfileBinding, user: User): Boolean {
         return itIsMe
     }
 
@@ -366,12 +368,28 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         }
     }
 
+    override fun isOtherActivity() : Boolean {
+        return requireActivity() is OthersActivity
+    }
+
     override fun follow(binding: ItemProfileBinding, user: User) {
         user.id?.let { viewModel.follow(it) }
     }
 
     override fun unFollow(binding: ItemProfileBinding, user: User) {
         user.id?.let { viewModel.unFollow(it) }
+    }
+
+    override fun showReels(binding: ItemProfileBinding, user: User) {
+        showReels(user, object : StoryClickListeners {
+            override fun onDescriptionClickListener(position: Int) {
+
+            }
+
+            override fun onTitleIconClickListener(position: Int) {
+                reelsViewBuilder.dismiss()
+            }
+        })
     }
 
     override fun like(binding: ItemTargetBinding, target: Target) {

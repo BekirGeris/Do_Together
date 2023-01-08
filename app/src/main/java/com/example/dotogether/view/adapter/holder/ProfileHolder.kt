@@ -51,12 +51,16 @@ class ProfileHolder(
         dialogBinding.logout.visibility = View.VISIBLE
         dialogBinding.edit.setOnClickListener(this)
         dialogBinding.logout.setOnClickListener(this)
+
+        if (listener.isOtherActivity()) {
+            binding.backBtn.visibility = View.VISIBLE
+        }
     }
 
     fun bind(user: User) {
         this.user = user
 
-        if (listener.itIsMe(binding, user)) {
+        if (listener.isMe(binding, user)) {
             binding.moreSettingBtn.visibility = View.VISIBLE
             binding.btnLayout.visibility = View.GONE
         }
@@ -98,7 +102,7 @@ class ProfileHolder(
                 dialog.show()
             }
             binding.profileImage -> {
-
+                listener.showReels(binding, user)
             }
             binding.description -> {
 

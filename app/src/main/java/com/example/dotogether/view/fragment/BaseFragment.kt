@@ -4,14 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.view.activity.LoginActivity
 import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.dialog.CustomProgressDialog
+import omari.hamza.storyview.StoryView
+import omari.hamza.storyview.callback.StoryClickListeners
+import omari.hamza.storyview.model.MyStory
 
 open class BaseFragment : Fragment() {
 
     lateinit var dialog: CustomProgressDialog
+    lateinit var reelsViewBuilder: StoryView.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +26,32 @@ open class BaseFragment : Fragment() {
 
     fun showToast(message: String?) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    fun showReels(user: User, reelsClickListener: StoryClickListeners) {
+        val myStories: ArrayList<MyStory> = ArrayList()
+
+        user.active_statuses?.forEach {
+            val date = Constants.DATE_FORMAT_3.tryParse(it.created_at)
+
+            myStories.add(
+                MyStory(
+                    it.img,
+                    date
+                )
+            )
+        }
+
+        reelsViewBuilder = StoryView.Builder(parentFragmentManager)
+            .setStoriesList(myStories)
+            .setStoryDuration(5000)
+            .setTitleLogoUrl(user.img)
+            .setTitleText(user.username)
+            .setStoryClickListeners(reelsClickListener)
+            .setStartingIndex(0)
+            .build()
+
+        reelsViewBuilder.show()
     }
 
     fun goToProfileFragment(userId: Int) {

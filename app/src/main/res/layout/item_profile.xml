@@ -43,6 +43,7 @@
         android:id="@+id/back_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:visibility="gone"
         android:background="@drawable/full_oval"
         android:backgroundTint="#8DC1C1C1"
         android:layout_margin="5dp"

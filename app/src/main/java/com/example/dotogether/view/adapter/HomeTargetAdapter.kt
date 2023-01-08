@@ -16,6 +16,7 @@ class HomeTargetAdapter(
     private val targetList: ArrayList<Target>,
     private val reelsList: ArrayList<User>,
     private val targetHolderListener: HolderListener.TargetHolderListener,
+    private val reelsTopHolderListener: HolderListener.ReelsTopHolderListener,
     private val reelsHolderListener: HolderListener.ReelsHolderListener
 ) : BaseAdapter() {
 
@@ -26,7 +27,7 @@ class HomeTargetAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         return if (viewType == 0) {
             binding = ItemReelsTopBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            reelsTopHolder = ReelsTopHolder(binding.root, reelsList, reelsHolderListener)
+            reelsTopHolder = ReelsTopHolder(binding.root, reelsList, reelsTopHolderListener, reelsHolderListener)
             reelsTopHolder!!
         } else {
             binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)

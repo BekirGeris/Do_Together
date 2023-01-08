@@ -18,23 +18,19 @@ import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.CreateReelsRequest
-import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
-import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
-import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
-import omari.hamza.storyview.model.MyStory
 import java.io.File
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener, HolderListener.ReelsHolderListener {
+class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener, HolderListener.ReelsHolderListener, HolderListener.ReelsTopHolderListener {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
@@ -42,8 +38,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private val targets = ArrayList<Target>()
     private val reelsList = ArrayList<User>()
-
-    lateinit var storyViewBuilder: StoryView.Builder
 
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -132,7 +126,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         binding.messageBtn.setOnClickListener(this)
         binding.searchBtn.setOnClickListener(this)
 
-        homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this, this)
+        homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this, this, this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
         binding.targetRv.adapter = homeTargetAdapter
 
@@ -150,8 +144,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     it.data?.let { list ->
                         reelsList.clear()
                         reelsList.addAll(list)
-                        homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
                     }
+                    homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
                 }
                 is Resource.Error -> {
                 }
@@ -312,41 +306,19 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     override fun onClickReels(binding: ItemReelsBinding, user: User) {
-        showStories(user)
+        showReels(user, object : StoryClickListeners {
+            override fun onDescriptionClickListener(position: Int) {
+
+            }
+
+            override fun onTitleIconClickListener(position: Int) {
+                user.id?.let { goToProfileFragment(it) }
+                reelsViewBuilder.dismiss()
+            }
+        })
     }
 
-    fun showStories(user: User) {
-        val myStories: ArrayList<MyStory> = ArrayList()
-
-        user.active_statuses?.forEach {
-            val date = Constants.DATE_FORMAT_3.tryParse(it.created_at)
-
-            myStories.add(
-                MyStory(
-                    it.img,
-                    date
-                )
-            )
-        }
-
-        storyViewBuilder = StoryView.Builder(parentFragmentManager)
-            .setStoriesList(myStories)
-            .setStoryDuration(5000)
-            .setTitleLogoUrl(user.img)
-            .setTitleText(user.username)
-            .setStoryClickListeners(object : StoryClickListeners {
-                override fun onDescriptionClickListener(position: Int) {
-
-                }
-
-                override fun onTitleIconClickListener(position: Int) {
-                    user.id?.let { goToProfileFragment(it) }
-                    storyViewBuilder.dismiss()
-                }
-            })
-            .setStartingIndex(0)
-            .build()
-
-        storyViewBuilder.show()
+    override fun addReels() {
+        requestPermissionsForImagePicker()
     }
 }
