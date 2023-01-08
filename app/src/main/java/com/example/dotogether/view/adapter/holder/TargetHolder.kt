@@ -53,10 +53,8 @@ class TargetHolder(
         binding.like.setOnClickListener(this)
         binding.join.setOnClickListener(this)
 
-        dialogBinding.save.visibility = View.VISIBLE
         dialogBinding.share.visibility = View.VISIBLE
         dialogBinding.delete.visibility = View.VISIBLE
-        dialogBinding.save.setOnClickListener(this)
         dialogBinding.share.setOnClickListener(this)
         dialogBinding.delete.setOnClickListener(this)
     }
@@ -138,9 +136,6 @@ class TargetHolder(
                     listener.join(binding, target)
                 else
                     listener.unJoin(binding, target)
-            }
-            dialogBinding.save -> {
-                bottomSheetDialog.hide()
             }
             dialogBinding.share -> {
                 bottomSheetDialog.hide()

@@ -232,16 +232,18 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
     }
 
     private fun validPassword() : Boolean {
-        when (ValidationFactory.validPassword(password)) {
-            is Resource.Success -> {
-                binding.passwordEditLyt.error = null
-                return true
+        ValidationFactory.validPassword(password).let {
+            when (it) {
+                is Resource.Success -> {
+                    binding.passwordEditLyt.error = null
+                    return true
+                }
+                is Resource.Error -> {
+                    binding.passwordEditLyt.error = it.message
+                    return false
+                }
+                else -> {}
             }
-            is Resource.Error -> {
-                binding.passwordEditLyt.error = "Wrong password"
-                return false
-            }
-            else -> {}
         }
         return false
     }

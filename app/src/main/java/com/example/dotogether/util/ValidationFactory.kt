@@ -26,6 +26,18 @@ object ValidationFactory {
         if (PASSWORD_PATTERN.matcher(password).matches()) {
             return Resource.Success()
         }
+        if (password.length !in 8..20) {
+            return Resource.Error(message = "Password must be at least 8 characters")
+        }
+        if (!password.any { it.isDigit() }) {
+            return Resource.Error(message = "Password must contain numbers")
+        }
+        if (!password.any { it.isUpperCase() }) {
+            return Resource.Error(message = "Password must contain at least one uppercase letter")
+        }
+        if (!password.any { it.isLowerCase() }) {
+            return Resource.Error(message = "Password must contain at least one lowercase letter")
+        }
         return Resource.Error()
     }
 

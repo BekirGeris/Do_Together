@@ -27,20 +27,6 @@
         app:layout_constraintTop_toBottomOf="@+id/view">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/save"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_margin="3dp"
-            android:background="?colorOnSecondary"
-            android:drawableStart="@drawable/ic_baseline_save"
-            android:drawableTint="?colorTertiary"
-            android:drawablePadding="10dp"
-            android:gravity="center|left"
-            android:text="Save"
-            android:textAllCaps="false" />
-
-        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/share"
             android:visibility="gone"
             android:layout_width="match_parent"

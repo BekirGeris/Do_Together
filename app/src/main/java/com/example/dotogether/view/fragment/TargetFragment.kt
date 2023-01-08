@@ -61,11 +61,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.groupMessageBtn.setOnClickListener(this)
         binding.joinBtn.setOnClickListener(this)
 
-        dialogBinding.save.visibility = View.VISIBLE
         dialogBinding.share.visibility = View.VISIBLE
         dialogBinding.delete.visibility = View.VISIBLE
         dialogBinding.edit.visibility = View.VISIBLE
-        dialogBinding.save.setOnClickListener(this)
         dialogBinding.share.setOnClickListener(this)
         dialogBinding.delete.setOnClickListener(this)
         dialogBinding.edit.setOnClickListener(this)
@@ -166,9 +164,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 }
                 binding.joinBtn -> {
                     viewModel.joinTarget(targetId!!)
-                }
-                dialogBinding.save -> {
-                    bottomSheetDialog.hide()
                 }
                 dialogBinding.share -> {
                     bottomSheetDialog.hide()

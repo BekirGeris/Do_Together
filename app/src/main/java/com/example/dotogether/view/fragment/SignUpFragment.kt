@@ -334,23 +334,25 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     }
 
     private fun validPassword() : Boolean {
-        when (ValidationFactory.validPassword(password)) {
-            is Resource.Success -> {
-                binding.passwordEditLyt.error = null
-                return true
+        ValidationFactory.validPassword(password).let {
+            when (it) {
+                is Resource.Success -> {
+                    binding.passwordEditLyt.error = null
+                    return true
+                }
+                is Resource.Error -> {
+                    binding.passwordEditLyt.error = it.message
+                    return false
+                }
+                else -> {}
             }
-            is Resource.Error -> {
-                binding.passwordEditLyt.error = "Wrong password"
-                return false
-            }
-            else -> {}
         }
         return false
     }
 
     private fun validPasswordAgain() : Boolean {
-        return if (passwordAgain.isEmpty() || password != passwordAgain || ValidationFactory.validPassword(passwordAgain) is Resource.Error) {
-            binding.passwordAgainEditLyt.error = "Wrong password again"
+        return if (passwordAgain.isEmpty() || password != passwordAgain) {
+            binding.passwordAgainEditLyt.error = "Passwords are not the same"
             false
         } else {
             binding.passwordAgainEditLyt.error = null
