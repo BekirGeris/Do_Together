@@ -69,6 +69,7 @@ def room_version = "2.4.3"
 def glide_version = "4.11.0"
 dependencies {
 
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
@@ -122,5 +123,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     //story view
-    implementation 'com.github.OMARIHAMZA:StoryView:1.0.2-alpha'
+    implementation files('libs/storyview-debug.aar')
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.palette:palette:1.0.0'
 }

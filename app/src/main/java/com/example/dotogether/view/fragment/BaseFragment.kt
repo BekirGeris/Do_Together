@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.view.activity.LoginActivity
 import com.example.dotogether.view.activity.OthersActivity
@@ -49,6 +50,7 @@ open class BaseFragment : Fragment() {
             .setTitleText(user.username)
             .setStoryClickListeners(reelsClickListener)
             .setStartingIndex(0)
+            .setRequestManager(RuntimeHelper.glideForImage(requireContext()))
             .build()
 
         reelsViewBuilder.show()
