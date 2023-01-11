@@ -170,7 +170,7 @@
             android:id="@+id/google_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/google"
+            android:src="@drawable/ic_icons8_google"
             android:padding="10dp" />
 
         <ImageButton
@@ -179,13 +179,13 @@
             android:layout_height="40dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:background="@drawable/fecebook" />
+            android:src="@drawable/ic_icons8_facebook" />
 
         <ImageButton
             android:id="@+id/twitter_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/twitter" />
+            android:src="@drawable/ic_icons8_twitter_circled" />
 
     </LinearLayout>
 
