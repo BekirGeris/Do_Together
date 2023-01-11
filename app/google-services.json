@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "60642158129",
-    "project_id": "dotogether-6146b",
-    "storage_bucket": "dotogether-6146b.appspot.com"
+    "project_number": "625970899578",
+    "project_id": "dotogether-1b9f5",
+    "storage_bucket": "dotogether-1b9f5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:60642158129:android:f9e5ddccf2bd3082e09710",
+        "mobilesdk_app_id": "1:625970899578:android:3f9a1d9e0d989d8ad0a9c3",
         "android_client_info": {
-          "package_name": "com.example.dotogether"
+          "package_name": "com.bekbek.dotogether"
         }
       },
       "oauth_client": [
         {
-          "client_id": "60642158129-7636e1r1teuk2ikn10a38im46bslbes0.apps.googleusercontent.com",
+          "client_id": "625970899578-hn62kjqtkl96oc4cgf9k9h3gc0pds5lu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.dotogether",
+            "package_name": "com.bekbek.dotogether",
             "certificate_hash": "9124c628aa3d6c97064b95d9408552a243bae337"
           }
         },
         {
-          "client_id": "60642158129-hns01ape1rjeua8jsvfj2mluf32h2nft.apps.googleusercontent.com",
+          "client_id": "625970899578-6t3qhgfm873nekl650aqorileefnmumo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAon1crf71mWrmYzFkPQixZQF3OuC6HiA8"
+          "current_key": "AIzaSyAv3SKrX5-kAah1iPo1SejQtMVzIwtFcfs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "60642158129-hns01ape1rjeua8jsvfj2mluf32h2nft.apps.googleusercontent.com",
+              "client_id": "625970899578-6t3qhgfm873nekl650aqorileefnmumo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

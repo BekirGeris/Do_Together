@@ -39,17 +39,11 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            buildConfigField "String", "CLIENT_ID", '"60642158129-3tufc48g19i7lkrjjqmkcur2cvscmrej.apps.googleusercontent.com"'
-            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
 
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            buildConfigField "String", "CLIENT_ID", '"60642158129-3tufc48g19i7lkrjjqmkcur2cvscmrej.apps.googleusercontent.com"'
-            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
     }
     compileOptions {
@@ -61,6 +55,18 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+
+    flavorDimensions "doTogether"
+
+    productFlavors {
+        doTogether {
+            applicationId "com.bekbek.dotogether"
+            versionCode 1
+
+            buildConfigField "String", "CLIENT_ID", '"625970899578-7l8houakaigas8e8imnq2ltgr3egna4l.apps.googleusercontent.com"'
+            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
+        }
     }
 }
 
