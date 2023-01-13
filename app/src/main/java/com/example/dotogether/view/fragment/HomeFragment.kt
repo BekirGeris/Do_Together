@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +22,13 @@ import com.example.dotogether.model.request.CreateReelsRequest
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import omari.hamza.storyview.callback.StoryClickListeners
 import java.io.File
@@ -119,6 +123,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObserve()
+        getFirebaseToken()
     }
 
     fun initViews() {
@@ -287,6 +292,19 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             .createIntent {
                 resultLauncher.launch(it)
             }
+    }
+
+    private fun getFirebaseToken() : String {
+        var token = ""
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("bekbek", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            token = task.result
+            Log.d(TAG, token)
+        })
+        return token
     }
 
     override fun like(binding: ItemTargetBinding, target: Target) {

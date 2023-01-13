@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "625970899578",
-    "firebase_url": "https://dotogether-1b9f5-default-rtdb.firebaseio.com",
-    "project_id": "dotogether-1b9f5",
-    "storage_bucket": "dotogether-1b9f5.appspot.com"
+    "project_number": "1060531854944",
+    "firebase_url": "https://dotogether-33df8-default-rtdb.firebaseio.com",
+    "project_id": "dotogether-33df8",
+    "storage_bucket": "dotogether-33df8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:625970899578:android:3f9a1d9e0d989d8ad0a9c3",
+        "mobilesdk_app_id": "1:1060531854944:android:dee7b7b2279ad710906d05",
         "android_client_info": {
           "package_name": "com.bekbek.dotogether"
         }
       },
       "oauth_client": [
         {
-          "client_id": "625970899578-hn62kjqtkl96oc4cgf9k9h3gc0pds5lu.apps.googleusercontent.com",
+          "client_id": "1060531854944-9e9t8j8bt3dckvfi7ulpbh5saobfp0n5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.bekbek.dotogether",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "625970899578-6t3qhgfm873nekl650aqorileefnmumo.apps.googleusercontent.com",
+          "client_id": "1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAv3SKrX5-kAah1iPo1SejQtMVzIwtFcfs"
+          "current_key": "AIzaSyBirCWK8YZUuSoKN7y4gtJlGMJ1dpqdGGQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "625970899578-6t3qhgfm873nekl650aqorileefnmumo.apps.googleusercontent.com",
+              "client_id": "1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

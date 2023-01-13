@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
@@ -25,8 +24,7 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.ValidationFactory
-import com.example.dotogether.util.helper.RuntimeHelper
-import com.example.dotogether.view.dialog.CustomProgressDialog
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -38,7 +36,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, LoginCallback {
 
-    private val TAG = "BEKBEK"
     private val REQ_ONE_TAP = 1
     private var signUpType: Int = 0
 
@@ -58,6 +55,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
         dialog.hide()
+        Log.d(TAG, "resultCode : ${it.resultCode}")
         if (it.resultCode == Activity.RESULT_OK) {
             val data = it.data
 
@@ -152,7 +150,6 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
             when (it) {
                 is Resource.Success -> {
                     this.registerSuccess(it)
-                    SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, it.data?.token!!)
                 }
                 is Resource.Error -> {
                     this.registerFailed(it)
@@ -272,7 +269,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     }
 
     override fun registerSuccess(resource: Resource<RegisterResponse>) {
-        RuntimeHelper.TOKEN = resource.data?.token!!
+        SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, resource.data?.token!!)
         goToHomeActivity()
     }
 
@@ -283,7 +280,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     }
 
     override fun loginSuccess(resource: Resource<LoginResponse>) {
-        RuntimeHelper.TOKEN = resource.data?.token!!
+        SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, resource.data?.token!!)
         showToast("Bu hesap zaten mevcut. Giriş yapıldı.")
         goToHomeActivity()
     }

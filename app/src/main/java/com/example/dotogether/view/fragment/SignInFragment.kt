@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
@@ -24,7 +23,7 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.ValidationFactory
-import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -35,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
 
-    private val TAG = "BEKBEK"
     private val REQ_ONE_TAP = 1
     private var signInType: Int = 0
 
@@ -144,7 +142,6 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
             when (it) {
                 is Resource.Success -> {
                     this.loginSuccess(it)
-                    SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, it.data?.token!!)
                 }
                 is Resource.Error -> {
                     this.loginFailed(it)
@@ -272,7 +269,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
     }
 
     override fun loginSuccess(resource: Resource<LoginResponse>) {
-        RuntimeHelper.TOKEN = resource.data?.token!!
+        SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, resource.data?.token!!)
         val action = SignInFragmentDirections.actionSignInFragmentToHomeActivity()
         Navigation.findNavController(requireView()).navigate(action)
         requireActivity().finish()

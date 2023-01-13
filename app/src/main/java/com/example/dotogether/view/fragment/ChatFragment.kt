@@ -140,8 +140,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         databaseReference.child("chats").child(chatId).child(uuidMessage).child("username").setValue(myUser.username)
         databaseReference.child("chats").child(chatId).child(uuidMessage).child("user_id").setValue(myUser.id)
         databaseReference.child("chats").child(chatId).child(uuidMessage).child("time").setValue(ServerValue.TIMESTAMP)
-
-        getData()
     }
 
     fun getData() {

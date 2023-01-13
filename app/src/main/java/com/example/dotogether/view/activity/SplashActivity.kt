@@ -36,7 +36,6 @@ class SplashActivity : BaseActivity(), LoginCallback {
             when (it) {
                 is Resource.Success -> {
                     this.loginSuccess(it)
-                    SharedPreferencesUtil.setString(this, Constants.TOKEN_KEY, it.data?.token!!)
                 }
                 is Resource.Error -> {
                     this.loginFailed(it)
@@ -52,7 +51,7 @@ class SplashActivity : BaseActivity(), LoginCallback {
     }
 
     override fun loginSuccess(resource: Resource<LoginResponse>) {
-        RuntimeHelper.TOKEN = resource.data?.token!!
+        SharedPreferencesUtil.setString(this, Constants.TOKEN_KEY, resource.data?.token!!)
         val i = Intent(this@SplashActivity, HomeActivity::class.java)
         startActivity(i)
         finish()

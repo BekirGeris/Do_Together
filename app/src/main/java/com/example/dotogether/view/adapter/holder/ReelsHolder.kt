@@ -1,14 +1,12 @@
 package com.example.dotogether.view.adapter.holder
 
 import android.view.View
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 
-class ReelsHolder(view: View, val reelsHolderListener: HolderListener.ReelsHolderListener) : BaseHolder(view), View.OnClickListener {
+class ReelsHolder(view: View, private val reelsHolderListener: HolderListener.ReelsHolderListener) : BaseHolder(view), View.OnClickListener {
 
     private var binding = ItemReelsBinding.bind(view)
     private val context = binding.root.context
@@ -33,15 +31,8 @@ class ReelsHolder(view: View, val reelsHolderListener: HolderListener.ReelsHolde
     }
 
     override fun onClick(v: View?) {
-        var navController: NavController? = null
-        try {
-            navController = view.findNavController()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
         when(v) {
             binding.userImage -> {
-//                user.id?.let { goToReelsFragment(navController, it) }
                 reelsHolderListener.onClickReels(binding, user)
             }
         }

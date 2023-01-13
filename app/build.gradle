@@ -64,7 +64,7 @@ android {
             applicationId "com.bekbek.dotogether"
             versionCode 1
 
-            buildConfigField "String", "CLIENT_ID", '"625970899578-7l8houakaigas8e8imnq2ltgr3egna4l.apps.googleusercontent.com"'
+            buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
             buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
     }
@@ -83,6 +83,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.1'
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

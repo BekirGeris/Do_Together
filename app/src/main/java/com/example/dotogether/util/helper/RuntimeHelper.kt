@@ -15,7 +15,7 @@ import java.text.ParseException
 import java.util.*
 
 object RuntimeHelper {
-    var TOKEN = ""
+    var TAG = "bekbek"
 
     fun glideForPersonImage(context: Context) = glide(
         context,
