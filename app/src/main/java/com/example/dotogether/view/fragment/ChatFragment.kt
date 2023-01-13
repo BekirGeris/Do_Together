@@ -16,6 +16,7 @@ import com.example.dotogether.databinding.FragmentChatBinding
 import com.example.dotogether.model.Message
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
 import com.example.dotogether.viewmodel.ChatViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -116,7 +117,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 binding.moreSettingBtn -> {
-                    bottomSheetDialog.show()
+                    bottomSheetDialog.tryShow()
                 }
                 binding.attachBtn -> {
 

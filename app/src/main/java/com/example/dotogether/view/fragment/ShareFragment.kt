@@ -33,6 +33,7 @@ import java.util.*
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 
 @AndroidEntryPoint
 class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
@@ -189,7 +190,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 }
             }
             binding.periodLyt -> {
-                periodDialog.show()
+                periodDialog.tryShow()
             }
             binding.startLyt -> {
                 datePickerFragment.show(parentFragmentManager, "start")
@@ -225,7 +226,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 setPeriodCheckView(periodDialogBinding.mondayToFridayCheck)
             }
             periodDialogBinding.custom -> {
-                customPeriodDialog.show()
+                customPeriodDialog.tryShow()
                 periodDialog.hide()
             }
             customPeriodBinding.cancel -> {

@@ -10,6 +10,7 @@ import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -99,7 +100,7 @@ class ProfileHolder(
                 }
             }
             binding.moreSettingBtn -> {
-                dialog.show()
+                dialog.tryShow()
             }
             binding.profileImage -> {
                 listener.showReels(binding, user)

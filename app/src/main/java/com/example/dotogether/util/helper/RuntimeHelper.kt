@@ -1,5 +1,6 @@
 package com.example.dotogether.util.helper
 
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -57,5 +58,13 @@ object RuntimeHelper {
             e.printStackTrace()
         }
         return null
+    }
+
+    fun Dialog.tryShow() {
+        try {
+            this.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

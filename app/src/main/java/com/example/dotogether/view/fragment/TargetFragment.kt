@@ -14,6 +14,7 @@ import com.example.dotogether.databinding.FragmentTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.viewmodel.TargetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -157,7 +158,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     activity?.onBackPressed()
                 }
                 binding.moreSettingBtn -> {
-                    bottomSheetDialog.show()
+                    bottomSheetDialog.tryShow()
                 }
                 binding.groupMessageBtn -> {
                     targetId?.let { navController.navigate(TargetFragmentDirections.actionChatFragment(isGroup =  true, chatId = it)) }

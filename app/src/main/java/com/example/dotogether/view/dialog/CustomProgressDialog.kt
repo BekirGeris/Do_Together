@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import com.example.dotogether.R
 import com.example.dotogether.databinding.CustomProgressDialogBinding
+import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 
 class CustomProgressDialog(activity: Activity) {
 
@@ -21,7 +22,7 @@ class CustomProgressDialog(activity: Activity) {
     }
 
     fun shoe() {
-        dialog.show()
+        dialog.tryShow()
     }
 
     fun hide() {

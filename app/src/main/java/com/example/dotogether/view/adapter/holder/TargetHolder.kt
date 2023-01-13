@@ -15,11 +15,10 @@ import com.example.dotogether.model.Target
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
+import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class TargetHolder(
     view: View,
@@ -120,7 +119,7 @@ class TargetHolder(
                 goToTargetFragment(navController, target.id!!)
             }
             binding.moreSettingBtn -> {
-                bottomSheetDialog.show()
+                bottomSheetDialog.tryShow()
             }
             binding.postUserName, binding.userImage, binding.postTime -> {
                 target.admin?.id?.let { goToProfileFragment(navController, it) }
