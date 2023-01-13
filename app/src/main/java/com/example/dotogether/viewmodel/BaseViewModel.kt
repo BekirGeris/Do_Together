@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dotogether.data.repostory.AppRepository
 import com.example.dotogether.model.Target
+import com.example.dotogether.model.User
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,6 +19,18 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
 
     private val _updateTarget = MutableLiveData<Resource<Target>>()
     val updateTarget: MutableLiveData<Resource<Target>> = _updateTarget
+
+    private val _myUser = MutableLiveData<User>()
+    val myUser: MutableLiveData<User> = _myUser
+
+    fun getMyUser() {
+        viewModelScope.launch {
+            val user = appRepository.localRepositoryImpl.getUser()
+            user?.let {
+                _myUser.value = it
+            }
+        }
+    }
 
     fun joinTarget(targetId: Int) {
         viewModelScope.launch {

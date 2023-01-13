@@ -35,19 +35,20 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun goToChatFragment(navController: NavController?) {
+    fun goToChatFragment(navController: NavController?, chatId: Int) {
         navController.let {
             if (it != null) {
                 with(it.graph.displayName.lowercase()) {
                     when {
                         contains("others_nav") -> {
-                            it.navigate(OthersNavDirections.actionChatFragment())
+                            it.navigate(OthersNavDirections.actionChatFragment(chatId = chatId))
                         }
                     }
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
                 intent.putExtra("viewType", ViewType.VIEW_CHAT_FRAGMENT.type)
+                intent.putExtra("chatId", chatId)
                 view.context.startActivity(intent)
             }
         }

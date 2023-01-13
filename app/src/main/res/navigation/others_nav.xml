@@ -20,7 +20,12 @@
         app:destination="@id/listChatFragment"/>
 
     <action android:id="@+id/action_chatFragment"
-        app:destination="@id/chatFragment"/>
+        app:destination="@id/chatFragment">
+        <argument
+            android:name="chatId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </action>
 
     <action android:id="@+id/action_targetFragment"
         app:destination="@id/targetFragment">
@@ -76,6 +81,10 @@
             android:name="isGroup"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="chatId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/targetFragment"

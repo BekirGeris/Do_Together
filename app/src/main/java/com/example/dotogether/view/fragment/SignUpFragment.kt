@@ -23,6 +23,7 @@ import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.ValidationFactory
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.dialog.CustomProgressDialog
@@ -151,6 +152,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
             when (it) {
                 is Resource.Success -> {
                     this.registerSuccess(it)
+                    SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, it.data?.token!!)
                 }
                 is Resource.Error -> {
                     this.registerFailed(it)

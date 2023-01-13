@@ -50,6 +50,7 @@ class OthersActivity : BaseActivity() {
                 navController.navigate(OthersNavDirections.actionListChatFragment(), navOptions)
             }
             ViewType.VIEW_CHAT_FRAGMENT.type -> {
+                val chatId = intent.getIntExtra("chatId", -1)
                 navController.navigate(OthersNavDirections.actionChatFragment(), navOptions)
             }
             ViewType.VIEW_TARGET_FRAGMENT.type -> {

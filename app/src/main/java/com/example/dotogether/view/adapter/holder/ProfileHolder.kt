@@ -120,7 +120,7 @@ class ProfileHolder(
                     listener.follow(binding, user)
             }
             binding.messageBtn -> {
-                goToChatFragment(navController)
+                user.id?.let { goToChatFragment(navController, it) }
             }
             binding.backgroundEditBtn -> {
                 listener.backgroundImageEdit(binding, user)

@@ -9,6 +9,9 @@ object Constants {
     val DATE_FORMAT = SimpleDateFormat("yyyy/MM/dd")
     val DATE_FORMAT_2 = SimpleDateFormat("yyyy/MM/dd HH:mm")
     val DATE_FORMAT_3 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
+    val DATE_FORMAT_4 = SimpleDateFormat("HH:mm")
+
+    const val TOKEN_KEY = "TOKEN_KEY"
 
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),

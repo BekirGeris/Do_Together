@@ -14,9 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _myUser = MutableLiveData<User>()
-    val myUser: MutableLiveData<User> = _myUser
-
     private val _user = MutableLiveData<Resource<User>>()
     val user: MutableLiveData<Resource<User>> = _user
 
@@ -35,15 +32,6 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
     fun logout() {
         viewModelScope.launch {
             appRepository.localRepositoryImpl.deleteAllUser()
-        }
-    }
-
-    fun getMyUser() {
-        viewModelScope.launch {
-            val user = appRepository.localRepositoryImpl.getUser()
-            user?.let {
-                _myUser.value = it
-            }
         }
     }
 

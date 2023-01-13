@@ -33,7 +33,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
         }
         when(v) {
             binding.holderView -> {
-                goToChatFragment(navController)
+                chat.chatId?.let { goToChatFragment(navController, it) }
             }
         }
     }

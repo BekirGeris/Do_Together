@@ -12,6 +12,7 @@ import com.example.dotogether.data.callback.LoginCallback
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +36,7 @@ class SplashActivity : BaseActivity(), LoginCallback {
             when (it) {
                 is Resource.Success -> {
                     this.loginSuccess(it)
+                    SharedPreferencesUtil.setString(this, Constants.TOKEN_KEY, it.data?.token!!)
                 }
                 is Resource.Error -> {
                     this.loginFailed(it)

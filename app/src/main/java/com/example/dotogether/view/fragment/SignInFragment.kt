@@ -22,9 +22,9 @@ import com.example.dotogether.databinding.FragmentSignInBinding
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.ValidationFactory
 import com.example.dotogether.util.helper.RuntimeHelper
-import com.example.dotogether.view.dialog.CustomProgressDialog
 import com.example.dotogether.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -144,6 +144,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
             when (it) {
                 is Resource.Success -> {
                     this.loginSuccess(it)
+                    SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, it.data?.token!!)
                 }
                 is Resource.Error -> {
                     this.loginFailed(it)

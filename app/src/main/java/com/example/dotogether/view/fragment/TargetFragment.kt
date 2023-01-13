@@ -160,7 +160,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     bottomSheetDialog.show()
                 }
                 binding.groupMessageBtn -> {
-                    navController.navigate(TargetFragmentDirections.actionChatFragment(true))
+                    targetId?.let { navController.navigate(TargetFragmentDirections.actionChatFragment(isGroup =  true, chatId = it)) }
                 }
                 binding.joinBtn -> {
                     viewModel.joinTarget(targetId!!)
