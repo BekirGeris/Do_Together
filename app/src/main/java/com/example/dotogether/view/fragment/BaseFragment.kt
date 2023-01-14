@@ -30,12 +30,12 @@ open class BaseFragment : Fragment() {
     }
 
     fun showReels(user: User, reelsClickListener: StoryClickListeners) {
-        val myStories: ArrayList<MyStory> = ArrayList()
+        val stories: ArrayList<MyStory> = ArrayList()
 
         user.active_statuses?.forEach {
             val date = Constants.DATE_FORMAT_3.tryParse(it.created_at)
 
-            myStories.add(
+            stories.add(
                 MyStory(
                     it.img,
                     date
@@ -44,7 +44,7 @@ open class BaseFragment : Fragment() {
         }
 
         reelsViewBuilder = StoryView.Builder(parentFragmentManager)
-            .setStoriesList(myStories)
+            .setStoriesList(stories)
             .setStoryDuration(5000)
             .setTitleLogoUrl(user.img)
             .setTitleText(user.username)
@@ -53,7 +53,9 @@ open class BaseFragment : Fragment() {
             .setRequestManager(RuntimeHelper.glideForImage(requireContext()))
             .build()
 
-        reelsViewBuilder.show()
+        if (stories.isNotEmpty()) {
+            reelsViewBuilder.show()
+        }
     }
 
     fun goToProfileFragment(userId: Int) {

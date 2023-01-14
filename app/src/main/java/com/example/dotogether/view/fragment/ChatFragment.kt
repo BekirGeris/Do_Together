@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
@@ -16,6 +15,7 @@ import com.example.dotogether.databinding.FragmentChatBinding
 import com.example.dotogether.model.Message
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
 import com.example.dotogether.viewmodel.ChatViewModel
@@ -102,8 +102,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         val navController = view?.findNavController()
-        var action: NavDirections
-        navController?.let {
+        if (navController != null) {
             when(v) {
                 binding.backBtn -> {
                     activity?.onBackPressed()
@@ -112,8 +111,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     if (isGroup) {
                         activity?.onBackPressed()
                     } else {
-                        action = ChatFragmentDirections.actionChatFragmentToProfileFragment()
-                        navController.navigate(action)
+                        navController.navigate(ChatFragmentDirections.actionChatFragmentToProfileFragment())
                     }
                 }
                 binding.moreSettingBtn -> {
@@ -123,7 +121,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
                 }
                 binding.sendMessageBtn -> {
-                    sendMessage(binding.writeMessageEditTxt.text.toString())
+                    if (binding.writeMessageEditTxt.text.isNotEmpty()) {
+                        sendMessage(binding.writeMessageEditTxt.text.toString())
+                    }
                 }
                 dialogBinding.clearChat -> {
                     bottomSheetDialog.hide()
@@ -150,6 +150,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         query.addValueEventListener(object: ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d(TAG, "onDataChange")
                 messages.clear()
                 for (ds in snapshot.children) {
                     val hashMap = ds.value as HashMap<*, *>

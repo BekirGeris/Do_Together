@@ -90,7 +90,6 @@ class TargetHolder(
         }
 
         target.users?.let {
-            it.reverse()
             memberAdapter = MemberAdapter(it, false)
             binding.membersRv.adapter = memberAdapter
         }
