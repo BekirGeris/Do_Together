@@ -29,7 +29,7 @@ open class BaseFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
-    fun showReels(user: User, reelsClickListener: StoryClickListeners) {
+    fun showReels(user: User, isDeleteIconVisibility: Boolean, reelsClickListener: StoryClickListeners) {
         val stories: ArrayList<MyStory> = ArrayList()
 
         user.active_statuses?.forEach {
@@ -51,6 +51,7 @@ open class BaseFragment : Fragment() {
             .setStoryClickListeners(reelsClickListener)
             .setStartingIndex(0)
             .setRequestManager(RuntimeHelper.glideForImage(requireContext()))
+            .setDeleteIconVisibility(isDeleteIconVisibility)
             .build()
 
         if (stories.isNotEmpty()) {

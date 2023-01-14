@@ -136,6 +136,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.getFollowingsReels() }
     }
 
+    suspend fun removeReels(reelsId: Int): Flow<Resource<Reels>> {
+        return generateFlow { repository.removeReels(reelsId) }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

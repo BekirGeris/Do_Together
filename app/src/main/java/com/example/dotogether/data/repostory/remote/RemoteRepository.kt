@@ -94,4 +94,7 @@ interface RemoteRepository {
 
     @GET("user/followings-statuses")
     suspend fun getFollowingsReels() : Response<ArrayList<User>>
+
+    @GET("user/status/remove/{reelsId}")
+    suspend fun removeReels(@Path("reelsId") reelsId: Int) : Response<Reels>
 }

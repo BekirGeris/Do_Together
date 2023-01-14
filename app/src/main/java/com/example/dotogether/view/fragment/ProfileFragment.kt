@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +25,13 @@ import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
+import com.example.dotogether.view.callback.ConfirmDialogListener
+import com.example.dotogether.view.dialog.ConfirmDialog
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import omari.hamza.storyview.callback.StoryClickListeners
 import java.io.File
-import java.util.ArrayList
 import kotlin.concurrent.thread
 
 @AndroidEntryPoint
@@ -278,6 +280,20 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
+        viewModel.removeReels.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    viewModel.getMyUser()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
     }
 
     private fun setRecyclerViewScrollListener() {
@@ -381,13 +397,28 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     }
 
     override fun showReels(binding: ItemProfileBinding, user: User) {
-        showReels(user, object : StoryClickListeners {
+        showReels(user, itIsMe, object : StoryClickListeners {
             override fun onDescriptionClickListener(position: Int) {
 
             }
 
             override fun onTitleIconClickListener(position: Int) {
                 reelsViewBuilder.dismiss()
+            }
+
+            override fun onDeleteIconClickListener(p0: Int) {
+                reelsViewBuilder.pauseStories()
+
+                ConfirmDialog(requireActivity(), object : ConfirmDialogListener {
+                    override fun cancel() {
+                        reelsViewBuilder.startStories()
+                    }
+
+                    override fun confirm() {
+                        reelsViewBuilder.dismiss()
+                        user.active_statuses?.get(p0)?.let { viewModel.removeReels(it.id) }
+                    }
+                }).shoe()
             }
         })
     }

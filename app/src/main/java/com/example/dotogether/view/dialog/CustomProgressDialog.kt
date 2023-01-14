@@ -12,8 +12,7 @@ class CustomProgressDialog(activity: Activity) {
     var dialog: Dialog
 
     init {
-        val inflater = activity.layoutInflater
-        binding = CustomProgressDialogBinding.inflate(inflater)
+        binding = CustomProgressDialogBinding.inflate(activity.layoutInflater)
         dialog = Dialog(activity)
         dialog.window?.setBackgroundDrawableResource(R.color.transparent)
         dialog.setCanceledOnTouchOutside(false)

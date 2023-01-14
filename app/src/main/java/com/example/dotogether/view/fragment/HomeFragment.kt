@@ -324,7 +324,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     override fun onClickReels(binding: ItemReelsBinding, user: User) {
-        showReels(user, object : StoryClickListeners {
+        showReels(user, false, object : StoryClickListeners {
             override fun onDescriptionClickListener(position: Int) {
 
             }
@@ -332,6 +332,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             override fun onTitleIconClickListener(position: Int) {
                 user.id?.let { goToProfileFragment(it) }
                 reelsViewBuilder.dismiss()
+            }
+
+            override fun onDeleteIconClickListener(p0: Int) {
+
             }
         })
     }

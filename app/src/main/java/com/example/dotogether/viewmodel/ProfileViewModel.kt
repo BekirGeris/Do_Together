@@ -3,6 +3,7 @@ package com.example.dotogether.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dotogether.model.Page
+import com.example.dotogether.model.Reels
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.UpdateUserRequest
@@ -28,6 +29,9 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
 
     private val _deleteTarget = MutableLiveData<Resource<Target>>()
     val deleteTarget: MutableLiveData<Resource<Target>> = _deleteTarget
+
+    private val _removeReels = MutableLiveData<Resource<Reels>>()
+    val removeReels: MutableLiveData<Resource<Reels>> = _removeReels
 
     fun logout() {
         viewModelScope.launch {
@@ -87,6 +91,14 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.deleteTarget(targetId).collect{
                 _deleteTarget.value = it
+            }
+        }
+    }
+
+    fun removeReels(reelsId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.removeReels(reelsId).collect{
+                _removeReels.value = it
             }
         }
     }
