@@ -41,6 +41,20 @@
     <action android:id="@+id/action_searchFragment"
         app:destination="@id/searchFragment"/>
 
+    <action android:id="@+id/action_userEditFragment"
+        app:destination="@id/userEditFragment">
+        <argument
+            android:name="user"
+            app:argType="com.example.dotogether.model.User" />
+    </action>
+
+    <action android:id="@+id/action_passwordEditFragment"
+        app:destination="@id/passwordEditFragment">
+        <argument
+            android:name="user"
+            app:argType="com.example.dotogether.model.User" />
+    </action>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
@@ -59,6 +73,12 @@
             android:name="userId"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_profileFragment_to_userEditFragment"
+            app:destination="@id/userEditFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_passwordEditFragment"
+            app:destination="@id/passwordEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/listChatFragment"
@@ -108,4 +128,20 @@
         android:name="com.example.dotogether.view.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/userEditFragment"
+        android:name="com.example.dotogether.view.fragment.UserEditFragment"
+        android:label="UserEditFragment" >
+        <argument
+            android:name="user"
+            app:argType="com.example.dotogether.model.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordEditFragment"
+        android:name="com.example.dotogether.view.fragment.PasswordEditFragment"
+        android:label="PasswordEditFragment">
+        <argument
+            android:name="user"
+            app:argType="com.example.dotogether.model.User" />
+    </fragment>
 </navigation>

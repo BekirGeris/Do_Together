@@ -25,14 +25,14 @@ class ProfileHolder(
     private lateinit var user: User
 
     private val dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
-    private val dialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
+    private val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialogTheme)
 
     init {
         initViews()
     }
 
     private fun initViews() {
-        dialog.setContentView(dialogBinding.root)
+        bottomSheetDialog.setContentView(dialogBinding.root)
 
         binding.backgroundImage.setOnClickListener(this)
         binding.backBtn.setOnClickListener(this)
@@ -43,14 +43,16 @@ class ProfileHolder(
         binding.followingLyt.setOnClickListener(this)
         binding.followBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
-        binding.backgroundEditBtn.setOnClickListener(this)
-        binding.profileEditBtn.setOnClickListener(this)
-        binding.descriptionCloseBtn.setOnClickListener(this)
-        binding.descriptionConfirmBtn.setOnClickListener(this)
 
-        dialogBinding.edit.visibility = View.VISIBLE
+        dialogBinding.userInfo.visibility = View.VISIBLE
+        dialogBinding.editBackgroundImage.visibility = View.VISIBLE
+        dialogBinding.editProfileImage.visibility = View.VISIBLE
+        dialogBinding.editPassword.visibility = View.VISIBLE
         dialogBinding.logout.visibility = View.VISIBLE
-        dialogBinding.edit.setOnClickListener(this)
+        dialogBinding.userInfo.setOnClickListener(this)
+        dialogBinding.editBackgroundImage.setOnClickListener(this)
+        dialogBinding.editProfileImage.setOnClickListener(this)
+        dialogBinding.editPassword.setOnClickListener(this)
         dialogBinding.logout.setOnClickListener(this)
 
         if (listener.isOtherActivity()) {
@@ -100,7 +102,7 @@ class ProfileHolder(
                 }
             }
             binding.moreSettingBtn -> {
-                dialog.tryShow()
+                bottomSheetDialog.tryShow()
             }
             binding.profileImage -> {
                 listener.showReels(binding, user)
@@ -123,41 +125,25 @@ class ProfileHolder(
             binding.messageBtn -> {
                 user.id?.let { goToChatFragment(navController, it) }
             }
-            binding.backgroundEditBtn -> {
-                listener.backgroundImageEdit(binding, user)
-                invertEditVisibility()
-            }
-            binding.profileEditBtn -> {
-                listener.profileImageEdit(binding, user)
-                invertEditVisibility()
-            }
-            dialogBinding.edit -> {
-                invertEditVisibility()
-                dialog.dismiss()
+            dialogBinding.userInfo -> {
+                goToUserEditFragment(navController, user)
+                bottomSheetDialog.dismiss()
             }
             dialogBinding.logout -> {
                 listener.logout(binding, user)
             }
-            binding.descriptionCloseBtn -> {
-                binding.description.setText(user.description)
-                invertEditVisibility()
+            dialogBinding.editBackgroundImage -> {
+                bottomSheetDialog.dismiss()
+                listener.backgroundImageEdit(binding, user)
             }
-            binding.descriptionConfirmBtn -> {
-                invertEditVisibility()
-                user.description = binding.description.text.toString()
-                listener.descriptionImageEdit(binding, user)
+            dialogBinding.editProfileImage -> {
+                bottomSheetDialog.dismiss()
+                listener.profileImageEdit(binding, user)
+            }
+            dialogBinding.editPassword -> {
+                goToPasswordEditFragment(navController, user)
+                bottomSheetDialog.dismiss()
             }
         }
-    }
-
-    private fun invertEditVisibility() {
-        binding.backgroundEditBtn.visibility = if (binding.backgroundEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        binding.profileEditBtn.visibility = if (binding.profileEditBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        binding.descriptionCloseBtn.visibility = if (binding.descriptionCloseBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        binding.descriptionConfirmBtn.visibility = if (binding.descriptionConfirmBtn.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        binding.description.isFocusableInTouchMode = !binding.description.isEnabled
-        binding.description.isFocusable = !binding.description.isEnabled
-        binding.description.isCursorVisible = !binding.description.isEnabled
-        binding.description.isEnabled = !binding.description.isEnabled
     }
 }

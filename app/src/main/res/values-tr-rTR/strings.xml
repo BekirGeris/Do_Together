@@ -71,4 +71,16 @@
     <string name="description">Description</string>
     <string name="discover">Discover</string>
     <string name="add_reels">Add Reels</string>
+    <string name="change_user_info">Kullanıcı Bilgilerini Değiştir</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="edit_background_image">Arka planı değiştir</string>
+    <string name="edit_profile_image">Profil görselini değiştir</string>
+    <string name="change_password">Şifre Değiştir</string>
+    <string name="log_out">Log out</string>
+    <string name="clear_chat">Clear chat</string>
+    <string name="old_password">eski şifre</string>
+    <string name="new_password">yeni şifre</string>
+    <string name="new_password_again">yeni şifre tekrar</string>
+    <string name="save">Kaydet</string>
 </resources>

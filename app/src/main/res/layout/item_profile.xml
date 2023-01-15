@@ -28,18 +28,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/background_edit_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="15dp"
-        android:visibility="gone"
-        android:background="@drawable/full_oval"
-        android:backgroundTint="#8DC1C1C1"
-        app:layout_constraintBottom_toBottomOf="@+id/background_image"
-        app:layout_constraintEnd_toEndOf="@+id/background_image"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/back_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -62,21 +50,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/background_image" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/profile_edit_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="5dp"
-        android:visibility="gone"
-        android:background="@drawable/full_oval"
-        android:backgroundTint="#8DC1C1C1"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="@+id/profile_image"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
-        app:srcCompat="@drawable/ic_baseline_edit_24" />
 
     <LinearLayout
         android:id="@+id/followers_lyt"
@@ -174,34 +147,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name_txt" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/description_close_btn"
-        android:visibility="gone"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/full_oval"
-        android:backgroundTint="#D81313"
-        android:src="@drawable/ic_baseline_close_24"
-        android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/description"
-        app:layout_constraintEnd_toStartOf="@+id/description"
-        app:layout_constraintTop_toTopOf="@+id/description" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/description_confirm_btn"
-        android:visibility="gone"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/full_oval"
-        android:backgroundTint="#27D813"
-        android:src="@drawable/ic_baseline_check_24"
-        android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/description"
-        app:layout_constraintStart_toEndOf="@+id/description"
-        app:layout_constraintTop_toTopOf="@+id/description" />
 
     <View
         android:id="@+id/space"

@@ -39,13 +39,12 @@ class MyFirebaseMessagingService() : FirebaseMessagingService() {
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
-
-        sendRegistrationToServer("todscdscken")
     }
 
     override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
-        sendRegistrationToServer(token)
+        runBlocking {
+            // todo: repository.sendRegistrationToServer(token)
+        }
     }
 
     private fun scheduleJob() {
@@ -54,14 +53,6 @@ class MyFirebaseMessagingService() : FirebaseMessagingService() {
         WorkManager.getInstance(this)
             .beginWith(work)
             .enqueue()
-    }
-
-    private fun sendRegistrationToServer(token: String?) {
-        // TODO: Implement this method to send token to your app server.
-        Log.d(TAG, "sendRegistrationTokenToServer($token)")
-        runBlocking {
-            // todo: repository.sendRegistrationToServer(token)
-        }
     }
 
     private fun sendNotification(messageBody: String) {

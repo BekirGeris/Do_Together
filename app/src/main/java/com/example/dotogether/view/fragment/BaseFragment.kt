@@ -60,10 +60,10 @@ open class BaseFragment : Fragment() {
     }
 
     fun goToProfileFragment(userId: Int) {
-            val intent = Intent(requireContext(), OthersActivity::class.java)
-            intent.putExtra("viewType", Constants.ViewType.VIEW_PROFILE_FRAGMENT.type)
-            intent.putExtra("userId", userId)
-            requireActivity().startActivity(intent)
+        val intent = Intent(requireContext(), OthersActivity::class.java)
+        intent.putExtra("viewType", Constants.ViewType.VIEW_PROFILE_FRAGMENT.type)
+        intent.putExtra("userId", userId)
+        requireActivity().startActivity(intent)
     }
 
     fun goToChatFragment() {

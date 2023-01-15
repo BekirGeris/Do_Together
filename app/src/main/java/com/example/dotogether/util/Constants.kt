@@ -20,7 +20,9 @@ object Constants {
         VIEW_CHAT_FRAGMENT(4),
         VIEW_TARGET_FRAGMENT(5),
         VIEW_FOLLOWS_FRAGMENT(6),
-        VIEW_SEARCH_FRAGMENT(7)
+        VIEW_SEARCH_FRAGMENT(7),
+        VIEW_USER_EDIT_FRAGMENT(8),
+        VIEW_PASSWORD_EDIT_FRAGMENT(9)
     }
 
     enum class MethodType {

@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.OthersNavDirections
+import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.view.activity.OthersActivity
 
@@ -88,6 +89,44 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 intent.putExtra("viewType", ViewType.VIEW_FOLLOWS_FRAGMENT.type)
                 intent.putExtra("userId", userId)
                 intent.putExtra("followsType", followsType)
+                view.context.startActivity(intent)
+            }
+        }
+    }
+
+    fun goToUserEditFragment(navController: NavController?, user: User) {
+        navController.let {
+            if (it != null) {
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionUserEditFragment(user = user))
+                        }
+                    }
+                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_USER_EDIT_FRAGMENT.type)
+                intent.putExtra("user", user)
+                view.context.startActivity(intent)
+            }
+        }
+    }
+
+    fun goToPasswordEditFragment(navController: NavController?, user: User) {
+        navController.let {
+            if (it != null) {
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionPasswordEditFragment(user = user))
+                        }
+                    }
+                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra("viewType", ViewType.VIEW_PASSWORD_EDIT_FRAGMENT.type)
+                intent.putExtra("user", user)
                 view.context.startActivity(intent)
             }
         }

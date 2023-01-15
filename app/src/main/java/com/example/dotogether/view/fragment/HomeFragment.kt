@@ -148,7 +148,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 is Resource.Success -> {
                     it.data?.let { list ->
                         reelsList.clear()
-                        reelsList.addAll(list.filter { it.active_statuses?.isNotEmpty() == true })
+                        reelsList.addAll(list)
                     }
                     homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
                 }

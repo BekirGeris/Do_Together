@@ -5,6 +5,7 @@ import androidx.navigation.*
 import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityOthersBinding
+import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants.ViewType
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,6 +65,14 @@ class OthersActivity : BaseActivity() {
             }
             ViewType.VIEW_SEARCH_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionSearchFragment(), navOptions)
+            }
+            ViewType.VIEW_USER_EDIT_FRAGMENT.type -> {
+                val user: User? = intent.getParcelableExtra("user")
+                user?.let { navController.navigate(OthersNavDirections.actionUserEditFragment(user = it), navOptions) }
+            }
+            ViewType.VIEW_PASSWORD_EDIT_FRAGMENT.type -> {
+                val user: User? = intent.getParcelableExtra("user")
+                user?.let { navController.navigate(OthersNavDirections.actionPasswordEditFragment(user = it), navOptions) }
             }
         }
     }

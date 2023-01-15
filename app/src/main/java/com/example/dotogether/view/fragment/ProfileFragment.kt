@@ -364,12 +364,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         requestPermissionsForImagePicker()
     }
 
-    override fun descriptionImageEdit(binding: ItemProfileBinding, user: User) {
-        val updateUserRequest = UpdateUserRequest()
-        updateUserRequest.description = user.description
-        viewModel.updateUser(updateUserRequest)
-    }
-
     override fun finishActivity(binding: ItemProfileBinding, user: User) {
         requireActivity().finish()
     }

@@ -27,7 +27,6 @@ class HolderListener {
         fun isMe(binding: ItemProfileBinding, user: User) : Boolean
         fun backgroundImageEdit(binding: ItemProfileBinding, user: User)
         fun profileImageEdit(binding: ItemProfileBinding, user: User)
-        fun descriptionImageEdit(binding: ItemProfileBinding, user: User)
         fun finishActivity(binding: ItemProfileBinding, user: User)
         fun logout(binding: ItemProfileBinding, user: User)
         fun follow(binding: ItemProfileBinding, user: User)

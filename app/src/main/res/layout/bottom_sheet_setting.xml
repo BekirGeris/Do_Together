@@ -27,6 +27,20 @@
         app:layout_constraintTop_toBottomOf="@+id/view">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/user_info"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="?colorOnSecondary"
+            android:drawableStart="@drawable/ic_baseline_info_24"
+            android:drawableTint="?colorTertiary"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="@string/change_user_info"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/share"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -37,7 +51,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Share"
+            android:text="@string/share"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -51,7 +65,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Delete"
+            android:text="@string/delete"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -65,7 +79,49 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Edit"
+            android:text="@string/edit"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/edit_background_image"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="?colorOnSecondary"
+            android:drawableStart="@drawable/ic_baseline_edit_24"
+            android:drawableTint="?colorTertiary"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="@string/edit_background_image"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/edit_profile_image"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="?colorOnSecondary"
+            android:drawableStart="@drawable/ic_baseline_edit_24"
+            android:drawableTint="?colorTertiary"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="@string/edit_profile_image"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/edit_password"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="?colorOnSecondary"
+            android:drawableStart="@drawable/ic_baseline_edit_24"
+            android:drawableTint="?colorTertiary"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="@string/change_password"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -79,7 +135,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Log out"
+            android:text="@string/log_out"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -94,7 +150,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Clear chat"
+            android:text="@string/clear_chat"
             android:textAllCaps="false" />
 
         <View
