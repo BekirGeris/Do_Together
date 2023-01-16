@@ -22,6 +22,7 @@ import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
@@ -29,6 +30,8 @@ import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.view.dialog.ConfirmDialog
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import omari.hamza.storyview.callback.StoryClickListeners
 import java.io.File
@@ -124,6 +127,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObserve()
+        sendFirebaseToken()
     }
 
     private fun initViews() {
@@ -436,5 +440,18 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     override fun deleteTarget(binding: ItemTargetBinding, target: Target) {
         super.deleteTarget(binding, target)
         target.id?.let { viewModel.deleteTarget(it) }
+    }
+
+    private fun sendFirebaseToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            Log.d(TAG, "token : ${task.result}")
+            val updateUserRequest = UpdateUserRequest()
+            updateUserRequest.fcm_token = task.result
+            viewModel.updateUser(updateUserRequest)
+        })
     }
 }

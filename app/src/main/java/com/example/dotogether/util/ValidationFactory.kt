@@ -15,8 +15,8 @@ object ValidationFactory {
                 + "(?=\\S+$).{8,20}$"
     )
 
-    fun validMail(email: String) : Resource<String> {
-        if (EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
+    fun validMail(email: String?) : Resource<String> {
+        if (email != null && EMAIL_ADDRESS_PATTERN.matcher(email).matches()) {
             return Resource.Success()
         }
         return Resource.Error()

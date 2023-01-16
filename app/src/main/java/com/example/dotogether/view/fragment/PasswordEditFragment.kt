@@ -10,7 +10,9 @@ import com.example.dotogether.databinding.FragmentPasswordEditBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.viewmodel.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PasswordEditFragment : BaseFragment(), View.OnClickListener {
 
     private val viewModel: ProfileViewModel by viewModels()

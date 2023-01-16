@@ -8,5 +8,6 @@ class UpdateUserRequest(
     var password: String? = null,
     var password_confirmation: String? = null,
     var img: String? = null,
-    var background_img: String? = null
+    var background_img: String? = null,
+    var fcm_token: String? = null
 )
