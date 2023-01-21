@@ -60,6 +60,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
             when(resource) {
                 is Resource.Success -> {
                     dialog.hide()
+                    showToast(resource.message)
                     activity?.onBackPressed()
                 }
                 is Resource.Error -> {

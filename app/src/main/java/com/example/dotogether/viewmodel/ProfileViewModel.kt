@@ -6,6 +6,7 @@ import com.example.dotogether.model.Page
 import com.example.dotogether.model.Reels
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.UpdatePasswordRequest
 import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +33,9 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
 
     private val _removeReels = MutableLiveData<Resource<Reels>>()
     val removeReels: MutableLiveData<Resource<Reels>> = _removeReels
+
+    private val _updatePassword = MutableLiveData<Resource<User>>()
+    val updatePassword: MutableLiveData<Resource<User>> = _updatePassword
 
     fun logout() {
         viewModelScope.launch {
@@ -99,6 +103,14 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.removeReels(reelsId).collect{
                 _removeReels.value = it
+            }
+        }
+    }
+
+    fun updatePassword(updatePasswordRequest: UpdatePasswordRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.updatePassword(updatePasswordRequest).collect{
+                _updatePassword.value = it
             }
         }
     }
