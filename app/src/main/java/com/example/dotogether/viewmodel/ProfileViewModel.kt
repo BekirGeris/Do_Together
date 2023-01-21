@@ -111,6 +111,10 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.updatePassword(updatePasswordRequest).collect{
                 _updatePassword.value = it
+                if (it is Resource.Success) {
+                    it.data?.password = updatePasswordRequest.new_password
+                    it.data?.let { user -> appRepository.localRepositoryImpl.insertUser(user) }
+                }
             }
         }
     }

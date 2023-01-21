@@ -28,7 +28,7 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
             if (user?.email != null && user.password != null) {
                 login(user.email!!, user.password!!)
             } else {
-                login.value = Resource.Error(Constants.Status.NO_AUTO_LOGIN)
+                login.value = Resource.Error()
             }
         }
     }
@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
                 _login.value = it
                 if (it is Resource.Success) {
                     it.data?.user?.password = password
-                    it.data?.user?.let { it1 -> appRepository.localRepositoryImpl.insertUser(it1) }
+                    it.data?.user?.let { user -> appRepository.localRepositoryImpl.insertUser(user) }
                 }
             }
         }

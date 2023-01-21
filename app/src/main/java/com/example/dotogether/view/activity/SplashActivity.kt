@@ -58,12 +58,8 @@ class SplashActivity : BaseActivity(), LoginCallback {
     }
 
     override fun loginFailed(resource: Resource<LoginResponse>) {
-        if (resource.code == Constants.Status.NO_AUTO_LOGIN) {
-            val i = Intent(this@SplashActivity, LoginActivity::class.java)
-            startActivity(i)
-            finish()
-        } else {
-            showToast(resource.message)
-        }
+        val i = Intent(this@SplashActivity, LoginActivity::class.java)
+        startActivity(i)
+        finish()
     }
 }
