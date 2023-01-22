@@ -26,6 +26,12 @@ interface RemoteRepository {
     @POST("user/update-password")
     suspend fun updatePassword(@Body updatePasswordRequest: UpdatePasswordRequest) : Response<User>
 
+    @POST("forgot-password")
+    suspend fun forgotPassword(@Body forgetPasswordRequest: ForgetPasswordRequest) : Response<String>
+
+    @POST("verify-otp")
+    suspend fun forgotPasswordVerify(@Body forgetPasswordVerifyRequest: ForgetPasswordVerifyRequest) : Response<String>
+
     @GET("activity")
     suspend fun getAllTargets() : Response<Page<Target>>
 

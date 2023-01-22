@@ -14,10 +14,12 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.dotogether.BuildConfig
 import com.example.dotogether.R
 import com.example.dotogether.data.callback.LoginCallback
 import com.example.dotogether.databinding.FragmentSignInBinding
+import com.example.dotogether.model.request.ForgetPasswordRequest
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
@@ -151,6 +153,23 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
                 }
             }
         }
+        viewModel.forgetPassword.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    showToast(resource.message)
+                    view?.findNavController()?.navigate(SignInFragmentDirections.actionSignInFragmentToForgetPasswordFragment(email = email))
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(resource.message)
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -159,7 +178,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
 
         when (v) {
             binding.topBackBtn -> {
-                action = directions.actionSignInFragmentToLoginFragment()
+                activity?.onBackPressed()
             }
             binding.loginBtn -> {
                 validEmail()
@@ -170,7 +189,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
             }
             binding.forgetPasswordBtn -> {
                 if (validEmail()) {
-                    showToast("Email Sent")
+                    viewModel.forgetPassword(ForgetPasswordRequest(email))
                 }
                 binding.passwordEditLyt.error = null
             }

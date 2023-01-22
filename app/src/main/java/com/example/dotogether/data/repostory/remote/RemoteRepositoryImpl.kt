@@ -44,6 +44,14 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.updatePassword(updatePasswordRequest) }
     }
 
+    suspend fun forgotPassword(forgetPasswordRequest: ForgetPasswordRequest): Flow<Resource<String>> {
+        return generateFlow { repository.forgotPassword(forgetPasswordRequest) }
+    }
+
+    suspend fun forgotPasswordVerify(forgetPasswordVerifyRequest: ForgetPasswordVerifyRequest): Flow<Resource<String>> {
+        return generateFlow { repository.forgotPasswordVerify(forgetPasswordVerifyRequest) }
+    }
+
     suspend fun getAllTargets(): Flow<Resource<Page<Target>>> {
         return generateFlow { repository.getAllTargets() }
     }

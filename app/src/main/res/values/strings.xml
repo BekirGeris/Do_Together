@@ -83,4 +83,5 @@
     <string name="new_password_again">yeni şifre tekrar</string>
     <string name="save">Kaydet</string>
     <string name="bio">Bio</string>
+    <string name="verify_code">verify code</string>
 </resources>

@@ -41,6 +41,13 @@ object ValidationFactory {
         return Resource.Error()
     }
 
+    fun validVerifyCode(verifyCode: String?) : Resource<String> {
+        if (verifyCode != null && verifyCode.isNotEmpty() && verifyCode.any { it.isDigit() } && verifyCode.length == 4) {
+            return Resource.Success()
+        }
+        return Resource.Error(message = "Wrong verify code")
+    }
+
     fun validTarget() : Resource<String> {
 
         return Resource.Error()

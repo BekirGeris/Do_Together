@@ -2,11 +2,12 @@ package com.example.dotogether.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.dotogether.model.request.ForgetPasswordRequest
+import com.example.dotogether.model.request.ForgetPasswordVerifyRequest
 import com.example.dotogether.model.request.LoginRequest
 import com.example.dotogether.model.request.RegisterRequest
 import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.model.response.RegisterResponse
-import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,6 +21,12 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
 
     private val _register = MutableLiveData<Resource<RegisterResponse>>()
     val register: MutableLiveData<Resource<RegisterResponse>> = _register
+
+    private val _forgetPassword = MutableLiveData<Resource<String>>()
+    val forgetPassword: MutableLiveData<Resource<String>> = _forgetPassword
+
+    private val _forgetPasswordVerify = MutableLiveData<Resource<String>>()
+    val forgetPasswordVerify: MutableLiveData<Resource<String>> = _forgetPasswordVerify
 
     fun autoLogin() {
         viewModelScope.launch {
@@ -57,6 +64,22 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
                     it.data?.user?.password = password
                     it.data?.user?.let { it1 -> appRepository.localRepositoryImpl.insertUser(it1) }
                 }
+            }
+        }
+    }
+
+    fun forgetPassword(forgetPasswordRequest: ForgetPasswordRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.forgotPassword(forgetPasswordRequest).collect{
+                _forgetPassword.value = it
+            }
+        }
+    }
+
+    fun forgotPasswordVerify(forgetPasswordVerifyRequest: ForgetPasswordVerifyRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.forgotPasswordVerify(forgetPasswordVerifyRequest).collect{
+                _forgetPasswordVerify.value = it
             }
         }
     }
