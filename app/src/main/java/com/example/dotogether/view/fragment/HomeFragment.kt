@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -254,7 +253,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 requestPermissionsForImagePicker()
             }
             binding.messageBtn -> {
-                goToChatFragment()
+                goToChatListFragment()
             }
             binding.searchBtn -> {
                 goToSearchFragment()

@@ -66,7 +66,7 @@ open class BaseFragment : Fragment() {
         requireActivity().startActivity(intent)
     }
 
-    fun goToChatFragment() {
+    fun goToChatListFragment() {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
         intent.putExtra("viewType", Constants.ViewType.VIEW_LIST_CHAT_FRAGMENT.type)
         startActivity(intent)

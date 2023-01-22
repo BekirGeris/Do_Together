@@ -36,7 +36,7 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun goToChatFragment(navController: NavController?, chatId: Int) {
+    fun goToChatFragment(navController: NavController?, chatId: String) {
         navController.let {
             if (it != null) {
                 with(it.graph.displayName.lowercase()) {

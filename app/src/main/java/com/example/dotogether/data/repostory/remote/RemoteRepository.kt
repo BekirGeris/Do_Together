@@ -32,6 +32,12 @@ interface RemoteRepository {
     @POST("verify-otp")
     suspend fun forgotPasswordVerify(@Body forgetPasswordVerifyRequest: ForgetPasswordVerifyRequest) : Response<String>
 
+    @POST("chat/create")
+    suspend fun sendMessageForUser(@Body sendMessageForUserRequest: SendMessageForUserRequest) : Response<SendMessageForUserResponse>
+
+    @POST("chat/send")
+    suspend fun sendMessageForTarget(@Body sendMessageForTargetRequest: SendMessageForTargetRequest) : Response<SendMessageForTargetResponse>
+
     @GET("activity")
     suspend fun getAllTargets() : Response<Page<Target>>
 

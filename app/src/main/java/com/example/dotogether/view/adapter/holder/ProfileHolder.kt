@@ -123,7 +123,7 @@ class ProfileHolder(
                     listener.follow(binding, user)
             }
             binding.messageBtn -> {
-                user.id?.let { goToChatFragment(navController, it) }
+                user.username?.let { goToChatFragment(navController, it) }
             }
             dialogBinding.userInfo -> {
                 goToUserEditFragment(navController, user)

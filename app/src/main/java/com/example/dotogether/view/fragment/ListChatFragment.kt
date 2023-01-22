@@ -46,7 +46,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
 
         for (i in 1..100) {
             val chat = Chat()
-            chat.chatId = i
+            chat.chatId = i.toString()
             chats.add(chat)
         }
         chatAdapter = ChatAdapter(chats)

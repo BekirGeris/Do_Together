@@ -32,6 +32,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     private lateinit var memberAdapter: MemberAdapter
 
     var targetId: Int? = null
+    private lateinit var target: Target
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +80,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { target ->
+                        this.target = target
                         setViewWithTarget(target)
                     }
                     dialog.hide()
@@ -96,6 +98,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { target ->
+                        this.target = target
                         setViewWithTarget(target)
                     }
                     dialog.hide()
@@ -161,7 +164,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     bottomSheetDialog.tryShow()
                 }
                 binding.groupMessageBtn -> {
-                    targetId?.let { navController.navigate(TargetFragmentDirections.actionChatFragment(isGroup =  true, chatId = it)) }
+                    target.chat?.let { navController.navigate(TargetFragmentDirections.actionChatFragment(isGroup =  true, chatId = it)) }
                 }
                 binding.joinBtn -> {
                     viewModel.joinTarget(targetId!!)

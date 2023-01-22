@@ -5,9 +5,7 @@ import com.example.dotogether.model.Page
 import com.example.dotogether.model.Reels
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.*
-import com.example.dotogether.model.response.LoginResponse
-import com.example.dotogether.model.response.RegisterResponse
-import com.example.dotogether.model.response.Response
+import com.example.dotogether.model.response.*
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.scopes.ActivityScoped
@@ -50,6 +48,14 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun forgotPasswordVerify(forgetPasswordVerifyRequest: ForgetPasswordVerifyRequest): Flow<Resource<String>> {
         return generateFlow { repository.forgotPasswordVerify(forgetPasswordVerifyRequest) }
+    }
+
+    suspend fun sendMessageForUser(sendMessageForUserRequest: SendMessageForUserRequest): Flow<Resource<SendMessageForUserResponse>> {
+        return generateFlow { repository.sendMessageForUser(sendMessageForUserRequest) }
+    }
+
+    suspend fun sendMessageForTarget(sendMessageForTargetRequest: SendMessageForTargetRequest): Flow<Resource<SendMessageForTargetResponse>> {
+        return generateFlow { repository.sendMessageForTarget(sendMessageForTargetRequest) }
     }
 
     suspend fun getAllTargets(): Flow<Resource<Page<Target>>> {

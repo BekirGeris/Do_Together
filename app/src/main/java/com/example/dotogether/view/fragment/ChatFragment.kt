@@ -14,6 +14,8 @@ import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentChatBinding
 import com.example.dotogether.model.Message
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.SendMessageForTargetRequest
+import com.example.dotogether.model.request.SendMessageForUserRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
@@ -69,7 +71,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference
 
-        chatId = arguments?.getInt("chatId").toString()
+        chatId = arguments?.getString("chatId", "-1").toString()
+        Log.d(TAG, "chat id : $chatId")
 
         bottomSheetDialog.setContentView(dialogBinding.root)
 
@@ -134,13 +137,18 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     fun sendMessage(message: String) {
-        val uuidMessage = UUID.randomUUID().toString()
         binding.writeMessageEditTxt.text.clear()
 
-        databaseReference.child("chats").child(chatId).child(uuidMessage).child("user_message").setValue(message)
-        databaseReference.child("chats").child(chatId).child(uuidMessage).child("username").setValue(myUser.username)
-        databaseReference.child("chats").child(chatId).child(uuidMessage).child("user_id").setValue(myUser.id)
-        databaseReference.child("chats").child(chatId).child(uuidMessage).child("time").setValue(ServerValue.TIMESTAMP)
+        if (isGroup) {
+            viewModel.sendMessageForTarget(SendMessageForTargetRequest(chatId.toInt(), message))
+        } else {
+            viewModel.sendMessageForUser(SendMessageForUserRequest(chatId, message))
+        }
+
+//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("user_message").setValue(message)
+//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("username").setValue(myUser.username)
+//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("user_id").setValue(myUser.id)
+//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("time").setValue(ServerValue.TIMESTAMP)
     }
 
     fun getData() {

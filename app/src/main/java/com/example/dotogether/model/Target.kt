@@ -20,5 +20,5 @@ class Target {
     var updated_at: String? = null
     var user_id: Int? = null
     var users: ArrayList<User>? = null
-    var url = Random.nextInt(IntRange(1, 5))
+    var chat: String? = null
 }
