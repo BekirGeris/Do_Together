@@ -1,9 +1,7 @@
 package com.example.dotogether.data.repostory.remote
 
+import com.example.dotogether.model.*
 import com.example.dotogether.model.Target
-import com.example.dotogether.model.Page
-import com.example.dotogether.model.Reels
-import com.example.dotogether.model.User
 import com.example.dotogether.model.request.*
 import com.example.dotogether.model.response.*
 import com.example.dotogether.util.Constants
@@ -156,6 +154,18 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun removeReels(reelsId: Int): Flow<Resource<Reels>> {
         return generateFlow { repository.removeReels(reelsId) }
+    }
+
+    suspend fun searchUser(searchRequest: SearchRequest): Flow<Resource<ArrayList<User>>> {
+        return generateFlow { repository.searchUser(searchRequest) }
+    }
+
+    suspend fun searchTarget(searchRequest: SearchRequest): Flow<Resource<ArrayList<Target>>> {
+        return generateFlow { repository.searchTarget(searchRequest) }
+    }
+
+    suspend fun searchTag(searchRequest: SearchRequest): Flow<Resource<ArrayList<Tag>>> {
+        return generateFlow { repository.searchTag(searchRequest) }
     }
 
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {

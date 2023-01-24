@@ -1,6 +1,7 @@
 package com.example.dotogether.data.repostory.remote
 
 import com.example.dotogether.model.*
+import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.request.*
 import com.example.dotogether.model.response.*
@@ -112,4 +113,13 @@ interface RemoteRepository {
 
     @GET("user/status/remove/{reelsId}")
     suspend fun removeReels(@Path("reelsId") reelsId: Int) : Response<Reels>
+
+    @POST("search/user")
+    suspend fun searchUser(@Body searchRequest: SearchRequest) : Response<ArrayList<User>>
+
+    @POST("search/activity")
+    suspend fun searchTarget(@Body searchRequest: SearchRequest) : Response<ArrayList<Target>>
+
+    @POST("search/tag")
+    suspend fun searchTag(@Body searchRequest: SearchRequest) : Response<ArrayList<Tag>>
 }

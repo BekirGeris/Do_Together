@@ -3,8 +3,10 @@ package com.example.dotogether.viewmodel
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.request.CreateTargetRequest
+import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -21,10 +23,21 @@ class ShareViewModel @Inject constructor(@ApplicationContext context: Context): 
     private val _createTarget = MutableLiveData<Resource<Target>>()
     val createTarget: MutableLiveData<Resource<Target>> = _createTarget
 
+    private val _tags = MutableLiveData<Resource<ArrayList<Tag>>>()
+    val tags: MutableLiveData<Resource<ArrayList<Tag>>> = _tags
+
     fun createTarget(createTargetRequest: CreateTargetRequest) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.createTarget(createTargetRequest).collect {
                 _createTarget.value = it
+            }
+        }
+    }
+
+    fun searchTag(searchRequest: SearchRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.searchTag(searchRequest).collect {
+                _tags.value = it
             }
         }
     }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,6 +76,26 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
         binding.followRv.layoutManager = LinearLayoutManager(context)
         binding.followRv.adapter = userAdapter
 
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+
+                }
+                return true
+            }
+        })
+
+        userAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                binding.activityErrorView.visibility = if (users.isEmpty()) View.VISIBLE else View.GONE
+            }
+        })
+
         binding.swipeLyt.setOnRefreshListener {
             userId?.let {
                 if (followsType == 1) {
@@ -114,6 +135,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
                 }
                 is Resource.Loading -> {
                     if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
+                        binding.activityErrorView.visibility = View.GONE
                         dialog.shoe()
                     }
                 }

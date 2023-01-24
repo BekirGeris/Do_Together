@@ -448,7 +448,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 Log.d(TAG, "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
-            Log.d(TAG, "token : ${task.result}")
+            //Log.d(TAG, "token : ${task.result}")
             val updateUserRequest = UpdateUserRequest()
             updateUserRequest.fcm_token = task.result
             viewModel.updateUser(updateUserRequest)
