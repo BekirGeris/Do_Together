@@ -33,14 +33,22 @@
         app:layout_constraintTop_toTopOf="@+id/searchView"
         app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chats_rv"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_lyt"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chats_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

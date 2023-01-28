@@ -42,7 +42,7 @@ class OtherUser() : Parcelable {
 
     constructor(user: User) : this() {
         this.background_img = user.background_img
-        this.name = user.created_at
+        this.created_at = user.created_at
         this.description = user.description
         this.email = user.email
         this.email_verified_at = user.email_verified_at
@@ -51,7 +51,19 @@ class OtherUser() : Parcelable {
         this.id = user.id
         this.img = user.img
         this.name = user.name
+        this.username = user.username
         this.updated_at = user.updated_at
+        this.chat_id = user.chat_id
+    }
+
+    constructor(target: Target) : this() {
+        this.created_at = target.created_at
+        this.description = target.description
+        this.chat_id = target.chat
+        this.target = target.target
+        this.id = target.id
+        this.img = target.img
+        this.updated_at = target.updated_at
     }
 
     constructor(parcel: Parcel) : this() {

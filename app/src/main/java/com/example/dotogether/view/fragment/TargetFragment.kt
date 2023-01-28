@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentTargetBinding
+import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
@@ -164,7 +165,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     bottomSheetDialog.tryShow()
                 }
                 binding.groupMessageBtn -> {
-                    target.chat?.let { navController.navigate(TargetFragmentDirections.actionChatFragment(isGroup =  true, chatId = it)) }
+                    target.chat?.let { navController.navigate(TargetFragmentDirections.actionChatFragment(isGroup =  true, chatId = it, chatUser = OtherUser(target))) }
                 }
                 binding.joinBtn -> {
                     viewModel.joinTarget(targetId!!)

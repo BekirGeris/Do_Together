@@ -138,10 +138,10 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
         viewModel.targets.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    isSearching = false
                     targets.clear()
                     resource.data?.let { targets.addAll(it) }
                     targetAdapter.notifyDataSetChanged()
+                    isSearching = false
                 }
                 is Resource.Error -> {
                     isSearching = false

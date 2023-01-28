@@ -31,6 +31,8 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
     var userId: Int? = null
     var followsType: Int? = null
 
+    private var isSearching = false
+
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -84,12 +86,15 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {
-                    userId?.let {
-                        if (followsType == 1) {
-                            viewModel.searchFollowers(SearchRequest(newText),  it)
-                        } else {
-                            viewModel.searchFollowings(SearchRequest(newText),  it)
+                    if (!isSearching) {
+                        userId?.let {
+                            if (followsType == 1) {
+                                viewModel.searchFollowers(SearchRequest(newText),  it)
+                            } else {
+                                viewModel.searchFollowings(SearchRequest(newText),  it)
+                            }
                         }
+                        isSearching = true
                     }
                 } else {
                     getFullUser()
@@ -173,9 +178,12 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
                         users.clear()
                         users.addAll(list)
                         userAdapter.notifyDataSetChanged()
+                        isSearching = false
                     }
                 }
                 is Resource.Error -> {
+                    showToast(resource.message)
+                    isSearching = false
                 }
                 is Resource.Loading -> {
                 }
@@ -189,9 +197,12 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
                         users.clear()
                         users.addAll(list)
                         userAdapter.notifyDataSetChanged()
+                        isSearching = false
                     }
                 }
                 is Resource.Error -> {
+                    showToast(resource.message)
+                    isSearching = false
                 }
                 is Resource.Loading -> {
                 }

@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentChatListBinding
+import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.model.response.MyChatsResponse
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.ChatAdapter
@@ -23,6 +25,8 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var chatAdapter: ChatAdapter
     private val chats = arrayListOf<MyChatsResponse>()
+
+    private var isSearching = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,28 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
 
         binding.chatsRv.layoutManager = LinearLayoutManager(context)
         binding.chatsRv.adapter = chatAdapter
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (!newText.isNullOrEmpty()) {
+                    if (!isSearching) {
+                        viewModel.searchMyChats(SearchRequest(newText))
+                        isSearching = true
+                    }
+                } else {
+                    viewModel.myChats()
+                }
+                return true
+            }
+        })
+
+        binding.swipeLyt.setOnRefreshListener {
+            viewModel.myChats()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -57,6 +83,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
         viewModel.myChats.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    binding.swipeLyt.isRefreshing = false
                     dialog.hide()
                     resource.data?.let { list ->
                         chats.clear()
@@ -65,10 +92,32 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 is Resource.Error -> {
+                    binding.swipeLyt.isRefreshing = false
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
+                        dialog.shoe()
+                    }
+                }
+            }
+        }
+        viewModel.searchMyChats.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let { list ->
+                        chats.clear()
+                        chats.addAll(list)
+                        chatAdapter.notifyDataSetChanged()
+                        isSearching = false
+                    }
+                }
+                is Resource.Error -> {
+                    isSearching = false
+                    showToast(resource.message)
+                }
+                is Resource.Loading -> {
+
                 }
             }
         }
