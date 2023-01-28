@@ -34,10 +34,10 @@ interface RemoteRepository {
     suspend fun forgotPasswordVerify(@Body forgetPasswordVerifyRequest: ForgetPasswordVerifyRequest) : Response<String>
 
     @POST("chat/create")
-    suspend fun sendMessageForUser(@Body sendMessageForUserRequest: SendMessageForUserRequest) : Response<SendMessageForUserResponse>
+    suspend fun newChat(@Body newChatRequest: NewChatRequest) : Response<NewChatResponse>
 
     @POST("chat/send")
-    suspend fun sendMessageForTarget(@Body sendMessageForTargetRequest: SendMessageForTargetRequest) : Response<SendMessageForTargetResponse>
+    suspend fun sendMessage(@Body sendMessageRequest: SendMessageRequest) : Response<SendMessageResponse>
 
     @GET("activity")
     suspend fun getAllTargets() : Response<Page<Target>>
@@ -122,4 +122,16 @@ interface RemoteRepository {
 
     @POST("search/tag")
     suspend fun searchTag(@Body searchRequest: SearchRequest) : Response<ArrayList<Tag>>
+
+    @GET("chat/my")
+    suspend fun myChats() : Response<List<MyChatsResponse>>
+
+    @POST("chat/my")
+    suspend fun searchMyChats(@Body searchRequest: SearchRequest) : Response<List<MyChatsResponse>>
+
+    @POST("user/followings/{userId}")
+    suspend fun searchFollowings(@Body searchRequest: SearchRequest, @Path("userId") userId: Int) : Response<ArrayList<User>>
+
+    @POST("user/followers/{userId}")
+    suspend fun searchFollowers(@Body searchRequest: SearchRequest, @Path("userId") userId: Int) : Response<ArrayList<User>>
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentFollowsBinding
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.UserAdapter
 import com.example.dotogether.viewmodel.FollowsViewModel
@@ -82,8 +83,16 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-
+                if (!newText.isNullOrEmpty()) {
+                    userId?.let {
+                        if (followsType == 1) {
+                            viewModel.searchFollowers(SearchRequest(newText),  it)
+                        } else {
+                            viewModel.searchFollowings(SearchRequest(newText),  it)
+                        }
+                    }
+                } else {
+                    getFullUser()
                 }
                 return true
             }
@@ -97,13 +106,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
         })
 
         binding.swipeLyt.setOnRefreshListener {
-            userId?.let {
-                if (followsType == 1) {
-                    viewModel.getFollowers(it)
-                } else {
-                    viewModel.getFollowings(it)
-                }
-            }
+            getFullUser()
         }
     }
 
@@ -163,6 +166,42 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
+        viewModel.followings.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    resource.data?.let { list ->
+                        users.clear()
+                        users.addAll(list)
+                        userAdapter.notifyDataSetChanged()
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }
+        viewModel.followers.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    resource.data?.let { list ->
+                        users.clear()
+                        users.addAll(list)
+                        userAdapter.notifyDataSetChanged()
+                    }
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+                else -> {}
+            }
+        }
+        getFullUser()
+    }
+
+    private fun getFullUser() {
         userId?.let {
             if (followsType == 1) {
                 viewModel.getFollowers(it)

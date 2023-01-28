@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemProfileBinding
+import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
@@ -123,7 +124,7 @@ class ProfileHolder(
                     listener.follow(binding, user)
             }
             binding.messageBtn -> {
-                user.username?.let { goToChatFragment(navController, it) }
+                goToChatFragment(navController, user.chat_id, OtherUser(user), false)
             }
             dialogBinding.userInfo -> {
                 goToUserEditFragment(navController, user)

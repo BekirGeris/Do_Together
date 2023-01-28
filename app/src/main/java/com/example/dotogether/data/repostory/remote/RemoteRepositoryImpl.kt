@@ -48,12 +48,12 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.forgotPasswordVerify(forgetPasswordVerifyRequest) }
     }
 
-    suspend fun sendMessageForUser(sendMessageForUserRequest: SendMessageForUserRequest): Flow<Resource<SendMessageForUserResponse>> {
-        return generateFlow { repository.sendMessageForUser(sendMessageForUserRequest) }
+    suspend fun newChat(newChatRequest: NewChatRequest): Flow<Resource<NewChatResponse>> {
+        return generateFlow { repository.newChat(newChatRequest) }
     }
 
-    suspend fun sendMessageForTarget(sendMessageForTargetRequest: SendMessageForTargetRequest): Flow<Resource<SendMessageForTargetResponse>> {
-        return generateFlow { repository.sendMessageForTarget(sendMessageForTargetRequest) }
+    suspend fun sendMessage(sendMessageRequest: SendMessageRequest): Flow<Resource<SendMessageResponse>> {
+        return generateFlow { repository.sendMessage(sendMessageRequest) }
     }
 
     suspend fun getAllTargets(): Flow<Resource<Page<Target>>> {
@@ -166,6 +166,22 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun searchTag(searchRequest: SearchRequest): Flow<Resource<ArrayList<Tag>>> {
         return generateFlow { repository.searchTag(searchRequest) }
+    }
+
+    suspend fun searchFollowings(searchRequest: SearchRequest, userId: Int): Flow<Resource<ArrayList<User>>> {
+        return generateFlow { repository.searchFollowings(searchRequest, userId) }
+    }
+
+    suspend fun searchFollowers(searchRequest: SearchRequest, userId: Int): Flow<Resource<ArrayList<User>>> {
+        return generateFlow { repository.searchFollowers(searchRequest, userId) }
+    }
+
+    suspend fun searchMyChats(searchRequest: SearchRequest): Flow<Resource<List<MyChatsResponse>>> {
+        return generateFlow { repository.searchMyChats(searchRequest) }
+    }
+
+    suspend fun myChats(): Flow<Resource<List<MyChatsResponse>>> {
+        return generateFlow { repository.myChats() }
     }
 
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {

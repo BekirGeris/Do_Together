@@ -13,10 +13,13 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentChatBinding
 import com.example.dotogether.model.Message
+import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
-import com.example.dotogether.model.request.SendMessageForTargetRequest
-import com.example.dotogether.model.request.SendMessageForUserRequest
+import com.example.dotogether.model.request.SendMessageRequest
+import com.example.dotogether.model.request.NewChatRequest
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.Resource
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
@@ -39,12 +42,13 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private lateinit var messageAdapter: MessageAdapter
 
     var isGroup = false
-    private var chatId: String = ""
+    private var chatId: String? = null
 
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference
 
     private lateinit var myUser: User
+    private var chatUser: OtherUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +75,15 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference
 
-        chatId = arguments?.getString("chatId", "-1").toString()
+        isGroup = arguments?.getBoolean("isGroup") ?: false
+        chatId = arguments?.getString("chatId")
+        chatUser = arguments?.getParcelable("chatUser")
         Log.d(TAG, "chat id : $chatId")
+
+        chatUser?.let {
+            RuntimeHelper.glideForPersonImage(requireContext()).load(it.img).into(binding.chatsUserImage)
+            binding.chatName.text = if (isGroup) it.target else it.username
+        }
 
         bottomSheetDialog.setContentView(dialogBinding.root)
 
@@ -87,7 +98,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         dialogBinding.clearChat.visibility = View.VISIBLE
         dialogBinding.clearChat.setOnClickListener(this)
 
-        isGroup = arguments?.getBoolean("isGroup") ?: false
         binding.chatsUserImage.visibility = if (isGroup) View.GONE else View.VISIBLE
 
         messageAdapter = MessageAdapter(messages, isGroup)
@@ -101,6 +111,23 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
             getData()
         }
         viewModel.getMyUser()
+        viewModel.newChat.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.id?.let {
+                        chatId = resource.data.id
+                        getData()
+                    }
+                }
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+
+        }
     }
 
     override fun onClick(v: View?) {
@@ -114,7 +141,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     if (isGroup) {
                         activity?.onBackPressed()
                     } else {
-                        navController.navigate(ChatFragmentDirections.actionChatFragmentToProfileFragment())
+                        chatUser?.id?.let { navController.navigate(ChatFragmentDirections.actionChatFragmentToProfileFragment(userId = it)) }
                     }
                 }
                 binding.moreSettingBtn -> {
@@ -140,46 +167,47 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         binding.writeMessageEditTxt.text.clear()
 
         if (isGroup) {
-            viewModel.sendMessageForTarget(SendMessageForTargetRequest(chatId.toInt(), message))
+            chatId?.let { viewModel.sendMessage(SendMessageRequest(it, message)) }
         } else {
-            viewModel.sendMessageForUser(SendMessageForUserRequest(chatId, message))
+            if (chatId == null) {
+                chatUser?.username?.let { viewModel.newChat(NewChatRequest(it, message)) }
+            } else {
+                viewModel.sendMessage(SendMessageRequest(chatId!!, message))
+            }
         }
-
-//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("user_message").setValue(message)
-//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("username").setValue(myUser.username)
-//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("user_id").setValue(myUser.id)
-//        databaseReference.child("chats").child(chatId).child(uuidMessage).child("time").setValue(ServerValue.TIMESTAMP)
     }
 
     fun getData() {
-        val newReference = firebaseDatabase.getReference("chats").child(chatId)
-        val query: Query = newReference.orderByChild("time")
+        chatId?.let {
+            val newReference = firebaseDatabase.getReference("chats").child(it)
+            val query: Query = newReference.orderByChild("time")
 
-        query.addValueEventListener(object: ValueEventListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d(TAG, "onDataChange")
-                messages.clear()
-                for (ds in snapshot.children) {
-                    val hashMap = ds.value as HashMap<*, *>
-                    val username: String? = hashMap.get("username") as String?
-                    val userId: Long? = hashMap.get("user_id") as Long?
-                    val userMessage: String? = hashMap.get("user_message") as String?
-                    val time: Long? = hashMap.get("time") as Long?
+            query.addValueEventListener(object: ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d(TAG, "onDataChange")
+                    messages.clear()
+                    for (ds in snapshot.children) {
+                        val hashMap = ds.value as HashMap<*, *>
+                        val username: String? = hashMap.get("username") as String?
+                        val userId: Long? = hashMap.get("user_id") as Long?
+                        val userMessage: String? = hashMap.get("user_message") as String?
+                        val time: Long? = hashMap.get("time") as Long?
 
-                    if (username != null && userId != null && userMessage != null && time != null) {
-                        messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt()))
+                        if (username != null && userId != null && userMessage != null && time != null) {
+                            messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt()))
+                        }
                     }
+                    messages.reverse()
+                    messageAdapter.notifyDataSetChanged()
+                    binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
                 }
-                messages.reverse()
-                messageAdapter.notifyDataSetChanged()
-                binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                showToast(error.message)
-                binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    showToast(error.message)
+                    binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
+                }
+            })
+        }
     }
 }

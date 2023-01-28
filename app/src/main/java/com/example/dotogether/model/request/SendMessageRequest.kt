@@ -1,6 +1,6 @@
 package com.example.dotogether.model.request
 
-data class SendMessageForTargetRequest(
-    val chat_id: Int,
+data class SendMessageRequest(
+    val chat_id: String,
     val message: String
 )

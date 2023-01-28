@@ -5,6 +5,7 @@ import androidx.navigation.*
 import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityOthersBinding
+import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants.ViewType
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,8 +52,10 @@ class OthersActivity : BaseActivity() {
                 navController.navigate(OthersNavDirections.actionListChatFragment(), navOptions)
             }
             ViewType.VIEW_CHAT_FRAGMENT.type -> {
-                val chatId = intent.getStringExtra("chatId") ?: ""
-                navController.navigate(OthersNavDirections.actionChatFragment(chatId = chatId), navOptions)
+                val chatId = intent.getStringExtra("chatId")
+                val chatUser = intent.getParcelableExtra<OtherUser>("chatUser")
+                val isGroup = intent.getBooleanExtra("isGroup", false)
+                navController.navigate(OthersNavDirections.actionChatFragment(chatId = chatId, chatUser = chatUser, isGroup = isGroup), navOptions)
             }
             ViewType.VIEW_TARGET_FRAGMENT.type -> {
                 val targetId = intent.getIntExtra("targetId", -1)

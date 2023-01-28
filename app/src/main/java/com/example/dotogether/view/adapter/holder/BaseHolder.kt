@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.OthersNavDirections
+import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.view.activity.OthersActivity
@@ -36,13 +37,13 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun goToChatFragment(navController: NavController?, chatId: String) {
+    fun goToChatFragment(navController: NavController?, chatId: String?, chatUser: OtherUser, isGroup: Boolean) {
         navController.let {
             if (it != null) {
                 with(it.graph.displayName.lowercase()) {
                     when {
                         contains("others_nav") -> {
-                            it.navigate(OthersNavDirections.actionChatFragment(chatId = chatId))
+                            it.navigate(OthersNavDirections.actionChatFragment(chatId = chatId, chatUser = chatUser, isGroup = isGroup))
                         }
                     }
                 }
@@ -50,6 +51,8 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 val intent = Intent(view.context, OthersActivity::class.java)
                 intent.putExtra("viewType", ViewType.VIEW_CHAT_FRAGMENT.type)
                 intent.putExtra("chatId", chatId)
+                intent.putExtra("chatUser", chatUser)
+                intent.putExtra("isGroup", isGroup)
                 view.context.startActivity(intent)
             }
         }

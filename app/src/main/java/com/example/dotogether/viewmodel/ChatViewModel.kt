@@ -2,10 +2,12 @@ package com.example.dotogether.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.dotogether.model.request.SendMessageForTargetRequest
-import com.example.dotogether.model.request.SendMessageForUserRequest
-import com.example.dotogether.model.response.SendMessageForTargetResponse
-import com.example.dotogether.model.response.SendMessageForUserResponse
+import com.example.dotogether.model.request.SearchRequest
+import com.example.dotogether.model.request.SendMessageRequest
+import com.example.dotogether.model.request.NewChatRequest
+import com.example.dotogether.model.response.MyChatsResponse
+import com.example.dotogether.model.response.SendMessageResponse
+import com.example.dotogether.model.response.NewChatResponse
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,24 +16,43 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _sendMessageForUser = MutableLiveData<Resource<SendMessageForUserResponse>>()
-    val sendMessageForUser: MutableLiveData<Resource<SendMessageForUserResponse>> = _sendMessageForUser
+    private val _newChat = MutableLiveData<Resource<NewChatResponse>>()
+    val newChat: MutableLiveData<Resource<NewChatResponse>> = _newChat
 
-    private val _sendMessageForTarget = MutableLiveData<Resource<SendMessageForTargetResponse>>()
-    val sendMessageForTarget: MutableLiveData<Resource<SendMessageForTargetResponse>> = _sendMessageForTarget
+    private val _sendMessage = MutableLiveData<Resource<SendMessageResponse>>()
+    val sendMessage: MutableLiveData<Resource<SendMessageResponse>> = _sendMessage
 
-    fun sendMessageForUser(sendMessageForUserRequest: SendMessageForUserRequest) {
+    private val _myChats = MutableLiveData<Resource<List<MyChatsResponse>>>()
+    val myChats: MutableLiveData<Resource<List<MyChatsResponse>>> = _myChats
+
+    fun newChat(newChatRequest: NewChatRequest) {
         viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.sendMessageForUser(sendMessageForUserRequest).collect{
-                _sendMessageForUser.value = it
+            appRepository.remoteRepositoryImpl.newChat(newChatRequest).collect{
+                _newChat.value = it
             }
         }
     }
 
-    fun sendMessageForTarget(sendMessageForTargetRequest: SendMessageForTargetRequest) {
+    fun sendMessage(sendMessageRequest: SendMessageRequest) {
         viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.sendMessageForTarget(sendMessageForTargetRequest).collect{
-                _sendMessageForTarget.value = it
+            appRepository.remoteRepositoryImpl.sendMessage(sendMessageRequest).collect{
+                _sendMessage.value = it
+            }
+        }
+    }
+
+    fun myChats() {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.myChats().collect{
+                _myChats.value = it
+            }
+        }
+    }
+
+    fun searchMyChats(searchRequest: SearchRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.searchMyChats(searchRequest).collect{
+                _myChats.value = it
             }
         }
     }

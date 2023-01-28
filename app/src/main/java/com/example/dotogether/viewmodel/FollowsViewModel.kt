@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dotogether.model.Page
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,6 +18,12 @@ class FollowsViewModel @Inject constructor() : BaseViewModel() {
 
     private val _nextUsers = MutableLiveData<Resource<Page<User>>>()
     val nextUsers: MutableLiveData<Resource<Page<User>>> = _nextUsers
+
+    private val _followings = MutableLiveData<Resource<ArrayList<User>>>()
+    val followings: MutableLiveData<Resource<ArrayList<User>>> = _followings
+
+    private val _followers = MutableLiveData<Resource<ArrayList<User>>>()
+    val followers: MutableLiveData<Resource<ArrayList<User>>> = _followers
 
     fun getFollowers(userId: Int) {
         viewModelScope.launch {
@@ -46,6 +53,22 @@ class FollowsViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getNextFollowings(userId, pageNo).collect {
                 _nextUsers.value = it
+            }
+        }
+    }
+
+    fun searchFollowings(searchRequest: SearchRequest, userId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.searchFollowings(searchRequest, userId).collect {
+                _followings.value = it
+            }
+        }
+    }
+
+    fun searchFollowers(searchRequest: SearchRequest, userId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.searchFollowers(searchRequest, userId).collect {
+                _followers.value = it
             }
         }
     }
