@@ -49,7 +49,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
     private lateinit var periodDialog: BottomSheetDialog
     private lateinit var customPeriodDialog: BottomSheetDialog
 
-    val datePickerFragment = DatePickerFragment(this)
+    private val datePickerFragment = DatePickerFragment(this)
     private var imageBase64: String = ""
 
     private var isSearching = false
@@ -391,7 +391,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
                         //viewModel.searchTag(SearchRequest(tag))
                         isSearching = true
                     }
-                    if (tag.replace(" ", "").length >= 2 && tag.last() == ' ') {
+                    if (tag.last() == ' ') {
                         addChipToGroup(tag)
                     }
                 } else {
@@ -438,9 +438,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
     }
 
     private fun addChipToGroup(person: String) {
-        person.trim()
         val chip = Chip(context)
-        chip.text = person
+        chip.text = person.replace(" ", "")
         chip.isChipIconVisible = false
         chip.isCloseIconVisible = true
         // necessary to get single selection working
