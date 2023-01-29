@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -48,6 +49,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         binding.backBtn.setOnClickListener(this)
 
         chatAdapter = ChatAdapter(chats)
