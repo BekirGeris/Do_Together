@@ -1,20 +1,16 @@
 package com.example.dotogether.view.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Base64.encodeToString
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetCustomPeriodBinding
 import com.example.dotogether.databinding.BottomSheetPeriodBinding
@@ -31,12 +27,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.*
 import android.widget.EditText
+import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dotogether.model.Tag
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
+import com.example.dotogether.view.adapter.TagAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
+import com.google.android.material.chip.Chip
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
+class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, HolderListener.TagHolderListener {
 
     private val viewModel: ShareViewModel by viewModels()
     private lateinit var binding: FragmentShareBinding
@@ -47,7 +50,12 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     private lateinit var customPeriodDialog: BottomSheetDialog
 
     val datePickerFragment = DatePickerFragment(this)
-    private lateinit var imageBase64: String
+    private var imageBase64: String = ""
+
+    private var isSearching = false
+
+    private val tags = ArrayList<Tag>()
+    private lateinit var tagAdapter: TagAdapter
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
@@ -154,16 +162,55 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
         binding.targetEditTxt.addTextChangedListener{ editTextChange(binding.targetEditTxt) }
         binding.descriptionEditTxt.addTextChangedListener{ editTextChange(binding.descriptionEditTxt) }
+        binding.tagEditTxt.addTextChangedListener{ editTextChange(binding.tagEditTxt) }
+
+        tagAdapter = TagAdapter(tags, this)
+        binding.tagRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.tagRv.adapter = tagAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
         viewModel.period.observe(viewLifecycleOwner) {
             binding.periodDecs.text = it
         }
+        viewModel.createTarget.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    showToast(it.message)
+                    requireActivity().finish()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+            }
+        }
+        viewModel.tags.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    it.data?.let { list ->
+                        tags.clear()
+                        tags.addAll(list)
+                        tagAdapter.notifyDataSetChanged()
+                        isSearching = false
+                    }
+                }
+                is Resource.Error -> {
+                    isSearching = false
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
-        val navController = view?.findNavController()
         when(v) {
             binding.backBtn -> {
                 activity?.onBackPressed()
@@ -172,8 +219,18 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 requestPermissionsForImagePicker()
             }
             binding.uploadBtn -> {
+                var tags = ""
+                var tagCount = 0
+                binding.chipGroup.children.toList().forEach {
+                    tags += "${(it as Chip).text},"
+                    tagCount++
+                }
                 validTarget()
                 validDescription()
+                if (tagCount !in 1..4) {
+                    showToast("En az bir en fazla 4 tag eklenmeli.")
+                    return
+                }
                 if (validTarget() && validDescription()) {
                     var endDate = binding.finishDateTxt.text.toString()
                     if (endDate == getString(R.string.forever)) {
@@ -185,7 +242,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                         binding.periodDecs.text.toString(),
                         binding.startDateTxt.text.toString(),
                         endDate,
-                        imageBase64
+                        imageBase64,
+                        tags
                     )
                 }
             }
@@ -311,27 +369,12 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         }
     }
 
-    private fun shareTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String) {
-        val createTargetRequest = CreateTargetRequest(target, description, period, start_date, end_date, img)
-        viewModel.createTarget.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    dialog.hide()
-                    showToast(it.message)
-                    requireActivity().finish()
-                }
-                is Resource.Error -> {
-                    dialog.hide()
-                    showToast(it.message)
-                }
-                is Resource.Loading -> {
-                    dialog.shoe()
-                }
-            }
-        }
+    private fun shareTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String, tags: String) {
+        val createTargetRequest = CreateTargetRequest(target, description, period, start_date, end_date, img, tags)
         viewModel.createTarget(createTargetRequest)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun editTextChange(v: EditText) {
         when(v) {
             binding.targetEditTxt -> {
@@ -339,6 +382,22 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             }
             binding.descriptionEditTxt -> {
                 validDescription()
+            }
+            binding.tagEditTxt -> {
+                val tag = binding.tagEditTxt.text.toString()
+                if (tag.isNotEmpty() && tag.replace(" ", "").isNotEmpty()) {
+                    muckUpTag() //todo bu satır silinecek
+                    if (!isSearching) {
+                        //viewModel.searchTag(SearchRequest(tag))
+                        isSearching = true
+                    }
+                    if (tag.replace(" ", "").length >= 2 && tag.last() == ' ') {
+                        addChipToGroup(tag)
+                    }
+                } else {
+                    tags.clear()
+                    tagAdapter.notifyDataSetChanged()
+                }
             }
         }
     }
@@ -361,5 +420,34 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             binding.descriptionEditLyt.error = null
             true
         }
+    }
+
+    override fun addTag(tag: String) {
+        addChipToGroup(tag)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun muckUpTag() {
+        tags.clear()
+        tags.add(Tag("tag 1"))
+        tags.add(Tag("tag 2"))
+        tags.add(Tag("tag 3"))
+        tags.add(Tag("tag 4"))
+        tags.add(Tag("tag 5"))
+        tagAdapter.notifyDataSetChanged()
+    }
+
+    private fun addChipToGroup(person: String) {
+        person.trim()
+        val chip = Chip(context)
+        chip.text = person
+        chip.isChipIconVisible = false
+        chip.isCloseIconVisible = true
+        // necessary to get single selection working
+        chip.isClickable = true
+        chip.isCheckable = false
+        binding.chipGroup.addView(chip as View)
+        chip.setOnCloseIconClickListener { binding.chipGroup.removeView(chip as View) }
+        binding.tagEditTxt.text?.clear()
     }
 }

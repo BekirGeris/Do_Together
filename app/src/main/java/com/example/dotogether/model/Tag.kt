@@ -1,4 +1,5 @@
 package com.example.dotogether.model
 
-class Tag {
-}
+data class Tag(
+    val tag: String
+)

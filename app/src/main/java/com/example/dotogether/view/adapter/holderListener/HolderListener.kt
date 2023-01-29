@@ -49,4 +49,7 @@ class HolderListener {
     interface ReelsTopHolderListener{
         fun addReels()
     }
+    interface TagHolderListener{
+        fun addTag(tag: String)
+    }
 }

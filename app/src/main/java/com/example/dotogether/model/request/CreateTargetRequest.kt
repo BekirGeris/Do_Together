@@ -6,5 +6,6 @@ class CreateTargetRequest(
     var period: String,
     var start_date: String,
     var end_date: String,
-    var img: String
+    var img: String,
+    var tags: String
 )
