@@ -98,8 +98,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         dialogBinding.clearChat.visibility = View.VISIBLE
         dialogBinding.clearChat.setOnClickListener(this)
 
-        binding.chatsUserImage.visibility = if (isGroup) View.GONE else View.VISIBLE
-
         messageAdapter = MessageAdapter(messages, isGroup)
         binding.messageRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.messageRv.adapter = messageAdapter
@@ -139,7 +137,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 }
                 binding.chatsUserImage, binding.chatName, binding.chatDecs -> {
                     if (isGroup) {
-                        activity?.onBackPressed()
+                        chatUser?.id?.let { navController.navigate(ChatFragmentDirections.actionChatFragmentToTargetFragment(targetId = it)) }
                     } else {
                         chatUser?.id?.let { navController.navigate(ChatFragmentDirections.actionChatFragmentToProfileFragment(userId = it)) }
                     }
