@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Her gün 1 saat kitap okumak"
+        android:text="@string/three_points"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView4"
@@ -101,7 +101,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="Aksatmadan her gün farklı kitaplar olabilir fark etmez, 1 saat boyunca okunacak. Toplamda 1 saat olması yeterli parça parça okunabilir."
+        android:text="@string/three_points"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView6"
@@ -185,6 +185,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/group_message_btn"
+            android:visibility="gone"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -199,6 +200,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/join_btn"
+            android:visibility="gone"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
