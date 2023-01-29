@@ -3,6 +3,8 @@ package com.example.dotogether.view.adapter.holder
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.bumptech.glide.request.RequestOptions
+import com.example.dotogether.R
 import com.example.dotogether.databinding.ItemChatBinding
 import com.example.dotogether.model.response.MyChatsResponse
 import com.example.dotogether.util.helper.RuntimeHelper
@@ -27,6 +29,17 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
         chat.otherUser?.let {
             binding.username.text = if (chat.chat_type == "activity") it.target else it.username
             RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)
+
+            if (chat.chat_type == "activity") {
+                RuntimeHelper.glide(
+                    context,
+                    RequestOptions()
+                        .placeholder(R.drawable.ic_groups)
+                        .error(R.drawable.ic_groups)
+                ).load(it.img).into(binding.userImage)
+            } else {
+                RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)
+            }
         }
         binding.textView2.text = chat.last_message
     }

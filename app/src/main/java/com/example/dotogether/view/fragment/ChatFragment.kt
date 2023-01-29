@@ -9,14 +9,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentChatBinding
 import com.example.dotogether.model.Message
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
-import com.example.dotogether.model.request.SendMessageRequest
 import com.example.dotogether.model.request.NewChatRequest
+import com.example.dotogether.model.request.SendMessageRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
@@ -81,7 +82,16 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         Log.d(TAG, "chat id : $chatId")
 
         chatUser?.let {
-            RuntimeHelper.glideForPersonImage(requireContext()).load(it.img).into(binding.chatsUserImage)
+            if (isGroup) {
+                RuntimeHelper.glide(
+                    requireContext(),
+                    RequestOptions()
+                        .placeholder(R.drawable.ic_groups)
+                        .error(R.drawable.ic_groups)
+                ).load(it.img).into(binding.chatsUserImage)
+            } else {
+                RuntimeHelper.glideForPersonImage(requireContext()).load(it.img).into(binding.chatsUserImage)
+            }
             binding.chatName.text = if (isGroup) it.target else it.username
         }
 

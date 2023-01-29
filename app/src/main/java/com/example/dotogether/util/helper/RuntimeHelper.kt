@@ -37,7 +37,7 @@ object RuntimeHelper {
             .error(R.drawable.error_image_background)
     )
 
-    private fun glide(context: Context, requestOptions: RequestOptions): RequestManager {
+    fun glide(context: Context, requestOptions: RequestOptions): RequestManager {
         return Glide
             .with(context)
             .setDefaultRequestOptions(requestOptions)
