@@ -31,6 +31,7 @@ import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.model.Tag
+import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.TagAdapter
@@ -386,9 +387,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
             binding.tagEditTxt -> {
                 val tag = binding.tagEditTxt.text.toString()
                 if (tag.isNotEmpty() && tag.replace(" ", "").isNotEmpty()) {
-                    muckUpTag() //todo bu satır silinecek
                     if (!isSearching) {
-                        //viewModel.searchTag(SearchRequest(tag))
+                        viewModel.searchTag(SearchRequest(tag))
                         isSearching = true
                     }
                     if (tag.last() == ' ') {

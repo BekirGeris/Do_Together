@@ -134,4 +134,7 @@ interface RemoteRepository {
 
     @POST("user/followers/{userId}")
     suspend fun searchFollowers(@Body searchRequest: SearchRequest, @Path("userId") userId: Int) : Response<ArrayList<User>>
+
+    @GET("chat/get/{chatId}")
+    suspend fun getChat(@Path("chatId") chatId: String) : Response<MyChatsResponse>
 }

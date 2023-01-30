@@ -28,6 +28,9 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
     private val _searchMyChats = MutableLiveData<Resource<List<MyChatsResponse>>>()
     val searchMyChats: MutableLiveData<Resource<List<MyChatsResponse>>> = _searchMyChats
 
+    private val _chat = MutableLiveData<Resource<MyChatsResponse>>()
+    val chat: MutableLiveData<Resource<MyChatsResponse>> = _chat
+
     fun newChat(newChatRequest: NewChatRequest) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.newChat(newChatRequest).collect{
@@ -56,6 +59,14 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.searchMyChats(searchRequest).collect{
                 _searchMyChats.value = it
+            }
+        }
+    }
+
+    fun getChat(chatId: String) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.getChat(chatId).collect{
+                _chat.value = it
             }
         }
     }

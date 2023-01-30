@@ -184,6 +184,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.myChats() }
     }
 
+    suspend fun getChat(chatId: String): Flow<Resource<MyChatsResponse>> {
+        return generateFlow { repository.getChat(chatId) }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

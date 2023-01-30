@@ -17,13 +17,13 @@ class TagHolder(view: View, private val tagHolderListener: HolderListener.TagHol
     fun bind(tag: Tag) {
         this.tag = tag
         binding.tagName.setOnClickListener(this)
-        binding.tagName.text = "# ${tag.tag}"
+        binding.tagName.text = "# ${tag.name}"
     }
 
     override fun onClick(v: View?) {
         when (v) {
             binding.tagName -> {
-                tagHolderListener.addTag(tag.tag)
+                tagHolderListener.addTag(tag.name)
             }
         }
     }
