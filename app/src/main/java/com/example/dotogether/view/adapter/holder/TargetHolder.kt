@@ -66,7 +66,9 @@ class TargetHolder(
         binding.description.text = target.description
         target.created_at?.let {
             val date = Constants.DATE_FORMAT_3.tryParse(it)
-            binding.postTime.text = date?.let { d -> Constants.DATE_FORMAT_2.format(d) }
+            date?.let { d ->
+                binding.postTime.text =  Constants.DATE_FORMAT_2.format(d)
+            }
         }
 
         target.is_joined?.let {

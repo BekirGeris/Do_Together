@@ -4,7 +4,9 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -13,6 +15,7 @@ import com.example.dotogether.R
 import java.io.ByteArrayOutputStream
 import java.text.DateFormat
 import java.text.ParseException
+import java.time.ZoneId
 import java.util.*
 
 object RuntimeHelper {
@@ -66,5 +69,17 @@ object RuntimeHelper {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun Date.isToday(): Boolean {
+        val today = Calendar.getInstance().time
+        return this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() == today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun Date.isYesterday(): Boolean {
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }.time
+        return this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() == yesterday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     }
 }

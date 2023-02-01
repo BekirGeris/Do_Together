@@ -2,6 +2,7 @@ package com.example.dotogether.view.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
@@ -29,6 +32,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import kotlin.concurrent.thread
+
 
 @AndroidEntryPoint
 class ChatFragment : BaseFragment(), View.OnClickListener {
@@ -50,6 +55,14 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var myUser: User
     private var chatUser: OtherUser? = null
+
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        @SuppressLint("NotifyDataSetChanged")
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            binding.downBtn.visibility = if (recyclerView.canScrollVertically(1)) View.VISIBLE  else View.GONE
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +117,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         binding.moreSettingBtn.setOnClickListener(this)
         binding.attachBtn.setOnClickListener(this)
         binding.sendMessageBtn.setOnClickListener(this)
+        binding.downBtn.setOnClickListener(this)
 
         dialogBinding.clearChat.visibility = View.VISIBLE
         dialogBinding.clearChat.setOnClickListener(this)
@@ -111,6 +125,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         messageAdapter = MessageAdapter(messages, isGroup)
         binding.messageRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.messageRv.adapter = messageAdapter
+        binding.messageRv.addOnScrollListener(scrollListener)
     }
 
     private fun initObserve() {
@@ -134,7 +149,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
                 }
             }
-
         }
     }
 
@@ -158,6 +172,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 binding.attachBtn -> {
 
                 }
+                binding.downBtn -> {
+                    binding.messageRv.smoothScrollToPosition(0)
+                }
                 binding.sendMessageBtn -> {
                     if (binding.writeMessageEditTxt.text.isNotEmpty()) {
                         sendMessage(binding.writeMessageEditTxt.text.toString())
@@ -172,6 +189,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     fun sendMessage(message: String) {
+        binding.messageRv.smoothScrollToPosition(0)
         binding.writeMessageEditTxt.text.clear()
 
         if (isGroup) {
@@ -187,6 +205,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
     fun getData() {
         chatId?.let {
+            viewModel.resetUnreadCountChat(it)
+
             val newReference = firebaseDatabase.getReference("chats").child(it)
             val query: Query = newReference.orderByChild("time")
 
@@ -195,20 +215,35 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d(TAG, "onDataChange")
                     messages.clear()
-                    for (ds in snapshot.children) {
+                    for ((count, ds) in snapshot.children.withIndex()) {
                         val hashMap = ds.value as HashMap<*, *>
                         val username: String? = hashMap.get("username") as String?
                         val userId: Long? = hashMap.get("user_id") as Long?
                         val userMessage: String? = hashMap.get("user_message") as String?
-                        val time: Long? = hashMap.get("time") as Long?
+                        val time: Long? = if (hashMap.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
 
                         if (username != null && userId != null && userMessage != null && time != null) {
+                            if (chatUser?.unread_count != 0 && chatUser?.unread_count == snapshot.children.count() - count) {
+                                messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true))
+                            }
                             messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt()))
                         }
                     }
                     messages.reverse()
                     messageAdapter.notifyDataSetChanged()
                     binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
+                    chatUser?.unread_count?.let { unread_count ->
+                        thread {
+                            Thread.sleep(100)
+                            val smoothScroller: LinearSmoothScroller = object : LinearSmoothScroller(requireContext()) {
+                                override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
+                                    return 75f / displayMetrics.densityDpi
+                                }
+                            }
+                            smoothScroller.targetPosition = unread_count
+                            binding.messageRv.layoutManager?.startSmoothScroll(smoothScroller)
+                        }
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -217,5 +252,10 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 }
             })
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        chatId?.let { viewModel.resetUnreadCountChat(it) }
     }
 }

@@ -51,7 +51,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
     private lateinit var customPeriodDialog: BottomSheetDialog
 
     private val datePickerFragment = DatePickerFragment(this)
-    private var imageBase64: String = ""
+    private var imageBase64: String? = null
 
     private var isSearching = false
 
@@ -370,7 +370,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
         }
     }
 
-    private fun shareTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String, tags: String) {
+    private fun shareTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String?, tags: String) {
         val createTargetRequest = CreateTargetRequest(target, description, period, start_date, end_date, img, tags)
         viewModel.createTarget(createTargetRequest)
     }

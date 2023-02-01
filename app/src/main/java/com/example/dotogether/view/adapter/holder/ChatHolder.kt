@@ -7,7 +7,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ItemChatBinding
 import com.example.dotogether.model.response.MyChatsResponse
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 
 class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
@@ -40,8 +42,22 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
             } else {
                 RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)
             }
+
+            it.updated_at?.let { update_at ->
+                val date = Constants.DATE_FORMAT_3.tryParse(update_at)
+                date?.let { d ->
+                    binding.time.text = Constants.DATE_FORMAT_4.format(d)
+                }
+            }
         }
         binding.textView2.text = chat.last_message
+
+        if (chat.unread_count != 0) {
+            binding.unreadCount.text = chat.unread_count.toString()
+            binding.unreadCountLyt.visibility = View.VISIBLE
+        } else {
+            binding.unreadCountLyt.visibility = View.GONE
+        }
     }
 
     override fun onClick(v: View?) {
@@ -53,6 +69,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
         }
         when (v) {
             binding.holderView -> {
+                chat.otherUser?.unread_count = chat.unread_count
                 chat.otherUser?.chat_id?.let {
                     goToChatFragment(
                         navController,

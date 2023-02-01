@@ -23,7 +23,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/members_rv"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"

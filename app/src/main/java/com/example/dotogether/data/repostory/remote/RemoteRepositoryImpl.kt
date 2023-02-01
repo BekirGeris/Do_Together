@@ -188,6 +188,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.getChat(chatId) }
     }
 
+    suspend fun resetUnreadCountChat(chatId: String): Flow<Resource<MyChatsResponse>> {
+        return generateFlow { repository.resetUnreadCountChat(chatId) }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

@@ -137,4 +137,7 @@ interface RemoteRepository {
 
     @GET("chat/get/{chatId}")
     suspend fun getChat(@Path("chatId") chatId: String) : Response<MyChatsResponse>
+
+    @GET("chat/reset-unread/{chatId}")
+    suspend fun resetUnreadCountChat(@Path("chatId") chatId: String) : Response<MyChatsResponse>
 }

@@ -102,6 +102,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                         dialog.shoe()
                     }
                 }
+                else -> {}
             }
         }
         viewModel.searchMyChats.observe(viewLifecycleOwner) { resource ->
@@ -121,6 +122,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                 is Resource.Loading -> {
 
                 }
+                else -> {}
             }
         }
         viewModel.myChats()

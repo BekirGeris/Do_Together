@@ -2,7 +2,6 @@ package com.example.dotogether.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.dotogether.databinding.ItemMessageLeftBinding
 import com.example.dotogether.databinding.ItemMessageRightBinding
@@ -10,7 +9,6 @@ import com.example.dotogether.model.Message
 import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.LeftMessageHolder
 import com.example.dotogether.view.adapter.holder.RightMessageHolder
-import java.util.ArrayList
 
 class MessageAdapter(private val messages: ArrayList<Message>, private val isGroup: Boolean) : BaseAdapter() {
 
@@ -31,11 +29,10 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val isGro
     }
 
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {
-        if (isGroup && position != messages.size - 1) {
-            isAgainMessage = messages[position].userName != messages[position + 1].userName
-        } else {
-            isAgainMessage = isGroup
-        }
+        isAgainMessage = if (isGroup && position != messages.size - 1) {
+            messages[position].userName != messages[position + 1].userName
+        } else isGroup
+
         when(holder.itemViewType) {
             0 -> {
                 holder as RightMessageHolder
