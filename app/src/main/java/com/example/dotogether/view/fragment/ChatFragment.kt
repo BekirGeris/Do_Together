@@ -224,7 +224,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
                         if (username != null && userId != null && userMessage != null && time != null) {
                             if (chatUser?.unread_count != 0 && chatUser?.unread_count == snapshot.children.count() - count) {
-                                messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true))
+                                val message = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
+                                message.isUnreadCountMessage = true
+                                messages.add(message)
                             }
                             messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt()))
                         }
@@ -237,7 +239,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                             Thread.sleep(100)
                             val smoothScroller: LinearSmoothScroller = object : LinearSmoothScroller(requireContext()) {
                                 override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
-                                    return 75f / displayMetrics.densityDpi
+                                    return 100f / displayMetrics.densityDpi
                                 }
                             }
                             smoothScroller.targetPosition = unread_count

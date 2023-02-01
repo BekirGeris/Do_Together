@@ -10,17 +10,9 @@ class RightMessageHolder(view: View) : BaseHolder(view) {
     private val context = binding.root.context
     private lateinit var message: Message
 
-    init {
-        initViews()
-    }
-
-    private fun initViews() {
-
-    }
-
     fun bind(message: Message, isGroup: Boolean) {
         this.message = message
-        if (message.message?.contains("Okunmamış Mesaj", ignoreCase = true) == true) {
+        if (message.isUnreadCountMessage) {
             binding.unreadMessage.text = message.message
             binding.messageLyt.visibility = View.GONE
             binding.unreadMessage.visibility = View.VISIBLE

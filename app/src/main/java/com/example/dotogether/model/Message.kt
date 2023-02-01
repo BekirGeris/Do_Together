@@ -5,4 +5,6 @@ class Message (
     var messageTime: String? = null,
     var message: String? = null,
     var isMe: Boolean = false
-)
+) {
+    var isUnreadCountMessage = false
+}
