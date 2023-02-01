@@ -16,6 +16,8 @@ import androidx.work.WorkerParameters
 import com.example.dotogether.data.repostory.AppRepository
 import com.example.dotogether.model.Basket
 import com.example.dotogether.model.request.UpdateUserRequest
+import com.example.dotogether.util.Constants
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.activity.HomeActivity
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -56,9 +58,12 @@ class MyFirebaseMessagingService() : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         runBlocking {
             Log.d(TAG, "onNewToken token : $token")
-            val updateUserRequest = UpdateUserRequest()
-            updateUserRequest.fcm_token = token
-            appRepository.remoteRepositoryImpl.updateUser(updateUserRequest)
+            if (SharedPreferencesUtil.getString(applicationContext, Constants.FIREBASE_TOKEN, "") != token) {
+                SharedPreferencesUtil.setString(applicationContext, Constants.FIREBASE_TOKEN, token)
+                val updateUserRequest = UpdateUserRequest()
+                updateUserRequest.fcm_token = token
+                appRepository.remoteRepositoryImpl.updateUser(updateUserRequest)
+            }
         }
     }
 

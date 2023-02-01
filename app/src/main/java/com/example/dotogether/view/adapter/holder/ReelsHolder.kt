@@ -24,10 +24,7 @@ class ReelsHolder(view: View, private val reelsHolderListener: HolderListener.Re
         this.user = user
 
         binding.userNameTxt.text = user.username
-
-        user.img?.let {
-            RuntimeHelper.glideForPersonImage(context).load(it).into(binding.userImage)
-        }
+        RuntimeHelper.glideForPersonImage(context).load(user.img).into(binding.userImage)
     }
 
     override fun onClick(v: View?) {

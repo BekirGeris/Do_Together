@@ -19,8 +19,10 @@ import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.UpdateUserRequest
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.activity.OthersActivity
@@ -449,9 +451,12 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 return@OnCompleteListener
             }
             //Log.d(TAG, "token : ${task.result}")
-            val updateUserRequest = UpdateUserRequest()
-            updateUserRequest.fcm_token = task.result
-            viewModel.updateUser(updateUserRequest)
+            if (SharedPreferencesUtil.getString(requireContext(), Constants.FIREBASE_TOKEN, "") != task.result) {
+                SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, task.result)
+                val updateUserRequest = UpdateUserRequest()
+                updateUserRequest.fcm_token = task.result
+                viewModel.updateUser(updateUserRequest)
+            }
         })
     }
 }

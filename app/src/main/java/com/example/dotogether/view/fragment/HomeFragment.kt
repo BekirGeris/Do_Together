@@ -292,7 +292,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     private fun startImageMaker() {
         ImagePicker.with(this)
-            .crop(1f, 1f)
+            .crop()
             .compress(1024)
             .maxResultSize(1080, 1080)
             .saveDir(File(context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!, "ImagePicker"))

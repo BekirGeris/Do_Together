@@ -12,6 +12,7 @@ object Constants {
     val DATE_FORMAT_4 = SimpleDateFormat("HH:mm")
 
     const val TOKEN_KEY = "TOKEN_KEY"
+    const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
 
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),
