@@ -39,7 +39,7 @@ class OtherUser() : Parcelable {
     var is_followed: Boolean? = null
     @SerializedName(value = "chat_id", alternate = ["chat"])
     var chat_id: String? = null
-    var unread_count: Int? = null
+    var unread_count: Int = 0
 
     constructor(user: User) : this() {
         this.background_img = user.background_img
@@ -85,7 +85,7 @@ class OtherUser() : Parcelable {
         following_number = parcel.readValue(Int::class.java.classLoader) as? Int
         is_followed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         chat_id = parcel.readString()
-        unread_count = parcel.readValue(Int::class.java.classLoader) as? Int
+        unread_count = parcel.readValue(Int::class.java.classLoader) as Int
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

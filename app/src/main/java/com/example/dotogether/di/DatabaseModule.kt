@@ -2,6 +2,7 @@ package com.example.dotogether.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.dotogether.data.dao.BasketDao
 import com.example.dotogether.data.dao.UserDao
 import com.example.dotogether.data.db.AppDatabase
 import com.example.dotogether.data.repostory.local.LocalRepositoryImpl
@@ -18,11 +19,15 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideLocalRepositoryImpl(userDao: UserDao) = LocalRepositoryImpl(userDao)
+    fun provideLocalRepositoryImpl(userDao: UserDao, basketDao: BasketDao) = LocalRepositoryImpl(userDao, basketDao)
 
     @Singleton
     @Provides
     fun provideUserDao(appDatabase: AppDatabase) = appDatabase.userDao()
+
+    @Singleton
+    @Provides
+    fun provideBasketDao(appDatabase: AppDatabase) = appDatabase.basketDao()
 
     @Singleton
     @Provides

@@ -9,12 +9,12 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.dotogether.data.repostory.AppRepository
+import com.example.dotogether.model.Basket
 import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.activity.HomeActivity
@@ -28,7 +28,7 @@ import javax.inject.Inject
 class MyFirebaseMessagingService() : FirebaseMessagingService() {
 
     @Inject
-    lateinit var repository : AppRepository
+    lateinit var appRepository : AppRepository
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: ${remoteMessage.from}")
@@ -41,6 +41,16 @@ class MyFirebaseMessagingService() : FirebaseMessagingService() {
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
+
+        runBlocking {
+            var basket = appRepository.localRepositoryImpl.getCurrentBasketSync()
+            if (basket == null) {
+                basket = Basket()
+            }
+            //todo totalUnreadCount alanı bildirim içerisinden alınacak.
+            basket.totalUnreadCount++
+            appRepository.localRepositoryImpl.updateBasket(basket)
+        }
     }
 
     override fun onNewToken(token: String) {
@@ -48,7 +58,7 @@ class MyFirebaseMessagingService() : FirebaseMessagingService() {
             Log.d(TAG, "onNewToken token : $token")
             val updateUserRequest = UpdateUserRequest()
             updateUserRequest.fcm_token = token
-            repository.remoteRepositoryImpl.updateUser(updateUserRequest)
+            appRepository.remoteRepositoryImpl.updateUser(updateUserRequest)
         }
     }
 

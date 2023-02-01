@@ -2,6 +2,7 @@ package com.example.dotogether.view.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.dotogether.databinding.FragmentChatListBinding
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.model.response.MyChatsResponse
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.ChatAdapter
 import com.example.dotogether.viewmodel.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -98,7 +100,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
+                    if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing && chats.isEmpty()) {
                         dialog.shoe()
                     }
                 }
@@ -125,7 +127,12 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
-        viewModel.myChats()
+        viewModel.getCurrentBasket().observe(viewLifecycleOwner) {basket ->
+            basket?.let {
+                Log.d(RuntimeHelper.TAG, "basket: $it")
+            }
+            viewModel.myChats()
+        }
     }
 
     override fun onClick(v: View?) {

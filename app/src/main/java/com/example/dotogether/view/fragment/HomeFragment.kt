@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -243,6 +244,17 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     dialog.shoe()
                 }
                 else -> {}
+            }
+        }
+        viewModel.getCurrentBasket().observe(viewLifecycleOwner) {basket ->
+            basket?.let {
+                Log.d(RuntimeHelper.TAG, "home fragment basket: $it")
+                if (it.totalUnreadCount != 0) {
+                    binding.unreadCount.text = it.totalUnreadCount.toString()
+                    binding.unreadCountLyt.visibility = View.VISIBLE
+                } else {
+                    binding.unreadCountLyt.visibility = View.GONE
+                }
             }
         }
     }

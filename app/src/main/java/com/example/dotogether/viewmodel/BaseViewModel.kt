@@ -1,9 +1,11 @@
 package com.example.dotogether.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dotogether.data.repostory.AppRepository
+import com.example.dotogether.model.Basket
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Resource
@@ -61,6 +63,26 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
             appRepository.remoteRepositoryImpl.unLikeTarget(targetId).collect{
                 _updateTarget.value = it
             }
+        }
+    }
+
+    fun getCurrentBasket() : LiveData<Basket> {
+        return appRepository.localRepositoryImpl.getCurrentBasket()
+    }
+
+    fun getCurrentBasketSync() : Basket? {
+        return appRepository.localRepositoryImpl.getCurrentBasketSync()
+    }
+
+    fun insertBasket(basket: Basket) {
+        viewModelScope.launch {
+            appRepository.localRepositoryImpl.insertBasket(basket)
+        }
+    }
+
+    fun updateBasket(basket: Basket) {
+        viewModelScope.launch {
+            appRepository.localRepositoryImpl.updateBasket(basket)
         }
     }
 }

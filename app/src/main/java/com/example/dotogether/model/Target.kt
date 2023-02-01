@@ -21,5 +21,5 @@ class Target {
     var user_id: Int? = null
     var users: ArrayList<User>? = null
     var chat: String? = null
-    var unread_count: Int? = null
+    var unread_count: Int = 0
 }

@@ -234,16 +234,18 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     messages.reverse()
                     messageAdapter.notifyDataSetChanged()
                     binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
-                    chatUser?.unread_count?.let { unread_count ->
+
+                    if (chatUser?.unread_count != 0) {
                         thread {
                             Thread.sleep(100)
                             val smoothScroller: LinearSmoothScroller = object : LinearSmoothScroller(requireContext()) {
                                 override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
-                                    return 100f / displayMetrics.densityDpi
+                                    return 50f / displayMetrics.densityDpi
                                 }
                             }
-                            smoothScroller.targetPosition = unread_count
+                            smoothScroller.targetPosition = chatUser?.unread_count!!
                             binding.messageRv.layoutManager?.startSmoothScroll(smoothScroller)
+                            chatUser?.unread_count = 0
                         }
                     }
                 }

@@ -34,7 +34,7 @@ class User() : Parcelable {
     var pivot: Pivot? = null
     var chat_id: String? = null
     @Ignore
-    var unread_count: Int? = null
+    var unread_count: Int = 0
 
     constructor(parcel: Parcel) : this() {
         localId = parcel.readValue(Int::class.java.classLoader) as? Int
@@ -54,7 +54,7 @@ class User() : Parcelable {
         is_followed = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
         token = parcel.readString()
         chat_id = parcel.readString()
-        unread_count = parcel.readValue(Int::class.java.classLoader) as? Int
+        unread_count = parcel.readValue(Int::class.java.classLoader) as Int
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

@@ -12,5 +12,5 @@ data class MyChatsResponse(
     var otherUser: OtherUser? = null,
     var updated_at: String? = null,
     var user_id: Int? = null,
-    var unread_count: Int? = null
+    var unread_count: Int = 0
 )
