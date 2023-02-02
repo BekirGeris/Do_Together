@@ -289,6 +289,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
 
     override fun loginSuccess(resource: Resource<LoginResponse>) {
         SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, resource.data?.token!!)
+        SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, resource.data.user?.fcm_token ?: "")
         val action = SignInFragmentDirections.actionSignInFragmentToHomeActivity()
         Navigation.findNavController(requireView()).navigate(action)
         requireActivity().finish()

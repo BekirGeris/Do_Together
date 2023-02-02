@@ -30,6 +30,7 @@ class User() : Parcelable {
     @Ignore
     var is_followed: Boolean? = null
     var token: String? = null
+    var fcm_token: String? = null
     @Ignore
     var pivot: Pivot? = null
     var chat_id: String? = null

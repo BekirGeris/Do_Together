@@ -48,17 +48,21 @@ class MyFirebaseMessagingService() : FirebaseMessagingService() {
             var basket = appRepository.localRepositoryImpl.getCurrentBasketSync()
             if (basket == null) {
                 basket = Basket()
+                basket.totalUnreadCount++
+                appRepository.localRepositoryImpl.insertBasket(basket)
+            } else {
+                //todo totalUnreadCount alanı bildirim içerisinden alınacak.
+                basket.totalUnreadCount++
+                appRepository.localRepositoryImpl.updateBasket(basket)
             }
-            //todo totalUnreadCount alanı bildirim içerisinden alınacak.
-            basket.totalUnreadCount++
-            appRepository.localRepositoryImpl.updateBasket(basket)
         }
     }
 
     override fun onNewToken(token: String) {
         runBlocking {
-            Log.d(TAG, "onNewToken token : $token")
-            if (SharedPreferencesUtil.getString(applicationContext, Constants.FIREBASE_TOKEN, "") != token) {
+            val oldToken = SharedPreferencesUtil.getString(applicationContext, Constants.FIREBASE_TOKEN, "")
+            if (oldToken != token) {
+                Log.d(TAG, "onNewToken old token $oldToken token : $token")
                 SharedPreferencesUtil.setString(applicationContext, Constants.FIREBASE_TOKEN, token)
                 val updateUserRequest = UpdateUserRequest()
                 updateUserRequest.fcm_token = token

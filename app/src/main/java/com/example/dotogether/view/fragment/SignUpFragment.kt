@@ -270,6 +270,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     override fun registerSuccess(resource: Resource<RegisterResponse>) {
         SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, resource.data?.token!!)
+        SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, resource.data.user?.fcm_token ?: "")
         goToHomeActivity()
     }
 
@@ -281,6 +282,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     override fun loginSuccess(resource: Resource<LoginResponse>) {
         SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, resource.data?.token!!)
+        SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, resource.data.user?.fcm_token ?: "")
         showToast("Bu hesap zaten mevcut. Giriş yapıldı.")
         goToHomeActivity()
     }

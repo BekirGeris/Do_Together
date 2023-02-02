@@ -450,8 +450,9 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 Log.d(TAG, "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
-            //Log.d(TAG, "token : ${task.result}")
-            if (SharedPreferencesUtil.getString(requireContext(), Constants.FIREBASE_TOKEN, "") != task.result) {
+            val oldToken = SharedPreferencesUtil.getString(requireContext(), Constants.FIREBASE_TOKEN, "")
+            if (oldToken != task.result) {
+                Log.d(TAG, "sendFirebaseToken old token $oldToken new token : ${task.result}")
                 SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, task.result)
                 val updateUserRequest = UpdateUserRequest()
                 updateUserRequest.fcm_token = task.result

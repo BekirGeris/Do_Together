@@ -52,6 +52,7 @@ class SplashActivity : BaseActivity(), LoginCallback {
 
     override fun loginSuccess(resource: Resource<LoginResponse>) {
         SharedPreferencesUtil.setString(this, Constants.TOKEN_KEY, resource.data?.token!!)
+        SharedPreferencesUtil.setString(this, Constants.FIREBASE_TOKEN, resource.data.user?.fcm_token ?: "")
         val i = Intent(this@SplashActivity, HomeActivity::class.java)
         startActivity(i)
         finish()
