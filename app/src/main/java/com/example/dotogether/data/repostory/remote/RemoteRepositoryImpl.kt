@@ -48,7 +48,7 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.forgotPasswordVerify(forgetPasswordVerifyRequest) }
     }
 
-    suspend fun newChat(newChatRequest: NewChatRequest): Flow<Resource<NewChatResponse>> {
+    suspend fun newChat(newChatRequest: NewChatRequest): Flow<Resource<ChatResponse>> {
         return generateFlow { repository.newChat(newChatRequest) }
     }
 
@@ -186,6 +186,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun getChat(chatId: String): Flow<Resource<ChatResponse>> {
         return generateFlow { repository.getChat(chatId) }
+    }
+
+    suspend fun muteChat(chatId: String): Flow<Resource<ChatResponse>> {
+        return generateFlow { repository.muteChat(chatId) }
     }
 
     suspend fun resetUnreadCountChat(chatId: String) {

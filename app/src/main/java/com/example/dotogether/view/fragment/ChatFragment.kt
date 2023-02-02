@@ -21,6 +21,7 @@ import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.NewChatRequest
 import com.example.dotogether.model.request.SendMessageRequest
+import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
@@ -55,6 +56,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var myUser: User
     private var chatUser: OtherUser? = null
+
+    private lateinit var chatResponse: ChatResponse
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         @SuppressLint("NotifyDataSetChanged")
@@ -119,8 +122,11 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         binding.sendMessageBtn.setOnClickListener(this)
         binding.downBtn.setOnClickListener(this)
 
-        dialogBinding.clearChat.visibility = View.VISIBLE
-        dialogBinding.clearChat.setOnClickListener(this)
+        dialogBinding.notificationSwitch.visibility = View.VISIBLE
+        dialogBinding.notificationSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+//            Log.d(TAG, "setOnCheckedChangeListener $isChecked")
+//            chatId?.let { viewModel.muteChat(it) }
+        }
 
         messageAdapter = MessageAdapter(messages, isGroup)
         binding.messageRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
@@ -131,15 +137,21 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private fun initObserve() {
         viewModel.myUser.observe(viewLifecycleOwner) {
             myUser = it
-            getData()
+            chatId?.let {id ->
+                viewModel.getChat(id)
+            }
         }
         viewModel.getMyUser()
         viewModel.newChat.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    resource.data?.id?.let {
-                        chatId = resource.data.id
-                        getData()
+                    resource.data?.let {
+                        chatResponse = it
+                        it.id?.let { id ->
+                            changeNotificationSwitch()
+                            chatId = id.toString()
+                            getData()
+                        }
                     }
                 }
                 is Resource.Error -> {
@@ -150,6 +162,45 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
+        viewModel.chat.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        chatResponse = it
+                        it.id?.let { id ->
+                            changeNotificationSwitch()
+                            chatId = id.toString()
+                            getData()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+        }
+        viewModel.updateChat.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        chatResponse = it
+                    }
+                }
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+            }
+        }
+    }
+
+    private fun changeNotificationSwitch() {
+        dialogBinding.notificationSwitch.isChecked = chatResponse.is_mute == 1
     }
 
     override fun onClick(v: View?) {

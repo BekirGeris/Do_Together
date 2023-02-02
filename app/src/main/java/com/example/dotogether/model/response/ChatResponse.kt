@@ -1,6 +1,7 @@
 package com.example.dotogether.model.response
 
 import com.example.dotogether.model.OtherUser
+import com.example.dotogether.model.UnreadMessage
 
 data class ChatResponse(
     var chat_type: String? = null,
@@ -12,5 +13,7 @@ data class ChatResponse(
     var otherUser: OtherUser? = null,
     var updated_at: String? = null,
     var user_id: Int? = null,
-    var unread_count: Int = 0
+    var unread_count: Int = 0,
+    var is_mute: Int = 0,
+    var unread_message: UnreadMessage? = null
 )

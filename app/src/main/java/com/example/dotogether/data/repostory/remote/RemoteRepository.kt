@@ -34,7 +34,7 @@ interface RemoteRepository {
     suspend fun forgotPasswordVerify(@Body forgetPasswordVerifyRequest: ForgetPasswordVerifyRequest) : Response<String>
 
     @POST("chat/create")
-    suspend fun newChat(@Body newChatRequest: NewChatRequest) : Response<NewChatResponse>
+    suspend fun newChat(@Body newChatRequest: NewChatRequest) : Response<ChatResponse>
 
     @POST("chat/send")
     suspend fun sendMessage(@Body sendMessageRequest: SendMessageRequest) : Response<SendMessageResponse>
@@ -140,4 +140,7 @@ interface RemoteRepository {
 
     @GET("chat/reset-unread/{chatId}")
     suspend fun resetUnreadCountChat(@Path("chatId") chatId: String)
+
+    @GET("chat/mute/{chatId}")
+    suspend fun muteChat(@Path("chatId") chatId: String) : Response<ChatResponse>
 }

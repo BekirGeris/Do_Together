@@ -7,7 +7,6 @@ import com.example.dotogether.model.request.SendMessageRequest
 import com.example.dotogether.model.request.NewChatRequest
 import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.model.response.SendMessageResponse
-import com.example.dotogether.model.response.NewChatResponse
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,8 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _newChat = MutableLiveData<Resource<NewChatResponse>>()
-    val newChat: MutableLiveData<Resource<NewChatResponse>> = _newChat
+    private val _newChat = MutableLiveData<Resource<ChatResponse>>()
+    val newChat: MutableLiveData<Resource<ChatResponse>> = _newChat
 
     private val _sendMessage = MutableLiveData<Resource<SendMessageResponse>>()
     val sendMessage: MutableLiveData<Resource<SendMessageResponse>> = _sendMessage
@@ -30,6 +29,9 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
 
     private val _chat = MutableLiveData<Resource<ChatResponse>>()
     val chat: MutableLiveData<Resource<ChatResponse>> = _chat
+
+    private val _updateChat = MutableLiveData<Resource<ChatResponse>>()
+    val updateChat: MutableLiveData<Resource<ChatResponse>> = _updateChat
 
     private val _resetUnreadCountChat = MutableLiveData<Resource<ChatResponse>>()
     val resetUnreadCountChat: MutableLiveData<Resource<ChatResponse>> = _resetUnreadCountChat
@@ -70,6 +72,14 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getChat(chatId).collect{
                 _chat.value = it
+            }
+        }
+    }
+
+    fun muteChat(chatId: String) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.muteChat(chatId).collect{
+                _updateChat.value = it
             }
         }
     }
