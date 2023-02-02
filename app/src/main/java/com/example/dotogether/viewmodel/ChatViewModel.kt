@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.model.request.SendMessageRequest
 import com.example.dotogether.model.request.NewChatRequest
-import com.example.dotogether.model.response.MyChatsResponse
+import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.model.response.SendMessageResponse
 import com.example.dotogether.model.response.NewChatResponse
 import com.example.dotogether.util.Resource
@@ -22,17 +22,17 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
     private val _sendMessage = MutableLiveData<Resource<SendMessageResponse>>()
     val sendMessage: MutableLiveData<Resource<SendMessageResponse>> = _sendMessage
 
-    private val _myChats = MutableLiveData<Resource<List<MyChatsResponse>>>()
-    val myChats: MutableLiveData<Resource<List<MyChatsResponse>>> = _myChats
+    private val _myChats = MutableLiveData<Resource<List<ChatResponse>>>()
+    val myChats: MutableLiveData<Resource<List<ChatResponse>>> = _myChats
 
-    private val _searchMyChats = MutableLiveData<Resource<List<MyChatsResponse>>>()
-    val searchMyChats: MutableLiveData<Resource<List<MyChatsResponse>>> = _searchMyChats
+    private val _searchMyChats = MutableLiveData<Resource<List<ChatResponse>>>()
+    val searchMyChats: MutableLiveData<Resource<List<ChatResponse>>> = _searchMyChats
 
-    private val _chat = MutableLiveData<Resource<MyChatsResponse>>()
-    val chat: MutableLiveData<Resource<MyChatsResponse>> = _chat
+    private val _chat = MutableLiveData<Resource<ChatResponse>>()
+    val chat: MutableLiveData<Resource<ChatResponse>> = _chat
 
-    private val _resetUnreadCountChat = MutableLiveData<Resource<MyChatsResponse>>()
-    val resetUnreadCountChat: MutableLiveData<Resource<MyChatsResponse>> = _resetUnreadCountChat
+    private val _resetUnreadCountChat = MutableLiveData<Resource<ChatResponse>>()
+    val resetUnreadCountChat: MutableLiveData<Resource<ChatResponse>> = _resetUnreadCountChat
 
     fun newChat(newChatRequest: NewChatRequest) {
         viewModelScope.launch {
@@ -76,9 +76,7 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
 
     fun resetUnreadCountChat(chatId: String) {
         viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.resetUnreadCountChat(chatId).collect{
-                _chat.value = it
-            }
+            appRepository.remoteRepositoryImpl.resetUnreadCountChat(chatId)
         }
     }
 }

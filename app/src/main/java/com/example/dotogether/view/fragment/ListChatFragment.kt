@@ -13,7 +13,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentChatListBinding
 import com.example.dotogether.model.request.SearchRequest
-import com.example.dotogether.model.response.MyChatsResponse
+import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.ChatAdapter
@@ -27,7 +27,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     private lateinit var binding: FragmentChatListBinding
 
     private lateinit var chatAdapter: ChatAdapter
-    private val chats = arrayListOf<MyChatsResponse>()
+    private val chats = arrayListOf<ChatResponse>()
 
     private var isSearching = false
 

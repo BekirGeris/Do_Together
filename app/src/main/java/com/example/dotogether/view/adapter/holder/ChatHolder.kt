@@ -6,7 +6,7 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ItemChatBinding
-import com.example.dotogether.model.response.MyChatsResponse
+import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
@@ -15,7 +15,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemChatBinding.bind(view)
     private val context = binding.root.context
-    private lateinit var chat: MyChatsResponse
+    private lateinit var chat: ChatResponse
 
     init {
         initViews()
@@ -25,7 +25,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
         binding.holderView.setOnClickListener(this)
     }
 
-    fun bind(chat: MyChatsResponse) {
+    fun bind(chat: ChatResponse) {
         this.chat = chat
 
         chat.otherUser?.let {
@@ -69,7 +69,6 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
         }
         when (v) {
             binding.holderView -> {
-                chat.otherUser?.unread_count = chat.unread_count
                 chat.otherUser?.chat_id?.let {
                     goToChatFragment(
                         navController,

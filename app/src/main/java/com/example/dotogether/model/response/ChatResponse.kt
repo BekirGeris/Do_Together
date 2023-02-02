@@ -2,7 +2,7 @@ package com.example.dotogether.model.response
 
 import com.example.dotogether.model.OtherUser
 
-data class MyChatsResponse(
+data class ChatResponse(
     var chat_type: String? = null,
     var chattable_id: Int? = null,
     var created_at: String? = null,

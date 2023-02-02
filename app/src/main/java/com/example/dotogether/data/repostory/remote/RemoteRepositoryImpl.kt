@@ -176,20 +176,20 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.searchFollowers(searchRequest, userId) }
     }
 
-    suspend fun searchMyChats(searchRequest: SearchRequest): Flow<Resource<List<MyChatsResponse>>> {
+    suspend fun searchMyChats(searchRequest: SearchRequest): Flow<Resource<List<ChatResponse>>> {
         return generateFlow { repository.searchMyChats(searchRequest) }
     }
 
-    suspend fun myChats(): Flow<Resource<List<MyChatsResponse>>> {
+    suspend fun myChats(): Flow<Resource<List<ChatResponse>>> {
         return generateFlow { repository.myChats() }
     }
 
-    suspend fun getChat(chatId: String): Flow<Resource<MyChatsResponse>> {
+    suspend fun getChat(chatId: String): Flow<Resource<ChatResponse>> {
         return generateFlow { repository.getChat(chatId) }
     }
 
-    suspend fun resetUnreadCountChat(chatId: String): Flow<Resource<MyChatsResponse>> {
-        return generateFlow { repository.resetUnreadCountChat(chatId) }
+    suspend fun resetUnreadCountChat(chatId: String) {
+        repository.resetUnreadCountChat(chatId)
     }
 
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {

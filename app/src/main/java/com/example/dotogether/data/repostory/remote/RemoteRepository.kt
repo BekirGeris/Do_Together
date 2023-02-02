@@ -124,10 +124,10 @@ interface RemoteRepository {
     suspend fun searchTag(@Body searchRequest: SearchRequest) : Response<ArrayList<Tag>>
 
     @GET("chat/my")
-    suspend fun myChats() : Response<List<MyChatsResponse>>
+    suspend fun myChats() : Response<List<ChatResponse>>
 
     @POST("chat/my")
-    suspend fun searchMyChats(@Body searchRequest: SearchRequest) : Response<List<MyChatsResponse>>
+    suspend fun searchMyChats(@Body searchRequest: SearchRequest) : Response<List<ChatResponse>>
 
     @POST("user/followings/{userId}")
     suspend fun searchFollowings(@Body searchRequest: SearchRequest, @Path("userId") userId: Int) : Response<ArrayList<User>>
@@ -136,8 +136,8 @@ interface RemoteRepository {
     suspend fun searchFollowers(@Body searchRequest: SearchRequest, @Path("userId") userId: Int) : Response<ArrayList<User>>
 
     @GET("chat/get/{chatId}")
-    suspend fun getChat(@Path("chatId") chatId: String) : Response<MyChatsResponse>
+    suspend fun getChat(@Path("chatId") chatId: String) : Response<ChatResponse>
 
     @GET("chat/reset-unread/{chatId}")
-    suspend fun resetUnreadCountChat(@Path("chatId") chatId: String) : Response<MyChatsResponse>
+    suspend fun resetUnreadCountChat(@Path("chatId") chatId: String)
 }
