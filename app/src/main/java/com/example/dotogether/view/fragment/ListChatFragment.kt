@@ -136,14 +136,11 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val navController = view?.findNavController()
-        navController?.let {
-            when (v) {
-                binding.backBtn -> {
-                    activity?.onBackPressed()
-                }
-                else -> {}
+        when (v) {
+            binding.backBtn -> {
+                activity?.onBackPressed()
             }
+            else -> {}
         }
     }
 }

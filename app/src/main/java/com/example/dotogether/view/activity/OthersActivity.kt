@@ -77,6 +77,9 @@ class OthersActivity : BaseActivity() {
                 val user: User? = intent.getParcelableExtra("user")
                 user?.let { navController.navigate(OthersNavDirections.actionPasswordEditFragment(user = it), navOptions) }
             }
+            ViewType.VIEW_NOTIFICATION_FRAGMENT.type -> {
+                navController.navigate(OthersNavDirections.actionNotificationFragment(), navOptions)
+            }
         }
     }
 

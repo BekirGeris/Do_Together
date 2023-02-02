@@ -9,13 +9,13 @@
     tools:context=".view.fragment.HomeFragment">
 
     <ImageButton
-        android:id="@+id/camera_btn"
+        android:id="@+id/notification_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/transparent"
-        app:srcCompat="@drawable/ic_baseline_photo_camera_30"
+        app:srcCompat="@drawable/baseline_notifications_30"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +60,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/swipe_lyt"
         app:layout_constraintEnd_toStartOf="@+id/message_btn"
-        app:layout_constraintStart_toEndOf="@+id/camera_btn"
+        app:layout_constraintStart_toEndOf="@+id/notification_btn"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -105,7 +105,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_btn"
+        app:layout_constraintTop_toBottomOf="@+id/notification_btn"
         app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary">
 
         <androidx.recyclerview.widget.RecyclerView

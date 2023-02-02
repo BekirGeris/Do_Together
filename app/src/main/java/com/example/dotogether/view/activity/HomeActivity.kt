@@ -79,9 +79,7 @@ class HomeActivity : BaseActivity() {
 
             }
             R.id.navigation_share -> {
-                val intent = Intent(this, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_SHARE_FRAGMENT.type)
-                startActivity(intent)
+                homeFragment.actionOnClick(1)
             }
             R.id.navigation_library -> {
 

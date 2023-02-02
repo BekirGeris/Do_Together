@@ -426,17 +426,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
         addChipToGroup(tag)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun muckUpTag() {
-        tags.clear()
-        tags.add(Tag("tag 1"))
-        tags.add(Tag("tag 2"))
-        tags.add(Tag("tag 3"))
-        tags.add(Tag("tag 4"))
-        tags.add(Tag("tag 5"))
-        tagAdapter.notifyDataSetChanged()
-    }
-
     private fun addChipToGroup(person: String) {
         val chip = Chip(context)
         chip.text = person.replace(" ", "")

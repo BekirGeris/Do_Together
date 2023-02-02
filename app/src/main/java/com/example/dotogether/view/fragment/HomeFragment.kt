@@ -13,6 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dotogether.R
+import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.databinding.ItemTargetBinding
@@ -22,10 +24,12 @@ import com.example.dotogether.model.request.CreateReelsRequest
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import omari.hamza.storyview.callback.StoryClickListeners
 import java.io.File
@@ -39,6 +43,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private lateinit var homeTargetAdapter: HomeTargetAdapter
     private val targets = ArrayList<Target>()
     private val reelsList = ArrayList<User>()
+
+    private lateinit var dialogBinding: BottomSheetSettingBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -107,6 +114,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
+        bottomSheetDialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
+
         initViews()
     }
 
@@ -123,9 +133,16 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     fun initViews() {
-        binding.cameraBtn.setOnClickListener(this)
+        bottomSheetDialog.setContentView(dialogBinding.root)
+
+        binding.notificationBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
         binding.searchBtn.setOnClickListener(this)
+
+        dialogBinding.createReels.visibility = View.VISIBLE
+        dialogBinding.createTarget.visibility = View.VISIBLE
+        dialogBinding.createReels.setOnClickListener(this)
+        dialogBinding.createTarget.setOnClickListener(this)
 
         homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this, this, this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
@@ -261,14 +278,30 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     override fun onClick(v: View?) {
         when (v) {
-            binding.cameraBtn -> {
-                requestPermissionsForImagePicker()
+            binding.notificationBtn -> {
+                goToNotificationFragment()
             }
             binding.messageBtn -> {
                 goToChatListFragment()
             }
             binding.searchBtn -> {
                 goToSearchFragment()
+            }
+            dialogBinding.createReels -> {
+                bottomSheetDialog.hide()
+                requestPermissionsForImagePicker()
+            }
+            dialogBinding.createTarget -> {
+                bottomSheetDialog.hide()
+                goToShareFragment()
+            }
+        }
+    }
+
+    fun actionOnClick(clickType: Int) {
+        when (clickType) {
+            1 -> {
+                bottomSheetDialog.tryShow()
             }
         }
     }

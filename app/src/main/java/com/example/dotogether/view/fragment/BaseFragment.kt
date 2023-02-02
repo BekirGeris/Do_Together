@@ -82,4 +82,16 @@ open class BaseFragment : Fragment() {
         val intent = Intent(requireActivity(), LoginActivity::class.java)
         startActivity(intent)
     }
+
+    fun goToShareFragment() {
+        val intent = Intent(requireActivity(), OthersActivity::class.java)
+        intent.putExtra("viewType", Constants.ViewType.VIEW_SHARE_FRAGMENT.type)
+        startActivity(intent)
+    }
+
+    fun goToNotificationFragment() {
+        val intent = Intent(requireActivity(), OthersActivity::class.java)
+        intent.putExtra("viewType", Constants.ViewType.VIEW_NOTIFICATION_FRAGMENT.type)
+        startActivity(intent)
+    }
 }

@@ -65,6 +65,9 @@
             app:argType="com.example.dotogether.model.User" />
     </action>
 
+    <action android:id="@+id/action_notificationFragment"
+        app:destination="@id/notificationFragment"/>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
@@ -168,4 +171,9 @@
             android:name="user"
             app:argType="com.example.dotogether.model.User" />
     </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.dotogether.view.fragment.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
 </navigation>
