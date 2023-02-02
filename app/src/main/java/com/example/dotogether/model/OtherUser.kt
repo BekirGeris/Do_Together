@@ -55,16 +55,18 @@ class OtherUser() : Parcelable {
         this.username = user.username
         this.updated_at = user.updated_at
         this.chat_id = user.chat_id
+        this.unread_count = user.unread_count
     }
 
     constructor(target: Target) : this() {
         this.created_at = target.created_at
         this.description = target.description
-        this.chat_id = target.chat
+        this.chat_id = target.chat_id
         this.target = target.target
         this.id = target.id
         this.img = target.img
         this.updated_at = target.updated_at
+        this.unread_count = target.unread_count
     }
 
     constructor(parcel: Parcel) : this() {
