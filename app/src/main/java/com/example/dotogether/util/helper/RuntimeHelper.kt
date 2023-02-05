@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Base64
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -15,7 +16,9 @@ import com.example.dotogether.R
 import java.io.ByteArrayOutputStream
 import java.text.DateFormat
 import java.text.ParseException
+import java.time.Month
 import java.time.ZoneId
+import java.time.format.TextStyle
 import java.util.*
 
 object RuntimeHelper {
@@ -81,5 +84,16 @@ object RuntimeHelper {
     fun Date.isYesterday(): Boolean {
         val yesterday = Calendar.getInstance().apply { add(Calendar.DATE, -1) }.time
         return this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() == yesterday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    }
+
+    fun View.setViewProperties(isEnabled: Boolean) {
+        this.isEnabled = isEnabled
+        this.isClickable = isEnabled
+        this.alpha = if (isEnabled) 1f else 0.6f
+    }
+
+    fun Month.displayText(short: Boolean = true): String {
+        val style = if (short) TextStyle.SHORT else TextStyle.FULL
+        return getDisplayName(style, Locale.ENGLISH)
     }
 }
