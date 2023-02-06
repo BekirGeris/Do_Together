@@ -19,6 +19,8 @@ class LibraryFragment : BaseFragment() {
     private val viewModel: LibraryViewModel by viewModels()
     private lateinit var binding: FragmentLibraryBinding
 
+    private lateinit var tabsPagerAdapter: TabsPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentLibraryBinding.inflate(layoutInflater)
@@ -43,8 +45,8 @@ class LibraryFragment : BaseFragment() {
         binding.tabLayout.tabMode = TabLayout.MODE_FIXED
         binding.tabLayout.isInlineLabel = true
 
-        val adapter = TabsPagerAdapter(childFragmentManager, lifecycle, numberOfTabs, binding.scrollView)
-        binding.viewPager.adapter = adapter
+        tabsPagerAdapter = TabsPagerAdapter(childFragmentManager, lifecycle, numberOfTabs, binding.scrollView)
+        binding.viewPager.adapter = tabsPagerAdapter
 
         // Enable Swipe
         binding.viewPager.isUserInputEnabled = true

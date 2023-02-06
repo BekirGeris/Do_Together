@@ -1,12 +1,10 @@
 package com.example.dotogether.view.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.navigation.NavController
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityHomeBinding
-import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.view.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +45,9 @@ class HomeActivity : BaseActivity() {
             when (menuItem.itemId) {
                 R.id.navigation_home -> {
                     fragmentManager.beginTransaction().hide(activeFragment).show(homeFragment).commit()
+                    if (activeFragment is HomeFragment) {
+                        activeFragment.goToRecyclerViewTop()
+                    }
                     activeFragment = homeFragment
                     true
                 }
@@ -62,6 +63,9 @@ class HomeActivity : BaseActivity() {
                 }
                 R.id.navigation_profile -> {
                     fragmentManager.beginTransaction().hide(activeFragment).show(profileFragment).commit()
+                    if (activeFragment is ProfileFragment) {
+                        activeFragment.goToRecyclerViewTop()
+                    }
                     activeFragment = profileFragment
                     true
                 }

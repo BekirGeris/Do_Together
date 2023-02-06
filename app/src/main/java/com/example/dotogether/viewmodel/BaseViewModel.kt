@@ -82,7 +82,11 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
 
     fun updateBasket(basket: Basket) {
         viewModelScope.launch {
-            appRepository.localRepositoryImpl.updateBasket(basket)
+            if (getCurrentBasketSync() != null) {
+                appRepository.localRepositoryImpl.updateBasket(basket)
+            } else {
+                insertBasket(basket)
+            }
         }
     }
 }

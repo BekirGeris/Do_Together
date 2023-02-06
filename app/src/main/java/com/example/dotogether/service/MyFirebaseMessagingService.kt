@@ -45,16 +45,9 @@ class MyFirebaseMessagingService() : FirebaseMessagingService() {
         }
 
         runBlocking {
-            var basket = appRepository.localRepositoryImpl.getCurrentBasketSync()
-            if (basket == null) {
-                basket = Basket()
-                basket.totalUnreadCount++
-                appRepository.localRepositoryImpl.insertBasket(basket)
-            } else {
-                //todo totalUnreadCount alanı bildirim içerisinden alınacak.
-                basket.totalUnreadCount++
-                appRepository.localRepositoryImpl.updateBasket(basket)
-            }
+            val basket = appRepository.localRepositoryImpl.getCurrentBasketSync() ?: Basket()
+            basket.totalUnreadCount++
+            appRepository.localRepositoryImpl.updateBasket(basket)
         }
     }
 

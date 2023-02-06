@@ -14,6 +14,8 @@ object Constants {
     const val TOKEN_KEY = "TOKEN_KEY"
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
 
+    const val CREATE_TARGET = "CREATE_TARGET"
+
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),
         VIEW_PROFILE_FRAGMENT(2),

@@ -143,4 +143,8 @@ interface RemoteRepository {
 
     @GET("chat/mute/{chatId}")
     suspend fun muteChat(@Path("chatId") chatId: String) : Response<ChatResponse>
+
+    @GET("activity/done/{targetId}")
+    suspend fun doneTarget(@Path("targetId") targetId: Int) : Response<Target>
+
 }

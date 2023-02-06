@@ -24,4 +24,5 @@ class Target {
     @SerializedName(value = "chat", alternate = ["chat_id"])
     var chat_id: String? = null
     var unread_count: Int = 0
+    var action_status: String? = null
 }

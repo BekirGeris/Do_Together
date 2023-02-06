@@ -140,6 +140,21 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
+        viewModel.doneTarget.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    showToast(it.message)
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.shoe()
+                }
+                else -> {}
+            }
+        }
         targetId?.let {
             viewModel.getTarget(it)
         }
@@ -182,6 +197,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         } else {
             binding.targetImage.background = ContextCompat.getDrawable(requireContext(), R.drawable.pilgrim)
         }
+
+        binding.doItBtn.setViewProperties(target.action_status == "2")
     }
 
     override fun onClick(v: View?) {
@@ -204,7 +221,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     selectedDates.add(LocalDate.now())
                     setupMonthCalendar()
                     binding.doItBtn.setViewProperties(false)
-                    //todo: istek atılacak
+                    targetId?.let { targetId -> viewModel.doneTarget(targetId) }
                 }
                 dialogBinding.share -> {
                     bottomSheetDialog.hide()

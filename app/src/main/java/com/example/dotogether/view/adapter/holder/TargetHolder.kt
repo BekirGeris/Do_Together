@@ -103,6 +103,7 @@ class TargetHolder(
 
         if (target.img != null) {
             RuntimeHelper.glideForImage(context).load(target.img).into(binding.postImage)
+            binding.postImage.visibility = View.VISIBLE
         } else {
             binding.postImage.visibility = View.GONE
         }

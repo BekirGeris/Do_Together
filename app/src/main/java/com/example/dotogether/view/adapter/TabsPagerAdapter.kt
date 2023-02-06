@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.dotogether.view.fragment.BaseFragment
 import com.example.dotogether.view.fragment.SubscriptionsFragment
 import com.example.dotogether.view.fragment.FavoritesFragment
 import com.example.dotogether.view.fragment.CompletedFragment
@@ -13,31 +14,31 @@ import kotlin.concurrent.thread
 
 class TabsPagerAdapter(fm: FragmentManager,lifecycle: Lifecycle, private var numberOfTabs: Int, private val scrollView: HorizontalScrollView) : FragmentStateAdapter(fm, lifecycle) {
 
+    lateinit var activeFragment: BaseFragment
+
     override fun createFragment(position: Int): Fragment {
+        val bundle = Bundle()
         when (position) {
             0 -> {
-                val bundle = Bundle()
                 bundle.putString("fragmentName", "SubscriptionsFragment Fragment")
-                val subscriptionsFragment = SubscriptionsFragment()
-                subscriptionsFragment.arguments = bundle
-                return subscriptionsFragment
+                activeFragment = SubscriptionsFragment()
+                activeFragment.arguments = bundle
             }
             1 -> {
-                val bundle = Bundle()
                 bundle.putString("fragmentName", "FavoritesFragment Fragment")
-                val favoritesFragment = FavoritesFragment()
-                favoritesFragment.arguments = bundle
-                return favoritesFragment
+                activeFragment = FavoritesFragment()
+                activeFragment.arguments = bundle
             }
             2 -> {
-                val bundle = Bundle()
                 bundle.putString("fragmentName", "CompletedFragment Fragment")
-                val completedFragment = CompletedFragment()
-                completedFragment.arguments = bundle
-                return completedFragment
+                activeFragment = CompletedFragment()
+                activeFragment.arguments = bundle
             }
-            else -> return SubscriptionsFragment()
+            else -> {
+                activeFragment = SubscriptionsFragment()
+            }
         }
+        return activeFragment
     }
 
     override fun getItemCount(): Int {
@@ -57,5 +58,4 @@ class TabsPagerAdapter(fm: FragmentManager,lifecycle: Lifecycle, private var num
         }
         return super.getItemId(position)
     }
-
 }

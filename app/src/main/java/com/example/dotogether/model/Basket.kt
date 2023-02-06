@@ -8,8 +8,9 @@ class Basket {
     @PrimaryKey(autoGenerate = true)
     var localId: Int? = null
     var totalUnreadCount: Int = 0
+    var refreshType: String? = null
 
     override fun toString(): String {
-        return "Basket(localId=$localId, totalUnreadCount=$totalUnreadCount)"
+        return "Basket(localId=$localId, totalUnreadCount=$totalUnreadCount, refreshType=$refreshType)"
     }
 }

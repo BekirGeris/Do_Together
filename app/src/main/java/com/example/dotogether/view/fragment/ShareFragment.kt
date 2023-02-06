@@ -30,6 +30,7 @@ import android.widget.EditText
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dotogether.model.Basket
 import com.example.dotogether.model.Tag
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.helper.RuntimeHelper
@@ -180,6 +181,9 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
                 is Resource.Success -> {
                     dialog.hide()
                     showToast(it.message)
+                    val basket = viewModel.getCurrentBasketSync() ?: Basket()
+                    basket.refreshType = Constants.CREATE_TARGET
+                    viewModel.updateBasket(basket)
                     requireActivity().finish()
                 }
                 is Resource.Error -> {

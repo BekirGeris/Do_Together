@@ -21,9 +21,11 @@ import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.CreateReelsRequest
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.HomeTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
@@ -166,6 +168,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
                 }
                 is Resource.Error -> {
+                    reelsList.clear()
+                    homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
                 }
                 is Resource.Loading -> {
                 }
@@ -186,6 +190,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     dialog.hide()
                 }
                 is Resource.Error -> {
+                    showToast(it.message)
                     dialog.hide()
                 }
                 is Resource.Loading -> {
@@ -217,6 +222,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     binding.activityErrorView.visibility = View.VISIBLE
                     dialog.hide()
                     showToast(it.message)
+                    targets.clear()
+                    reelsList.clear()
+                    homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
+                    homeTargetAdapter.notifyDataSetChanged()
                 }
                 is Resource.Loading -> {
                     if (!binding.swipeLyt.isRefreshing) {
@@ -266,11 +275,15 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         viewModel.getCurrentBasket().observe(viewLifecycleOwner) {basket ->
             basket?.let {
                 Log.d(RuntimeHelper.TAG, "home fragment basket: $it")
-                if (it.totalUnreadCount != 0) {
-                    binding.unreadCount.text = it.totalUnreadCount.toString()
-                    binding.unreadCountLyt.visibility = View.VISIBLE
+                if (basket.refreshType == Constants.CREATE_TARGET) {
+                    viewModel.getAllTargets()
                 } else {
-                    binding.unreadCountLyt.visibility = View.GONE
+                    if (it.totalUnreadCount != 0) {
+                        binding.unreadCount.text = it.totalUnreadCount.toString()
+                        binding.unreadCountLyt.visibility = View.VISIBLE
+                    } else {
+                        binding.unreadCountLyt.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -369,5 +382,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     override fun addReels() {
         requestPermissionsForImagePicker()
+    }
+
+    override fun goToRecyclerViewTop() {
+        binding.targetRv.smoothScrollToPosition(0)
     }
 }

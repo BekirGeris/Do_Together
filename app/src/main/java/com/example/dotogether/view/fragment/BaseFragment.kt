@@ -94,4 +94,6 @@ open class BaseFragment : Fragment() {
         intent.putExtra("viewType", Constants.ViewType.VIEW_NOTIFICATION_FRAGMENT.type)
         startActivity(intent)
     }
+
+    open fun goToRecyclerViewTop() {}
 }
