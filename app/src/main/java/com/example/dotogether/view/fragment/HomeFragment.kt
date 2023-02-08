@@ -18,6 +18,7 @@ import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.databinding.ItemTargetBinding
+import com.example.dotogether.model.Basket
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.CreateReelsRequest
@@ -153,11 +154,28 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         binding.swipeLyt.setOnRefreshListener {
             viewModel.getFollowingsReels()
             viewModel.getAllTargets()
+            viewModel.getMyUserFromRemote()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMyUserFromRemote()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.myUserRemote.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    setTotalUnreadCount(it.data?.unread_count ?: 0)
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {}
+                else -> {}
+            }
+        }
         viewModel.reels.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
@@ -202,6 +220,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         viewModel.allTargets.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
+                    dialog.hide()
                     binding.swipeLyt.isRefreshing = false
                     it.data?.let { response ->
                         response.data?.let { list ->
@@ -215,7 +234,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                             setRecyclerViewScrollListener()
                         }
                     }
-                    dialog.hide()
                 }
                 is Resource.Error -> {
                     binding.swipeLyt.isRefreshing = false
@@ -274,18 +292,22 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         }
         viewModel.getCurrentBasket().observe(viewLifecycleOwner) {basket ->
             basket?.let {
-                Log.d(RuntimeHelper.TAG, "home fragment basket: $it")
-                if (basket.refreshType == Constants.CREATE_TARGET) {
+                Log.d(TAG, "home fragment basket: $it")
+                if (it.refreshType == Constants.CREATE_TARGET) {
                     viewModel.getAllTargets()
-                } else {
-                    if (it.totalUnreadCount != 0) {
-                        binding.unreadCount.text = it.totalUnreadCount.toString()
-                        binding.unreadCountLyt.visibility = View.VISIBLE
-                    } else {
-                        binding.unreadCountLyt.visibility = View.GONE
-                    }
+                } else if (it.refreshType == Constants.CHAT) {
+                    viewModel.getMyUserFromRemote()
                 }
             }
+        }
+    }
+
+    private fun setTotalUnreadCount(totalUnreadCount: Int) {
+        if (totalUnreadCount != 0) {
+            binding.unreadCount.text = totalUnreadCount.toString()
+            binding.unreadCountLyt.visibility = View.VISIBLE
+        } else {
+            binding.unreadCountLyt.visibility = View.GONE
         }
     }
 
@@ -386,5 +408,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     override fun goToRecyclerViewTop() {
         binding.targetRv.smoothScrollToPosition(0)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val basket = viewModel.getCurrentBasketSync() ?: Basket()
+        basket.refreshType = Constants.NONE
+        viewModel.updateBasket(basket)
     }
 }

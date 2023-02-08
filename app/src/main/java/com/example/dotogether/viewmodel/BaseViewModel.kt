@@ -1,5 +1,6 @@
 package com.example.dotogether.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.example.dotogether.model.Basket
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +27,10 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     private val _myUser = MutableLiveData<User>()
     val myUser: MutableLiveData<User> = _myUser
 
-    fun getMyUser() {
+    private val _myUserRemote = MutableLiveData<Resource<User>>()
+    val myUserRemote: MutableLiveData<Resource<User>> = _myUserRemote
+
+    fun getMyUserFromLocale() {
         viewModelScope.launch {
             val user = appRepository.localRepositoryImpl.getUser()
             user?.let {
@@ -66,6 +71,14 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun getMyUserFromRemote() {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.getMyUserFromRemote().collect {
+                _myUserRemote.value = it
+            }
+        }
+    }
+
     fun getCurrentBasket() : LiveData<Basket> {
         return appRepository.localRepositoryImpl.getCurrentBasket()
     }
@@ -82,11 +95,8 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
 
     fun updateBasket(basket: Basket) {
         viewModelScope.launch {
-            if (getCurrentBasketSync() != null) {
-                appRepository.localRepositoryImpl.updateBasket(basket)
-            } else {
-                insertBasket(basket)
-            }
+            appRepository.localRepositoryImpl.updateBasket(basket)
+            Log.d(TAG, "updateBasket clear")
         }
     }
 }

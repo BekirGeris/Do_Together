@@ -15,6 +15,8 @@ object Constants {
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
 
     const val CREATE_TARGET = "CREATE_TARGET"
+    const val CHAT = "CHAT"
+    const val NONE = "NONE"
 
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),

@@ -156,7 +156,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 viewModel.getUser(userId!!)
             }
         }
-        viewModel.getMyUser()
+        viewModel.getMyUserFromLocale()
         viewModel.user.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -289,7 +289,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         viewModel.removeReels.observe(viewLifecycleOwner) { resource ->
             when(resource) {
                 is Resource.Success -> {
-                    viewModel.getMyUser()
+                    viewModel.getMyUserFromLocale()
                 }
                 is Resource.Error -> {
                     dialog.hide()

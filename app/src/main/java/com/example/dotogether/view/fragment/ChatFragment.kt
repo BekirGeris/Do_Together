@@ -141,7 +141,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 viewModel.getChat(id)
             }
         }
-        viewModel.getMyUser()
+        viewModel.getMyUserFromLocale()
         viewModel.newChat.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {

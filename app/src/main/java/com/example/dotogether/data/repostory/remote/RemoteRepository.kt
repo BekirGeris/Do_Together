@@ -147,4 +147,7 @@ interface RemoteRepository {
     @GET("activity/done/{targetId}")
     suspend fun doneTarget(@Path("targetId") targetId: Int) : Response<Target>
 
+    @GET("user/getme")
+    suspend fun getMyUserFromRemote() : Response<User>
+
 }

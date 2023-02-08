@@ -11,12 +11,13 @@ import java.util.ArrayList
 
 class TargetAdapter(
     private val targetList: ArrayList<Target>,
-    private val targetHolderListener: HolderListener.TargetHolderListener
+    private val targetHolderListener: HolderListener.TargetHolderListener,
+    private val isImageShow: Boolean = true
 ) : BaseAdapter() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         val binding = ItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TargetHolder(binding.root, LayoutInflater.from(parent.context), targetHolderListener)
+        return TargetHolder(binding.root, LayoutInflater.from(parent.context), targetHolderListener, isImageShow)
     }
 
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {

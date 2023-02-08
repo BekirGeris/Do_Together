@@ -30,7 +30,11 @@ class LocalRepositoryImpl @Inject constructor(private val userDao: UserDao, priv
     }
 
     override suspend fun updateBasket(basket: Basket) {
-        basketDao.update(basket)
+        if (getCurrentBasketSync() != null) {
+            basketDao.update(basket)
+        } else {
+            insertBasket(basket)
+        }
     }
 
     override suspend fun nukeTableBasket() {

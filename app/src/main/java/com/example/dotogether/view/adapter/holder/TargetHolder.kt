@@ -23,7 +23,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 class TargetHolder(
     view: View,
     val layoutInflater: LayoutInflater,
-    private val listener: HolderListener.TargetHolderListener
+    private val listener: HolderListener.TargetHolderListener,
+    private val isImageShow: Boolean = true
 ) : BaseHolder(view), View.OnClickListener {
 
     private lateinit var target: Target
@@ -101,7 +102,7 @@ class TargetHolder(
             RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)
         }
 
-        if (target.img != null) {
+        if (isImageShow && target.img != null) {
             RuntimeHelper.glideForImage(context).load(target.img).into(binding.postImage)
             binding.postImage.visibility = View.VISIBLE
         } else {

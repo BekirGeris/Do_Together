@@ -200,6 +200,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.doneTarget(targetId) }
     }
 
+    suspend fun getMyUserFromRemote(): Flow<Resource<User>> {
+        return generateFlow { repository.getMyUserFromRemote() }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())
