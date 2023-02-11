@@ -1,6 +1,7 @@
 package com.example.dotogether.view.activity
 
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.navigation.*
 import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.R
@@ -25,6 +26,12 @@ class OthersActivity : BaseActivity() {
         super.setContentView(binding.root)
 
         initViews()
+
+        this.onBackPressedDispatcher.addCallback {
+            if (!navController.popBackStack()) {
+                this@OthersActivity.finish()
+            }
+        }
     }
 
     private fun initViews() {
@@ -80,12 +87,6 @@ class OthersActivity : BaseActivity() {
             ViewType.VIEW_NOTIFICATION_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionNotificationFragment(), navOptions)
             }
-        }
-    }
-
-    override fun onBackPressed() {
-        if (!navController.popBackStack()) {
-            super.onBackPressed()
         }
     }
 }

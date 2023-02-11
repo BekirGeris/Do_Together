@@ -7,7 +7,7 @@ import com.example.dotogether.databinding.DialogConfirmBinding
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.callback.ConfirmDialogListener
 
-class ConfirmDialog(activity: Activity, private val confirmDialogListener: ConfirmDialogListener) {
+class ConfirmDialog(activity: Activity, message: String, private val confirmDialogListener: ConfirmDialogListener) {
 
     private var binding: DialogConfirmBinding
     var dialog: Dialog
@@ -26,6 +26,7 @@ class ConfirmDialog(activity: Activity, private val confirmDialogListener: Confi
             confirmDialogListener.cancel()
             hide()
         }
+        binding.dialogMessage.text = message
     }
 
     fun show() {

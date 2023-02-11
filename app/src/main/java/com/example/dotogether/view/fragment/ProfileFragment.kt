@@ -230,14 +230,17 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 else -> {}
             }
         }
-        viewModel.updateTarget.observe(viewLifecycleOwner) {
-            when(it) {
+        viewModel.updateTarget.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
                 is Resource.Success -> {
-                    it.data?.let { updateTarget ->
-                        val newTargets = ArrayList<Target>()
-                        targets.mapTo(newTargets) {t -> if (updateTarget.id == t.id) updateTarget else t}
-                        targets.clear()
-                        targets.addAll(newTargets)
+                    resource.data?.let { updateTarget ->
+                        targets.map {
+                            if (it.id == updateTarget.id) {
+                                it.is_liked = updateTarget.is_liked
+                                it.is_joined = updateTarget.is_joined
+                                it.users = updateTarget.users
+                            }
+                        }
                         targetAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()
@@ -375,7 +378,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     }
 
     override fun deleteMyAccount(binding: ItemProfileBinding, user: User) {
-        ConfirmDialog(requireActivity(), object : ConfirmDialogListener {
+        showAlertDialog("Hasabınız geri dönülmez bir\nşekilde silinecek!", object : ConfirmDialogListener {
             override fun cancel() {
 
             }
@@ -398,11 +401,11 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     }
                 }
             }
-        }).show()
+        })
     }
 
     override fun logout(binding: ItemProfileBinding, user: User) {
-        ConfirmDialog(requireActivity(), object : ConfirmDialogListener {
+        showAlertDialog("Çıkış Yapılacak!", object : ConfirmDialogListener {
             override fun cancel() {
 
             }
@@ -416,7 +419,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     activity?.finish()
                 }
             }
-        }).show()
+        })
     }
 
     override fun isOtherActivity() : Boolean {
@@ -444,7 +447,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             override fun onDeleteIconClickListener(p0: Int) {
                 reelsViewBuilder.pauseStories()
 
-                ConfirmDialog(requireActivity(), object : ConfirmDialogListener {
+                showAlertDialog("Story Silinecek!", object : ConfirmDialogListener {
                     override fun cancel() {
                         reelsViewBuilder.startStories()
                     }
@@ -453,7 +456,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                         reelsViewBuilder.dismiss()
                         user.active_statuses?.get(p0)?.let { viewModel.removeReels(it.id) }
                     }
-                }).show()
+                })
             }
         })
     }

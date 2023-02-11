@@ -1,6 +1,7 @@
 package com.example.dotogether.view.activity
 
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.dotogether.R
@@ -18,11 +19,11 @@ class LoginActivity : BaseActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         navController = Navigation.findNavController(this, R.id.loginFragmentContainerView)
-    }
 
-    override fun onBackPressed() {
-        if (!navController.popBackStack()) {
-            super.onBackPressed()
+        this.onBackPressedDispatcher.addCallback {
+            if (!navController.popBackStack()) {
+                this@LoginActivity.finish()
+            }
         }
     }
 }

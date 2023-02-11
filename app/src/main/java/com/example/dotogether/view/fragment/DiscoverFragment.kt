@@ -7,15 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.dotogether.databinding.FragmentDiscoverBinding
+import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Discover
+import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.DiscoverAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.DiscoverViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DiscoverFragment @Inject constructor() : BaseFragment() {
+class DiscoverFragment @Inject constructor() : BaseFragment(), HolderListener.TargetHolderListener {
 
     private val viewModel: DiscoverViewModel by viewModels()
     private lateinit var binding: FragmentDiscoverBinding
@@ -43,7 +46,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment() {
     }
 
     private fun initViews() {
-        discoverAdapter = DiscoverAdapter(discovers)
+        discoverAdapter = DiscoverAdapter(discovers, this)
         binding.discoverRv.adapter = discoverAdapter
 
         binding.swipeLyt.setOnRefreshListener {
@@ -102,5 +105,48 @@ class DiscoverFragment @Inject constructor() : BaseFragment() {
             }
         }
         viewModel.getAllTargets()
+        viewModel.updateTarget.observe(viewLifecycleOwner) {resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let { updateTarget ->
+                        discovers.map {discover ->
+                            discover.targets?.map {
+                                if (it.id == updateTarget.id) {
+                                    it.is_joined = updateTarget.is_joined
+                                    it.is_liked = updateTarget.is_liked
+                                    it.users = updateTarget.users
+                                }
+                            }
+                        }
+                        discoverAdapter.notifyDataChangedForTargets()
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    showToast(resource.message)
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.show()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    override fun like(binding: ItemTargetBinding, target: Target) {
+        viewModel.likeTarget(target.id!!)
+    }
+
+    override fun join(binding: ItemTargetBinding, target: Target) {
+        viewModel.joinTarget(target.id!!)
+    }
+
+    override fun unLike(binding: ItemTargetBinding, target: Target) {
+        viewModel.unLikeTarget(target.id!!)
+    }
+
+    override fun unJoin(binding: ItemTargetBinding, target: Target) {
+        viewModel.unJoinTarget(target.id!!)
     }
 }

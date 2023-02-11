@@ -10,6 +10,8 @@ import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.view.activity.LoginActivity
 import com.example.dotogether.view.activity.OthersActivity
+import com.example.dotogether.view.callback.ConfirmDialogListener
+import com.example.dotogether.view.dialog.ConfirmDialog
 import com.example.dotogether.view.dialog.CustomProgressDialog
 import omari.hamza.storyview.StoryView
 import omari.hamza.storyview.callback.StoryClickListeners
@@ -96,4 +98,8 @@ open class BaseFragment : Fragment() {
     }
 
     open fun goToRecyclerViewTop() {}
+
+    fun showAlertDialog(message: String, listener: ConfirmDialogListener) {
+        ConfirmDialog(requireActivity(), message, listener).show()
+    }
 }

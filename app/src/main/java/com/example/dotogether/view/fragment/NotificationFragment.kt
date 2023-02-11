@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.dotogether.databinding.FragmentNotificationBinding
+import com.example.dotogether.databinding.ItemNotificationBinding
 import com.example.dotogether.model.Notification
 import com.example.dotogether.view.adapter.NotificationAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotificationFragment : BaseFragment(), View.OnClickListener {
+class NotificationFragment : BaseFragment(), View.OnClickListener, HolderListener.NotificationHolderListener {
 
     private lateinit var binding: FragmentNotificationBinding
 
@@ -40,14 +42,16 @@ class NotificationFragment : BaseFragment(), View.OnClickListener {
     private fun initViews() {
         binding.backBtn.setOnClickListener(this)
 
-        notificationAdapter = NotificationAdapter(notifications)
+        notificationAdapter = NotificationAdapter(notifications, this)
         binding.notificationRv.adapter = notificationAdapter
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
         for (i in 1..100) {
-            notifications.add(Notification())
+            val notification = Notification()
+            notification.isLooked = i % 3 == 0
+            notifications.add(notification)
         }
         notificationAdapter.notifyDataSetChanged()
     }
@@ -59,5 +63,11 @@ class NotificationFragment : BaseFragment(), View.OnClickListener {
             }
             else -> {}
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onClickNotification(binding: ItemNotificationBinding, notification: Notification) {
+        notifications.map { if (it == notification) it.isLooked = true }
+        notificationAdapter.notifyDataSetChanged()
     }
 }

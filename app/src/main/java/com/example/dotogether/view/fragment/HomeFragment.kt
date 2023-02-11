@@ -232,20 +232,23 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             }
         }
         viewModel.getFollowingsReels()
-        viewModel.updateTarget.observe(viewLifecycleOwner) {
-            when (it) {
+        viewModel.updateTarget.observe(viewLifecycleOwner) {resource ->
+            when (resource) {
                 is Resource.Success -> {
-                    it.data?.let { updateTarget ->
-                        val newTargets = ArrayList<Target>()
-                        targets.mapTo(newTargets) { t -> if (updateTarget.id == t.id) updateTarget else t }
-                        targets.clear()
-                        targets.addAll(newTargets)
+                    resource.data?.let { updateTarget ->
+                        targets.map {
+                            if (it.id == updateTarget.id) {
+                                it.is_liked = updateTarget.is_liked
+                                it.is_joined = updateTarget.is_joined
+                                it.users = updateTarget.users
+                            }
+                        }
                         homeTargetAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()
                 }
                 is Resource.Error -> {
-                    showToast(it.message)
+                    showToast(resource.message)
                     dialog.hide()
                 }
                 is Resource.Loading -> {
@@ -471,8 +474,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     override fun onStop() {
         super.onStop()
         val basket = viewModel.getCurrentBasketSync() ?: Basket()
-        basket.refreshType = Constants.NONE
-        viewModel.updateBasket(basket)
+        if (basket.refreshType != Constants.NONE) {
+            basket.refreshType = Constants.NONE
+            viewModel.updateBasket(basket)
+        }
     }
 
     private fun initChipGroup(tags: ArrayList<Tag>, chipGroup: ChipGroup) {

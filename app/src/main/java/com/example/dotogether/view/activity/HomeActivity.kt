@@ -2,9 +2,11 @@ package com.example.dotogether.view.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.addCallback
 import androidx.navigation.NavController
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityHomeBinding
+import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.view.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,6 +74,18 @@ class HomeActivity : BaseActivity() {
                 else -> false
             }
         }
+
+        this.onBackPressedDispatcher.addCallback {
+            showAlertDialog("Uygulama Kapatılacak!", object : ConfirmDialogListener {
+                override fun cancel() {
+
+                }
+
+                override fun confirm() {
+                    this@HomeActivity.finish()
+                }
+            })
+        }
     }
 
     fun onNavigationItemSelected(item: MenuItem) {
@@ -91,12 +105,6 @@ class HomeActivity : BaseActivity() {
             R.id.navigation_profile -> {
 
             }
-        }
-    }
-
-    override fun onBackPressed() {
-        if (!navController.popBackStack()) {
-            super.onBackPressed()
         }
     }
 }

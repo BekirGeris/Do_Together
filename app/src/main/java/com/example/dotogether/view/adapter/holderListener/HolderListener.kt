@@ -50,4 +50,7 @@ class HolderListener {
     interface ReelsTopHolderListener{
         fun addReels()
     }
+    interface NotificationHolderListener{
+        fun onClickNotification(binding: ItemNotificationBinding, notification: Notification)
+    }
 }
