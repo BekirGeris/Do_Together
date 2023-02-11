@@ -71,6 +71,7 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/attach_btn"
+        android:visibility="gone"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
@@ -81,6 +82,17 @@
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linear_indicator"
+        android:layout_width="406dp"
+        android:layout_height="4dp"
+        android:indeterminate="true"
+        app:indicatorColor="@color/dark_blue"
+        app:layout_constraintBottom_toTopOf="@+id/write_message_edit_txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/write_message_edit_txt"

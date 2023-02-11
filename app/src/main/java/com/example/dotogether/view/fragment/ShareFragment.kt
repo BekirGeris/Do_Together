@@ -29,19 +29,17 @@ import java.util.*
 import android.widget.EditText
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.model.Basket
 import com.example.dotogether.model.Tag
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
-import com.example.dotogether.view.adapter.TagAdapter
-import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, HolderListener.TagHolderListener {
+class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     private val viewModel: ShareViewModel by viewModels()
     private lateinit var binding: FragmentShareBinding
@@ -55,9 +53,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
     private var imageBase64: String? = null
 
     private var isSearching = false
-
-    private val tags = ArrayList<Tag>()
-    private lateinit var tagAdapter: TagAdapter
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
@@ -150,6 +145,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
         binding.startDateClear.setOnClickListener(this)
         binding.finishDateClear.setOnClickListener(this)
         binding.closeBtn.setOnClickListener(this)
+        binding.addTagBtn.setOnClickListener(this)
 
         periodDialogBinding.daily.setOnClickListener(this)
         periodDialogBinding.weekly.setOnClickListener(this)
@@ -166,9 +162,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
         binding.descriptionEditTxt.addTextChangedListener{ editTextChange(binding.descriptionEditTxt) }
         binding.tagEditTxt.addTextChangedListener{ editTextChange(binding.tagEditTxt) }
 
-        tagAdapter = TagAdapter(tags, this)
-        binding.tagRv.layoutManager = LinearLayoutManager(requireContext())
-        binding.tagRv.adapter = tagAdapter
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -198,14 +191,14 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
         viewModel.tags.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
+                    binding.linearIndicator.visibility = View.GONE
+                    isSearching = false
                     it.data?.let { list ->
-                        tags.clear()
-                        tags.addAll(list)
-                        tagAdapter.notifyDataSetChanged()
-                        isSearching = false
+                        initChipGroup(list, binding.scrollGroup)
                     }
                 }
                 is Resource.Error -> {
+                    binding.linearIndicator.visibility = View.GONE
                     isSearching = false
                 }
                 is Resource.Loading -> {
@@ -226,7 +219,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
             binding.uploadBtn -> {
                 var tags = ""
                 var tagCount = 0
-                binding.chipGroup.children.toList().forEach {
+                binding.reflowGroup.children.toList().forEach {
                     tags += "${(it as Chip).text},"
                     tagCount++
                 }
@@ -271,6 +264,13 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
             }
             binding.closeBtn -> {
                 activity?.onBackPressed()
+            }
+            binding.addTagBtn -> {
+                val tag = binding.tagEditTxt.text.toString()
+                if (tag.isNotEmpty() && tag.replace(" ", "").isNotEmpty()) {
+                    addChipToChipGroup(tag, binding.reflowGroup)
+                    binding.tagEditTxt.setText("")
+                }
             }
             periodDialogBinding.daily -> {
                  viewModel.period.value = "Daily"
@@ -392,15 +392,10 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
                 val tag = binding.tagEditTxt.text.toString()
                 if (tag.isNotEmpty() && tag.replace(" ", "").isNotEmpty()) {
                     if (!isSearching) {
-                        viewModel.searchTag(SearchRequest(tag))
+                        binding.linearIndicator.visibility = View.VISIBLE
                         isSearching = true
+                        viewModel.searchTag(SearchRequest(tag))
                     }
-                    if (tag.last() == ' ') {
-                        addChipToGroup(tag)
-                    }
-                } else {
-                    tags.clear()
-                    tagAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -426,20 +421,26 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
         }
     }
 
-    override fun addTag(tag: String) {
-        addChipToGroup(tag)
+    private fun initChipGroup(tags: ArrayList<Tag>, chipGroup: ChipGroup) {
+        chipGroup.removeAllViews()
+        for (tag in tags) {
+            addChipToChipGroup(tag.name, chipGroup)
+        }
     }
 
-    private fun addChipToGroup(person: String) {
+    private fun addChipToChipGroup(text: String, chipGroup: ChipGroup) {
         val chip = Chip(context)
-        chip.text = person.replace(" ", "")
-        chip.isChipIconVisible = false
-        chip.isCloseIconVisible = true
-        // necessary to get single selection working
-        chip.isClickable = true
-        chip.isCheckable = false
-        binding.chipGroup.addView(chip as View)
-        chip.setOnCloseIconClickListener { binding.chipGroup.removeView(chip as View) }
-        binding.tagEditTxt.text?.clear()
+        chip.text = text
+        if (chipGroup == binding.scrollGroup) {
+            chip.setOnClickListener {
+                binding.tagEditTxt.setText("")
+                chipGroup.removeView(chip)
+                addChipToChipGroup(text, binding.reflowGroup)
+            }
+        } else {
+            chip.isCloseIconVisible = true
+            chip.setOnCloseIconClickListener { chipGroup.removeView(chip) }
+        }
+        chipGroup.addView(chip)
     }
 }

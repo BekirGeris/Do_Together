@@ -137,8 +137,10 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     private fun initObserve() {
         viewModel.myUser.observe(viewLifecycleOwner) {
             myUser = it
-            chatId?.let {id ->
-                viewModel.getChat(id)
+            if (!chatId.isNullOrEmpty()) {
+                viewModel.getChat(chatId!!)
+            } else {
+                onError()
             }
         }
         viewModel.getMyUserFromLocale()
@@ -155,7 +157,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 is Resource.Error -> {
-
+                    onError(resource.message)
                 }
                 is Resource.Loading -> {
 
@@ -175,7 +177,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 is Resource.Error -> {
-
+                    onError(resource.message)
                 }
                 is Resource.Loading -> {
 
@@ -240,6 +242,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     fun sendMessage(message: String) {
+        binding.linearIndicator.visibility = View.VISIBLE
         binding.messageRv.smoothScrollToPosition(0)
         binding.writeMessageEditTxt.text.clear()
 
@@ -255,10 +258,10 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     fun getData() {
-        chatId?.let {
-            viewModel.resetUnreadCountChat(it)
+        if (!chatId.isNullOrEmpty()) {
+            viewModel.resetUnreadCountChat(chatId!!)
 
-            val newReference = firebaseDatabase.getReference("chats").child(it)
+            val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
             val query: Query = newReference.orderByChild("time")
 
             query.addValueEventListener(object: ValueEventListener {
@@ -299,18 +302,28 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                             chatUser?.unread_count = 0
                         }
                     }
+                    binding.linearIndicator.visibility = View.GONE
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    showToast(error.message)
-                    binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
+                    onError(error.message)
                 }
             })
+        } else {
+            onError()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         chatId?.let { viewModel.resetUnreadCountChat(it) }
+    }
+
+    fun onError(message: String? = null) {
+        message?.let {
+            showToast(it)
+        }
+        binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
+        binding.linearIndicator.visibility = View.GONE
     }
 }

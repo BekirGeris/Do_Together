@@ -71,17 +71,34 @@
                     tools:ignore="TextFields" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tag_rv"
-                android:layout_width="match_parent"
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="5dp"
-                android:background="?colorOnTertiary"
+                android:background="?colorOnSecondary"
                 app:layout_constraintBottom_toTopOf="@+id/tag_edit_lyt"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="@+id/tag_edit_lyt">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/scroll_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true" />
+            </HorizontalScrollView>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/linear_indicator"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:indicatorColor="@color/dark_blue"
+                app:layout_constraintBottom_toTopOf="@+id/tag_edit_lyt"
+                app:layout_constraintEnd_toEndOf="@+id/tag_edit_lyt"
+                app:layout_constraintStart_toStartOf="@+id/tag_edit_lyt"
+                tools:ignore="MissingConstraints" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tag_edit_lyt"
@@ -100,15 +117,26 @@
                     android:layout_height="wrap_content"
                     android:hint="Tags"
                     android:inputType="text"
-                    android:maxLength="150"
+                    android:maxLength="30"
                     android:textColor="?colorPrimary"
                     tools:ignore="TextFields" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <ImageButton
+                android:id="@+id/add_tag_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tag_edit_lyt"
+                app:layout_constraintEnd_toEndOf="@+id/tag_edit_lyt"
+                app:layout_constraintTop_toTopOf="@+id/tag_edit_lyt"
+                app:srcCompat="@drawable/baseline_add_24" />
+
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group"
+                android:id="@+id/reflow_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:windowSoftInputMode="adjustNothing"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
@@ -247,7 +275,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chip_group">
+                app:layout_constraintTop_toBottomOf="@+id/reflow_group">
 
                 <TextView
                     android:id="@+id/period_txt"
