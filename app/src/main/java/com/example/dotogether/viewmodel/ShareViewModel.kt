@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ShareViewModel @Inject constructor(@ApplicationContext context: Context): BaseViewModel() {
+class ShareViewModel @Inject constructor(): BaseViewModel() {
 
     val period = MutableLiveData<String>().apply {
         value = "Daily"
@@ -23,21 +23,10 @@ class ShareViewModel @Inject constructor(@ApplicationContext context: Context): 
     private val _createTarget = MutableLiveData<Resource<Target>>()
     val createTarget: MutableLiveData<Resource<Target>> = _createTarget
 
-    private val _tags = MutableLiveData<Resource<ArrayList<Tag>>>()
-    val tags: MutableLiveData<Resource<ArrayList<Tag>>> = _tags
-
     fun createTarget(createTargetRequest: CreateTargetRequest) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.createTarget(createTargetRequest).collect {
                 _createTarget.value = it
-            }
-        }
-    }
-
-    fun searchTag(searchRequest: SearchRequest) {
-        viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.searchTag(searchRequest).collect {
-                _tags.value = it
             }
         }
     }

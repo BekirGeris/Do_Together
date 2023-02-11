@@ -144,7 +144,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
                 is Resource.Loading -> {
                     if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
                         binding.activityErrorView.visibility = View.GONE
-                        dialog.shoe()
+                        dialog.show()
                     }
                 }
                 else -> {}

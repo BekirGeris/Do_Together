@@ -95,7 +95,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment() {
                 }
                 is Resource.Loading -> {
                     if (!binding.swipeLyt.isRefreshing) {
-                        dialog.shoe()
+                        dialog.show()
                     }
                 }
                 else -> {}

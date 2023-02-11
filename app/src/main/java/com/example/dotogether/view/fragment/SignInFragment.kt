@@ -149,7 +149,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
                     this.loginFailed(it)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
             }
         }
@@ -165,7 +165,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
                     showToast(resource.message)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -194,7 +194,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
                 binding.passwordEditLyt.error = null
             }
             binding.googleBtn -> {
-                dialog.shoe()
+                dialog.show()
                 signIn()
             }
             binding.facebookBtn -> {

@@ -28,7 +28,7 @@ class ConfirmDialog(activity: Activity, private val confirmDialogListener: Confi
         }
     }
 
-    fun shoe() {
+    fun show() {
         dialog.tryShow()
     }
 

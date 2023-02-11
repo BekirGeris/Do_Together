@@ -20,7 +20,7 @@ class CustomProgressDialog(activity: Activity) {
         dialog.setContentView(binding.root)
     }
 
-    fun shoe() {
+    fun show() {
         dialog.tryShow()
     }
 

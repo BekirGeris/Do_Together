@@ -125,6 +125,20 @@
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_my_account"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="?colorOnSecondary"
+            android:drawableStart="@drawable/ic_baseline_delete_outline_24"
+            android:drawableTint="?colorTertiary"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="Hesabımı Sil"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/logout"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -180,6 +194,21 @@
             android:drawablePadding="10dp"
             android:gravity="center|left"
             android:text="Hedef Paylaş"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_tag_of_like"
+            android:visibility="gone"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="?colorOnSecondary"
+            android:drawableStart="@drawable/baseline_add_24"
+            android:drawableTint="?colorTertiary"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="Beğeni Etiketi Ekle"
             android:textAllCaps="false" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial

@@ -155,7 +155,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
                     this.registerFailed(it)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
             }
         }
@@ -169,7 +169,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
                     this.loginFailed(it)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
             }
         }
@@ -194,7 +194,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
                 }
             }
             binding.googleBtn -> {
-                dialog.shoe()
+                dialog.show()
                 signUp()
             }
             binding.facebookBtn -> {

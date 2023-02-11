@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentChatListBinding
 import com.example.dotogether.model.request.SearchRequest
@@ -101,7 +100,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                 }
                 is Resource.Loading -> {
                     if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing && chats.isEmpty()) {
-                        dialog.shoe()
+                        dialog.show()
                     }
                 }
                 else -> {}

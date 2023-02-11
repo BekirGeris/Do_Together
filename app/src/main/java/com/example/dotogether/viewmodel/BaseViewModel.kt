@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dotogether.data.repostory.AppRepository
 import com.example.dotogether.model.Basket
+import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
+import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,14 +32,8 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     private val _myUserRemote = MutableLiveData<Resource<User>>()
     val myUserRemote: MutableLiveData<Resource<User>> = _myUserRemote
 
-    fun getMyUserFromLocale() {
-        viewModelScope.launch {
-            val user = appRepository.localRepositoryImpl.getUser()
-            user?.let {
-                _myUser.value = it
-            }
-        }
-    }
+    private val _tags = MutableLiveData<Resource<ArrayList<Tag>>>()
+    val tags: MutableLiveData<Resource<ArrayList<Tag>>> = _tags
 
     fun joinTarget(targetId: Int) {
         viewModelScope.launch {
@@ -75,6 +71,24 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getMyUserFromRemote().collect {
                 _myUserRemote.value = it
+            }
+        }
+    }
+
+    fun searchTag(searchRequest: SearchRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.searchTag(searchRequest).collect {
+                _tags.value = it
+            }
+        }
+    }
+
+    //--------------------localRepositoryImpl--------------------------
+    fun getMyUserFromLocale() {
+        viewModelScope.launch {
+            val user = appRepository.localRepositoryImpl.getUser()
+            user?.let {
+                _myUser.value = it
             }
         }
     }

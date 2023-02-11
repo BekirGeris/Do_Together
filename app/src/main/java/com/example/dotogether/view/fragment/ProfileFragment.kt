@@ -171,7 +171,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 }
                 is Resource.Loading -> {
                     if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
-                        dialog.shoe()
+                        dialog.show()
                     }
                 }
                 else -> {}
@@ -203,7 +203,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 }
                 is Resource.Loading -> {
                     if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
-                        dialog.shoe()
+                        dialog.show()
                     }
                 }
                 else -> {}
@@ -246,7 +246,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -260,7 +260,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -281,7 +281,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -295,7 +295,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -374,14 +374,40 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         requireActivity().finish()
     }
 
+    override fun deleteMyAccount(binding: ItemProfileBinding, user: User) {
+        ConfirmDialog(requireActivity(), object : ConfirmDialogListener {
+            override fun cancel() {
+
+            }
+
+            override fun confirm() {
+                dialog.show()
+                viewModel.logout()
+                thread {
+                    Thread.sleep(1000)
+                    goToLoginFragment()
+                    activity?.finish()
+                }
+            }
+        }).show()
+    }
+
     override fun logout(binding: ItemProfileBinding, user: User) {
-        dialog.shoe()
-        viewModel.logout()
-        thread {
-            Thread.sleep(1000)
-            goToLoginFragment()
-            activity?.finish()
-        }
+        ConfirmDialog(requireActivity(), object : ConfirmDialogListener {
+            override fun cancel() {
+
+            }
+
+            override fun confirm() {
+                dialog.show()
+                viewModel.logout()
+                thread {
+                    Thread.sleep(1000)
+                    goToLoginFragment()
+                    activity?.finish()
+                }
+            }
+        }).show()
     }
 
     override fun isOtherActivity() : Boolean {
@@ -418,7 +444,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                         reelsViewBuilder.dismiss()
                         user.active_statuses?.get(p0)?.let { viewModel.removeReels(it.id) }
                     }
-                }).shoe()
+                }).show()
             }
         })
     }

@@ -117,7 +117,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -135,7 +135,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -150,7 +150,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }

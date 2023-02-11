@@ -85,7 +85,7 @@ class CompletedFragment : BaseFragment(), HolderListener.TargetHolderListener {
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -116,7 +116,7 @@ class CompletedFragment : BaseFragment(), HolderListener.TargetHolderListener {
                 }
                 is Resource.Loading -> {
                     if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
-                        dialog.shoe()
+                        dialog.show()
                     }
                 }
                 else -> {}

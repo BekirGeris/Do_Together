@@ -50,11 +50,13 @@ class ProfileHolder(
         dialogBinding.editProfileImage.visibility = View.VISIBLE
         dialogBinding.editPassword.visibility = View.VISIBLE
         dialogBinding.logout.visibility = View.VISIBLE
+        dialogBinding.deleteMyAccount.visibility = View.VISIBLE
         dialogBinding.userInfo.setOnClickListener(this)
         dialogBinding.editBackgroundImage.setOnClickListener(this)
         dialogBinding.editProfileImage.setOnClickListener(this)
         dialogBinding.editPassword.setOnClickListener(this)
         dialogBinding.logout.setOnClickListener(this)
+        dialogBinding.deleteMyAccount.setOnClickListener(this)
 
         if (listener.isOtherActivity()) {
             binding.backBtn.visibility = View.VISIBLE
@@ -131,6 +133,7 @@ class ProfileHolder(
                 bottomSheetDialog.dismiss()
             }
             dialogBinding.logout -> {
+                bottomSheetDialog.dismiss()
                 listener.logout(binding, user)
             }
             dialogBinding.editBackgroundImage -> {
@@ -144,6 +147,10 @@ class ProfileHolder(
             dialogBinding.editPassword -> {
                 goToPasswordEditFragment(navController, user)
                 bottomSheetDialog.dismiss()
+            }
+            dialogBinding.deleteMyAccount -> {
+                bottomSheetDialog.dismiss()
+                listener.deleteMyAccount(binding, user)
             }
         }
     }

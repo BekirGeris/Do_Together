@@ -9,19 +9,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.R
+import com.example.dotogether.databinding.BottomSheetAddTagBinding
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Basket
+import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.CreateReelsRequest
+import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
@@ -33,6 +37,8 @@ import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import omari.hamza.storyview.callback.StoryClickListeners
 import java.io.File
@@ -47,8 +53,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private val targets = ArrayList<Target>()
     private val reelsList = ArrayList<User>()
 
-    private lateinit var dialogBinding: BottomSheetSettingBinding
-    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var bottomSheetSettingBinding: BottomSheetSettingBinding
+    private lateinit var bottomSheetSettingDialog: BottomSheetDialog
+
+    private lateinit var bottomSheetAddTagBinding: BottomSheetAddTagBinding
+    private lateinit var bottomSheetAddTagDialog: BottomSheetDialog
+
+    private var myUser: User? = null
+    private var isSearching = false
 
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -117,8 +129,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        dialogBinding = BottomSheetSettingBinding.inflate(layoutInflater)
-        bottomSheetDialog = BottomSheetDialog(dialogBinding.root.context, R.style.BottomSheetDialogTheme)
+        bottomSheetSettingBinding = BottomSheetSettingBinding.inflate(layoutInflater)
+        bottomSheetSettingDialog = BottomSheetDialog(bottomSheetSettingBinding.root.context, R.style.BottomSheetDialogTheme)
+
+        bottomSheetAddTagBinding = BottomSheetAddTagBinding.inflate(layoutInflater)
+        bottomSheetAddTagDialog = BottomSheetDialog(bottomSheetAddTagBinding.root.context, R.style.BottomSheetDialogTheme)
 
         initViews()
     }
@@ -136,16 +151,19 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     fun initViews() {
-        bottomSheetDialog.setContentView(dialogBinding.root)
+        bottomSheetSettingDialog.setContentView(bottomSheetSettingBinding.root)
+        bottomSheetAddTagDialog.setContentView(bottomSheetAddTagBinding.root)
 
         binding.notificationBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
         binding.searchBtn.setOnClickListener(this)
 
-        dialogBinding.createReels.visibility = View.VISIBLE
-        dialogBinding.createTarget.visibility = View.VISIBLE
-        dialogBinding.createReels.setOnClickListener(this)
-        dialogBinding.createTarget.setOnClickListener(this)
+        bottomSheetSettingBinding.createReels.visibility = View.VISIBLE
+        bottomSheetSettingBinding.createTarget.visibility = View.VISIBLE
+        bottomSheetSettingBinding.addTagOfLike.visibility = View.VISIBLE
+        bottomSheetSettingBinding.createReels.setOnClickListener(this)
+        bottomSheetSettingBinding.createTarget.setOnClickListener(this)
+        bottomSheetSettingBinding.addTagOfLike.setOnClickListener(this)
 
         homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this, this, this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)
@@ -156,6 +174,23 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             viewModel.getAllTargets()
             viewModel.getMyUserFromRemote()
         }
+
+        bottomSheetAddTagBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (!newText.isNullOrEmpty()) {
+                    if (!isSearching) {
+                        bottomSheetAddTagBinding.linearIndicator.visibility = View.VISIBLE
+                        isSearching = true
+                        viewModel.searchTag(SearchRequest(newText))
+                    }
+                }
+                return true
+            }
+        })
     }
 
     override fun onResume() {
@@ -168,7 +203,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         viewModel.myUserRemote.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    setTotalUnreadCount(it.data?.unread_count ?: 0)
+                    myUser = it.data
+                    setTotalUnreadCount(myUser?.unread_count ?: 0)
+                    initChipGroup(arrayListOf(Tag("tag1"), Tag("tag2"), Tag("tag3"), Tag("tag4"), Tag("tag5"), ), bottomSheetAddTagBinding.reflowGroup)
                 }
                 is Resource.Error -> {
                 }
@@ -212,7 +249,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -247,7 +284,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 }
                 is Resource.Loading -> {
                     if (!binding.swipeLyt.isRefreshing) {
-                        dialog.shoe()
+                        dialog.show()
                     }
                 }
                 else -> {}
@@ -285,7 +322,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     dialog.hide()
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }
@@ -298,6 +335,23 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 } else if (it.refreshType == Constants.CHAT) {
                     viewModel.getMyUserFromRemote()
                 }
+            }
+        }
+        viewModel.tags.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let { initChipGroup(it, bottomSheetAddTagBinding.scrollGroup) }
+                    isSearching = false
+                    bottomSheetAddTagBinding.linearIndicator.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    isSearching = false
+                    bottomSheetAddTagBinding.linearIndicator.visibility = View.GONE
+                }
+                is Resource.Loading -> {
+
+                }
+                else -> {}
             }
         }
     }
@@ -322,13 +376,17 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             binding.searchBtn -> {
                 goToSearchFragment()
             }
-            dialogBinding.createReels -> {
-                bottomSheetDialog.hide()
+            bottomSheetSettingBinding.createReels -> {
+                bottomSheetSettingDialog.hide()
                 requestPermissionsForImagePicker()
             }
-            dialogBinding.createTarget -> {
-                bottomSheetDialog.hide()
+            bottomSheetSettingBinding.createTarget -> {
+                bottomSheetSettingDialog.hide()
                 goToShareFragment()
+            }
+            bottomSheetSettingBinding.addTagOfLike -> {
+                bottomSheetSettingDialog.hide()
+                bottomSheetAddTagDialog.show()
             }
         }
     }
@@ -336,7 +394,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     fun actionOnClick(clickType: Int) {
         when (clickType) {
             1 -> {
-                bottomSheetDialog.tryShow()
+                bottomSheetSettingDialog.tryShow()
             }
         }
     }
@@ -415,5 +473,27 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         val basket = viewModel.getCurrentBasketSync() ?: Basket()
         basket.refreshType = Constants.NONE
         viewModel.updateBasket(basket)
+    }
+
+    private fun initChipGroup(tags: ArrayList<Tag>, chipGroup: ChipGroup) {
+        chipGroup.removeAllViews()
+        for (tag in tags) {
+            addChipToChipGroup(tag.name, chipGroup)
+        }
+    }
+
+    private fun addChipToChipGroup(text: String, chipGroup: ChipGroup) {
+        val chip = Chip(context)
+        chip.text = text
+        if (chipGroup == bottomSheetAddTagBinding.scrollGroup) {
+            chip.setOnClickListener {
+                chipGroup.removeView(chip)
+                addChipToChipGroup(text, bottomSheetAddTagBinding.reflowGroup)
+            }
+        } else {
+            chip.isCloseIconVisible = true
+            chip.setOnCloseIconClickListener { chipGroup.removeView(chip) }
+        }
+        chipGroup.addView(chip)
     }
 }

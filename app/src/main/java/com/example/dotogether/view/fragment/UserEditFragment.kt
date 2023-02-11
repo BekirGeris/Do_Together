@@ -68,7 +68,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
                     showToast(resource.message)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
                 else -> {}
             }

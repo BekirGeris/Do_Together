@@ -29,6 +29,7 @@ class HolderListener {
         fun profileImageEdit(binding: ItemProfileBinding, user: User)
         fun finishActivity(binding: ItemProfileBinding, user: User)
         fun logout(binding: ItemProfileBinding, user: User)
+        fun deleteMyAccount(binding: ItemProfileBinding, user: User)
         fun follow(binding: ItemProfileBinding, user: User)
         fun unFollow(binding: ItemProfileBinding, user: User)
         fun showReels(binding: ItemProfileBinding, user: User)

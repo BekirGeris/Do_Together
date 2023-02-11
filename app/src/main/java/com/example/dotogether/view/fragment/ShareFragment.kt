@@ -191,7 +191,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback, Holder
                     showToast(it.message)
                 }
                 is Resource.Loading -> {
-                    dialog.shoe()
+                    dialog.show()
                 }
             }
         }
