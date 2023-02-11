@@ -150,4 +150,7 @@ interface RemoteRepository {
     @GET("user/getme")
     suspend fun getMyUserFromRemote() : Response<User>
 
+    @GET("user/delete-account")
+    suspend fun deleteMyAccount() : Response<User>
+
 }

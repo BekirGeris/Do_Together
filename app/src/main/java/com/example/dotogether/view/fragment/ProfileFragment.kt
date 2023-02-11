@@ -381,12 +381,21 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             }
 
             override fun confirm() {
-                dialog.show()
-                viewModel.logout()
-                thread {
-                    Thread.sleep(1000)
-                    goToLoginFragment()
-                    activity?.finish()
+                viewModel.deleteMyAccount().observe(viewLifecycleOwner) {
+                    when(it) {
+                        is Resource.Success -> {
+                            goToLoginFragment()
+                            activity?.finish()
+                        }
+                        is Resource.Error -> {
+                            showToast(it.message)
+                            dialog.hide()
+                        }
+                        is Resource.Loading -> {
+                            dialog.show()
+                        }
+                        else -> {}
+                    }
                 }
             }
         }).show()

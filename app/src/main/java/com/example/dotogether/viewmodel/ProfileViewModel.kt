@@ -118,4 +118,14 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
             }
         }
     }
+
+    fun deleteMyAccount() : MutableLiveData<Resource<User>> {
+        val result = MutableLiveData<Resource<User>>()
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.deleteMyAccount().collect{
+                result.value = it
+            }
+        }
+        return result
+    }
 }
