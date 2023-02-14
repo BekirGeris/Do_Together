@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.addCallback
 import androidx.navigation.NavController
+import androidx.work.*
 import com.example.dotogether.R
 import com.example.dotogether.databinding.ActivityHomeBinding
+import com.example.dotogether.util.Constants
 import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.view.fragment.*
+import com.example.dotogether.workers.NotificationWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity() {
@@ -72,6 +77,29 @@ class HomeActivity : BaseActivity() {
                     true
                 }
                 else -> false
+            }
+        }
+
+        val workManager = WorkManager.getInstance(applicationContext)
+
+        workManager.getWorkInfosByTagLiveData(Constants.TAG_NOTIFICATION_WORKER).observe(this) {
+            if (it == null || it.isEmpty()) {
+                // No work with the given tag
+                val calendar = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, 10)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                }
+                if (calendar.timeInMillis - System.currentTimeMillis() <= 0) {
+                    calendar.add(Calendar.DAY_OF_MONTH, 1);
+                }
+
+                val repeatingWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+                    .setInitialDelay(calendar.timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                    .addTag(Constants.TAG_NOTIFICATION_WORKER)
+                    .build()
+
+                workManager.enqueue(repeatingWorkRequest)
             }
         }
 

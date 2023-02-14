@@ -18,6 +18,8 @@ object Constants {
     const val CHAT = "CHAT"
     const val NONE = "NONE"
 
+    const val TAG_NOTIFICATION_WORKER = "TAG_NOTIFICATION_WORKER"
+
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),
         VIEW_PROFILE_FRAGMENT(2),
