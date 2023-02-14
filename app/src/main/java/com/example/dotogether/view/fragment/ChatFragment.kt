@@ -306,6 +306,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, error.message)
                     onError(error.message)
                 }
             })
