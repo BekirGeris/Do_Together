@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.example.dotogether.R
+import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentDiscoverBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Discover
@@ -14,11 +16,12 @@ import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.DiscoverAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.DiscoverViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DiscoverFragment @Inject constructor() : BaseFragment(), HolderListener.TargetHolderListener {
+class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener {
 
     private val viewModel: DiscoverViewModel by viewModels()
     private lateinit var binding: FragmentDiscoverBinding
@@ -26,9 +29,14 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), HolderListener.Ta
     private val discovers = ArrayList<Discover>()
     private lateinit var discoverAdapter: DiscoverAdapter
 
+    private lateinit var bottomSheetSettingBinding: BottomSheetSettingBinding
+    private lateinit var bottomSheetSettingDialog: BottomSheetDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentDiscoverBinding.inflate(layoutInflater)
+        bottomSheetSettingBinding = BottomSheetSettingBinding.inflate(layoutInflater)
+        bottomSheetSettingDialog = BottomSheetDialog(bottomSheetSettingBinding.root.context, R.style.BottomSheetDialogTheme)
 
         initViews()
     }
@@ -46,8 +54,15 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), HolderListener.Ta
     }
 
     private fun initViews() {
+        bottomSheetSettingDialog.setContentView(bottomSheetSettingBinding.root)
+
         discoverAdapter = DiscoverAdapter(discovers, this)
         binding.discoverRv.adapter = discoverAdapter
+
+        binding.moreSettingBtn.setOnClickListener(this)
+
+        bottomSheetSettingBinding.addTagOfLike.visibility = View.VISIBLE
+        bottomSheetSettingBinding.addTagOfLike.setOnClickListener(this)
 
         binding.swipeLyt.setOnRefreshListener {
             viewModel.getAllTargets()
@@ -148,5 +163,16 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), HolderListener.Ta
 
     override fun unJoin(binding: ItemTargetBinding, target: Target) {
         viewModel.unJoinTarget(target.id!!)
+    }
+
+    override fun onClick(v: View?) {
+        when (v) {
+            binding.moreSettingBtn -> {
+                bottomSheetSettingDialog.show()
+            }
+            bottomSheetSettingBinding.addTagOfLike -> {
+                bottomSheetSettingDialog.hide()
+            }
+        }
     }
 }

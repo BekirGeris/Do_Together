@@ -1,8 +1,14 @@
 package com.example.dotogether.view.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants
@@ -101,5 +107,18 @@ open class BaseFragment : Fragment() {
 
     fun showAlertDialog(message: String, listener: ConfirmDialogListener) {
         ConfirmDialog(requireActivity(), message, listener).show()
+    }
+
+    @SuppressLint("BatteryLife")
+    fun checkForBatteryOptimization() {
+        val powerManager = activity?.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!powerManager.isIgnoringBatteryOptimizations(requireContext().packageName)) {
+                val intent = Intent()
+                intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                intent.data = Uri.parse("package:" + requireContext().packageName)
+                startActivity(intent)
+            }
+        }
     }
 }

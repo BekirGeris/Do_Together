@@ -68,6 +68,14 @@ android {
             buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
             buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
+
+        doTogetherTest {
+            applicationId "com.bekbek.dotogether.test"
+            versionCode 1
+
+            buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
+            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
+        }
     }
 }
 

@@ -2,10 +2,7 @@ package com.example.dotogether.view.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.dotogether.R
 import com.example.dotogether.data.callback.LoginCallback
@@ -13,9 +10,9 @@ import com.example.dotogether.model.response.LoginResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.SharedPreferencesUtil
-import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import kotlin.concurrent.thread
 
 @SuppressLint("CustomSplashScreen")

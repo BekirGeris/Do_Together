@@ -160,10 +160,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
         bottomSheetSettingBinding.createReels.visibility = View.VISIBLE
         bottomSheetSettingBinding.createTarget.visibility = View.VISIBLE
-        bottomSheetSettingBinding.addTagOfLike.visibility = View.VISIBLE
         bottomSheetSettingBinding.createReels.setOnClickListener(this)
         bottomSheetSettingBinding.createTarget.setOnClickListener(this)
-        bottomSheetSettingBinding.addTagOfLike.setOnClickListener(this)
 
         homeTargetAdapter = HomeTargetAdapter(targets, reelsList, this, this, this)
         binding.targetRv.layoutManager = LinearLayoutManager(context)

@@ -1,13 +1,22 @@
 package com.example.dotogether.view.activity
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.work.*
 import com.example.dotogether.R
+import com.example.dotogether.alarms.NotificationAlarmReceiver
 import com.example.dotogether.databinding.ActivityHomeBinding
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.view.fragment.*
 import com.example.dotogether.workers.NotificationWorker
@@ -80,29 +89,6 @@ class HomeActivity : BaseActivity() {
             }
         }
 
-        val workManager = WorkManager.getInstance(applicationContext)
-
-        workManager.getWorkInfosByTagLiveData(Constants.TAG_NOTIFICATION_WORKER).observe(this) {
-            if (it == null || it.isEmpty()) {
-                // No work with the given tag
-                val calendar = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, 10)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                }
-                if (calendar.timeInMillis - System.currentTimeMillis() <= 0) {
-                    calendar.add(Calendar.DAY_OF_MONTH, 1);
-                }
-
-                val repeatingWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
-                    .setInitialDelay(calendar.timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                    .addTag(Constants.TAG_NOTIFICATION_WORKER)
-                    .build()
-
-                workManager.enqueue(repeatingWorkRequest)
-            }
-        }
-
         this.onBackPressedDispatcher.addCallback {
             showAlertDialog("Uygulama Kapatılacak!", object : ConfirmDialogListener {
                 override fun cancel() {
@@ -114,6 +100,52 @@ class HomeActivity : BaseActivity() {
                 }
             })
         }
+    }
+
+    private fun setWorkManager() {
+        val workManager = WorkManager.getInstance(applicationContext)
+        workManager.getWorkInfosByTagLiveData(Constants.TAG_NOTIFICATION_WORKER).observe(this) {
+            if (it == null || it.isEmpty()) {
+                // No work with the given tag
+
+                val repeatingWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+                    .setInitialDelay(getNotificationCalender().timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                    .addTag(Constants.TAG_NOTIFICATION_WORKER)
+                    .build()
+
+                workManager.enqueue(repeatingWorkRequest)
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private fun setAlarmManager() {
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, NotificationAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        Log.d(TAG, "setAlarmManager")
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            getNotificationCalender().timeInMillis,
+             30 * 1000,
+            pendingIntent
+        )
+    }
+
+    private fun getNotificationCalender(): Calendar {
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 18)
+            set(Calendar.MINUTE, 2)
+            set(Calendar.SECOND, 30)
+            timeInMillis = System.currentTimeMillis() + 10 * 1000
+        }
+
+        if (calendar.timeInMillis - System.currentTimeMillis() <= 0) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return calendar
     }
 
     fun onNavigationItemSelected(item: MenuItem) {
