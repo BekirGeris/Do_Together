@@ -56,11 +56,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private lateinit var bottomSheetSettingBinding: BottomSheetSettingBinding
     private lateinit var bottomSheetSettingDialog: BottomSheetDialog
 
-    private lateinit var bottomSheetAddTagBinding: BottomSheetAddTagBinding
-    private lateinit var bottomSheetAddTagDialog: BottomSheetDialog
-
     private var myUser: User? = null
-    private var isSearching = false
 
     private var nextPage = "2"
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -132,9 +128,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         bottomSheetSettingBinding = BottomSheetSettingBinding.inflate(layoutInflater)
         bottomSheetSettingDialog = BottomSheetDialog(bottomSheetSettingBinding.root.context, R.style.BottomSheetDialogTheme)
 
-        bottomSheetAddTagBinding = BottomSheetAddTagBinding.inflate(layoutInflater)
-        bottomSheetAddTagDialog = BottomSheetDialog(bottomSheetAddTagBinding.root.context, R.style.BottomSheetDialogTheme)
-
         initViews()
     }
 
@@ -152,7 +145,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     fun initViews() {
         bottomSheetSettingDialog.setContentView(bottomSheetSettingBinding.root)
-        bottomSheetAddTagDialog.setContentView(bottomSheetAddTagBinding.root)
 
         binding.notificationBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
@@ -172,23 +164,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             viewModel.getAllTargets()
             viewModel.getMyUserFromRemote()
         }
-
-        bottomSheetAddTagBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
-                    if (!isSearching) {
-                        bottomSheetAddTagBinding.linearIndicator.visibility = View.VISIBLE
-                        isSearching = true
-                        viewModel.searchTag(SearchRequest(newText))
-                    }
-                }
-                return true
-            }
-        })
     }
 
     override fun onResume() {
@@ -203,7 +178,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 is Resource.Success -> {
                     myUser = it.data
                     setTotalUnreadCount(myUser?.unread_count ?: 0)
-                    initChipGroup(arrayListOf(Tag("tag1"), Tag("tag2"), Tag("tag3"), Tag("tag4"), Tag("tag5"), ), bottomSheetAddTagBinding.reflowGroup)
                 }
                 is Resource.Error -> {
                 }
@@ -338,23 +312,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 }
             }
         }
-        viewModel.tags.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    resource.data?.let { initChipGroup(it, bottomSheetAddTagBinding.scrollGroup) }
-                    isSearching = false
-                    bottomSheetAddTagBinding.linearIndicator.visibility = View.GONE
-                }
-                is Resource.Error -> {
-                    isSearching = false
-                    bottomSheetAddTagBinding.linearIndicator.visibility = View.GONE
-                }
-                is Resource.Loading -> {
-
-                }
-                else -> {}
-            }
-        }
     }
 
     private fun setTotalUnreadCount(totalUnreadCount: Int) {
@@ -384,10 +341,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             bottomSheetSettingBinding.createTarget -> {
                 bottomSheetSettingDialog.hide()
                 goToShareFragment()
-            }
-            bottomSheetSettingBinding.addTagOfLike -> {
-                bottomSheetSettingDialog.hide()
-                bottomSheetAddTagDialog.show()
             }
         }
     }
@@ -476,27 +429,5 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             basket.refreshType = Constants.NONE
             viewModel.updateBasket(basket)
         }
-    }
-
-    private fun initChipGroup(tags: ArrayList<Tag>, chipGroup: ChipGroup) {
-        chipGroup.removeAllViews()
-        for (tag in tags) {
-            addChipToChipGroup(tag.name, chipGroup)
-        }
-    }
-
-    private fun addChipToChipGroup(text: String, chipGroup: ChipGroup) {
-        val chip = Chip(context)
-        chip.text = text
-        if (chipGroup == bottomSheetAddTagBinding.scrollGroup) {
-            chip.setOnClickListener {
-                chipGroup.removeView(chip)
-                addChipToChipGroup(text, bottomSheetAddTagBinding.reflowGroup)
-            }
-        } else {
-            chip.isCloseIconVisible = true
-            chip.setOnCloseIconClickListener { chipGroup.removeView(chip) }
-        }
-        chipGroup.addView(chip)
     }
 }

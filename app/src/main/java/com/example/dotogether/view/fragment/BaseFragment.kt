@@ -103,6 +103,12 @@ open class BaseFragment : Fragment() {
         startActivity(intent)
     }
 
+    fun goToAddTagFragment() {
+        val intent = Intent(requireActivity(), OthersActivity::class.java)
+        intent.putExtra("viewType", Constants.ViewType.VIEW_ADD_TAG_FRAGMENT.type)
+        startActivity(intent)
+    }
+
     open fun goToRecyclerViewTop() {}
 
     fun showAlertDialog(message: String, listener: ConfirmDialogListener) {

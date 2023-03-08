@@ -172,6 +172,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
             }
             bottomSheetSettingBinding.addTagOfLike -> {
                 bottomSheetSettingDialog.hide()
+                goToAddTagFragment()
             }
         }
     }

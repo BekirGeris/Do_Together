@@ -87,6 +87,9 @@ class OthersActivity : BaseActivity() {
             ViewType.VIEW_NOTIFICATION_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionNotificationFragment(), navOptions)
             }
+            ViewType.VIEW_ADD_TAG_FRAGMENT.type -> {
+                navController.navigate(OthersNavDirections.actionAddTagFragment(), navOptions)
+            }
         }
     }
 }

@@ -30,7 +30,8 @@ object Constants {
         VIEW_SEARCH_FRAGMENT(7),
         VIEW_USER_EDIT_FRAGMENT(8),
         VIEW_PASSWORD_EDIT_FRAGMENT(9),
-        VIEW_NOTIFICATION_FRAGMENT(10)
+        VIEW_NOTIFICATION_FRAGMENT(10),
+        VIEW_ADD_TAG_FRAGMENT(11)
     }
 
     enum class MethodType {

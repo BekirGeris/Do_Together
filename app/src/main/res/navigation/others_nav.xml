@@ -68,6 +68,9 @@
     <action android:id="@+id/action_notificationFragment"
         app:destination="@id/notificationFragment"/>
 
+    <action android:id="@+id/action_addTagFragment"
+        app:destination="@id/addTagFragment"/>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
@@ -176,4 +179,8 @@
         android:name="com.example.dotogether.view.fragment.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/addTagFragment"
+        android:name="com.example.dotogether.view.fragment.AddTagFragment"
+        android:label="AddTagFragment" />
 </navigation>
