@@ -12,6 +12,7 @@
         <item name="colorOnSecondary">#222222</item>
         <item name="colorOnTertiary">@color/black</item>
         <item name="colorOnErrorContainer">#8E8E8E</item>
+        <item name="editTextColor">#9E757575</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >?attr/colorOnTertiary</item>
         <!-- Customize your theme here. -->

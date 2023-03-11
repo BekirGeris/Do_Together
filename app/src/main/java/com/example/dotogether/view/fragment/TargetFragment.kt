@@ -115,6 +115,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 }
                 is Resource.Error -> {
                     dialog.hide()
+                    showToast(it.message)
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 is Resource.Loading -> {
                     dialog.show()
