@@ -26,7 +26,7 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="500dp"
+                android:layout_width="600dp"
                 android:layout_height="wrap_content"
                 android:minHeight="?actionBarSize"
                 app:layout_constraintEnd_toEndOf="parent"

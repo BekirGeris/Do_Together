@@ -41,7 +41,7 @@ class LibraryFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        val numberOfTabs = 3
+        val numberOfTabs = 4
         binding.tabLayout.tabMode = TabLayout.MODE_FIXED
         binding.tabLayout.isInlineLabel = true
 
@@ -54,13 +54,15 @@ class LibraryFragment : BaseFragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "Subscriptions"
+                    tab.text = "Pending Targets"
                 }
                 1 -> {
-                    tab.text = "Favorites"
-
+                    tab.text = "Subscriptions"
                 }
                 2 -> {
+                    tab.text = "Favorites"
+                }
+                3 -> {
                     tab.text = "Completed"
                 }
             }
