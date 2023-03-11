@@ -4,6 +4,7 @@
     package="com.example.dotogether">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -49,11 +50,19 @@
         <activity
             android:name=".view.activity.HomeActivity"
             android:screenOrientation="portrait"
-            android:exported="false"
+            android:exported="true"
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="MY_CUSTOM_ACTION" />
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" android:host="toggether.bg"/>
             </intent-filter>
         </activity>
         <activity

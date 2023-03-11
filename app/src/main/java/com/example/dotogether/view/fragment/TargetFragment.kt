@@ -85,11 +85,11 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.doItBtn.setOnClickListener(this)
 
         dialogBinding.share.visibility = View.VISIBLE
-        dialogBinding.delete.visibility = View.VISIBLE
-        dialogBinding.edit.visibility = View.VISIBLE
+//        dialogBinding.delete.visibility = View.VISIBLE
+//        dialogBinding.edit.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
-        dialogBinding.delete.setOnClickListener(this)
-        dialogBinding.edit.setOnClickListener(this)
+//        dialogBinding.delete.setOnClickListener(this)
+//        dialogBinding.edit.setOnClickListener(this)
         binding.calendar.visibility = View.GONE
 
         binding.memberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -226,13 +226,14 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     targetId?.let { targetId -> viewModel.doneTarget(targetId) }
                 }
                 dialogBinding.share -> {
-                    bottomSheetDialog.hide()
+                    bottomSheetDialog.dismiss()
+                    targetId?.let { it1 -> RuntimeHelper.shareTargetLink(requireContext(), it1) }
                 }
                 dialogBinding.delete -> {
-                    bottomSheetDialog.hide()
+                    bottomSheetDialog.dismiss()
                 }
                 dialogBinding.edit -> {
-                    bottomSheetDialog.hide()
+                    bottomSheetDialog.dismiss()
                 }
                 else -> {}
             }

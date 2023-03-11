@@ -3,6 +3,7 @@ package com.example.dotogether.view.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -139,18 +140,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     fun initViews() {
-        val notificationKey = activity?.intent?.extras?.getString("notification_key")
-        val targetId = activity?.intent?.extras?.getString("target_id")
-        Log.d(TAG, "fragmentName : $notificationKey")
-        if (notificationKey == "Notification") {
-            goToNotificationFragment()
-        }
-        if (notificationKey == "Target" && targetId != null && !targetId.any { !it.isDigit() }) {
-            goToTargetFragment(targetId.toInt())
-        }
-        if (notificationKey == "Chat") {
-            goToChatListFragment()
-        }
+        checkOpenAppFromNotification()
+        checkOpenAppFromLink()
         bottomSheetSettingDialog.setContentView(bottomSheetSettingBinding.root)
 
         binding.notificationBtn.setOnClickListener(this)
@@ -170,6 +161,32 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             viewModel.getFollowingsReels()
             viewModel.getAllTargets()
             viewModel.getMyUserFromRemote()
+        }
+    }
+
+    private fun checkOpenAppFromNotification() {
+        val notificationKey = activity?.intent?.extras?.getString("notification_key")
+        val targetId = activity?.intent?.extras?.getString("target_id")
+        Log.d(TAG, "fragmentName : $notificationKey")
+        if (notificationKey == "Notification") {
+            goToNotificationFragment()
+        }
+        if (notificationKey == "Target" && targetId != null && !targetId.any { !it.isDigit() }) {
+            goToTargetFragment(targetId.toInt())
+        }
+        if (notificationKey == "Chat") {
+            goToChatListFragment()
+        }
+    }
+
+    private fun checkOpenAppFromLink() {
+        val intentData: String? = activity?.intent?.dataString
+        Log.d(TAG, "intent data: $intentData")
+        if (intentData != null && Intent.ACTION_VIEW == activity?.intent?.action) {
+            val param = intentData.substring(intentData.lastIndexOf("/") + 1)
+            if (intentData.contains("Target", true) && !param.any { !it.isDigit() }) {
+                goToTargetFragment(param.toInt())
+            }
         }
     }
 
@@ -342,11 +359,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 goToSearchFragment()
             }
             bottomSheetSettingBinding.createReels -> {
-                bottomSheetSettingDialog.hide()
+                bottomSheetSettingDialog.dismiss()
                 requestPermissionsForImagePicker()
             }
             bottomSheetSettingBinding.createTarget -> {
-                bottomSheetSettingDialog.hide()
+                bottomSheetSettingDialog.dismiss()
                 goToShareFragment()
             }
         }

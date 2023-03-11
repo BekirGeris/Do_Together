@@ -1,10 +1,8 @@
 package com.example.dotogether.view.adapter.holder
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -140,10 +138,11 @@ class TargetHolder(
                     listener.unJoin(binding, target)
             }
             dialogBinding.share -> {
-                bottomSheetDialog.hide()
+                bottomSheetDialog.dismiss()
+                target.id?.let { RuntimeHelper.shareTargetLink(context, it) }
             }
             dialogBinding.delete -> {
-                bottomSheetDialog.hide()
+                bottomSheetDialog.dismiss()
                 listener.deleteTarget(binding, target)
             }
         }

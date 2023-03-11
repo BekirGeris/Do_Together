@@ -133,4 +133,13 @@ object RuntimeHelper {
 
         notificationManager.notify(Random().nextInt(), notificationBuilder.build())
     }
+
+    fun shareTargetLink(context: Context, targetId: Int) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT,"https://toggether.bg/target/$targetId")
+
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share)))
+    }
+
 }

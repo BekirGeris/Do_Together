@@ -290,15 +290,15 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             }
             periodDialogBinding.custom -> {
                 customPeriodDialog.tryShow()
-                periodDialog.hide()
+                periodDialog.dismiss()
             }
             customPeriodBinding.cancel -> {
-                customPeriodDialog.hide()
+                customPeriodDialog.dismiss()
             }
             customPeriodBinding.confirm -> {
                 fillPeriodDescWithCheckBox()
                 setPeriodCheckView(periodDialogBinding.customCheck)
-                customPeriodDialog.hide()
+                customPeriodDialog.dismiss()
             }
         }
     }
@@ -331,7 +331,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         periodDialogBinding.mondayToFridayCheck.visibility = View.GONE
         periodDialogBinding.customCheck.visibility = View.GONE
         view.visibility = View.VISIBLE
-        periodDialog.hide()
+        periodDialog.dismiss()
     }
 
     fun requestPermissionsForImagePicker() {

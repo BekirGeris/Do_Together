@@ -234,7 +234,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
                 dialogBinding.clearChat -> {
-                    bottomSheetDialog.hide()
+                    bottomSheetDialog.dismiss()
                 }
                 else -> {}
             }
