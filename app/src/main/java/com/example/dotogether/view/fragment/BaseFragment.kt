@@ -109,6 +109,13 @@ open class BaseFragment : Fragment() {
         startActivity(intent)
     }
 
+    fun goToTargetFragment(targetId: Int) {
+        val intent = Intent(requireActivity(), OthersActivity::class.java)
+        intent.putExtra("viewType", Constants.ViewType.VIEW_TARGET_FRAGMENT.type)
+        intent.putExtra("targetId", targetId)
+        startActivity(intent)
+    }
+
     open fun goToRecyclerViewTop() {}
 
     fun showAlertDialog(message: String, listener: ConfirmDialogListener) {

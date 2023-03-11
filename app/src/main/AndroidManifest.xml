@@ -50,7 +50,12 @@
             android:name=".view.activity.HomeActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="MY_CUSTOM_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.activity.LoginActivity"
             android:screenOrientation="portrait"

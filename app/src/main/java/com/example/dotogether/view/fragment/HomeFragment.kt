@@ -9,23 +9,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.R
-import com.example.dotogether.databinding.BottomSheetAddTagBinding
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Basket
-import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.CreateReelsRequest
-import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
@@ -37,11 +33,10 @@ import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.HomeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import omari.hamza.storyview.callback.StoryClickListeners
 import java.io.File
+
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener, HolderListener.ReelsHolderListener, HolderListener.ReelsTopHolderListener {
@@ -144,6 +139,18 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     fun initViews() {
+        val notificationKey = activity?.intent?.extras?.getString("notification_key")
+        val targetId = activity?.intent?.extras?.getString("target_id")
+        Log.d(TAG, "fragmentName : $notificationKey")
+        if (notificationKey == "Notification") {
+            goToNotificationFragment()
+        }
+        if (notificationKey == "Target" && targetId != null && !targetId.any { !it.isDigit() }) {
+            goToTargetFragment(targetId.toInt())
+        }
+        if (notificationKey == "Chat") {
+            goToChatListFragment()
+        }
         bottomSheetSettingDialog.setContentView(bottomSheetSettingBinding.root)
 
         binding.notificationBtn.setOnClickListener(this)
