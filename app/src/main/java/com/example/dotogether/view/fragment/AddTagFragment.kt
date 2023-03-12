@@ -62,10 +62,13 @@ class AddTagFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        viewModel.myUserRemote.observe(viewLifecycleOwner) {
-            when(it) {
+        viewModel.myUserRemote.observe(viewLifecycleOwner) {resource ->
+            when(resource) {
                 is Resource.Success -> {
-                    initChipGroup(arrayListOf(Tag("tag1"), Tag("tag2"), Tag("tag3"), Tag("tag4"), Tag("tag5"), ), binding.reflowGroup)
+                    resource.data?.tags?.let {tags ->
+                        val tagList = tags.split(",").map { Tag(it) }.toCollection(ArrayList())
+                        initChipGroup(ArrayList(tagList), binding.reflowGroup)
+                    }
                 }
                 is Resource.Error -> {
                 }

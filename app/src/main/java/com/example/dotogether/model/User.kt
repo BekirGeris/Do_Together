@@ -36,6 +36,8 @@ class User() : Parcelable {
     var chat_id: String? = null
     @Ignore
     var unread_count: Int = 0
+    @Ignore
+    var tags: String? = null
 
     constructor(parcel: Parcel) : this() {
         localId = parcel.readValue(Int::class.java.classLoader) as? Int
