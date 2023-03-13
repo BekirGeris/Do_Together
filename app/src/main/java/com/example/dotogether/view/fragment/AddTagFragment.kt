@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.view.forEachIndexed
+import androidx.core.view.size
 import androidx.fragment.app.viewModels
 import com.example.dotogether.databinding.FragmentAddTagBinding
 import com.example.dotogether.model.Tag
 import com.example.dotogether.model.request.SearchRequest
+import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Resource
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.google.android.material.chip.Chip
@@ -94,6 +97,22 @@ class AddTagFragment : BaseFragment() {
                 else -> {}
             }
         }
+        viewModel.updateUser.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(resource.message)
+                }
+                is Resource.Loading -> {
+                    dialog.show()
+                }
+                else -> {}
+            }
+        }
+        firstSearch()
     }
 
     private fun initChipGroup(tags: ArrayList<Tag>, chipGroup: ChipGroup) {
@@ -106,15 +125,43 @@ class AddTagFragment : BaseFragment() {
     private fun addChipToChipGroup(text: String, chipGroup: ChipGroup) {
         val chip = Chip(context)
         chip.text = text
-        if (chipGroup == binding.scrollGroup) {
+        if (chipGroup == binding.scrollGroup) { //search sonuçları
             chip.setOnClickListener {
                 chipGroup.removeView(chip)
                 addChipToChipGroup(text, binding.reflowGroup)
+                val updateUserRequest = UpdateUserRequest(tags = getLikeTagsFromChipGroup())
+                viewModel.updateUser(updateUserRequest)
             }
-        } else {
+        } else { //beğeniye eklenen atgler
             chip.isCloseIconVisible = true
-            chip.setOnCloseIconClickListener { chipGroup.removeView(chip) }
+            chip.setOnCloseIconClickListener {
+                chipGroup.removeView(chip)
+                val updateUserRequest = UpdateUserRequest(tags = getLikeTagsFromChipGroup())
+                viewModel.updateUser(updateUserRequest)
+            }
         }
         chipGroup.addView(chip)
+    }
+
+    private fun getLikeTagsFromChipGroup() : String {
+        var text = ""
+        binding.reflowGroup.forEachIndexed { index, view ->
+            val chip = view as? Chip
+            chip?.let {
+                text += chip.text.toString()
+                if (index != binding.reflowGroup.size - 1) {
+                    text += ","
+                }
+            }
+        }
+        return text
+    }
+
+    private fun firstSearch() {
+        if (!isSearching) {
+            binding.linearIndicator.visibility = View.VISIBLE
+            isSearching = true
+            viewModel.searchTag(SearchRequest("y"))
+        }
     }
 }

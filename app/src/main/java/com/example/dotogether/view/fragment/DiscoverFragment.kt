@@ -59,6 +59,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
         discoverAdapter = DiscoverAdapter(discovers, this)
         binding.discoverRv.adapter = discoverAdapter
 
+        binding.searchBtn.setOnClickListener(this)
         binding.moreSettingBtn.setOnClickListener(this)
 
         bottomSheetSettingBinding.addTagOfLike.visibility = View.VISIBLE
@@ -167,6 +168,9 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
 
     override fun onClick(v: View?) {
         when (v) {
+            binding.searchBtn -> {
+                goToSearchFragment()
+            }
             binding.moreSettingBtn -> {
                 bottomSheetSettingDialog.show()
             }

@@ -11,6 +11,7 @@ import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
+import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,9 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
 
     private val _tags = MutableLiveData<Resource<ArrayList<Tag>>>()
     val tags: MutableLiveData<Resource<ArrayList<Tag>>> = _tags
+
+    protected val _updateUser = MutableLiveData<Resource<User>>()
+    val updateUser: MutableLiveData<Resource<User>> = _updateUser
 
     fun joinTarget(targetId: Int) {
         viewModelScope.launch {
@@ -79,6 +83,14 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.searchTag(searchRequest).collect {
                 _tags.value = it
+            }
+        }
+    }
+
+    fun updateUser(updateUserRequest: UpdateUserRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.updateUser(updateUserRequest).collect {
+                _updateUser.value = it
             }
         }
     }

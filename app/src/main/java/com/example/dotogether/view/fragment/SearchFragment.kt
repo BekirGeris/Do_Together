@@ -72,6 +72,7 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
                     if (!isSearching) {
                         viewModel.searchUser(SearchRequest(newText))
                         viewModel.searchTarget(SearchRequest(newText))
+                        binding.linearIndicator.visibility = View.VISIBLE
                         isSearching = true
                     }
                 } else {
@@ -120,12 +121,14 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
         viewModel.users.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    binding.linearIndicator.visibility = View.GONE
                     isSearching = false
                     users.clear()
                     resource.data?.let { users.addAll(it) }
                     userAdapter.notifyDataSetChanged()
                 }
                 is Resource.Error -> {
+                    binding.linearIndicator.visibility = View.GONE
                     isSearching = false
                     showToast(resource.message)
                 }
@@ -141,9 +144,11 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
                     targets.clear()
                     resource.data?.let { targets.addAll(it) }
                     targetAdapter.notifyDataSetChanged()
+                    binding.linearIndicator.visibility = View.GONE
                     isSearching = false
                 }
                 is Resource.Error -> {
+                    binding.linearIndicator.visibility = View.GONE
                     isSearching = false
                     showToast(resource.message)
                 }

@@ -56,7 +56,6 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_margin="5dp"
-        android:layout_marginStart="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/swipe_lyt"
         app:layout_constraintEnd_toStartOf="@+id/message_btn"
@@ -67,7 +66,7 @@
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             app:srcCompat="@drawable/ic_baseline_search_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,14 +86,12 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:background="#373737"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

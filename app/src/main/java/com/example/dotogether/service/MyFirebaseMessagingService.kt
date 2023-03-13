@@ -50,8 +50,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             if (oldToken != token) {
                 Log.d(TAG, "onNewToken old token $oldToken token : $token")
                 SharedPreferencesUtil.setString(applicationContext, Constants.FIREBASE_TOKEN, token)
-                val updateUserRequest = UpdateUserRequest()
-                updateUserRequest.fcm_token = token
+                val updateUserRequest = UpdateUserRequest(fcm_token = token)
                 appRepository.remoteRepositoryImpl.updateUser(updateUserRequest)
             }
         }

@@ -492,8 +492,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             if (oldToken != task.result) {
                 Log.d(TAG, "sendFirebaseToken old token $oldToken new token : ${task.result}")
                 SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, task.result)
-                val updateUserRequest = UpdateUserRequest()
-                updateUserRequest.fcm_token = task.result
+                val updateUserRequest = UpdateUserRequest(fcm_token = task.result)
                 viewModel.updateUser(updateUserRequest)
             }
         })
