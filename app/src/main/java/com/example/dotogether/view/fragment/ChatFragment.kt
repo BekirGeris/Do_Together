@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +38,7 @@ import kotlin.concurrent.thread
 
 
 @AndroidEntryPoint
-class ChatFragment : BaseFragment(), View.OnClickListener {
+class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private val viewModel: ChatViewModel by viewModels()
     private lateinit var binding: FragmentChatBinding
@@ -123,10 +124,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         binding.downBtn.setOnClickListener(this)
 
         dialogBinding.notificationSwitch.visibility = View.VISIBLE
-        dialogBinding.notificationSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-//            Log.d(TAG, "setOnCheckedChangeListener $isChecked")
-//            chatId?.let { viewModel.muteChat(it) }
-        }
+        dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
 
         messageAdapter = MessageAdapter(messages, isGroup)
         binding.messageRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
@@ -187,22 +185,27 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         viewModel.updateChat.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
+                    dialog.hide()
                     resource.data?.let {
                         chatResponse = it
+                        showToast(if (it.is_mute == 1) "Sohbet Bildirimi Kaptıldı" else "Sohbet Bildirimi Açıldı")
                     }
                 }
                 is Resource.Error -> {
-
+                    dialog.hide()
+                    showToast(resource.message)
                 }
                 is Resource.Loading -> {
-
+                    dialog.show()
                 }
             }
         }
     }
 
     private fun changeNotificationSwitch() {
-        dialogBinding.notificationSwitch.isChecked = chatResponse.is_mute == 1
+        dialogBinding.notificationSwitch.setOnCheckedChangeListener(null)
+        dialogBinding.notificationSwitch.isChecked = chatResponse.is_mute == 0
+        dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -326,5 +329,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener {
         }
         binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
         binding.linearIndicator.visibility = View.GONE
+    }
+
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+        chatId?.let { viewModel.muteChat(it) }
     }
 }
