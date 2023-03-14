@@ -46,7 +46,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
             it.updated_at?.let { update_at ->
                 val date = Constants.DATE_FORMAT_3.tryParse(update_at)
                 date?.let { d ->
-                    binding.time.text = Constants.DATE_FORMAT_4.format(d)
+                    binding.time.text = Constants.DATE_FORMAT_2.format(d)
                 }
             }
         }
