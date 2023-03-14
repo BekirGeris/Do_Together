@@ -3,11 +3,13 @@ package com.example.dotogether.view.adapter.holder
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.example.dotogether.R
 import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 
-class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
+class UserHolder(view: View, private val listener: HolderListener.UserHolderListener) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemUserBinding.bind(view)
     private val context = binding.root.context
@@ -19,6 +21,7 @@ class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
     private fun initViews() {
         binding.holderView.setOnClickListener(this)
+        binding.followOrUnfollowBtn.setOnClickListener(this)
     }
 
     fun bind(user: User) {
@@ -28,6 +31,7 @@ class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
         binding.username.text = user.username
         binding.name.text = user.name
+        binding.followOrUnfollowBtn.setImageResource(if (user.is_followed == true) R.drawable.baseline_person_remove_24 else R.drawable.ic_baseline_person_add_alt_24 )
     }
 
     override fun onClick(v: View?) {
@@ -40,6 +44,13 @@ class UserHolder(view: View) : BaseHolder(view), View.OnClickListener {
         when(v) {
             binding.holderView -> {
                 user.id?.let { goToProfileFragment(navController, it) }
+            }
+            binding.followOrUnfollowBtn -> {
+                if (user.is_followed == true) {
+                    listener.unFollow(binding, user)
+                } else {
+                    listener.follow(binding, user)
+                }
             }
         }
     }

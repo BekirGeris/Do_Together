@@ -11,16 +11,18 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentFollowsBinding
+import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.UserAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.FollowsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
 @AndroidEntryPoint
-class FollowsFragment : BaseFragment(), View.OnClickListener {
+class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.UserHolderListener {
 
     private val viewModel: FollowsViewModel by viewModels()
     private lateinit var binding: FragmentFollowsBinding
@@ -75,7 +77,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
         userId = arguments?.getInt("userId", -1)
         followsType = arguments?.getInt("followsType", -1)
 
-        userAdapter = UserAdapter(users)
+        userAdapter = UserAdapter(users, this)
         binding.followRv.layoutManager = LinearLayoutManager(context)
         binding.followRv.adapter = userAdapter
 
@@ -209,6 +211,27 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
+        viewModel.updateUser.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    resource.data?.let { user ->
+                        val newList = ArrayList<User>()
+                        users.mapTo(newList) { if (user.id == it.id) user else it }
+                        users.clear()
+                        users.addAll(newList)
+                        userAdapter.notifyDataSetChanged()
+                    }
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.show()
+                }
+                else -> {}
+            }
+        }
         getFullUser()
     }
 
@@ -236,5 +259,15 @@ class FollowsFragment : BaseFragment(), View.OnClickListener {
                 else -> {}
             }
         }
+    }
+
+    override fun follow(binding: ItemUserBinding, user: User) {
+        this.binding.searchView.clearFocus()
+        user.id?.let { viewModel.follow(it) }
+    }
+
+    override fun unFollow(binding: ItemUserBinding, user: User) {
+        this.binding.searchView.clearFocus()
+        user.id?.let { viewModel.unFollow(it) }
     }
 }

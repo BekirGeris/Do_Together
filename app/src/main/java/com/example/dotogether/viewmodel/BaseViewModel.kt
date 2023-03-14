@@ -36,7 +36,7 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     private val _tags = MutableLiveData<Resource<ArrayList<Tag>>>()
     val tags: MutableLiveData<Resource<ArrayList<Tag>>> = _tags
 
-    protected val _updateUser = MutableLiveData<Resource<User>>()
+    private val _updateUser = MutableLiveData<Resource<User>>()
     val updateUser: MutableLiveData<Resource<User>> = _updateUser
 
     fun joinTarget(targetId: Int) {
@@ -90,6 +90,22 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     fun updateUser(updateUserRequest: UpdateUserRequest) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.updateUser(updateUserRequest).collect {
+                _updateUser.value = it
+            }
+        }
+    }
+
+    fun follow(userId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.follow(userId).collect {
+                _updateUser.value = it
+            }
+        }
+    }
+
+    fun unFollow(userId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.unFollow(userId).collect {
                 _updateUser.value = it
             }
         }

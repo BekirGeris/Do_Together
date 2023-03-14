@@ -404,19 +404,19 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     override fun like(binding: ItemTargetBinding, target: Target) {
-        viewModel.likeTarget(target.id!!)
+        target.id?.let { viewModel.likeTarget(it) }
     }
 
     override fun join(binding: ItemTargetBinding, target: Target) {
-        viewModel.joinTarget(target.id!!)
+        target.id?.let { viewModel.joinTarget(it) }
     }
 
     override fun unLike(binding: ItemTargetBinding, target: Target) {
-        viewModel.unLikeTarget(target.id!!)
+        target.id?.let { viewModel.unLikeTarget(it) }
     }
 
     override fun unJoin(binding: ItemTargetBinding, target: Target) {
-        viewModel.unJoinTarget(target.id!!)
+        target.id?.let { viewModel.unJoinTarget(it) }
     }
 
     override fun onClickReels(binding: ItemReelsBinding, user: User) {

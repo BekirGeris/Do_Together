@@ -64,22 +64,6 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    fun follow(userId: Int) {
-        viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.follow(userId).collect {
-                _updateUser.value = it
-            }
-        }
-    }
-
-    fun unFollow(userId: Int) {
-        viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.unFollow(userId).collect {
-                _updateUser.value = it
-            }
-        }
-    }
-
     fun deleteTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.deleteTarget(targetId).collect{

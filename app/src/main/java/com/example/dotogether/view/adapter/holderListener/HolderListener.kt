@@ -6,7 +6,8 @@ import com.example.dotogether.model.Target
 
 class HolderListener {
     interface UserHolderListener{
-        fun callback(binding: ItemUserBinding, user: User)
+        fun follow(binding: ItemUserBinding, user: User)
+        fun unFollow(binding: ItemUserBinding, user: User)
     }
     interface BigMemberHolderListener{
         fun callback(binding: ItemBigMemberBinding, user: User)

@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dotogether.databinding.FragmentSearchBinding
 import com.example.dotogether.databinding.ItemTargetBinding
+import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
@@ -23,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener{
+class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.TargetHolderListener, HolderListener.UserHolderListener {
 
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var binding: FragmentSearchBinding
@@ -86,7 +87,7 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
             }
         })
 
-        userAdapter = UserAdapter(users)
+        userAdapter = UserAdapter(users, this)
         targetAdapter = TargetAdapter(targets, this)
 
         binding.searchRv.layoutManager = LinearLayoutManager(context)
@@ -158,6 +159,49 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
             }
             changeErrorViewVisibility()
         }
+        viewModel.updateUser.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    resource.data?.let { updateUser ->
+                        users.map { if (updateUser.id == it.id) { it.is_followed = updateUser.is_followed } }
+                        userAdapter.notifyDataSetChanged()
+                    }
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.show()
+                }
+                else -> {}
+            }
+        }
+        viewModel.updateTarget.observe(viewLifecycleOwner) {resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    resource.data?.let { updateTarget ->
+                        targets.map {
+                            if (it.id == updateTarget.id) {
+                                it.is_liked = updateTarget.is_liked
+                                it.is_joined = updateTarget.is_joined
+                                it.users = updateTarget.users
+                            }
+                        }
+                        targetAdapter.notifyDataSetChanged()
+                    }
+                    dialog.hide()
+                }
+                is Resource.Error -> {
+                    showToast(resource.message)
+                    dialog.hide()
+                }
+                is Resource.Loading -> {
+                    dialog.show()
+                }
+                else -> {}
+            }
+        }
     }
 
     private fun changeErrorViewVisibility() {
@@ -177,18 +221,32 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
     }
 
     override fun like(binding: ItemTargetBinding, target: Target) {
-
+        this.binding.searchView.clearFocus()
+        target.id?.let { viewModel.likeTarget(it) }
     }
 
     override fun join(binding: ItemTargetBinding, target: Target) {
-
+        this.binding.searchView.clearFocus()
+        target.id?.let { viewModel.joinTarget(it) }
     }
 
     override fun unLike(binding: ItemTargetBinding, target: Target) {
-
+        this.binding.searchView.clearFocus()
+        target.id?.let { viewModel.unLikeTarget(it) }
     }
 
     override fun unJoin(binding: ItemTargetBinding, target: Target) {
+        this.binding.searchView.clearFocus()
+        target.id?.let { viewModel.unJoinTarget(it) }
+    }
 
+    override fun follow(binding: ItemUserBinding, user: User) {
+        this.binding.searchView.clearFocus()
+        user.id?.let { viewModel.follow(it) }
+    }
+
+    override fun unFollow(binding: ItemUserBinding, user: User) {
+        this.binding.searchView.clearFocus()
+        user.id?.let { viewModel.unFollow(it) }
     }
 }

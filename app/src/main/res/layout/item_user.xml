@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/follow_or_unfollow_btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="24dp"
