@@ -20,6 +20,14 @@ class LeftMessageHolder(view: View) : BaseHolder(view) {
 
     fun bind(message: Message, isGroup: Boolean) {
         this.message = message
+        if (message.isDateMessage) {
+            binding.dateTxt.text = message.message
+            binding.messageLyt.visibility = View.GONE
+            binding.dateTxt.visibility = View.VISIBLE
+        } else {
+            binding.messageLyt.visibility = View.VISIBLE
+            binding.dateTxt.visibility = View.GONE
+        }
         binding.messageTime.text = message.messageTime
         binding.messageTxt.text = message.message
         binding.userName.text = message.userName

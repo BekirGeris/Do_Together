@@ -35,6 +35,7 @@ import com.google.firebase.database.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.concurrent.thread
+import kotlin.math.abs
 
 
 @AndroidEntryPoint
@@ -271,21 +272,39 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d(TAG, "onDataChange")
                     messages.clear()
+                    var penultimateTime: Long? = null
                     for ((count, ds) in snapshot.children.withIndex()) {
                         val hashMap = ds.value as HashMap<*, *>
                         val username: String? = hashMap.get("username") as String?
                         val userId: Long? = hashMap.get("user_id") as Long?
                         val userMessage: String? = hashMap.get("user_message") as String?
-                        val time: Long? = if (hashMap.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
+                        var time: Long? = if (hashMap.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
 
                         if (username != null && userId != null && userMessage != null && time != null) {
+                            time = abs(time)
+
+                            val message = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt())
+
                             if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
-                                val message = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
-                                message.isUnreadCountMessage = true
-                                messages.add(message)
+                                val unreadMessage = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
+                                unreadMessage.isUnreadCountMessage = true
+                                messages.add(unreadMessage)
                             }
-                            messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt()))
+
+                            if (penultimateTime != null && !RuntimeHelper.isSameDay(penultimateTime, time)) {
+                                val unreadMessage = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
+                                unreadMessage.isDateMessage = true
+                                messages.add(unreadMessage)
+                            }
+                            messages.add(message)
                         }
+                        penultimateTime = time
+                    }
+
+                    penultimateTime?.let {
+                        val unreadMessage = Message("username", Constants.DATE_FORMAT_4.format(Date(penultimateTime)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
+                        unreadMessage.isDateMessage = true
+                        messages.add(unreadMessage)
                     }
 
                     messageAdapter.notifyDataSetChanged()

@@ -7,4 +7,5 @@ class Message (
     var isMe: Boolean = false
 ) {
     var isUnreadCountMessage = false
+    var isDateMessage = false
 }

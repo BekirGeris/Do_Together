@@ -2,6 +2,7 @@ package com.example.dotogether.util
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
+import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 object Constants {
@@ -10,6 +11,8 @@ object Constants {
     val DATE_FORMAT_2 = SimpleDateFormat("yyyy/MM/dd HH:mm")
     val DATE_FORMAT_3 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
     val DATE_FORMAT_4 = SimpleDateFormat("HH:mm")
+    @SuppressLint("ConstantLocale")
+    val DATE_FORMAT_5 = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
     const val TOKEN_KEY = "TOKEN_KEY"
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"

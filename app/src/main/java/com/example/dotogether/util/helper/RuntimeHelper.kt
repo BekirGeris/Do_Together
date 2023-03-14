@@ -34,6 +34,7 @@ import java.time.Month
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.*
+import kotlin.math.abs
 
 object RuntimeHelper {
     var TAG = "bekbek"
@@ -208,6 +209,17 @@ object RuntimeHelper {
             }
         }
         return null
+    }
+
+    fun isSameDay(millis1: Long, millis2: Long): Boolean {
+        val calendar1 = Calendar.getInstance()
+        calendar1.timeInMillis = abs(millis1)
+
+        val calendar2 = Calendar.getInstance()
+        calendar2.timeInMillis = abs(millis2)
+
+        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+                calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR)
     }
 
     fun RemoteMessage.Notification.myToString() {
