@@ -15,10 +15,12 @@ import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentTargetBinding
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.Target
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.displayText
 import com.example.dotogether.util.helper.RuntimeHelper.setViewProperties
+import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.view.container.DayViewContainer
@@ -95,12 +97,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.memberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         targetId = arguments?.getInt("targetId")
-
-        for (i in 1..100) {
-            selectedDates.add(getDateBeforeGivenDays(getRandomNumber(300)))
-        }
-        setupMonthCalendar()
-
     }
 
     private fun initObserve() {
@@ -159,6 +155,25 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         }
         targetId?.let {
             viewModel.getTarget(it)
+            viewModel.getActions(it).observe(viewLifecycleOwner) { resource ->
+                when(resource) {
+                    is Resource.Success -> {
+                        resource.data?.forEach { action ->
+                            action.created_at?.let { time ->
+                                val date = Constants.DATE_FORMAT_3.tryParse(time)
+                                date?.let { d ->
+                                    selectedDates.add(RuntimeHelper.convertDateToLocalDate(d))
+                                }
+                            }
+                        }
+                        setupMonthCalendar()
+                    }
+                    is Resource.Error -> {
+                        showToast(resource.message)
+                    }
+                    else -> {}
+                }
+            }
         }
     }
 
@@ -174,25 +189,11 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.calendar.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
         binding.goToChatBtn.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
 
-        target.target?.let {
-            binding.target.text = it
-        }
-
-        target.description?.let {
-            binding.description.text = it
-        }
-
-        target.period?.let {
-            binding.period.text = it
-        }
-
-        target.start_date?.let {
-            binding.startDate.text = it
-        }
-
-        target.end_date?.let {
-            binding.endDate.text = if (it == getString(R.string.forever_date)) getString(R.string.forever) else it
-        }
+        binding.target.text = target.target
+        binding.description.text = target.description
+        binding.period.text = target.period
+        binding.startDate.text = target.start_date
+        binding.endDate.text = if (target.end_date == getString(R.string.forever_date)) getString(R.string.forever) else target.end_date
 
         if (target.img != null) {
             RuntimeHelper.glideForImage(requireContext()).load(target.img).into(binding.targetImage)
@@ -240,25 +241,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    fun getDateBeforeGivenDays(days: Int): LocalDate {
-        val now = LocalDate.now()
-        return now.minusDays(days.toLong())
-    }
-
-    val randomNumbers = mutableListOf<Int>()
-    fun getRandomNumber(maxDeger: Int): Int {
-        if (randomNumbers.size == maxDeger) {
-            println("All numbers have been generated")
-            return -1
-        }
-        val random = (1..maxDeger).random()
-        if (randomNumbers.contains(random)) {
-            return getRandomNumber(maxDeger)
-        }
-        randomNumbers.add(random)
-        return random
-    }
-
     private fun setupMonthCalendar() {
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
             // Called only when a new container is needed.
@@ -290,7 +272,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             selectedDates.contains(date) -> {
                 textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.dark_green))
             }
-            today == date -> {
+            today == date && !selectedDates.contains(today) -> {
                 textView.background = ContextCompat.getDrawable(requireContext(), R.drawable.border_circle)
             }
             else -> {

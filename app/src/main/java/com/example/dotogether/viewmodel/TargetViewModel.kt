@@ -2,6 +2,7 @@ package com.example.dotogether.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.dotogether.model.Action
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,5 +32,15 @@ class TargetViewModel @Inject constructor() : BaseViewModel() {
                 _target.value = it
             }
         }
+    }
+
+    fun getActions(targetId: Int) : MutableLiveData<Resource<ArrayList<Action>>>{
+        val actions = MutableLiveData<Resource<ArrayList<Action>>>()
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.getActions(targetId).collect {
+                actions.value = it
+            }
+        }
+        return actions
     }
 }

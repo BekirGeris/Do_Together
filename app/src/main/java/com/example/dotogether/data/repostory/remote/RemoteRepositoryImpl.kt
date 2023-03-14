@@ -220,6 +220,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.notificationsReadAll() }
     }
 
+    suspend fun getActions(targetId: Int): Flow<Resource<ArrayList<Action>>> {
+        return generateFlow { repository.getActions(targetId) }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

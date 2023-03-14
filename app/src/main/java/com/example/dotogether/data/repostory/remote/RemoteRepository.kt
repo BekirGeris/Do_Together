@@ -161,4 +161,7 @@ interface RemoteRepository {
 
     @GET("notifications/update-all")
     suspend fun notificationsReadAll() : Response<Any>
+
+    @GET("activity/actions/{targetId}")
+    suspend fun getActions(@Path("targetId") targetId: Int) : Response<ArrayList<Action>>
 }

@@ -30,6 +30,7 @@ import com.google.firebase.messaging.RemoteMessage
 import java.io.ByteArrayOutputStream
 import java.text.DateFormat
 import java.text.ParseException
+import java.time.LocalDate
 import java.time.Month
 import java.time.ZoneId
 import java.time.format.TextStyle
@@ -220,6 +221,10 @@ object RuntimeHelper {
 
         return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
                 calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR)
+    }
+
+    fun convertDateToLocalDate(date: Date): LocalDate {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     }
 
     fun RemoteMessage.Notification.myToString() {
