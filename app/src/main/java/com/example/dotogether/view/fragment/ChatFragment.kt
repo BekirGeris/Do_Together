@@ -279,7 +279,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                         val time: Long? = if (hashMap.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
 
                         if (username != null && userId != null && userMessage != null && time != null) {
-                            if (chatUser?.unread_count != 0 && chatUser?.unread_count == snapshot.children.count() - count) {
+                            if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
                                 val message = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
                                 message.isUnreadCountMessage = true
                                 messages.add(message)
