@@ -254,7 +254,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
         navController?.let {
             when (v) {
                 binding.backBtn -> {
-                    activity?.onBackPressed()
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 else -> {}
             }

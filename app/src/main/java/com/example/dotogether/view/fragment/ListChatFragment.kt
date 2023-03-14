@@ -137,7 +137,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             binding.backBtn -> {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             else -> {}
         }

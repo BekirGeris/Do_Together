@@ -67,7 +67,7 @@ class PasswordEditFragment : BaseFragment(), View.OnClickListener {
                 is Resource.Success -> {
                     dialog.hide()
                     showToast(resource.message)
-                    activity?.onBackPressed()
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 is Resource.Error -> {
                     dialog.hide()
@@ -84,7 +84,7 @@ class PasswordEditFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             binding.backBtn -> {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             binding.save -> {
                 if (validOldPassword() && validNewPassword() && validNewPasswordAgain()) {

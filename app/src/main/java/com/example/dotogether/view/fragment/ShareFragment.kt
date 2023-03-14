@@ -144,7 +144,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         binding.finishLyt.setOnClickListener(this)
         binding.startDateClear.setOnClickListener(this)
         binding.finishDateClear.setOnClickListener(this)
-        binding.closeBtn.setOnClickListener(this)
         binding.addTagBtn.setOnClickListener(this)
 
         periodDialogBinding.daily.setOnClickListener(this)
@@ -211,7 +210,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     override fun onClick(v: View?) {
         when(v) {
             binding.backBtn -> {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             binding.selectImage -> {
                 requestPermissionsForImagePicker()
@@ -261,9 +260,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             binding.finishDateClear -> {
                 binding.finishDateClear.visibility = View.GONE
                 binding.finishDateTxt.text = getString(R.string.forever)
-            }
-            binding.closeBtn -> {
-                activity?.onBackPressed()
             }
             binding.addTagBtn -> {
                 val tag = binding.tagEditTxt.text.toString()

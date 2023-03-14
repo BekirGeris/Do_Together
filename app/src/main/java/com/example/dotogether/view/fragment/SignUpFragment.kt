@@ -181,7 +181,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
         when (v) {
             binding.topBackBtn -> {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             binding.signUpBtn -> {
                 validName()

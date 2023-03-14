@@ -61,7 +61,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
                 is Resource.Success -> {
                     dialog.hide()
                     showToast(resource.message)
-                    activity?.onBackPressed()
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 is Resource.Error -> {
                     dialog.hide()
@@ -78,7 +78,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             binding.backBtn -> {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             binding.save -> {
                 updateUser()

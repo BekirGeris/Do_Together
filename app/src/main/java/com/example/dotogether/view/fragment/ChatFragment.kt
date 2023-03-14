@@ -213,7 +213,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         if (navController != null) {
             when(v) {
                 binding.backBtn -> {
-                    activity?.onBackPressed()
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 binding.chatsUserImage, binding.chatName, binding.chatDecs -> {
                     if (isGroup) {

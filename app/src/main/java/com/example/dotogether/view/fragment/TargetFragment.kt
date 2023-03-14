@@ -208,7 +208,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         navController?.let {
             when(v) {
                 binding.backBtn -> {
-                    activity?.onBackPressed()
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 binding.moreSettingBtn -> {
                     bottomSheetDialog.tryShow()

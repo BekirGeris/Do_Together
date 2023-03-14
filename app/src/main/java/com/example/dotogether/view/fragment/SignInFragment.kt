@@ -178,7 +178,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
 
         when (v) {
             binding.topBackBtn -> {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             binding.loginBtn -> {
                 validEmail()

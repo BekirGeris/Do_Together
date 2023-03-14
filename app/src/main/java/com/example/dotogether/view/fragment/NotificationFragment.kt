@@ -59,7 +59,7 @@ class NotificationFragment : BaseFragment(), View.OnClickListener, HolderListene
     override fun onClick(v: View?) {
         when (v) {
             binding.backBtn -> {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             else -> {}
         }

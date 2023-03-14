@@ -71,10 +71,7 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {
                     if (!isSearching) {
-                        viewModel.searchUser(SearchRequest(newText))
-                        viewModel.searchTarget(SearchRequest(newText))
-                        binding.linearIndicator.visibility = View.VISIBLE
-                        isSearching = true
+                        search(newText)
                     }
                 } else {
                     users.clear()
@@ -101,7 +98,20 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
                 isShowUser = false
                 binding.searchRv.adapter = targetAdapter
             }
+            search(binding.searchView.query.toString())
             changeErrorViewVisibility()
+        }
+    }
+
+    private fun search(newText: String) {
+        if (newText.isNotEmpty()) {
+            if (isShowUser) {
+                viewModel.searchUser(SearchRequest(newText))
+            } else {
+                viewModel.searchTarget(SearchRequest(newText))
+            }
+            binding.linearIndicator.visibility = View.VISIBLE
+            isSearching = true
         }
     }
 
@@ -110,7 +120,7 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
         navController?.let {
             when (v) {
                 binding.backBtn -> {
-                    activity?.onBackPressed()
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 else -> {}
             }
@@ -122,11 +132,11 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
         viewModel.users.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    binding.linearIndicator.visibility = View.GONE
-                    isSearching = false
                     users.clear()
                     resource.data?.let { users.addAll(it) }
                     userAdapter.notifyDataSetChanged()
+                    binding.linearIndicator.visibility = View.GONE
+                    isSearching = false
                 }
                 is Resource.Error -> {
                     binding.linearIndicator.visibility = View.GONE
