@@ -34,6 +34,7 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
 
     private val users = ArrayList<User>()
     private val targets = ArrayList<Target>()
+    var myUserId: Int? = null
 
     private var isShowUser = true
     private var isSearching = false
@@ -129,6 +130,9 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.getMyUserFromLocale().observe(viewLifecycleOwner) {
+            myUserId = it.id
+        }
         viewModel.users.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
@@ -248,6 +252,10 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
     override fun unJoin(binding: ItemTargetBinding, target: Target) {
         this.binding.searchView.clearFocus()
         target.id?.let { viewModel.unJoinTarget(it) }
+    }
+
+    override fun isMe(user: User): Boolean {
+        return myUserId != null && myUserId == user.id
     }
 
     override fun follow(binding: ItemUserBinding, user: User) {

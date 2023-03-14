@@ -91,7 +91,7 @@ class ProfileHolder(
         try {
             navController = view.findNavController()
         } catch (e: Exception) {
-            e.printStackTrace()
+            //e.printStackTrace()
         }
         when (v) {
             binding.backgroundImage -> {

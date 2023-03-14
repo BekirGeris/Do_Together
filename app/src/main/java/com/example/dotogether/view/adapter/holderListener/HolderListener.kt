@@ -6,6 +6,7 @@ import com.example.dotogether.model.Target
 
 class HolderListener {
     interface UserHolderListener{
+        fun isMe(user: User) : Boolean
         fun follow(binding: ItemUserBinding, user: User)
         fun unFollow(binding: ItemUserBinding, user: User)
     }
@@ -44,6 +45,7 @@ class HolderListener {
         fun unLike(binding: ItemTargetBinding, target: Target)
         fun unJoin(binding: ItemTargetBinding, target: Target)
         fun deleteTarget(binding: ItemTargetBinding, target: Target) {}
+        fun isMeProfileFragment() : Boolean { return false  }
     }
     interface ReelsHolderListener{
         fun onClickReels(binding: ItemReelsBinding, user: User)

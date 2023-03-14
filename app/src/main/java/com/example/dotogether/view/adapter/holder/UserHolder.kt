@@ -32,6 +32,8 @@ class UserHolder(view: View, private val listener: HolderListener.UserHolderList
         binding.username.text = user.username
         binding.name.text = user.name
         binding.followOrUnfollowBtn.setImageResource(if (user.is_followed == true) R.drawable.baseline_person_remove_24 else R.drawable.ic_baseline_person_add_alt_24 )
+
+        binding.followOrUnfollowBtn.visibility = if (listener.isMe(user)) View.GONE else View.VISIBLE
     }
 
     override fun onClick(v: View?) {

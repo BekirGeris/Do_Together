@@ -133,7 +133,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     }
 
     private fun initObserve() {
-        viewModel.myUser.observe(viewLifecycleOwner) {
+        viewModel.getMyUserFromLocale().observe(viewLifecycleOwner) {
             myUser = it
             if (!chatId.isNullOrEmpty()) {
                 viewModel.getChat(chatId!!)
@@ -141,7 +141,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 onError()
             }
         }
-        viewModel.getMyUserFromLocale()
         viewModel.newChat.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {

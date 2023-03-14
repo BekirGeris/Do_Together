@@ -146,17 +146,9 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        viewModel.myUser.observe(viewLifecycleOwner) { user ->
-            if (userId == null || user.id == userId) {
-                userId = user.id
-                itIsMe = true
-                user.id?.let { viewModel.getUser(it) }
-            } else {
-                itIsMe = false
-                viewModel.getUser(userId!!)
-            }
+        viewModel.getMyUserFromLocale().observe(viewLifecycleOwner) { user ->
+            updateUserWithLocaleUser(user)
         }
-        viewModel.getMyUserFromLocale()
         viewModel.user.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -292,7 +284,9 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         viewModel.removeReels.observe(viewLifecycleOwner) { resource ->
             when(resource) {
                 is Resource.Success -> {
-                    viewModel.getMyUserFromLocale()
+                    viewModel.getMyUserFromLocale().observe(viewLifecycleOwner) { user ->
+                        updateUserWithLocaleUser(user)
+                    }
                 }
                 is Resource.Error -> {
                     dialog.hide()
@@ -302,6 +296,17 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 }
                 else -> {}
             }
+        }
+    }
+
+    private fun updateUserWithLocaleUser(user: User) {
+        if (userId == null || user.id == userId) {
+            userId = user.id
+            itIsMe = true
+            user.id?.let { viewModel.getUser(it) }
+        } else {
+            itIsMe = false
+            viewModel.getUser(userId!!)
         }
     }
 
@@ -480,6 +485,10 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     override fun deleteTarget(binding: ItemTargetBinding, target: Target) {
         super.deleteTarget(binding, target)
         target.id?.let { viewModel.deleteTarget(it) }
+    }
+
+    override fun isMeProfileFragment(): Boolean {
+        return itIsMe
     }
 
     private fun sendFirebaseToken() {

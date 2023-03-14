@@ -32,6 +32,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
     private val users = ArrayList<User>()
     var userId: Int? = null
     var followsType: Int? = null
+    var myUserId: Int? = null
 
     private var isSearching = false
 
@@ -119,6 +120,9 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.getMyUserFromLocale().observe(viewLifecycleOwner) {
+            myUserId = it.id
+        }
         viewModel.users.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -253,6 +257,10 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
                 else -> {}
             }
         }
+    }
+
+    override fun isMe(user: User): Boolean {
+        return myUserId != null && myUserId == user.id
     }
 
     override fun follow(binding: ItemUserBinding, user: User) {

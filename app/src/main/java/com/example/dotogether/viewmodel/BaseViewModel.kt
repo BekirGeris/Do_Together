@@ -27,9 +27,6 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     private val _updateTarget = MutableLiveData<Resource<Target>>()
     val updateTarget: MutableLiveData<Resource<Target>> = _updateTarget
 
-    private val _myUser = MutableLiveData<User>()
-    val myUser: MutableLiveData<User> = _myUser
-
     private val _myUserRemote = MutableLiveData<Resource<User>>()
     val myUserRemote: MutableLiveData<Resource<User>> = _myUserRemote
 
@@ -112,13 +109,15 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     }
 
     //--------------------localRepositoryImpl--------------------------
-    fun getMyUserFromLocale() {
+    fun getMyUserFromLocale() : MutableLiveData<User> {
+        val myUser = MutableLiveData<User>()
         viewModelScope.launch {
             val user = appRepository.localRepositoryImpl.getUser()
             user?.let {
-                _myUser.value = it
+                myUser.value = it
             }
         }
+        return myUser
     }
 
     fun getCurrentBasket() : LiveData<Basket> {

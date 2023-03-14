@@ -52,9 +52,12 @@ class TargetHolder(
         binding.join.setOnClickListener(this)
 
         dialogBinding.share.visibility = View.VISIBLE
-        dialogBinding.delete.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
-        dialogBinding.delete.setOnClickListener(this)
+
+        if (listener.isMeProfileFragment()) {
+            dialogBinding.delete.visibility = View.VISIBLE
+            dialogBinding.delete.setOnClickListener(this)
+        }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
