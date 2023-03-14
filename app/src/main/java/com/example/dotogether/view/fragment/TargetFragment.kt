@@ -155,25 +155,20 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         }
         targetId?.let {
             viewModel.getTarget(it)
-            if (target.is_joined == true) {
-                viewModel.getActions(it).observe(viewLifecycleOwner) { resource ->
-                    when(resource) {
-                        is Resource.Success -> {
-                            resource.data?.forEach { action ->
-                                action.created_at?.let { time ->
-                                    val date = Constants.DATE_FORMAT_3.tryParse(time)
-                                    date?.let { d ->
-                                        selectedDates.add(RuntimeHelper.convertDateToLocalDate(d))
-                                    }
+            viewModel.getActions(it).observe(viewLifecycleOwner) { resource ->
+                when(resource) {
+                    is Resource.Success -> {
+                        resource.data?.forEach { action ->
+                            action.created_at?.let { time ->
+                                val date = Constants.DATE_FORMAT_3.tryParse(time)
+                                date?.let { d ->
+                                    selectedDates.add(RuntimeHelper.convertDateToLocalDate(d))
                                 }
                             }
-                            setupMonthCalendar()
                         }
-                        is Resource.Error -> {
-                            showToast(resource.message)
-                        }
-                        else -> {}
+                        setupMonthCalendar()
                     }
+                    else -> {}
                 }
             }
         }
