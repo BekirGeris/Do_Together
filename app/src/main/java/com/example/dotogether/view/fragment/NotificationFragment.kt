@@ -5,20 +5,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentNotificationBinding
 import com.example.dotogether.databinding.ItemNotificationBinding
 import com.example.dotogether.model.Notification
+import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.NotificationAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
+import com.example.dotogether.viewmodel.NotificationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NotificationFragment : BaseFragment(), View.OnClickListener, HolderListener.NotificationHolderListener {
 
+    private val viewModel: NotificationViewModel by viewModels()
     private lateinit var binding: FragmentNotificationBinding
 
     private lateinit var notificationAdapter: NotificationAdapter
     private val notifications = ArrayList<Notification>()
+
+    private var nextPage = "2"
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(!recyclerView.canScrollVertically(1)) {
+                viewModel.getNextAllNotifications(nextPage)
+                binding.notificationRv.removeOnScrollListener(this)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,16 +60,75 @@ class NotificationFragment : BaseFragment(), View.OnClickListener, HolderListene
 
         notificationAdapter = NotificationAdapter(notifications, this)
         binding.notificationRv.adapter = notificationAdapter
+
+        binding.swipeLyt.setOnRefreshListener {
+            viewModel.getAllNotifications()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        for (i in 1..100) {
-            val notification = Notification()
-            notification.isLooked = i % 3 == 0
-            notifications.add(notification)
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    binding.swipeLyt.isRefreshing = false
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
+                            notifications.clear()
+                            notifications.addAll(list)
+                            notificationAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
+                    }
+                    dialog.hide()
+                    viewModel.notificationsReadAll().observe(viewLifecycleOwner) { resource ->
+                        when(resource) {
+                            is Resource.Error -> {
+                                showToast(resource.message)
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    binding.swipeLyt.isRefreshing = false
+                    binding.activityErrorView.visibility = View.VISIBLE
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
+                        dialog.show()
+                    }
+                }
+                else -> {}
+            }
         }
-        notificationAdapter.notifyDataSetChanged()
+        viewModel.getAllNotifications()
+        viewModel.nextNotifications.observe(viewLifecycleOwner) {
+            when(it) {
+                is Resource.Success -> {
+                    it.data?.let { response ->
+                        response.data?.let { list ->
+                            notifications.addAll(list)
+                            notificationAdapter.notifyDataSetChanged()
+                        }
+                        response.next_page_url?.let { next_page_url ->
+                            nextPage = next_page_url.last().toString()
+                            setRecyclerViewScrollListener()
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    showToast(it.message)
+                }
+                else -> {}
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -65,9 +140,13 @@ class NotificationFragment : BaseFragment(), View.OnClickListener, HolderListene
         }
     }
 
+    private fun setRecyclerViewScrollListener() {
+        binding.notificationRv.addOnScrollListener(scrollListener)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onClickNotification(binding: ItemNotificationBinding, notification: Notification) {
-        notifications.map { if (it == notification) it.isLooked = true }
+        notifications.map { if (it == notification) it.is_read = true }
         notificationAdapter.notifyDataSetChanged()
     }
 }

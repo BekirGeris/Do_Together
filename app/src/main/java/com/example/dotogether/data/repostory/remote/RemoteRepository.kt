@@ -153,4 +153,12 @@ interface RemoteRepository {
     @GET("user/delete-account")
     suspend fun deleteMyAccount() : Response<User>
 
+    @GET("notifications/all")
+    suspend fun getAllNotifications() : Response<Page<Notification>>
+
+    @GET("notifications/all?page")
+    suspend fun getNextAllNotifications(@Query("page") pageNo: String) : Response<Page<Notification>>
+
+    @GET("notifications/update-all")
+    suspend fun notificationsReadAll() : Response<Any>
 }

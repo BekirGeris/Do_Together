@@ -12,6 +12,7 @@ import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
+import com.example.dotogether.util.helper.RuntimeHelper.myToString
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
+            Log.d(TAG, "Message Notification : ${it.myToString()}")
         }
 
         runBlocking {

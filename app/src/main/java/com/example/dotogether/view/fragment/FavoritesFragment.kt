@@ -139,8 +139,6 @@ class FavoritesFragment : BaseFragment(), HolderListener.TargetHolderListener {
                 }
                 is Resource.Error -> {
                 }
-                is Resource.Loading -> {
-                }
                 else -> {}
             }
         }

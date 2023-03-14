@@ -168,8 +168,6 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
                 }
                 is Resource.Error -> {
                 }
-                is Resource.Loading -> {
-                }
                 else -> {}
             }
         }
@@ -187,8 +185,6 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
                     showToast(resource.message)
                     isSearching = false
                 }
-                is Resource.Loading -> {
-                }
                 else -> {}
             }
         }
@@ -205,8 +201,6 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
                 is Resource.Error -> {
                     showToast(resource.message)
                     isSearching = false
-                }
-                is Resource.Loading -> {
                 }
                 else -> {}
             }

@@ -141,8 +141,6 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
                 }
                 is Resource.Error -> {
                 }
-                is Resource.Loading -> {
-                }
                 else -> {}
             }
         }

@@ -32,16 +32,37 @@
         app:layout_constraintStart_toEndOf="@+id/back_btn"
         app:layout_constraintTop_toTopOf="@+id/back_btn" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notification_rv"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_lyt"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/back_btn" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notification_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activityErrorView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/activityError"
+            layout="@layout/activity_error" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

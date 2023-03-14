@@ -166,14 +166,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     private fun checkOpenAppFromNotification() {
         val notificationKey = activity?.intent?.extras?.getString("notification_type")
         val typeId = activity?.intent?.extras?.getString("type_id")
-        Log.d(TAG, "fragmentName : $notificationKey")
-        if (notificationKey == "Notification") {
+        Log.d(TAG, "notificationKey : $notificationKey")
+        if (notificationKey.equals("Notification", ignoreCase = true)) {
             goToNotificationFragment()
         }
-        if (notificationKey == "Target" && typeId != null && !typeId.any { !it.isDigit() }) {
+        if (notificationKey.equals("Target", ignoreCase = true) && typeId != null && !typeId.any { !it.isDigit() }) {
             goToTargetFragment(typeId.toInt())
         }
-        if (notificationKey == "Chat") {
+        if (notificationKey.equals("Chat", ignoreCase = true)) {
             goToChatListFragment()
         }
     }
@@ -219,8 +219,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 is Resource.Error -> {
                     reelsList.clear()
                     homeTargetAdapter.reelsTopHolder?.reelsAdapter?.notifyDataSetChanged()
-                }
-                is Resource.Loading -> {
                 }
                 else -> {}
             }
@@ -303,8 +301,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     }
                 }
                 is Resource.Error -> {
-                }
-                is Resource.Loading -> {
                 }
                 else -> {}
             }

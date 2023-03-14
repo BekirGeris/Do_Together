@@ -1,5 +1,14 @@
 package com.example.dotogether.model
 
-class Notification {
-    var isLooked: Boolean = false
-}
+class Notification(
+    val created_at: String? = null,
+    val description: String? = null,
+    val id: Int? = null,
+    var is_read: Boolean? = null,
+    val title: String? = null,
+    val type: String? = null,
+    val type_id: Int? = null,
+    val updated_at: String? = null,
+    val img: String? = null,
+    val user_id: Int? = null
+)

@@ -12,6 +12,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -25,6 +26,7 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.view.activity.HomeActivity
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.*
+import com.google.firebase.messaging.RemoteMessage
 import java.io.ByteArrayOutputStream
 import java.text.DateFormat
 import java.text.ParseException
@@ -206,5 +208,29 @@ object RuntimeHelper {
             }
         }
         return null
+    }
+
+    fun RemoteMessage.Notification.myToString() {
+        Log.d(TAG, "Notification \n" +
+                "title : ${this.title}\n" +
+                "body : ${this.body}\n" +
+                "icon : ${this.icon}\n" +
+                "imageUrl : ${this.imageUrl}\n" +
+                "sound : ${this.sound}\n" +
+                "tag : ${this.tag}\n" +
+                "color : ${this.color}\n" +
+                "clickAction : ${this.clickAction}\n" +
+                "channelId : ${this.channelId}\n" +
+                "link : ${this.link}\n" +
+                "ticker : ${this.ticker}\n" +
+                "notificationPriority : ${this.notificationPriority}\n" +
+                "visibility : ${this.visibility}\n" +
+                "notificationCount : ${this.notificationCount}\n" +
+                "lightSettings : ${this.lightSettings}\n" +
+                "eventTime : ${this.eventTime}\n" +
+                "sticky : ${this.sticky}\n" +
+                "localOnly : ${this.localOnly}\n" +
+                "defaultSound : ${this.defaultSound}\n" +
+                "defaultLightSettings : ${this.defaultLightSettings}")
     }
 }

@@ -208,6 +208,18 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.deleteMyAccount() }
     }
 
+    suspend fun getAllNotifications(): Flow<Resource<Page<Notification>>> {
+        return generateFlow { repository.getAllNotifications() }
+    }
+
+    suspend fun getNextAllNotifications(pageNo: String): Flow<Resource<Page<Notification>>> {
+        return generateFlow { repository.getNextAllNotifications(pageNo) }
+    }
+
+    suspend fun notificationsReadAll(): Flow<Resource<Any>> {
+        return generateFlow { repository.notificationsReadAll() }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

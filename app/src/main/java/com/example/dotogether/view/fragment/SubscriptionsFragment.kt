@@ -139,8 +139,6 @@ class SubscriptionsFragment : BaseFragment(), HolderListener.TargetHolderListene
                 }
                 is Resource.Error -> {
                 }
-                is Resource.Loading -> {
-                }
                 else -> {}
             }
         }

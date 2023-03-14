@@ -167,7 +167,8 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     userId?.let { it1 -> viewModel.getTargetsWithUserId(it1) }
                 }
                 is Resource.Error -> {
-
+                    showToast(it.message)
+                    activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 is Resource.Loading -> {
                     if (!dialog.dialog.isShowing && !binding.swipeLyt.isRefreshing) {
@@ -225,8 +226,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 }
                 is Resource.Error -> {
                 }
-                is Resource.Loading -> {
-                }
+                
                 else -> {}
             }
         }

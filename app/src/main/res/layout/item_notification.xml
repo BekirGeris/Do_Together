@@ -16,6 +16,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +42,7 @@
             android:maxWidth="200dp"
             android:text="@string/user_name"
             android:textColor="?colorPrimary"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -49,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:maxWidth="250dp"
-            android:text="Notification Message Notification Message Notification Message Notification Message Notification Message Notification Message Notification Message Notification Message"
             android:textColor="?colorPrimary" />
     </LinearLayout>
 

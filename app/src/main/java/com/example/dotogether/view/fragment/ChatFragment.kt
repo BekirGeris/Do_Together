@@ -288,7 +288,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                             messages.add(Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt()))
                         }
                     }
-                    messages.reverse()
+
                     messageAdapter.notifyDataSetChanged()
                     binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
 
