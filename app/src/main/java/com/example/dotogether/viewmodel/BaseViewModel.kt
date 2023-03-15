@@ -11,6 +11,7 @@ import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
+import com.example.dotogether.model.request.UpdateTargetRequest
 import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
@@ -104,6 +105,14 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.unFollow(userId).collect {
                 _updateUser.value = it
+            }
+        }
+    }
+
+    fun updateTarget(targetId: Int, updateTargetRequest: UpdateTargetRequest) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.updateTarget(targetId, updateTargetRequest).collect {
+                _updateTarget.value = it
             }
         }
     }

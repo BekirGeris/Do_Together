@@ -37,6 +37,8 @@ import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlin.collections.ArrayList
+import com.example.dotogether.model.Target
+import com.example.dotogether.model.request.UpdateTargetRequest
 
 @AndroidEntryPoint
 class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
@@ -53,6 +55,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     private var imageBase64: String? = null
 
     private var isSearching = false
+    private var isEdit = false
+    private var targetId: Int? = null
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions  ->
         var isGrantedGalleryAndCamera = true
@@ -126,6 +130,9 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     }
 
     fun initViews() {
+        isEdit = arguments?.getBoolean("isEdit") ?: false
+        targetId = arguments?.getInt("targetId")
+
         binding = FragmentShareBinding.inflate(layoutInflater)
         periodDialogBinding = BottomSheetPeriodBinding.inflate(layoutInflater)
         customPeriodBinding = BottomSheetCustomPeriodBinding.inflate(layoutInflater)
@@ -160,7 +167,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         binding.targetEditTxt.addTextChangedListener{ editTextChange(binding.targetEditTxt) }
         binding.descriptionEditTxt.addTextChangedListener{ editTextChange(binding.descriptionEditTxt) }
         binding.tagEditTxt.addTextChangedListener{ editTextChange(binding.tagEditTxt) }
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -205,6 +211,56 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 }
             }
         }
+        viewModel.target.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    it.data?.let { target -> updateViewWithTargetForEdit(target) }
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    dialog.show()
+                }
+            }
+        }
+        viewModel.updateTarget.observe(viewLifecycleOwner) {
+            when (it) {
+                is Resource.Success -> {
+                    dialog.hide()
+                    showToast(it.message)
+                    activity?.onBackPressedDispatcher?.onBackPressed()
+                }
+                is Resource.Error -> {
+                    dialog.hide()
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    dialog.show()
+                }
+            }
+        }
+        if (isEdit) {
+            targetId?.let { viewModel.getTarget(it) }
+        }
+    }
+
+    private fun updateViewWithTargetForEdit(target: Target) {
+        target.img?.let {
+            RuntimeHelper.glideForImage(requireContext()).load(it).into(binding.selectImage)
+            binding.selectImage.setPadding(20, 5, 20, 5)
+        }
+        target.tags?.let { tags ->
+            val tagList = tags.split(",").map { Tag(it) }.toCollection(ArrayList()).filter { it.name.isNotEmpty() }
+            initChipGroup(ArrayList(tagList), binding.reflowGroup)
+        }
+        binding.targetEditTxt.setText(target.target)
+        binding.descriptionEditTxt.setText(target.description)
+        binding.periodDecs.text = target.period
+        binding.startDateTxt.text = target.start_date
+        binding.finishDateTxt.text = target.end_date
     }
 
     override fun onClick(v: View?) {
@@ -233,15 +289,26 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                     if (endDate == getString(R.string.forever)) {
                         endDate = "2050/01/01"
                     }
-                    shareTarget(
-                        binding.targetEditTxt.text.toString(),
-                        binding.descriptionEditTxt.text.toString(),
-                        binding.periodDecs.text.toString(),
-                        binding.startDateTxt.text.toString(),
-                        endDate,
-                        imageBase64,
-                        tags
-                    )
+                    if (isEdit) {
+                        uploadTarget(
+                            binding.targetEditTxt.text.toString(),
+                            binding.descriptionEditTxt.text.toString(),
+                            binding.periodDecs.text.toString(),
+                            binding.startDateTxt.text.toString(),
+                            endDate,
+                            imageBase64,
+                            tags)
+                    } else {
+                        shareTarget(
+                            binding.targetEditTxt.text.toString(),
+                            binding.descriptionEditTxt.text.toString(),
+                            binding.periodDecs.text.toString(),
+                            binding.startDateTxt.text.toString(),
+                            endDate,
+                            imageBase64,
+                            tags
+                        )
+                    }
                 }
             }
             binding.periodLyt -> {
@@ -373,6 +440,11 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     private fun shareTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String?, tags: String) {
         val createTargetRequest = CreateTargetRequest(target, description, period, start_date, end_date, img, tags)
         viewModel.createTarget(createTargetRequest)
+    }
+
+    private fun uploadTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String?, tags: String) {
+        val updateTargetRequest = UpdateTargetRequest(target, description, period, start_date, end_date, img, tags)
+        targetId?.let { viewModel.updateTarget(it, updateTargetRequest) }
     }
 
     @SuppressLint("NotifyDataSetChanged")

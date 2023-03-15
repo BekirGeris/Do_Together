@@ -1,6 +1,6 @@
 package com.example.dotogether.model.request
 
-class CreateTargetRequest(
+class UpdateTargetRequest(
     target: String,
     description: String,
     period: String,

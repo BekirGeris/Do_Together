@@ -6,7 +6,16 @@
     app:startDestination="@id/shareFragment">
 
     <action android:id="@+id/action_shareFragment"
-        app:destination="@id/shareFragment"/>
+        app:destination="@id/shareFragment">
+        <argument
+            android:name="isEdit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="targetId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </action>
 
     <action android:id="@+id/action_profileFragment"
         app:destination="@id/profileFragment">

@@ -48,6 +48,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
     var targetId: Int? = null
     private lateinit var target: Target
+    var myUserId: Int? = null
 
     private val selectedDates = mutableSetOf<LocalDate>()
     private val today = LocalDate.now()
@@ -87,11 +88,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.doItBtn.setOnClickListener(this)
 
         dialogBinding.share.visibility = View.VISIBLE
-//        dialogBinding.delete.visibility = View.VISIBLE
-//        dialogBinding.edit.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
-//        dialogBinding.delete.setOnClickListener(this)
-//        dialogBinding.edit.setOnClickListener(this)
+        dialogBinding.edit.setOnClickListener(this)
         binding.calendar.visibility = View.GONE
 
         binding.memberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -100,6 +98,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initObserve() {
+        viewModel.getMyUserFromLocale().observe(viewLifecycleOwner) {
+            myUserId = it.id
+        }
         viewModel.target.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -200,6 +201,12 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
         binding.doItBtn.setViewProperties(target.action_status == "2")
         setupMonthCalendar()
+
+        if (myUserId == target.admin?.id) {
+            dialogBinding.edit.visibility = View.VISIBLE
+        } else {
+            dialogBinding.edit.visibility = View.GONE
+        }
     }
 
     override fun onClick(v: View?) {
@@ -233,6 +240,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 }
                 dialogBinding.edit -> {
                     bottomSheetDialog.dismiss()
+                    targetId?.let { navController.navigate(TargetFragmentDirections.actionShareFragment(isEdit = true, targetId = it)) }
                 }
                 else -> {}
             }

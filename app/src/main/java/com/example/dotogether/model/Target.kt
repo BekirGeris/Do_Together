@@ -25,4 +25,5 @@ class Target {
     var chat_id: String? = null
     var unread_count: Int = 0
     var action_status: String? = null
+    var tags: String? = null
 }

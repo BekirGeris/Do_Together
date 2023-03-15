@@ -36,6 +36,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.createTarget(createTargetRequest) }
     }
 
+    suspend fun updateTarget(targetId: Int, updateTargetRequest: UpdateTargetRequest): Flow<Resource<Target>> {
+        return generateFlow { repository.updateTarget(targetId, updateTargetRequest) }
+    }
+
     suspend fun updatePassword(updatePasswordRequest: UpdatePasswordRequest): Flow<Resource<User>> {
         return generateFlow { repository.updatePassword(updatePasswordRequest) }
     }

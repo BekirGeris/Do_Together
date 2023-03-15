@@ -1,15 +1,11 @@
 package com.example.dotogether.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.request.CreateTargetRequest
-import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,10 +19,21 @@ class ShareViewModel @Inject constructor(): BaseViewModel() {
     private val _createTarget = MutableLiveData<Resource<Target>>()
     val createTarget: MutableLiveData<Resource<Target>> = _createTarget
 
+    private val _target = MutableLiveData<Resource<Target>>()
+    val target: MutableLiveData<Resource<Target>> = _target
+
     fun createTarget(createTargetRequest: CreateTargetRequest) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.createTarget(createTargetRequest).collect {
                 _createTarget.value = it
+            }
+        }
+    }
+
+    fun getTarget(targetId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.getTarget(targetId).collect{
+                _target.value = it
             }
         }
     }

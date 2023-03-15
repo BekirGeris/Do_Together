@@ -24,6 +24,9 @@ interface RemoteRepository {
     @POST("activity/create")
     suspend fun createTarget(@Body createTargetRequest: CreateTargetRequest) : Response<Target>
 
+    @POST("activity/update/{targetId}")
+    suspend fun updateTarget(@Path("targetId") targetId: Int, @Body updateTargetRequest: UpdateTargetRequest) : Response<Target>
+
     @POST("user/update-password")
     suspend fun updatePassword(@Body updatePasswordRequest: UpdatePasswordRequest) : Response<User>
 
