@@ -199,6 +199,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         }
 
         binding.doItBtn.setViewProperties(target.action_status == "2")
+        setupMonthCalendar()
     }
 
     override fun onClick(v: View?) {
@@ -266,10 +267,13 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     private fun bindDate(date: LocalDate, textView: TextView, isSelectable: Boolean) {
         textView.text = date.dayOfMonth.toString()
         when {
+            today == date && selectedDates.contains(date) -> {
+                textView.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_kare_blue_cycle)
+            }
             selectedDates.contains(date) -> {
                 textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.dark_green))
             }
-            today == date && !selectedDates.contains(today) -> {
+            today == date -> {
                 textView.background = ContextCompat.getDrawable(requireContext(), R.drawable.border_circle)
             }
             else -> {
