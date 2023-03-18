@@ -49,9 +49,9 @@ class UserHolder(view: View, private val listener: HolderListener.UserHolderList
             }
             binding.followOrUnfollowBtn -> {
                 if (user.is_followed == true) {
-                    listener.unFollow(binding, user)
+                    listener.unFollow(user)
                 } else {
-                    listener.follow(binding, user)
+                    listener.follow(user)
                 }
             }
         }

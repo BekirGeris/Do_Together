@@ -258,12 +258,12 @@ class SearchFragment : BaseFragment(), View.OnClickListener, HolderListener.Targ
         return myUserId != null && myUserId == user.id
     }
 
-    override fun follow(binding: ItemUserBinding, user: User) {
+    override fun follow(user: User) {
         this.binding.searchView.clearFocus()
         user.id?.let { viewModel.follow(it) }
     }
 
-    override fun unFollow(binding: ItemUserBinding, user: User) {
+    override fun unFollow(user: User) {
         this.binding.searchView.clearFocus()
         user.id?.let { viewModel.unFollow(it) }
     }

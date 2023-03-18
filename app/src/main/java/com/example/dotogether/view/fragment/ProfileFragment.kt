@@ -264,8 +264,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             when(resource) {
                 is Resource.Success -> {
                     resource.data?.let { updateTarget ->
-                        val newTargets = ArrayList<Target>()
-                        targets.filter { updateTarget.id != it.id }.mapTo(newTargets) { it }
+                        val newTargets = targets.filter { updateTarget.id != it.id }
                         targets.clear()
                         targets.addAll(newTargets)
                         targetAdapter.notifyDataSetChanged()

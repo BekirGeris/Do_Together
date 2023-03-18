@@ -8,28 +8,27 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentTargetMembersBinding
-import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.util.Resource
-import com.example.dotogether.view.adapter.UserAdapter
+import com.example.dotogether.view.adapter.ListMemberAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
-import com.example.dotogether.view.callback.SwipeToDeleteCallback
+import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.viewmodel.TargetViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
+import kotlin.concurrent.thread
+
 
 @AndroidEntryPoint
-class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListener.UserHolderListener {
+class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListener.ListMemberHolderListener {
 
     private val viewModel: TargetViewModel by viewModels()
     private lateinit var binding: FragmentTargetMembersBinding
 
-    private lateinit var userAdapter: UserAdapter
+    private lateinit var memberAdapter: ListMemberAdapter
 
     private val users = ArrayList<User>()
     var targetId: Int? = null
@@ -75,9 +74,9 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
 
         targetId = arguments?.getInt("targetId", -1)
 
-        userAdapter = UserAdapter(users, this)
+        memberAdapter = ListMemberAdapter(users, this)
         binding.memberRv.layoutManager = LinearLayoutManager(context)
-        binding.memberRv.adapter = userAdapter
+        binding.memberRv.adapter = memberAdapter
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -100,7 +99,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
             }
         })
 
-        userAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        memberAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
                 binding.activityErrorView.visibility = if (users.isEmpty()) View.VISIBLE else View.GONE
@@ -110,10 +109,6 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
         binding.swipeLyt.setOnRefreshListener {
             getMember()
         }
-
-//        val callback: ItemTouchHelper.Callback = SwipeToDeleteCallback(userAdapter)
-//        val itemTouchHelper = ItemTouchHelper(callback)
-//        itemTouchHelper.attachToRecyclerView(binding.memberRv)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -130,7 +125,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                             binding.activityErrorView.visibility = if(list.isEmpty()) View.VISIBLE else View.GONE
                             users.clear()
                             users.addAll(list)
-                            userAdapter.notifyDataSetChanged()
+                            memberAdapter.notifyDataSetChanged()
                         }
                         response.next_page_url?.let { next_page_url ->
                             nextPage = next_page_url.last().toString()
@@ -160,7 +155,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                     resource.data?.let { response ->
                         response.data?.let { list ->
                             users.addAll(list)
-                            userAdapter.notifyDataSetChanged()
+                            memberAdapter.notifyDataSetChanged()
                         }
                         response.next_page_url?.let { next_page_url ->
                             nextPage = next_page_url.last().toString()
@@ -179,7 +174,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                     resource.data?.let { list ->
                         users.clear()
                         users.addAll(list)
-                        userAdapter.notifyDataSetChanged()
+                        memberAdapter.notifyDataSetChanged()
                         isSearching = false
                     }
                 }
@@ -199,7 +194,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                         users.mapTo(newList) { if (user.id == it.id) user else it }
                         users.clear()
                         users.addAll(newList)
-                        userAdapter.notifyDataSetChanged()
+                        memberAdapter.notifyDataSetChanged()
                     }
                 }
                 is Resource.Error -> {
@@ -240,13 +235,30 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
         return myUserId != null && myUserId == user.id
     }
 
-    override fun follow(binding: ItemUserBinding, user: User) {
+    override fun follow(user: User) {
         this.binding.searchView.clearFocus()
         user.id?.let { viewModel.follow(it) }
     }
 
-    override fun unFollow(binding: ItemUserBinding, user: User) {
+    override fun unFollow(user: User) {
         this.binding.searchView.clearFocus()
         user.id?.let { viewModel.unFollow(it) }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun deleteMember(user: User) {
+        showAlertDialog("Üye Çıkartılacak.\nEmin misin?", object : ConfirmDialogListener {
+            override fun cancel() {
+                memberAdapter.notifyDataSetChanged()
+            }
+
+            override fun confirm() {
+                //todo: delete member
+                val newList = users.filter { user.id != it.id }
+                users.clear()
+                users.addAll(newList)
+                memberAdapter.notifyDataSetChanged()
+            }
+        })
     }
 }
