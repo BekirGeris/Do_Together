@@ -69,7 +69,7 @@ class AddTagFragment : BaseFragment() {
             when(resource) {
                 is Resource.Success -> {
                     resource.data?.tags?.let {tags ->
-                        val tagList = tags.split(",").map { Tag(it) }.toCollection(ArrayList())
+                        val tagList = tags.split(",").map { Tag(it) }.toCollection(ArrayList()).filter { it.name.isNotEmpty() }
                         initChipGroup(ArrayList(tagList), binding.reflowGroup)
                     }
                 }
