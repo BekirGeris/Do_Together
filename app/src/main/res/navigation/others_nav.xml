@@ -148,7 +148,16 @@
     <fragment
         android:id="@+id/targetFragment"
         android:name="com.example.dotogether.view.fragment.TargetFragment"
-        android:label="TargetFragment" />
+        android:label="TargetFragment" >
+        <action
+            android:id="@+id/action_targetFragment_to_targetMembersFragment"
+            app:destination="@id/targetMembersFragment" >
+            <argument
+                android:name="targetId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/followsFragment"
         android:name="com.example.dotogether.view.fragment.FollowsFragment"
@@ -192,4 +201,8 @@
         android:id="@+id/addTagFragment"
         android:name="com.example.dotogether.view.fragment.AddTagFragment"
         android:label="AddTagFragment" />
+    <fragment
+        android:id="@+id/targetMembersFragment"
+        android:name="com.example.dotogether.view.fragment.TargetMembersFragment"
+        android:label="TargetMembersFragment" />
 </navigation>

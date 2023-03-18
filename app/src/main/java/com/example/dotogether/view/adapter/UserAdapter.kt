@@ -1,5 +1,6 @@
 package com.example.dotogether.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.dotogether.databinding.ItemUserBinding
@@ -23,5 +24,11 @@ class UserAdapter(private val users: ArrayList<User>, private val listener: Hold
 
     override fun getItemCount(): Int {
         return users.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun deleteItem(position: Int) {
+        users.removeAt(position)
+        notifyDataSetChanged()
     }
 }

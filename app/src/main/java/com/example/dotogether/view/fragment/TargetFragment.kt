@@ -14,6 +14,7 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentTargetBinding
 import com.example.dotogether.model.OtherUser
+import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
@@ -26,6 +27,8 @@ import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.view.container.DayViewContainer
 import com.example.dotogether.viewmodel.TargetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.daysOfWeek
@@ -86,6 +89,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.joinBtn.setOnClickListener(this)
         binding.goToChatBtn.setOnClickListener(this)
         binding.doItBtn.setOnClickListener(this)
+        binding.allMemberTxt.setOnClickListener(this)
 
         dialogBinding.share.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
@@ -207,6 +211,12 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         } else {
             dialogBinding.edit.visibility = View.GONE
         }
+
+        target.tags?.let { tags ->
+            binding.tagsTxt.visibility = View.VISIBLE
+            val tagList = tags.split(",").map { Tag(it) }.toCollection(ArrayList()).filter { it.name.isNotEmpty() }
+            initChipGroup(ArrayList(tagList), binding.reflowGroup)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -230,6 +240,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     setupMonthCalendar()
                     binding.doItBtn.setViewProperties(false)
                     targetId?.let { targetId -> viewModel.doneTarget(targetId) }
+                }
+                binding.allMemberTxt -> {
+                    targetId?.let { navController.navigate(TargetFragmentDirections.actionTargetFragmentToTargetMembersFragment(targetId = it)) }
                 }
                 dialogBinding.share -> {
                     bottomSheetDialog.dismiss()
@@ -287,6 +300,15 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             else -> {
                 textView.background = null
             }
+        }
+    }
+
+    private fun initChipGroup(tags: ArrayList<Tag>, chipGroup: ChipGroup) {
+        chipGroup.removeAllViews()
+        for (tag in tags) {
+            val chip = Chip(context)
+            chip.text = tag.name
+            chipGroup.addView(chip)
         }
     }
 }

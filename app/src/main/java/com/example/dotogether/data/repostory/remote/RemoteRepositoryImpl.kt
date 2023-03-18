@@ -228,6 +228,18 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.getActions(targetId) }
     }
 
+    suspend fun getMembers(targetId: Int): Flow<Resource<Page<User>>> {
+        return generateFlow { repository.getMembers(targetId) }
+    }
+
+    suspend fun getNextMembers(targetId: Int, pageNo: String): Flow<Resource<Page<User>>> {
+        return generateFlow { repository.getNextMembers(targetId, pageNo) }
+    }
+
+    suspend fun searchMembers(searchRequest: SearchRequest, targetId: Int): Flow<Resource<ArrayList<User>>> {
+        return generateFlow { repository.searchMembers(searchRequest, targetId) }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())
