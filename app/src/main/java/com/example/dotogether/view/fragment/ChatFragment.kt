@@ -29,6 +29,8 @@ import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
+import com.example.dotogether.view.adapter.holderListener.HolderListener
+import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.viewmodel.ChatViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.*
@@ -39,7 +41,7 @@ import kotlin.math.abs
 
 
 @AndroidEntryPoint
-class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener, HolderListener.RightMessageHolderListener {
 
     private val viewModel: ChatViewModel by viewModels()
     private lateinit var binding: FragmentChatBinding
@@ -127,7 +129,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         dialogBinding.notificationSwitch.visibility = View.VISIBLE
         dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
 
-        messageAdapter = MessageAdapter(messages, isGroup)
+        messageAdapter = MessageAdapter(messages, isGroup, this)
         binding.messageRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.messageRv.adapter = messageAdapter
         binding.messageRv.addOnScrollListener(scrollListener)
@@ -351,5 +353,21 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
         chatId?.let { viewModel.muteChat(it) }
+    }
+
+    override fun deleteMessage(message: Message) {
+        showAlertDialog("Mesaj Silinecek.\nEmin misin?", object : ConfirmDialogListener {
+            override fun cancel() {
+                messageAdapter.notifyDataSetChanged()
+            }
+
+            override fun confirm() {
+                //todo: delete member
+                val newList = messages.filter { message.messageTime != it.messageTime }
+                messages.clear()
+                messages.addAll(newList)
+                messageAdapter.notifyDataSetChanged()
+            }
+        })
     }
 }

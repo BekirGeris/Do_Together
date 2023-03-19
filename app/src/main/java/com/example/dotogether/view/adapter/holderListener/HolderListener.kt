@@ -15,6 +15,7 @@ class HolderListener {
         fun follow(user: User)
         fun unFollow(user: User)
         fun deleteMember(user: User)
+        fun isAdmin() : Boolean
     }
     interface BigMemberHolderListener{
         fun callback(binding: ItemBigMemberBinding, user: User)
@@ -29,7 +30,7 @@ class HolderListener {
         fun callback(binding: ItemMemberBinding, user: User)
     }
     interface RightMessageHolderListener{
-        fun callback(binding: ItemMessageRightBinding, message: Message)
+        fun deleteMessage(message: Message)
     }
     interface ProfileHolderListener{
         fun isMe(binding: ItemProfileBinding, user: User) : Boolean

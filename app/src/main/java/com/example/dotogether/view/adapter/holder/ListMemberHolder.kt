@@ -38,6 +38,8 @@ class ListMemberHolder(view: View, private val listener: HolderListener.ListMemb
         binding.userHolder.followOrUnfollowBtn.visibility = if (listener.isMe(user)) View.GONE else View.VISIBLE
 
         binding.swipeLayout.showMode = SwipeLayout.ShowMode.LayDown
+
+        binding.swipeLayout.isSwipeEnabled = listener.isAdmin()
     }
 
     override fun onClick(v: View?) {

@@ -9,8 +9,13 @@ import com.example.dotogether.model.Message
 import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holder.LeftMessageHolder
 import com.example.dotogether.view.adapter.holder.RightMessageHolder
+import com.example.dotogether.view.adapter.holderListener.HolderListener
 
-class MessageAdapter(private val messages: ArrayList<Message>, private val isGroup: Boolean) : BaseAdapter() {
+class MessageAdapter(
+    private val messages: ArrayList<Message>,
+    private val isGroup: Boolean,
+    private val listener: HolderListener.RightMessageHolderListener
+) : BaseAdapter() {
 
     private lateinit var binding: ViewBinding
     private var isAgainMessage = false
@@ -19,7 +24,7 @@ class MessageAdapter(private val messages: ArrayList<Message>, private val isGro
         return when(viewType) {
             0 -> {
                 binding = ItemMessageRightBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                RightMessageHolder(binding.root)
+                RightMessageHolder(binding.root, LayoutInflater.from(parent.context), listener)
             }
             else -> {
                 binding = ItemMessageLeftBinding.inflate(LayoutInflater.from(parent.context), parent, false)

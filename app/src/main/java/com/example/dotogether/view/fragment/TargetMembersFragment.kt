@@ -31,8 +31,9 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
     private lateinit var memberAdapter: ListMemberAdapter
 
     private val users = ArrayList<User>()
-    var targetId: Int? = null
-    var myUserId: Int? = null
+    private var targetId: Int? = null
+    private var isAdmin: Boolean = false
+    private var myUserId: Int? = null
 
     private var isSearching = false
 
@@ -73,10 +74,13 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
         binding.backBtn.setOnClickListener(this)
 
         targetId = arguments?.getInt("targetId", -1)
+        isAdmin = arguments?.getBoolean("isAdmin") ?: false
 
         memberAdapter = ListMemberAdapter(users, this)
         binding.memberRv.layoutManager = LinearLayoutManager(context)
         binding.memberRv.adapter = memberAdapter
+
+        binding.infoTxt.visibility = if (isAdmin) View.VISIBLE else View.GONE
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -260,5 +264,9 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                 memberAdapter.notifyDataSetChanged()
             }
         })
+    }
+
+    override fun isAdmin(): Boolean {
+        return isAdmin
     }
 }

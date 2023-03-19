@@ -242,7 +242,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                     targetId?.let { targetId -> viewModel.doneTarget(targetId) }
                 }
                 binding.allMemberTxt -> {
-                    targetId?.let { navController.navigate(TargetFragmentDirections.actionTargetFragmentToTargetMembersFragment(targetId = it)) }
+                    targetId?.let { navController.navigate(TargetFragmentDirections.actionTargetFragmentToTargetMembersFragment(targetId = it, isAdmin = target.admin?.id == myUserId)) }
                 }
                 dialogBinding.share -> {
                     bottomSheetDialog.dismiss()

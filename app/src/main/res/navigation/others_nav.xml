@@ -156,6 +156,10 @@
                 android:name="targetId"
                 app:argType="integer"
                 android:defaultValue="-1" />
+            <argument
+                android:name="isAdmin"
+                app:argType="boolean"
+                android:defaultValue="false" />
         </action>
     </fragment>
     <fragment
