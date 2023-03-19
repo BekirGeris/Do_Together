@@ -296,6 +296,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         viewModel.nextAllTargets.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Success -> {
+                    binding.nextProgressBar.visibility = View.GONE
                     it.data?.let { response ->
                         response.data?.let { list ->
                             targets.addAll(list)
@@ -308,6 +309,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                     }
                 }
                 is Resource.Error -> {
+                    binding.nextProgressBar.visibility = View.GONE
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    binding.nextProgressBar.visibility = View.VISIBLE
                 }
                 else -> {}
             }

@@ -156,6 +156,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
         viewModel.nextMembers.observe(viewLifecycleOwner) { resource ->
             when(resource) {
                 is Resource.Success -> {
+                    binding.nextProgressBar.visibility = View.GONE
                     resource.data?.let { response ->
                         response.data?.let { list ->
                             users.addAll(list)
@@ -168,6 +169,11 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                     }
                 }
                 is Resource.Error -> {
+                    binding.nextProgressBar.visibility = View.GONE
+                    showToast(resource.message)
+                }
+                is Resource.Loading -> {
+                    binding.nextProgressBar.visibility = View.VISIBLE
                 }
                 else -> {}
             }

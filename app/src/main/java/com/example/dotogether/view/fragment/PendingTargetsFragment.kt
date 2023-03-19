@@ -127,6 +127,7 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
         viewModel.nextJoinedTargets.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
+                    binding.nextProgressBar.visibility = View.GONE
                     it.data?.let { response ->
                         response.data?.let { list ->
                             val targetsFromResponse = list.filter { target -> target.action_status == "2" }
@@ -140,6 +141,11 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
                     }
                 }
                 is Resource.Error -> {
+                    binding.nextProgressBar.visibility = View.GONE
+                    showToast(it.message)
+                }
+                is Resource.Loading -> {
+                    binding.nextProgressBar.visibility = View.VISIBLE
                 }
                 else -> {}
             }
