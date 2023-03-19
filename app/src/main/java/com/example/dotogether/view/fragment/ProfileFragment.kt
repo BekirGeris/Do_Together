@@ -392,7 +392,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                     when(it) {
                         is Resource.Success -> {
                             goToLoginFragment()
-                            activity?.finish()
                         }
                         is Resource.Error -> {
                             showToast(it.message)
@@ -417,10 +416,10 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             override fun confirm() {
                 dialog.show()
                 viewModel.logout()
+                SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, "")
                 thread {
                     Thread.sleep(1000)
                     goToLoginFragment()
-                    activity?.finish()
                 }
             }
         })

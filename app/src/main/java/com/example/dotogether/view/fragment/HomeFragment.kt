@@ -25,6 +25,7 @@ import com.example.dotogether.model.request.CreateReelsRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.PermissionUtil
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
@@ -139,6 +140,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     fun initViews() {
+        if (SharedPreferencesUtil.getString(requireContext(), Constants.TOKEN_KEY, "").isEmpty()) {
+            goToLoginFragment()
+        }
         checkOpenAppFromNotification()
         checkOpenAppFromLink()
         bottomSheetSettingDialog.setContentView(bottomSheetSettingBinding.root)
@@ -164,17 +168,20 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     private fun checkOpenAppFromNotification() {
-        val notificationKey = activity?.intent?.extras?.getString("notification_type")
+        val notificationType = activity?.intent?.extras?.getString("notification_type")
         val typeId = activity?.intent?.extras?.getString("type_id")
-        Log.d(TAG, "notificationKey : $notificationKey")
-        if (notificationKey.equals("Notification", ignoreCase = true)) {
-            goToNotificationFragment()
-        }
-        if (notificationKey.equals("Target", ignoreCase = true) && typeId != null && !typeId.any { !it.isDigit() }) {
-            goToTargetFragment(typeId.toInt())
-        }
-        if (notificationKey.equals("Chat", ignoreCase = true)) {
-            goToChatListFragment()
+        Log.d(TAG, "notification type: $notificationType type id: $typeId")
+
+        when {
+            notificationType.equals("Notification", ignoreCase = true) -> {
+                goToNotificationFragment()
+            }
+            notificationType.equals("Target", ignoreCase = true) && typeId?.toIntOrNull() != null -> {
+                goToTargetFragment(typeId.toInt())
+            }
+            notificationType.equals("Chat", ignoreCase = true) && typeId?.toIntOrNull() != null-> {
+                goToChatListFragment(typeId)
+            }
         }
     }
 

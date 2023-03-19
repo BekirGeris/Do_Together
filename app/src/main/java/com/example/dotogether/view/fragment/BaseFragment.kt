@@ -74,9 +74,10 @@ open class BaseFragment : Fragment() {
         requireActivity().startActivity(intent)
     }
 
-    fun goToChatListFragment() {
+    fun goToChatListFragment(chatId: String? = null) {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
         intent.putExtra("viewType", Constants.ViewType.VIEW_LIST_CHAT_FRAGMENT.type)
+        intent.putExtra("chatId", chatId)
         startActivity(intent)
     }
 
@@ -89,6 +90,7 @@ open class BaseFragment : Fragment() {
     fun goToLoginFragment() {
         val intent = Intent(requireActivity(), LoginActivity::class.java)
         startActivity(intent)
+        activity?.finish()
     }
 
     fun goToShareFragment() {
