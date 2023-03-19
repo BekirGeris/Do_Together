@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.databinding.FragmentChatListBinding
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.model.response.ChatResponse
@@ -29,6 +31,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     private val chats = arrayListOf<ChatResponse>()
 
     private var isSearching = false
+    private var chatId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,8 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
+        chatId = arguments?.getString("chatId")
+
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         binding.backBtn.setOnClickListener(this)
 
@@ -83,6 +88,27 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        chatId?.let {
+            viewModel.getChat(it).observe(viewLifecycleOwner) { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        resource.data?.let {
+                            view?.findNavController()?.let { navC ->
+                                navC.navigate(
+                                    OthersNavDirections.actionChatFragment(
+                                    isGroup = it.chat_type == "activity",
+                                    chatId = chatId,
+                                    chatUser = it.otherUser
+                                ))
+                                dialog.hide()
+                                chatId = null
+                            }
+                        }
+                    }
+                    else -> {}
+                }
+            }
+        }
         viewModel.myChats.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {

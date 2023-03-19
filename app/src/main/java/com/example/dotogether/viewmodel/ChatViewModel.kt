@@ -68,12 +68,15 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    fun getChat(chatId: String) {
+    fun getChat(chatId: String) : MutableLiveData<Resource<ChatResponse>> {
+        val chat = MutableLiveData<Resource<ChatResponse>>()
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.getChat(chatId).collect{
+                chat.value = it
                 _chat.value = it
             }
         }
+        return chat
     }
 
     fun muteChat(chatId: String) {
