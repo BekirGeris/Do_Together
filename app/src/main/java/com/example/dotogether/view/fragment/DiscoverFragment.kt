@@ -180,4 +180,8 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
             }
         }
     }
+
+    override fun goToRecyclerViewTop() {
+        binding.discoverRv.smoothScrollToPosition(0)
+    }
 }

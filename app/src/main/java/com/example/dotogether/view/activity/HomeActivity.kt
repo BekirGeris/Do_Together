@@ -67,8 +67,11 @@ class HomeActivity : BaseActivity() {
                     activeFragment = homeFragment
                     true
                 }
-                R.id.navigation_search -> {
+                R.id.navigation_discover -> {
                     fragmentManager.beginTransaction().hide(activeFragment).show(discoverFragment).commit()
+                    if (activeFragment is DiscoverFragment) {
+                        activeFragment.goToRecyclerViewTop()
+                    }
                     activeFragment = discoverFragment
                     true
                 }
