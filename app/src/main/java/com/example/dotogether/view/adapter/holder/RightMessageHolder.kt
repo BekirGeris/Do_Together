@@ -1,5 +1,6 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import com.example.dotogether.R
@@ -49,6 +50,8 @@ class RightMessageHolder(
             bottomSheetDialog.show()
             return@setOnLongClickListener true
         }
+
+        Linkify.addLinks(binding.messageTxt, Linkify.WEB_URLS)
     }
 
     override fun onClick(v: View?) {
