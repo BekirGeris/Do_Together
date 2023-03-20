@@ -143,6 +143,17 @@ object RuntimeHelper {
         notificationManager.notify(Random().nextInt(), notificationBuilder.build())
     }
 
+    fun shareAppLink(context: Context) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(
+            Intent.EXTRA_TEXT,
+            "https://play.google.com/store/apps/developer?id=Begers"
+        )
+
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share)))
+    }
+
     fun shareTargetLink(context: Context, targetId: Int) {
         generateSharingLink(
             deepLink = "${Constants.PREFIX}/target/${targetId}".toUri(),
@@ -193,7 +204,7 @@ object RuntimeHelper {
             }
             it.addOnFailureListener {
                 // This lambda will be triggered when short link generation failed due to an exception
-
+                Log.d(TAG, "error generateSharingLink: ${it.message}")
                 // Handle
             }
         }

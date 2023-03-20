@@ -1,6 +1,7 @@
 package com.example.dotogether.model
 
 class Message (
+    var key: String? = null,
     var userName: String? = null,
     var messageTime: String? = null,
     var message: String? = null,

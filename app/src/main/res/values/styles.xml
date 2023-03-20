@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="ThemeOverlay.Baseline" parent=""/>
 
     <!-- Shrine -->
@@ -80,6 +80,14 @@
         <item name="cornerSizeTopLeft">20dp</item>
         <item name="cornerFamilyTopLeft">rounded</item>
         <item name="cornerFamilyTopRight">rounded</item>
+    </style>
+
+    <style name="TransparentLinearLayout">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:clickable">true</item>
+        <item name="android:alpha" tools:ignore="DuplicateDefinition">1.0</item>
+        <item name="android:state_pressed">true</item>
+        <item name="android:alpha" tools:ignore="DuplicateDefinition">0.5</item>
     </style>
 
 </resources>

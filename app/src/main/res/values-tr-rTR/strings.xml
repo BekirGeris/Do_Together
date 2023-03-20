@@ -72,6 +72,7 @@
     <string name="discover">Discover</string>
     <string name="add_reels">Add Reels</string>
     <string name="change_user_info">Kullanıcı Bilgilerini Değiştir</string>
+    <string name="app_share">Uygulamyı Paylaş</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="edit_background_image">Arka planı değiştir</string>
@@ -93,4 +94,5 @@
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
     <string name="sun">Sun</string>
+    <string name="delete_firebase_message">Bu musaj silindi</string>
 </resources>

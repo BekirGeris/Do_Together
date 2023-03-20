@@ -277,6 +277,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     var penultimateTime: Long? = null
                     for ((count, ds) in snapshot.children.withIndex()) {
                         val hashMap = ds.value as HashMap<*, *>
+                        val messageKey = ds.key
                         val username: String? = hashMap.get("username") as String?
                         val userId: Long? = hashMap.get("user_id") as Long?
                         val userMessage: String? = hashMap.get("user_message") as String?
@@ -285,16 +286,21 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                         if (username != null && userId != null && userMessage != null && time != null) {
                             time = abs(time)
 
-                            val message = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), userMessage, myUser.id == userId.toInt())
+                            val message = Message(
+                                messageKey,
+                                username,
+                                Constants.DATE_FORMAT_4.format(Date(time)),
+                                if (userMessage == Constants.DELETE_MESSAGE_FIREBASE_KEY ) getString(R.string.delete_firebase_message) else userMessage,
+                                myUser.id == userId.toInt())
 
                             if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
-                                val unreadMessage = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
+                                val unreadMessage = Message("messageKey", username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
                                 unreadMessage.isUnreadCountMessage = true
                                 messages.add(unreadMessage)
                             }
 
                             if (penultimateTime != null && !RuntimeHelper.isSameDay(penultimateTime, time)) {
-                                val unreadMessage = Message(username, Constants.DATE_FORMAT_4.format(Date(time)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
+                                val unreadMessage = Message("messageKey", username, Constants.DATE_FORMAT_4.format(Date(time)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
                                 unreadMessage.isDateMessage = true
                                 messages.add(unreadMessage)
                             }
@@ -304,7 +310,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     }
 
                     penultimateTime?.let {
-                        val unreadMessage = Message("username", Constants.DATE_FORMAT_4.format(Date(penultimateTime)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
+                        val unreadMessage = Message("messageKey", "username", Constants.DATE_FORMAT_4.format(Date(penultimateTime)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
                         unreadMessage.isDateMessage = true
                         messages.add(unreadMessage)
                     }
@@ -358,15 +364,17 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     override fun deleteMessage(message: Message) {
         showAlertDialog("Mesaj Silinecek.\nEmin misin?", object : ConfirmDialogListener {
             override fun cancel() {
-                messageAdapter.notifyDataSetChanged()
+
             }
 
             override fun confirm() {
-                //todo: delete member
-                val newList = messages.filter { message.messageTime != it.messageTime }
-                messages.clear()
-                messages.addAll(newList)
-                messageAdapter.notifyDataSetChanged()
+                message.key?.let {
+                    firebaseDatabase.getReference("chats")
+                        .child(chatId!!)
+                        .child(it)
+                        .child( "user_message")
+                        .setValue(Constants.DELETE_MESSAGE_FIREBASE_KEY)
+                }
             }
         })
     }

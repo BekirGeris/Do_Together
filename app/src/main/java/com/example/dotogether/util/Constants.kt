@@ -22,6 +22,7 @@ object Constants {
     const val NONE = "NONE"
 
     const val TAG_NOTIFICATION_WORKER = "TAG_NOTIFICATION_WORKER"
+    const val DELETE_MESSAGE_FIREBASE_KEY = "DELETE_MESSAGE_FIREBASE_KEY_1221"
 
     const val PREFIX = "https://targetpalss.page.link"
 

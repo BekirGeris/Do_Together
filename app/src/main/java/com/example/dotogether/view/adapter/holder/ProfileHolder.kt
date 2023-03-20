@@ -45,12 +45,14 @@ class ProfileHolder(
         binding.followBtn.setOnClickListener(this)
         binding.messageBtn.setOnClickListener(this)
 
+        dialogBinding.appShare.visibility = View.VISIBLE
         dialogBinding.userInfo.visibility = View.VISIBLE
         dialogBinding.editBackgroundImage.visibility = View.VISIBLE
         dialogBinding.editProfileImage.visibility = View.VISIBLE
         dialogBinding.editPassword.visibility = View.VISIBLE
         dialogBinding.logout.visibility = View.VISIBLE
         dialogBinding.deleteMyAccount.visibility = View.VISIBLE
+        dialogBinding.appShare.setOnClickListener(this)
         dialogBinding.userInfo.setOnClickListener(this)
         dialogBinding.editBackgroundImage.setOnClickListener(this)
         dialogBinding.editProfileImage.setOnClickListener(this)
@@ -151,6 +153,10 @@ class ProfileHolder(
             dialogBinding.deleteMyAccount -> {
                 bottomSheetDialog.dismiss()
                 listener.deleteMyAccount(binding, user)
+            }
+            dialogBinding.appShare -> {
+                bottomSheetDialog.dismiss()
+                RuntimeHelper.shareAppLink(context)
             }
         }
     }
