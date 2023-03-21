@@ -14,7 +14,7 @@ class DiscoverHolder(view: View, private val listener: HolderListener.TargetHold
 
     fun bind(discover: Discover) {
         discover.targets?.let {
-            targetAdapter = TargetAdapter(it, listener, false)
+            targetAdapter = TargetAdapter(it, listener)
             binding.targetRv.adapter = targetAdapter
         }
         binding.title.text = discover.title

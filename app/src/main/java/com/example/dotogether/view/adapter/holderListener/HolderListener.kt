@@ -53,6 +53,7 @@ class HolderListener {
         fun unJoin(binding: ItemTargetBinding, target: Target)
         fun deleteTarget(binding: ItemTargetBinding, target: Target) {}
         fun isMeProfileFragment() : Boolean { return false }
+        fun isDiscoverFragment() : Boolean { return false }
     }
     interface ReelsHolderListener{
         fun onClickReels(binding: ItemReelsBinding, user: User)
