@@ -149,7 +149,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Hesabımı Sil"
+            android:text="@string/delete_account"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -192,7 +192,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Hikaye Paylaş"
+            android:text="@string/share_reels"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -207,7 +207,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Hedef Paylaş"
+            android:text="@string/share_target"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -222,7 +222,7 @@
             android:drawableTint="?colorTertiary"
             android:drawablePadding="10dp"
             android:gravity="center|left"
-            android:text="Beğeni Etiketi Ekle"
+            android:text="@string/add_like_tag"
             android:textAllCaps="false" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -233,7 +233,7 @@
             android:layout_marginStart="35dp"
             android:layout_marginEnd="16dp"
             android:checked="true"
-            android:text="Notification"
+            android:text="@string/notification"
             tools:ignore="MissingConstraints" />
 
         <View
