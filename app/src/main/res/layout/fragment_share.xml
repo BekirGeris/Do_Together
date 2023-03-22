@@ -46,8 +46,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Target"
-                    android:inputType="text"
-                    android:maxLength="150"
+                    android:inputType="textMultiLine"
+                    android:maxLength="100"
                     android:textColor="?colorPrimary"
                     tools:ignore="TextFields" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Description"
                     android:inputType="textMultiLine"
-                    android:maxLength="150"
+                    android:maxLength="200"
                     android:textColor="?colorPrimary"
                     tools:ignore="TextFields" />
             </com.google.android.material.textfield.TextInputLayout>

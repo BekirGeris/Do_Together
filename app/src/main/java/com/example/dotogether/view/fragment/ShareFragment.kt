@@ -329,7 +329,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 binding.finishDateTxt.text = getString(R.string.forever)
             }
             binding.addTagBtn -> {
-                val tag = binding.tagEditTxt.text.toString()
+                val tag = binding.tagEditTxt.text.toString().trim()
                 if (tag.isNotEmpty() && tag.replace(" ", "").isNotEmpty()) {
                     addChipToChipGroup(tag, binding.reflowGroup)
                     binding.tagEditTxt.setText("")
@@ -457,7 +457,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 validDescription()
             }
             binding.tagEditTxt -> {
-                val tag = binding.tagEditTxt.text.toString()
+                val tag = binding.tagEditTxt.text.toString().trim()
                 if (tag.isNotEmpty() && tag.replace(" ", "").isNotEmpty()) {
                     if (!isSearching) {
                         binding.linearIndicator.visibility = View.VISIBLE

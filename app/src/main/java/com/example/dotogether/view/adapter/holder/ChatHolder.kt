@@ -1,5 +1,6 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -25,13 +26,20 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
         binding.holderView.setOnClickListener(this)
     }
 
+    @SuppressLint("SetTextI18n")
     fun bind(chat: ChatResponse) {
         this.chat = chat
 
         chat.otherUser?.let {
-            binding.username.text = if (chat.chat_type == "activity") it.target else it.username
+            val title = if (chat.chat_type == "activity") it.target else it.username
+            title?.let { t ->
+                binding.titleTxt.text = if (t.length > 20) t.substring(0, 20) + "..." else t
+            }
             RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)
 
+            chat.last_message?.let { lastMessage ->
+                 binding.message.text = if (lastMessage.length > 70) lastMessage.substring(0, 70) + "..." else lastMessage
+            }
             if (chat.chat_type == "activity") {
                 RuntimeHelper.glide(
                     context,
@@ -50,7 +58,6 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
                 }
             }
         }
-        binding.textView2.text = chat.last_message
 
         if (chat.unread_count != 0) {
             binding.unreadCount.text = chat.unread_count.toString()
