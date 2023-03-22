@@ -63,8 +63,19 @@ class TargetHolder(
     fun bind(target: Target) {
         this.target = target
         val user = target.admin
-        binding.targetTitle.text = target.target
-        binding.description.text = target.description
+
+        if (listener.isDiscoverFragment()) {
+            target.target?.let {
+                binding.targetTitle.text = if (it.length > 35) it.substring(0, 35) + "..." else it
+            }
+            target.description?.let {
+                binding.description.text = if (it.length > 50) it.substring(0, 50) + "..." else it
+            }
+        } else {
+            binding.targetTitle.text = target.target
+            binding.description.text = target.description
+        }
+
         target.created_at?.let {
             val date = Constants.DATE_FORMAT_3.tryParse(it)
             date?.let { d ->
