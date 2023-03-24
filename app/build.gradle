@@ -7,6 +7,11 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+def appVersionCode = 1
+def appVersionName = "1.0.0"
+
+def dbVersion = 2
+
 android {
     signingConfigs {
         debug {
@@ -28,8 +33,8 @@ android {
         applicationId "com.example.dotogether"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+
+        buildConfigField "int", "ROOM_DB_VERSION", "$dbVersion"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -63,7 +68,8 @@ android {
     productFlavors {
         doTogether {
             applicationId "com.bekbek.dotogether"
-            versionCode 1
+            versionCode appVersionCode
+            versionName "$appVersionName"
 
             buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
             buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
@@ -71,7 +77,8 @@ android {
 
         doTogetherTest {
             applicationId "com.bekbek.dotogether.test"
-            versionCode 1
+            versionCode appVersionCode
+            versionName "$appVersionName"
 
             buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
             buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'

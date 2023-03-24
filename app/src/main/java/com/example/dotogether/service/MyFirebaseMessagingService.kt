@@ -39,7 +39,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         runBlocking {
             val basket = appRepository.localRepositoryImpl.getCurrentBasketSync() ?: Basket()
-            basket.totalUnreadCount++
             basket.refreshType = Constants.CHAT
             appRepository.localRepositoryImpl.updateBasket(basket)
         }

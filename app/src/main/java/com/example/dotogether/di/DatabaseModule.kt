@@ -33,5 +33,6 @@ object DatabaseModule {
     @Provides
     fun provideAppDatabase(@ApplicationContext app: Context) = Room.databaseBuilder(app, AppDatabase::class.java, "begers" )
         .allowMainThreadQueries()
+        .addMigrations(*AppDatabase.getMigrations())
         .build()
 }
