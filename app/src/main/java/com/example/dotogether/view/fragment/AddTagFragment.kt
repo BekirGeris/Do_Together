@@ -101,9 +101,11 @@ class AddTagFragment : BaseFragment() {
             when(resource) {
                 is Resource.Success -> {
                     dialog.hide()
+                    binding.activityErrorView.visibility = if(binding.reflowGroup.childCount == 0) View.VISIBLE else View.GONE
                 }
                 is Resource.Error -> {
                     dialog.hide()
+                    binding.activityErrorView.visibility = if(binding.reflowGroup.childCount == 0) View.VISIBLE else View.GONE
                     showToast(resource.message)
                 }
                 is Resource.Loading -> {
