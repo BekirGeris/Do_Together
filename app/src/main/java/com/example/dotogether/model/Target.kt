@@ -1,8 +1,6 @@
 package com.example.dotogether.model
 
 import com.google.gson.annotations.SerializedName
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 class Target {
     var admin: User? = null
@@ -20,6 +18,7 @@ class Target {
     var target: String? = null
     var updated_at: String? = null
     var user_id: Int? = null
+    @SerializedName(value = "users", alternate = ["users_limited"])
     var users: ArrayList<User>? = null
     @SerializedName(value = "chat", alternate = ["chat_id"])
     var chat_id: String? = null

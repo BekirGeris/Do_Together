@@ -1,5 +1,10 @@
 package com.example.dotogether.view.adapter.holder
 
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.RelativeSizeSpan
 import android.view.View
 import androidx.navigation.findNavController
 import com.example.dotogether.databinding.ItemNotificationBinding
@@ -35,10 +40,31 @@ class NotificationHolder(view: View, private val listener: HolderListener.Notifi
         }
 
         binding.notificationTitle.text = notification.title
-        binding.notificationMessage.text = notification.description
 
-        notification.img?.let {
-            RuntimeHelper.glideForPersonImage(context).load(it).into(binding.notificationImage)
+        if (notification.type.equals("target", ignoreCase = true)) {
+            notification.img?.let {
+                RuntimeHelper.glideForPersonImage(context).load(it).into(binding.notificationImage)
+            }
+        } else if (notification.type.equals("user", ignoreCase = true)) {
+            notification.others_img?.let {
+                RuntimeHelper.glideForPersonImage(context).load(it).into(binding.notificationImage)
+            }
+        }
+
+        notification.description?.let {
+            val userName = it.substringBefore(" ")
+
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    notification.others_id?.let { id -> goToProfileFragment(view.findNavController(), id) }
+                }
+            }
+            val spannableString = SpannableString(it)
+            val startIndex = it.indexOf(userName)
+            spannableString.setSpan(clickableSpan, startIndex, startIndex + userName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(RelativeSizeSpan(1.1f), startIndex, startIndex + userName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            binding.notificationMessage.text = spannableString
+            binding.notificationMessage.movementMethod = LinkMovementMethod.getInstance()
         }
     }
 
@@ -47,7 +73,7 @@ class NotificationHolder(view: View, private val listener: HolderListener.Notifi
             binding.holderView, binding.notificationImage, binding.infoLyt, binding.notificationTitle -> {
                 if (notification.type.equals("target", ignoreCase = true)) {
                     notification.type_id?.let { goToTargetFragment(view.findNavController(), it) }
-                } else if (notification.type.equals("notification", ignoreCase = true)) {
+                } else if (notification.type.equals("user", ignoreCase = true)) {
                     notification.type_id?.let { goToProfileFragment(view.findNavController(), it) }
                 }
             }
