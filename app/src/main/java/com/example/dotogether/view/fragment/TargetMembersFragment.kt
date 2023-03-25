@@ -19,8 +19,6 @@ import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.viewmodel.TargetViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.concurrent.thread
-
 
 @AndroidEntryPoint
 class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListener.ListMemberHolderListener {
@@ -43,8 +41,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
             super.onScrollStateChanged(recyclerView, newState)
             if(!recyclerView.canScrollVertically(1)) {
                 targetId?.let {
-                    //todo: get member
-                    viewModel.getNextMembers(1, pageNo = nextPage)
+                    viewModel.getNextMembers(it, pageNo = nextPage)
                 }
                 binding.memberRv.removeOnScrollListener(this)
             }
@@ -91,8 +88,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                 if (!newText.isNullOrEmpty()) {
                     if (!isSearching) {
                         targetId?.let {
-                            //todo: get target member search
-                            viewModel.searchMembers(SearchRequest(search = newText), 1)
+                            viewModel.searchMembers(SearchRequest(search = newText), it)
                         }
                         isSearching = true
                     }
@@ -208,10 +204,27 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
                     }
                 }
                 is Resource.Error -> {
+                    showToast(resource.message)
                     dialog.hide()
                 }
                 is Resource.Loading -> {
                     dialog.show()
+                }
+                else -> {}
+            }
+        }
+        viewModel.removeUser.observe(viewLifecycleOwner) { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    resource.data?.let { user ->
+                        val newList = users.filter { it.id != user.id }
+                        users.clear()
+                        users.addAll(newList)
+                        memberAdapter.notifyDataSetChanged()
+                    }
+                }
+                is Resource.Error -> {
+                    showToast(resource.message)
                 }
                 else -> {}
             }
@@ -221,7 +234,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
 
     private fun getMember() {
         targetId?.let {
-            viewModel.getMembers(1)
+            viewModel.getMembers(it)
         }
     }
 
@@ -263,11 +276,9 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
             }
 
             override fun confirm() {
-                //todo: delete member
-                val newList = users.filter { user.id != it.id }
-                users.clear()
-                users.addAll(newList)
-                memberAdapter.notifyDataSetChanged()
+                if (targetId != null && user.id != null) {
+                    viewModel.removeUserFromTarget(targetId!!, user.id!!)
+                }
             }
         })
     }

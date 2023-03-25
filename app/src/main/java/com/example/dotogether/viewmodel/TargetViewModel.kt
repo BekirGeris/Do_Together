@@ -30,6 +30,9 @@ class TargetViewModel @Inject constructor() : BaseViewModel() {
     private val _searchMembers = MutableLiveData<Resource<ArrayList<User>>>()
     val searchMembers: MutableLiveData<Resource<ArrayList<User>>> = _searchMembers
 
+    private val _removeUser = MutableLiveData<Resource<User>>()
+    val removeUser: MutableLiveData<Resource<User>> = _removeUser
+
     fun doneTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.doneTarget(targetId).collect{
@@ -76,6 +79,14 @@ class TargetViewModel @Inject constructor() : BaseViewModel() {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.searchMembers(searchRequest, targetId).collect {
                 _searchMembers.value = it
+            }
+        }
+    }
+
+    fun removeUserFromTarget(targetId: Int, userId: Int) {
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.removeUserFromTarget(targetId, userId).collect{
+                _removeUser.value = it
             }
         }
     }

@@ -240,6 +240,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.searchMembers(searchRequest, targetId) }
     }
 
+    suspend fun removeUserFromTarget(targetId: Int, userId: Int): Flow<Resource<User>> {
+        return generateFlow { repository.removeUserFromTarget(targetId, userId) }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

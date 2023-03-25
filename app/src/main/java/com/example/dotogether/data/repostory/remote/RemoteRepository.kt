@@ -168,12 +168,15 @@ interface RemoteRepository {
     @GET("activity/actions/{targetId}")
     suspend fun getActions(@Path("targetId") targetId: Int) : Response<ArrayList<Action>>
 
-    @GET("user/followings/{userId}")
-    suspend fun getMembers(@Path("userId") targetId: Int) : Response<Page<User>>
+    @GET("activity/users/{targetId}")
+    suspend fun getMembers(@Path("targetId") targetId: Int) : Response<Page<User>>
 
-    @GET("user/followers/{userId}?page")
-    suspend fun getNextMembers(@Path("userId") targetId: Int, @Query("page") pageNo: String) : Response<Page<User>>
+    @GET("activity/users/{targetId}?page")
+    suspend fun getNextMembers(@Path("targetId") targetId: Int, @Query("page") pageNo: String) : Response<Page<User>>
 
-    @POST("user/followings/{userId}")
-    suspend fun searchMembers(@Body searchRequest: SearchRequest, @Path("userId") targetId: Int) : Response<ArrayList<User>>
+    @POST("activity/users/{targetId}")
+    suspend fun searchMembers(@Body searchRequest: SearchRequest, @Path("targetId") targetId: Int) : Response<ArrayList<User>>
+
+    @GET("activity/users/{targetId}/del/{userId}")
+    suspend fun removeUserFromTarget(@Path("targetId") targetId: Int, @Path("userId") userId: Int) : Response<User>
 }
