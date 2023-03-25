@@ -26,7 +26,7 @@ class NotificationWorker @AssistedInject constructor(
         runBlocking {
             getTarget()
             if (targets.any { it.action_status == "2" }) {
-                RuntimeHelper.sendNotification(context, "Hey Orada mısın?", "Yapılmayı bekleyen bazı hedeflerin var!!!")
+                RuntimeHelper.sendNotification(context, "Hey Orada mısın?", "Yapılmayı bekleyen bazı hedeflerin var!!!", 0)
             }
         }
         return Result.success()

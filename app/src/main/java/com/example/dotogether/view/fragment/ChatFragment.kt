@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.FragmentChatBinding
+import com.example.dotogether.model.Basket
 import com.example.dotogether.model.Message
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
@@ -202,6 +203,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 }
             }
         }
+        setBasket()
     }
 
     private fun changeNotificationSwitch() {
@@ -377,5 +379,21 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 }
             }
         })
+    }
+
+    private fun setBasket() {
+        val basket = viewModel.getCurrentBasketSync() ?: Basket()
+        basket.viewType = Constants.ViewType.VIEW_CHAT_FRAGMENT.type
+        basket.viewId = chatId
+        viewModel.updateBasket(basket)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val basket = viewModel.getCurrentBasketSync()
+        basket?.let {
+            basket.viewType = null
+            viewModel.updateBasket(basket)
+        }
     }
 }

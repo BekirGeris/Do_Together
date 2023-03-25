@@ -21,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
                 object : AppMigration(1, 2) {
                     override fun migrate(database: SupportSQLiteDatabase) {
                         database.execSQL("ALTER TABLE Basket ADD COLUMN viewType INTEGER DEFAULT null")
-                        database.execSQL("ALTER TABLE Basket ADD COLUMN viewId INTEGER DEFAULT null")
+                        database.execSQL("ALTER TABLE Basket ADD COLUMN viewId TEXT")
                     }
                 }
             )

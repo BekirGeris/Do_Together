@@ -37,6 +37,8 @@ class User() : Parcelable {
     @Ignore
     var unread_count: Int = 0
     @Ignore
+    var notification_count: Int = 0
+    @Ignore
     var tags: String? = null
 
     constructor(parcel: Parcel) : this() {
@@ -58,6 +60,7 @@ class User() : Parcelable {
         token = parcel.readString()
         chat_id = parcel.readString()
         unread_count = parcel.readValue(Int::class.java.classLoader) as Int
+        notification_count = parcel.readValue(Int::class.java.classLoader) as Int
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -79,6 +82,7 @@ class User() : Parcelable {
         parcel.writeString(token)
         parcel.writeString(chat_id)
         parcel.writeValue(unread_count)
+        parcel.writeValue(notification_count)
     }
 
     override fun describeContents(): Int {

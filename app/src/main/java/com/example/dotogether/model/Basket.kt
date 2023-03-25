@@ -9,7 +9,7 @@ class Basket {
     var localId: Int? = null
     var refreshType: String? = null
     var viewType: Int? = null
-    var viewId: Int? = null
+    var viewId: String? = null
 
     override fun toString(): String {
         return "Basket(localId=$localId, refreshType=$refreshType)"

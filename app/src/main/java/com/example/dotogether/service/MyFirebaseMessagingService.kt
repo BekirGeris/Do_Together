@@ -8,15 +8,18 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.dotogether.data.repostory.AppRepository
 import com.example.dotogether.model.Basket
+import com.example.dotogether.model.NotificationData
 import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.SharedPreferencesUtil
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.myToString
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,10 +30,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: ${remoteMessage.from}")
+        val data = remoteMessage.data
+        val notification = remoteMessage.notification
+        val notificationData = NotificationData(data["notification_type"] ?: "", data["type_id"] ?: "")
 
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-            scheduleJob()
+        if (data.isNotEmpty()) {
+            Log.d(TAG, "Message data payload: $data")
+//            scheduleJob()
         }
 
         remoteMessage.notification?.let {
@@ -39,7 +45,29 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         runBlocking {
             val basket = appRepository.localRepositoryImpl.getCurrentBasketSync() ?: Basket()
-            basket.refreshType = Constants.CHAT
+
+            if (basket.viewType != Constants.ViewType.VIEW_CHAT_FRAGMENT.type || basket.viewId == null || notificationData.typeId != basket.viewId) {
+                if (notification?.title != null && notification.body != null) {
+                    RuntimeHelper.sendNotification(applicationContext,
+                        notification.title,
+                        notification.body,
+                        notificationData.typeId?.toInt() ?: Random().nextInt(),
+                        notificationData
+                    )
+                }
+            }
+
+            when {
+                notificationData.type.equals("Notification", ignoreCase = true) -> {
+                    basket.refreshType = Constants.NOTIFICATION
+                }
+                notificationData.type.equals("Target", ignoreCase = true) -> {
+                    basket.refreshType = Constants.TARGET
+                }
+                notificationData.type.equals("Chat", ignoreCase = true) -> {
+                    basket.refreshType = Constants.CHAT
+                }
+            }
             appRepository.localRepositoryImpl.updateBasket(basket)
         }
     }

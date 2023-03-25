@@ -19,6 +19,8 @@ object Constants {
 
     const val CREATE_TARGET = "CREATE_TARGET"
     const val CHAT = "CHAT"
+    const val NOTIFICATION = "NOTIFICATION"
+    const val TARGET = "TARGET"
     const val NONE = "NONE"
 
     const val TAG_NOTIFICATION_WORKER = "TAG_NOTIFICATION_WORKER"

@@ -207,6 +207,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 is Resource.Success -> {
                     myUser = it.data
                     setTotalUnreadCount(myUser?.unread_count ?: 0)
+                    setTotalNotificationCount(myUser?.notification_count ?: 0)
                 }
                 is Resource.Error -> {
                 }
@@ -338,7 +339,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 Log.d(TAG, "home fragment basket: $it")
                 if (it.refreshType == Constants.CREATE_TARGET) {
                     viewModel.getAllTargets()
-                } else if (it.refreshType == Constants.CHAT) {
+                } else if (it.refreshType == Constants.CHAT || it.refreshType == Constants.NOTIFICATION) {
                     viewModel.getMyUserFromRemote()
                 }
             }
@@ -351,6 +352,15 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
             binding.unreadCountLyt.visibility = View.VISIBLE
         } else {
             binding.unreadCountLyt.visibility = View.GONE
+        }
+    }
+
+    private fun setTotalNotificationCount(totalUnreadCount: Int) {
+        if (totalUnreadCount != 0) {
+            binding.notificationCount.text = totalUnreadCount.toString()
+            binding.notificationCountLyt.visibility = View.VISIBLE
+        } else {
+            binding.notificationCountLyt.visibility = View.GONE
         }
     }
 
