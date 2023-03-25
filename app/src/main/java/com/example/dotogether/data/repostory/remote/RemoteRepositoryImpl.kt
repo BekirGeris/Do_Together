@@ -244,6 +244,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.removeUserFromTarget(targetId, userId) }
     }
 
+    suspend fun getAllDiscover(): Flow<Resource<ArrayList<Discover>>> {
+        return generateFlow { repository.getAllDiscover() }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

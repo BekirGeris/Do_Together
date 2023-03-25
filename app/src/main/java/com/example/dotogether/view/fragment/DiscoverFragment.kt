@@ -66,43 +66,20 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
         bottomSheetSettingBinding.addTagOfLike.setOnClickListener(this)
 
         binding.swipeLyt.setOnRefreshListener {
-            viewModel.getAllTargets()
+            viewModel.getAllDiscover()
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
-        viewModel.allTargets.observe(viewLifecycleOwner) {
-            when (it) {
+        viewModel.allDiscover.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
                 is Resource.Success -> {
                     binding.swipeLyt.isRefreshing = false
-                    it.data?.let { response ->
-                        response.data?.let { list ->
-                            binding.activityErrorView.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-                            discovers.clear()
-
-                            var discover = Discover()
-                            discover.targets = ArrayList(list)
-                            discover.title = "Hatfanın Enleri"
-                            discovers.add(discover)
-
-                            discover = Discover()
-                            discover.targets = ArrayList(list)
-                            discover.title = "Son Oluşturulanlar"
-                            discovers.add(discover)
-
-                            discover = Discover()
-                            discover.targets = ArrayList(list)
-                            discover.title = "Yeni Hedefler Keşfet"
-                            discovers.add(discover)
-
-                            discover = Discover()
-                            discover.targets = ArrayList(list)
-                            discover.title = "Yeni Yolculuklara Çık"
-                            discovers.add(discover)
-
-                            discoverAdapter.notifyDataSetChanged()
-                        }
+                    resource.data?.let {
+                        discovers.clear()
+                        discovers.addAll(it)
+                        discoverAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()
                 }
@@ -110,7 +87,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
                     binding.swipeLyt.isRefreshing = false
                     binding.activityErrorView.visibility = View.VISIBLE
                     dialog.hide()
-                    showToast(it.message)
+                    showToast(resource.message)
                 }
                 is Resource.Loading -> {
                     if (!binding.swipeLyt.isRefreshing) {
@@ -120,7 +97,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
                 else -> {}
             }
         }
-        viewModel.getAllTargets()
+        viewModel.getAllDiscover()
         viewModel.updateTarget.observe(viewLifecycleOwner) {resource ->
             when (resource) {
                 is Resource.Success -> {

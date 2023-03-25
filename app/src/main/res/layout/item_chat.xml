@@ -54,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:maxWidth="250dp"
                 android:textColor="?colorPrimary"
+                android:text=""
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_txt" />
         </androidx.constraintlayout.widget.ConstraintLayout>

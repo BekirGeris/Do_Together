@@ -179,4 +179,7 @@ interface RemoteRepository {
 
     @GET("activity/users/{targetId}/del/{userId}")
     suspend fun removeUserFromTarget(@Path("targetId") targetId: Int, @Path("userId") userId: Int) : Response<User>
+
+    @GET("discover/all")
+    suspend fun getAllDiscover() : Response<ArrayList<Discover>>
 }
