@@ -10,5 +10,12 @@
     <color name="dark_blue">#0A2168</color>
     <color name="dark_red">#CF0000</color>
     <color name="dark_green">#3DA33F</color>
+    <color name="dark_purple">#5c1455</color>
+    <color name="dark_orange">#ff9e56</color>
+    <color name="orange">#fba442</color>
+    <color name="dark_teal">#FF018786</color>
+    <color name="dark_burgundy">#7c0a02</color>
+    <color name="dark_yellow">#f2dc23</color>
+    <color name="dark_grey">#4d5d53</color>
     <color name="transparent">#000A2168</color>
 </resources>

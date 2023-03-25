@@ -291,18 +291,19 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                             val message = Message(
                                 messageKey,
                                 username,
+                                userId,
                                 Constants.DATE_FORMAT_4.format(Date(time)),
                                 if (userMessage == Constants.DELETE_MESSAGE_FIREBASE_KEY ) getString(R.string.delete_firebase_message) else userMessage,
                                 myUser.id == userId.toInt())
 
                             if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
-                                val unreadMessage = Message("messageKey", username, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
+                                val unreadMessage = Message("messageKey", username,0, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
                                 unreadMessage.isUnreadCountMessage = true
                                 messages.add(unreadMessage)
                             }
 
                             if (penultimateTime != null && !RuntimeHelper.isSameDay(penultimateTime, time)) {
-                                val unreadMessage = Message("messageKey", username, Constants.DATE_FORMAT_4.format(Date(time)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
+                                val unreadMessage = Message("messageKey", username, 0, Constants.DATE_FORMAT_4.format(Date(time)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
                                 unreadMessage.isDateMessage = true
                                 messages.add(unreadMessage)
                             }
@@ -312,7 +313,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     }
 
                     penultimateTime?.let {
-                        val unreadMessage = Message("messageKey", "username", Constants.DATE_FORMAT_4.format(Date(penultimateTime)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
+                        val unreadMessage = Message("messageKey", "username", 0, Constants.DATE_FORMAT_4.format(Date(penultimateTime)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
                         unreadMessage.isDateMessage = true
                         messages.add(unreadMessage)
                     }
