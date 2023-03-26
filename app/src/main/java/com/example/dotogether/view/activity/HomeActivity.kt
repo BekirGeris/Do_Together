@@ -103,6 +103,8 @@ class HomeActivity : BaseActivity() {
                 }
             })
         }
+
+        setAlarmManager()
     }
 
     private fun setWorkManager() {
@@ -121,7 +123,6 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun setAlarmManager() {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
@@ -132,17 +133,16 @@ class HomeActivity : BaseActivity() {
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             getNotificationCalender().timeInMillis,
-             30 * 1000,
+            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
     }
 
     private fun getNotificationCalender(): Calendar {
         val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 18)
-            set(Calendar.MINUTE, 2)
-            set(Calendar.SECOND, 30)
-            timeInMillis = System.currentTimeMillis() + 10 * 1000
+            set(Calendar.HOUR_OF_DAY, 10)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
         }
 
         if (calendar.timeInMillis - System.currentTimeMillis() <= 0) {

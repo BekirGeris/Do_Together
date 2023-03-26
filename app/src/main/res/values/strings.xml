@@ -141,4 +141,5 @@
     <string name="upload">Upload</string>
     <string name="write_a_message">Write a message</string>
     <string name="unread_message">Unread Message</string>
+    <string name="target_do_it_notification_message">The target is waiting for you to be completed.</string>
 </resources>

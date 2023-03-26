@@ -142,4 +142,5 @@
     <string name="upload">Yükle</string>
     <string name="write_a_message">Bir mesaj yaz</string>
     <string name="unread_message">Okunmamış Mesaj</string>
+    <string name="target_do_it_notification_message">Hedef tamamlanmak için seni bekliyor.</string>
 </resources>
