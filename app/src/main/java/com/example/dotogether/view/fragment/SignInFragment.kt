@@ -129,12 +129,11 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
         binding.emailEditTxt.addTextChangedListener { editTextChange(binding.emailEditTxt) }
         binding.passwordEditTxt.addTextChangedListener { editTextChange(binding.passwordEditTxt) }
         binding.topBackBtn.setOnClickListener(this)
-        //todo: acitonlar eklenince açılacak
         binding.loginBtn.setOnClickListener(this)
         binding.forgetPasswordBtn.setOnClickListener(this)
         binding.googleBtn.setOnClickListener(this)
-//        binding.facebookBtn.setOnClickListener(this)
-//        binding.twitterBtn.setOnClickListener(this)
+        binding.facebookBtn.setOnClickListener(this)
+        binding.twitterBtn.setOnClickListener(this)
         binding.signUpBtn.setOnClickListener(this)
     }
 
@@ -240,7 +239,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
                 return true
             }
             is Resource.Error -> {
-                binding.emailEditLyt.error = "Wrong email"
+                binding.emailEditLyt.error = getString(R.string.wrong_email)
                 return false
             }
             else -> {}
@@ -249,7 +248,7 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
     }
 
     private fun validPassword() : Boolean {
-        ValidationFactory.validPassword(password).let {
+        ValidationFactory.validPassword(password, requireContext()).let {
             when (it) {
                 is Resource.Success -> {
                     binding.passwordEditLyt.error = null

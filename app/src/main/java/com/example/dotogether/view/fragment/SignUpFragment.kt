@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.dotogether.BuildConfig
+import com.example.dotogether.R
 import com.example.dotogether.data.callback.LoginCallback
 import com.example.dotogether.data.callback.RegisterCallback
 import com.example.dotogether.databinding.FragmentSignUpBinding
@@ -31,7 +32,6 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, LoginCallback {
@@ -137,11 +137,10 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
         binding.passwordEditTxt.addTextChangedListener{ editTextChange(binding.passwordEditTxt) }
         binding.passwordAgainEditTxt.addTextChangedListener{ editTextChange(binding.passwordAgainEditTxt) }
         binding.topBackBtn.setOnClickListener(this)
-        //todo: actionlar eklenince açılacak
         binding.signUpBtn.setOnClickListener(this)
         binding.googleBtn.setOnClickListener(this)
-//        binding.facebookBtn.setOnClickListener(this)
-//        binding.twitterBtn.setOnClickListener(this)
+        binding.facebookBtn.setOnClickListener(this)
+        binding.twitterBtn.setOnClickListener(this)
         binding.signInBtn.setOnClickListener(this)
     }
 
@@ -283,7 +282,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     override fun loginSuccess(resource: Resource<LoginResponse>) {
         SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, resource.data?.token!!)
         SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, resource.data.user?.fcm_token ?: "")
-        showToast("Bu hesap zaten mevcut. Giriş yapıldı.")
+        showToast(getString(R.string.account_already_exists))
         goToHomeActivity()
     }
 
@@ -301,7 +300,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     private fun validName() : Boolean {
         return if (name.isEmpty()) {
-            binding.nameEditLyt.error = "Wrong name"
+            binding.nameEditLyt.error = getString(R.string.wrong_name)
             false
         } else {
             binding.nameEditLyt.error = null
@@ -311,7 +310,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     private fun validUserName() : Boolean {
         return if (userName.isEmpty()) {
-            binding.usernameEditLyt.error = "Wrong username"
+            binding.usernameEditLyt.error = getString(R.string.wrong_username)
             false
         } else {
             binding.usernameEditLyt.error = null
@@ -326,7 +325,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
                 return true
             }
             is Resource.Error -> {
-                binding.emailEditLyt.error = "Wrong email"
+                binding.emailEditLyt.error = getString(R.string.wrong_email)
                 return false
             }
             else -> {}
@@ -335,7 +334,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
     }
 
     private fun validPassword() : Boolean {
-        ValidationFactory.validPassword(password).let {
+        ValidationFactory.validPassword(password, requireContext()).let {
             when (it) {
                 is Resource.Success -> {
                     binding.passwordEditLyt.error = null
@@ -353,7 +352,7 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     private fun validPasswordAgain() : Boolean {
         return if (passwordAgain.isEmpty() || password != passwordAgain) {
-            binding.passwordAgainEditLyt.error = "Passwords are not the same"
+            binding.passwordAgainEditLyt.error = getString(R.string.new_password_again)
             false
         } else {
             binding.passwordAgainEditLyt.error = null

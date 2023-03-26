@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentForgetPasswordVerifyBinding
 import com.example.dotogether.model.request.ForgetPasswordVerifyRequest
 import com.example.dotogether.util.Resource
@@ -114,7 +115,7 @@ class ForgetPasswordFragmentVerify : BaseFragment(), View.OnClickListener {
 
 
     private fun validVerifyCode() : Boolean {
-        ValidationFactory.validVerifyCode(verifyCode).let {
+        ValidationFactory.validVerifyCode(verifyCode, requireContext()).let {
             when (it) {
                 is Resource.Success -> {
                     binding.verifyCodeLyt.error = null
@@ -132,7 +133,7 @@ class ForgetPasswordFragmentVerify : BaseFragment(), View.OnClickListener {
 
 
     private fun validNewPassword() : Boolean {
-        ValidationFactory.validPassword(newPassword).let {
+        ValidationFactory.validPassword(newPassword, requireContext()).let {
             when (it) {
                 is Resource.Success -> {
                     binding.newPasswordEditLyt.error = null
@@ -150,7 +151,7 @@ class ForgetPasswordFragmentVerify : BaseFragment(), View.OnClickListener {
 
     private fun validNewPasswordAgain() : Boolean {
         return if (newAgainPassword.isEmpty() || newPassword != newAgainPassword) {
-            binding.newPasswordAgainEditLyt.error = "Passwords are not the same"
+            binding.newPasswordAgainEditLyt.error = getString(R.string.new_password_error_message)
             false
         } else {
             binding.newPasswordAgainEditLyt.error = null

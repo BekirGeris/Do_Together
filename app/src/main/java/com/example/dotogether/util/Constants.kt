@@ -28,6 +28,18 @@ object Constants {
 
     const val PREFIX = "https://targetpalss.page.link"
 
+    const val DAILY = "Daily"
+    const val WEEKLY = "Weekly"
+    const val MONTHLY = "Monthly"
+    const val MONDAY_TO_FRIDAY = "Monday to Friday"
+    const val MON = "Mon"
+    const val TUE = "Tue"
+    const val WED = "Wed"
+    const val THU = "Thu"
+    const val FRI = "Fri"
+    const val SAT = "Sat"
+    const val SUN = "Sun"
+
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),
         VIEW_PROFILE_FRAGMENT(2),
@@ -40,17 +52,6 @@ object Constants {
         VIEW_PASSWORD_EDIT_FRAGMENT(9),
         VIEW_NOTIFICATION_FRAGMENT(10),
         VIEW_ADD_TAG_FRAGMENT(11)
-    }
-
-    enum class MethodType {
-        METHOD_LOGOUT,
-        METHOD_BACKGROUND_EDIT,
-        METHOD_PROFILE_EDIT,
-        METHOD_JOIN_TARGET,
-        METHOD_UN_JOIN_TARGET,
-        METHOD_LIKE_TARGET,
-        METHOD_UN_LIKE_TARGET,
-        METHOD_REELS
     }
 
     enum class Status(val type: Int) {

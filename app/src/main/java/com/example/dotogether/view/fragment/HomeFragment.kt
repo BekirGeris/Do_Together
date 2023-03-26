@@ -84,7 +84,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         if (isGrantedGalleryAndCamera) {
             startImageMaker()
         } else {
-            showToast("Gallery and camera permission must be granted!")
+            showToast(getString(R.string.permissions_must_be_granted))
         }
     }
 
@@ -102,7 +102,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 showToast(ImagePicker.getError(data))
             }
             else -> {
-                showToast("Task Cancelled")
+                showToast(getString(R.string.task_canceled))
             }
         }
     }
@@ -398,7 +398,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         binding.targetRv.addOnScrollListener(scrollListener)
     }
 
-    fun requestPermissionsForImagePicker() {
+    private fun requestPermissionsForImagePicker() {
         PermissionUtil.requestPermissions(
             requireContext(),
             requireActivity(),

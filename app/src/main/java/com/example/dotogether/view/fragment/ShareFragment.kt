@@ -77,7 +77,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         if (isGrantedGalleryAndCamera) {
             startImageMaker()
         } else {
-            showToast("Gallery and camera permission must be granted!")
+            showToast(getString(R.string.permissions_must_be_granted))
         }
     }
 
@@ -94,7 +94,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 showToast(ImagePicker.getError(data))
             }
             else -> {
-                showToast("Task Cancelled")
+                showToast(getString(R.string.task_canceled))
             }
         }
     }
@@ -281,13 +281,13 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 validTarget()
                 validDescription()
                 if (tagCount !in 1..4) {
-                    showToast("En az bir en fazla 4 tag eklenmeli.")
+                    showToast(getString(R.string.error_tag_message))
                     return
                 }
                 if (validTarget() && validDescription()) {
                     var endDate = binding.finishDateTxt.text.toString()
                     if (endDate == getString(R.string.forever)) {
-                        endDate = "2050/01/01"
+                        endDate = getString(R.string.year_2050)
                     }
                     if (isEdit) {
                         uploadTarget(
@@ -336,19 +336,19 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 }
             }
             periodDialogBinding.daily -> {
-                 viewModel.period.value = "Daily"
+                 viewModel.period.value = Constants.DAILY
                 setPeriodCheckView(periodDialogBinding.dailyCheck)
             }
             periodDialogBinding.weekly -> {
-                 viewModel.period.value = "Weekly"
+                 viewModel.period.value = Constants.WEEKLY
                 setPeriodCheckView(periodDialogBinding.weeklyCheck)
             }
             periodDialogBinding.monthly -> {
-                 viewModel.period.value = "Monthly"
+                 viewModel.period.value = Constants.MONTHLY
                 setPeriodCheckView(periodDialogBinding.monthlyCheck)
             }
             periodDialogBinding.mondayToFriday -> {
-                 viewModel.period.value = "Monday to Friday"
+                 viewModel.period.value = Constants.MONDAY_TO_FRIDAY
                 setPeriodCheckView(periodDialogBinding.mondayToFridayCheck)
             }
             periodDialogBinding.custom -> {
@@ -369,18 +369,18 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     private fun fillPeriodDescWithCheckBox() {
         var s = ""
         val customPeriodMap = mapOf(
-            Pair(customPeriodBinding.mondayRadio, customPeriodBinding.mondayTxt),
-            Pair(customPeriodBinding.tuesdayRadio, customPeriodBinding.tuesdayTxt),
-            Pair(customPeriodBinding.wednesdayRadio, customPeriodBinding.wednesdayTxt),
-            Pair(customPeriodBinding.thursdayRadio, customPeriodBinding.thursdayTxt),
-            Pair(customPeriodBinding.fridayRadio, customPeriodBinding.fridayTxt),
-            Pair(customPeriodBinding.saturdayRadio, customPeriodBinding.saturdayTxt),
-            Pair(customPeriodBinding.sundayRadio, customPeriodBinding.sundayTxt)
+            Pair(customPeriodBinding.mondayRadio, Constants.MON),
+            Pair(customPeriodBinding.tuesdayRadio, Constants.TUE),
+            Pair(customPeriodBinding.wednesdayRadio, Constants.WED),
+            Pair(customPeriodBinding.thursdayRadio, Constants.THU),
+            Pair(customPeriodBinding.fridayRadio, Constants.FRI),
+            Pair(customPeriodBinding.saturdayRadio, Constants.SAT),
+            Pair(customPeriodBinding.sundayRadio, Constants.SUN)
         )
 
         customPeriodMap.forEach {
             if (it.key.isChecked) {
-                s += it.value.text.toString().substring(0, 3) + " "
+                s += it.value + " "
             }
         }
 
@@ -397,7 +397,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         periodDialog.dismiss()
     }
 
-    fun requestPermissionsForImagePicker() {
+    private fun requestPermissionsForImagePicker() {
         PermissionUtil.requestPermissions(
             requireContext(),
             requireActivity(),
@@ -471,7 +471,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     private fun validTarget() : Boolean {
         return if (binding.targetEditTxt.text.toString().isEmpty()) {
-            binding.targetEditLyt.error = "Requaried"
+            binding.targetEditLyt.error = getString(R.string.required)
             false
         } else {
             binding.targetEditLyt.error = null
@@ -481,7 +481,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     private fun validDescription() : Boolean {
         return if (binding.descriptionEditTxt.text.toString().isEmpty()) {
-            binding.descriptionEditLyt.error = "Requaried"
+            binding.descriptionEditLyt.error = getString(R.string.required)
             false
         } else {
             binding.descriptionEditLyt.error = null

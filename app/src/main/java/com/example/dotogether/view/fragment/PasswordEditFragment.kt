@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentPasswordEditBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Resource
@@ -120,7 +121,7 @@ class PasswordEditFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun validOldPassword() : Boolean {
-        ValidationFactory.validPassword(oldPassword).let {
+        ValidationFactory.validPassword(oldPassword, requireContext()).let {
             when (it) {
                 is Resource.Success -> {
                     binding.oldPasswordEditLyt.error = null
@@ -138,7 +139,7 @@ class PasswordEditFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun validNewPassword() : Boolean {
-        ValidationFactory.validPassword(newPassword).let {
+        ValidationFactory.validPassword(newPassword, requireContext()).let {
             when (it) {
                 is Resource.Success -> {
                     binding.newPasswordEditLyt.error = null
@@ -156,7 +157,7 @@ class PasswordEditFragment : BaseFragment(), View.OnClickListener {
 
     private fun validNewPasswordAgain() : Boolean {
         return if (newAgainPassword.isEmpty() || newPassword != newAgainPassword) {
-            binding.newPasswordAgainEditLyt.error = "Passwords are not the same"
+            binding.newPasswordAgainEditLyt.error = getString(R.string.new_password_error_message)
             false
         } else {
             binding.newPasswordAgainEditLyt.error = null

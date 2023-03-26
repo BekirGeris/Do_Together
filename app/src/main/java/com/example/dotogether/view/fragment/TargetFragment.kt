@@ -37,6 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.YearMonth
 import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class TargetFragment : BaseFragment(), View.OnClickListener {
@@ -49,9 +50,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var memberAdapter: MemberAdapter
 
-    var targetId: Int? = null
+    private var targetId: Int? = null
     private lateinit var target: Target
-    var myUserId: Int? = null
+    private var myUserId: Int? = null
 
     private val selectedDates = mutableSetOf<LocalDate>()
     private val today = LocalDate.now()
@@ -59,6 +60,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
     private val startMonth = currentMonth.minusMonths(100)
     private val endMonth = currentMonth.plusMonths(100)
     private val daysOfWeek = daysOfWeek()
+
+    var lastDate: Date? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,22 +163,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         }
         targetId?.let {
             viewModel.getTarget(it)
-            viewModel.getActions(it).observe(viewLifecycleOwner) { resource ->
-                when(resource) {
-                    is Resource.Success -> {
-                        resource.data?.forEach { action ->
-                            action.created_at?.let { time ->
-                                val date = Constants.DATE_FORMAT_3.tryParse(time)
-                                date?.let { d ->
-                                    selectedDates.add(RuntimeHelper.convertDateToLocalDate(d))
-                                }
-                            }
-                        }
-                        setupMonthCalendar()
-                    }
-                    else -> {}
-                }
-            }
         }
     }
 
@@ -203,7 +190,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             binding.targetImage.background = ContextCompat.getDrawable(requireContext(), R.drawable.pilgrim)
         }
 
-        binding.doItBtn.setViewProperties(target.action_status == "2")
         setupMonthCalendar()
 
         if (myUserId == target.admin?.id) {
@@ -216,6 +202,27 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             binding.tagsTxt.visibility = View.VISIBLE
             val tagList = tags.split(",").map { Tag(it) }.toCollection(ArrayList()).filter { it.name.isNotEmpty() }
             initChipGroup(ArrayList(tagList), binding.reflowGroup)
+        }
+
+        targetId?.let {
+            viewModel.getActions(it).observe(viewLifecycleOwner) { resource ->
+                when(resource) {
+                    is Resource.Success -> {
+                        resource.data?.forEach { action ->
+                            action.created_at?.let { time ->
+                                lastDate = Constants.DATE_FORMAT_3.tryParse(time)
+                                lastDate?.let { d ->
+                                    selectedDates.add(RuntimeHelper.convertDateToLocalDate(d))
+                                }
+                            }
+                        }
+                        setupMonthCalendar()
+
+                        binding.doItBtn.setViewProperties(isDoItBTNOpen())
+                    }
+                    else -> {}
+                }
+            }
         }
     }
 
@@ -270,7 +277,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 container.textView.text = data.date.dayOfMonth.toString()
                 container.textView.alpha = if (data.position == DayPosition.MonthDate) 1f else 0.5f
                 container.day = data
-                bindDate(data.date, container.textView, data.position == DayPosition.MonthDate)
+                bindDate(data.date, container.textView)
             }
         }
         binding.calendarView.monthScrollListener = { updateTitle() }
@@ -285,7 +292,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.monthText.text = month.month.displayText(short = false)
     }
 
-    private fun bindDate(date: LocalDate, textView: TextView, isSelectable: Boolean) {
+    private fun bindDate(date: LocalDate, textView: TextView) {
         textView.text = date.dayOfMonth.toString()
         when {
             today == date && selectedDates.contains(date) -> {
@@ -310,5 +317,73 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             chip.text = tag.name
             chipGroup.addView(chip)
         }
+    }
+
+    private fun isDoItBTNOpen(): Boolean {
+        lastDate?.let {
+            when (target.period) {
+                Constants.DAILY -> {
+                    return !isDateInCurrentDay(it)
+                }
+                Constants.WEEKLY -> {
+                    return !isDateInCurrentWeek(it)
+                }
+                Constants.MONTHLY -> {
+                    return !isDateInCurrentMonth(it)
+                }
+                else -> {
+                    return !isDateInRangeForWeek(it, getRangeForPeriod(target.period))
+                }
+            }
+        }
+        return true
+    }
+
+    private fun getRangeForPeriod(period: String?): List<Int> {
+        val list = ArrayList<Int>()
+        period?.let {
+            if (it == Constants.MONDAY_TO_FRIDAY) { return  listOf(2, 3, 4, 5, 6) }
+            if (it.contains(Constants.MON)) { list.add(2) }
+            if (it.contains(Constants.TUE)) { list.add(3) }
+            if (it.contains(Constants.WED)) { list.add(4) }
+            if (it.contains(Constants.THU)) { list.add(5) }
+            if (it.contains(Constants.FRI)) { list.add(6) }
+            if (it.contains(Constants.SAT)) { list.add(7) }
+            if (it.contains(Constants.SUN)) { list.add(1) }
+        }
+        return list
+    }
+
+    private fun isDateInCurrentDay(date: Date): Boolean {
+        val calendar = Calendar.getInstance() // şu anki takvim örneği
+        val currentDate = calendar.get(Calendar.DAY_OF_YEAR) // bugünün sırası
+        calendar.time = date // takvim örneğini verilen tarihle ayarla
+        val dateNumber = calendar.get(Calendar.DAY_OF_YEAR) // tarihin sırası
+        return currentDate == dateNumber // günler eşleşiyorsa true döndür
+    }
+
+    private fun isDateInCurrentWeek(date: Date): Boolean {
+        val calendar = Calendar.getInstance() // şu anki takvim örneği
+        val currentWeek = calendar.get(Calendar.WEEK_OF_YEAR) // mevcut haftanın sırası
+        calendar.time = date // takvim örneğini verilen tarihle ayarla
+        val dateWeek = calendar.get(Calendar.WEEK_OF_YEAR) // tarihin haftasının sırası
+        return currentWeek == dateWeek // haftalar eşleşiyorsa true döndür
+    }
+
+    private fun isDateInCurrentMonth(date: Date): Boolean {
+        val calendar = Calendar.getInstance() // şu anki takvim örneği
+        val currentMonth = calendar.get(Calendar.MONTH) // mevcut ayın sırası
+        calendar.time = date // takvim örneğini verilen tarihle ayarla
+        val dateMonth = calendar.get(Calendar.MONTH) // tarihin ayının sırası
+        return currentMonth == dateMonth // aylar eşleşiyorsa true döndür
+    }
+
+    private fun isDateInRangeForWeek(date: Date, weekdays: List<Int>): Boolean {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        calendar.time = Date()
+        val today = calendar.get(Calendar.DAY_OF_WEEK)
+        return weekdays.contains(dayOfWeek) || !weekdays.contains(today)  // bulıunduğumuz gün eğer aralıkta değilde true döndürülerek butonun kapatılması sağlanır.
     }
 }

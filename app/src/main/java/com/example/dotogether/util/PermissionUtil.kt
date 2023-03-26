@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.dotogether.R
 import com.google.android.material.snackbar.Snackbar
 
 object PermissionUtil {
@@ -25,7 +26,9 @@ object PermissionUtil {
         } else {
             //all permission not granted
             if (isAgainRequestPermission(activity, *permissions)) {
-                Snackbar.make(view, "Permission needed feature", Snackbar.LENGTH_INDEFINITE).setAction("Give Permission") {
+                Snackbar.make(view,
+                    context.getString(R.string.permission_needed_feature),
+                    Snackbar.LENGTH_INDEFINITE).setAction(context.getString(R.string.give_permission)) {
                     //again request permission
                     requestMultiplePermissions.launch(
                         permissions.toList().toTypedArray()

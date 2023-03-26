@@ -28,18 +28,9 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initObserve()
-    }
-
     private fun initViews() {
         binding.loginBtn.setOnClickListener(this)
         binding.signUpBtn.setOnClickListener(this)
-    }
-
-    private fun initObserve() {
-
     }
 
     override fun onClick(v: View?) {

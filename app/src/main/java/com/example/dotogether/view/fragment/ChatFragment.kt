@@ -191,7 +191,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     dialog.hide()
                     resource.data?.let {
                         chatResponse = it
-                        showToast(if (it.is_mute == 1) "Sohbet Bildirimi Kaptıldı" else "Sohbet Bildirimi Açıldı")
+                        showToast(if (it.is_mute == 1) getString(R.string.notification_closed) else getString(R.string.notification_opened))
                     }
                 }
                 is Resource.Error -> {
@@ -297,7 +297,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                                 myUser.id == userId.toInt())
 
                             if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
-                                val unreadMessage = Message("messageKey", username,0, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} Okunmamış Mesaj", true)
+                                val unreadMessage = Message("messageKey", username,0, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} ${getString(R.string.message)}", true)
                                 unreadMessage.isUnreadCountMessage = true
                                 messages.add(unreadMessage)
                             }

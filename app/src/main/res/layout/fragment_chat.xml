@@ -103,7 +103,7 @@
         android:minHeight="50dp"
         android:background="@drawable/full_oval"
         android:backgroundTint="?editTextColor"
-        android:hint="Write a message"
+        android:hint="@string/write_a_message"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/send_message_btn"
         app:layout_constraintEnd_toStartOf="@+id/send_message_btn"

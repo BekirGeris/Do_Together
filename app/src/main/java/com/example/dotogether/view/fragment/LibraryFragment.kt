@@ -1,22 +1,17 @@
 package com.example.dotogether.view.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentLibraryBinding
 import com.example.dotogether.view.adapter.TabsPagerAdapter
-import com.example.dotogether.viewmodel.LibraryViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class LibraryFragment : BaseFragment() {
 
-    private val viewModel: LibraryViewModel by viewModels()
     private lateinit var binding: FragmentLibraryBinding
 
     private lateinit var tabsPagerAdapter: TabsPagerAdapter
@@ -35,11 +30,6 @@ class LibraryFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initObserve()
-    }
-
     private fun initViews() {
         val numberOfTabs = 4
         binding.tabLayout.tabMode = TabLayout.MODE_FIXED
@@ -54,22 +44,18 @@ class LibraryFragment : BaseFragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "Pending Targets"
+                    tab.text = getString(R.string.pending_targets)
                 }
                 1 -> {
-                    tab.text = "Subscriptions"
+                    tab.text = getString(R.string.subscriptions)
                 }
                 2 -> {
-                    tab.text = "Favorites"
+                    tab.text = getString(R.string.favorites)
                 }
                 3 -> {
-                    tab.text = "Completed"
+                    tab.text = getString(R.string.completed)
                 }
             }
         }.attach()
-    }
-
-    private fun initObserve() {
-
     }
 }

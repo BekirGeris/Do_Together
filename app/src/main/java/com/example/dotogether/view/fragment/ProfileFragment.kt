@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentProfileBinding
 import com.example.dotogether.databinding.ItemProfileBinding
 import com.example.dotogether.databinding.ItemTargetBinding
@@ -29,7 +30,6 @@ import com.example.dotogether.view.activity.OthersActivity
 import com.example.dotogether.view.adapter.ProfileTargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.view.callback.ConfirmDialogListener
-import com.example.dotogether.view.dialog.ConfirmDialog
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.OnCompleteListener
@@ -44,7 +44,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var itemProfileBinding: ItemProfileBinding
 
     private lateinit var imagePickerBuilder: ImagePicker.Builder
 
@@ -86,7 +85,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         if (isGrantedGalleryAndCamera) {
             startImageMaker()
         } else {
-            showToast("Gallery and camera permission must be granted!")
+            showToast(getString(R.string.permissions_must_be_granted))
         }
     }
 
@@ -108,7 +107,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 showToast(ImagePicker.getError(data))
             }
             else -> {
-                showToast("Task Cancelled")
+                showToast(getString(R.string.task_canceled))
             }
         }
     }
@@ -387,7 +386,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     }
 
     override fun deleteMyAccount(binding: ItemProfileBinding, user: User) {
-        showAlertDialog("Hasabınız geri dönülmez bir\nşekilde silinecek!", object : ConfirmDialogListener {
+        showAlertDialog(getString(R.string.delete_account_message), object : ConfirmDialogListener {
             override fun cancel() {
 
             }
@@ -413,7 +412,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     }
 
     override fun logout(binding: ItemProfileBinding, user: User) {
-        showAlertDialog("Çıkış Yapılacak!", object : ConfirmDialogListener {
+        showAlertDialog(getString(R.string.log_out_message), object : ConfirmDialogListener {
             override fun cancel() {
 
             }
@@ -455,7 +454,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             override fun onDeleteIconClickListener(p0: Int) {
                 reelsViewBuilder.pauseStories()
 
-                showAlertDialog("Story Silinecek!", object : ConfirmDialogListener {
+                showAlertDialog(getString(R.string.delete_story), object : ConfirmDialogListener {
                     override fun cancel() {
                         reelsViewBuilder.startStories()
                     }

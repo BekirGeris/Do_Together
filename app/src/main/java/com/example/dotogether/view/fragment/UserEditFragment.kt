@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentUserEditBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.UpdateUserRequest
@@ -108,7 +109,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
 
     private fun validName() : Boolean {
         return if (user?.name?.isEmpty() == true) {
-            binding.nameEditLyt.error = "Wrong name"
+            binding.nameEditLyt.error = getString(R.string.wrong_name)
             false
         } else {
             binding.nameEditLyt.error = null
@@ -118,7 +119,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
 
     private fun validUserName() : Boolean {
         return if (user?.username?.isEmpty() == true) {
-            binding.usernameEditLyt.error = "Wrong username"
+            binding.usernameEditLyt.error = getString(R.string.wrong_username)
             false
         } else {
             binding.usernameEditLyt.error = null
@@ -133,7 +134,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
                 return true
             }
             is Resource.Error -> {
-                binding.emailEditLyt.error = "Wrong email"
+                binding.emailEditLyt.error = getString(R.string.wrong_email)
                 return false
             }
             else -> {}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.daimajia.swipe.SwipeLayout
+<com.daimajia.swipe.SwipeLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="RtlHardcoded">
         <!--What you want to show-->
 
         <LinearLayout
@@ -40,7 +41,7 @@
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:layout_marginEnd="15dp"
-                android:text="Üyeyi Çıkart"
+                android:text="@string/remove_member"
                 android:layout_gravity="center"/>
 
         </LinearLayout>

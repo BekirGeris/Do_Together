@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentTargetMembersBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
@@ -270,7 +271,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
 
     @SuppressLint("NotifyDataSetChanged")
     override fun deleteMember(user: User) {
-        showAlertDialog("Üye Çıkartılacak.\nEmin misin?", object : ConfirmDialogListener {
+        showAlertDialog(getString(R.string.remove_member_message), object : ConfirmDialogListener {
             override fun cancel() {
                 memberAdapter.notifyDataSetChanged()
             }

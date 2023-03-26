@@ -118,7 +118,7 @@
                     android:id="@+id/tag_edit_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tags"
+                    android:hint="@string/tags"
                     android:inputType="text"
                     android:maxLength="30"
                     android:textColor="?colorPrimary"
@@ -162,6 +162,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="@string/start"
                     android:textColor="?colorPrimary"
                     android:textSize="20sp"
@@ -170,6 +171,7 @@
                 <TextView
                     android:id="@+id/start_date_txt"
                     android:layout_width="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/default_date"
@@ -191,7 +193,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="center"
                     android:text="@string/finish"
                     android:textColor="?colorPrimary"
                     android:textSize="20sp"
@@ -201,6 +203,7 @@
                     android:id="@+id/finish_date_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:text="@string/forever"
                     android:textSize="16sp" />
@@ -248,7 +251,7 @@
                     android:layout_weight="4"
                     android:background="@drawable/full_oval"
                     android:drawableTint="@color/white"
-                    android:text="Upload"
+                    android:text="@string/upload"
                     android:textColor="@color/white" />
 
             </LinearLayout>
@@ -272,7 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:gravity="center"
-                    android:text="Period"
+                    android:text="@string/period"
                     android:textAlignment="center"
                     android:textColor="?colorPrimary"
                     android:textSize="20sp"
@@ -285,7 +288,7 @@
                     android:id="@+id/period_decs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Günlük"
+                    android:text="@string/daily"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="@+id/period_txt"
                     app:layout_constraintEnd_toStartOf="@+id/rigt_btn" />

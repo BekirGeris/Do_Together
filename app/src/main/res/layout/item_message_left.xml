@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -19,7 +20,7 @@
         android:paddingEnd="7dp"
         android:paddingStart="7dp"
         android:paddingTop="2dp"
-        android:text="14 Mart 2023"
+        android:text="@string/default_date_message"
         android:textColor="@color/black"
         android:textSize="14sp" />
 
@@ -58,7 +59,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="5dp"
                 android:maxWidth="300dp"
-                android:text="swwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+                android:text="@string/default_message"
                 android:textAlignment="viewStart"
                 android:textColor="@color/white"/>
 
@@ -70,15 +71,16 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="5dp"
-                android:text="55:11"
+                android:text="@string/default_time"
                 android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
 
         <View
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"/>
 
     </LinearLayout>
