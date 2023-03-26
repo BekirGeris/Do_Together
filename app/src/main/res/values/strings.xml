@@ -67,7 +67,7 @@
     <string name="error_genel_message">Something went wrong.</string>
     <string name="error_message">Nothing to Show</string>
     <string name="name">name</string>
-    <string name="description">Description</string>
+    <string name="description">Bio</string>
     <string name="discover">Discover</string>
     <string name="add_reels">Add Reels</string>
     <string name="change_user_info">Update User Information</string>
@@ -142,4 +142,5 @@
     <string name="write_a_message">Write a message</string>
     <string name="unread_message">Unread Message</string>
     <string name="target_do_it_notification_message">The target is waiting for you to be completed.</string>
+    <string name="are_your_sure">Are your sure?</string>
 </resources>

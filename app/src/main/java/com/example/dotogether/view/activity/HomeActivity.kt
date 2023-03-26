@@ -2,14 +2,14 @@ package com.example.dotogether.view.activity
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.addCallback
-import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.work.*
 import com.example.dotogether.R
@@ -105,6 +105,9 @@ class HomeActivity : BaseActivity() {
         }
 
         setAlarmManager()
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     private fun setWorkManager() {

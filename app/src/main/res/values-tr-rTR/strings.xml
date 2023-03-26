@@ -68,7 +68,7 @@
     <string name="error_genel_message">Bir şeyler ters gitti.</string>
     <string name="error_message">Gösterilecek Bir Şey Yok</string>
     <string name="name">ad</string>
-    <string name="description">Açıklama</string>
+    <string name="description">Biyo</string>
     <string name="discover">Keşfet</string>
     <string name="add_reels">Reels Ekle</string>
     <string name="change_user_info">Kullanıcı Bilgilerini Değiştir</string>
@@ -143,4 +143,5 @@
     <string name="write_a_message">Bir mesaj yaz</string>
     <string name="unread_message">Okunmamış Mesaj</string>
     <string name="target_do_it_notification_message">Hedef tamamlanmak için seni bekliyor.</string>
+    <string name="are_your_sure">Emin misin?</string>
 </resources>
