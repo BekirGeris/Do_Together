@@ -37,9 +37,12 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
             }
             RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)
 
-            chat.last_message?.let { lastMessage ->
-                 binding.message.text = if (lastMessage.length > 70) lastMessage.substring(0, 70) + "..." else lastMessage
+            var lastMessage = chat.last_message
+            lastMessage?.let { msg ->
+                lastMessage = if (msg.length > 70) msg.substring(0, 70) + "..." else msg
             }
+            binding.message.text = lastMessage
+
             if (chat.chat_type == "activity") {
                 RuntimeHelper.glide(
                     context,

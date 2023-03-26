@@ -19,6 +19,7 @@ import com.example.dotogether.databinding.FragmentHomeBinding
 import com.example.dotogether.databinding.ItemReelsBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Basket
+import com.example.dotogether.model.NotificationData
 import com.example.dotogether.model.Target
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.CreateReelsRequest
@@ -143,7 +144,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         if (SharedPreferencesUtil.getString(requireContext(), Constants.TOKEN_KEY, "").isEmpty()) {
             goToLoginFragment()
         }
-        checkOpenAppFromNotification()
+        checkOpenAppFromLocaleNotification()
         checkOpenAppFromLink()
         bottomSheetSettingDialog.setContentView(bottomSheetSettingBinding.root)
 
@@ -167,7 +168,32 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         }
     }
 
-    private fun checkOpenAppFromNotification() {
+    private fun checkOpenAppFromLocaleNotification() {
+        val notificationData: NotificationData? = activity?.intent?.getParcelableExtra("notification_data")
+        Log.d(TAG, "bundle: $notificationData")
+
+        val notificationType = notificationData?.type
+        val typeId = notificationData?.typeId
+
+        Log.d(TAG, "notification type: $notificationType type id: $typeId")
+
+        when {
+            notificationType.equals("Notification", ignoreCase = true) -> {
+                goToNotificationFragment()
+            }
+            notificationType.equals("Target", ignoreCase = true) && typeId?.toIntOrNull() != null -> {
+                goToTargetFragment(typeId.toInt())
+            }
+            notificationType.equals("Chat", ignoreCase = true) && typeId?.toIntOrNull() != null-> {
+                goToChatListFragment(typeId)
+            }
+            else -> {
+                checkOpenAppFromRemoteNotification()
+            }
+        }
+    }
+
+    private fun checkOpenAppFromRemoteNotification() {
         val notificationType = activity?.intent?.extras?.getString("notification_type")
         val typeId = activity?.intent?.extras?.getString("type_id")
         Log.d(TAG, "notification type: $notificationType type id: $typeId")

@@ -25,7 +25,6 @@ import com.example.dotogether.R
 import com.example.dotogether.model.NotificationData
 import com.example.dotogether.util.Constants
 import com.example.dotogether.model.Target
-import com.example.dotogether.view.activity.OthersActivity
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.messaging.RemoteMessage
@@ -115,8 +114,8 @@ object RuntimeHelper {
         return getDisplayName(style, Locale.ENGLISH)
     }
 
-    fun sendNotification(context: Context, title: String?, messageBody: String?, notificationId: Int, notificationData: NotificationData? = null) {
-        val intent = Intent(context, OthersActivity::class.java)
+    fun sendNotification(context: Context, activity: Class<*>, title: String?, messageBody: String?, notificationId: Int, notificationData: NotificationData? = null) {
+        val intent = Intent(context, activity)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         notificationData?.let {
             intent.putExtra("notification_data", it)

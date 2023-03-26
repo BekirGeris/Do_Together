@@ -8,6 +8,7 @@ import com.example.dotogether.data.repostory.AppRepository
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.view.activity.HomeActivity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.runBlocking
@@ -26,7 +27,7 @@ class NotificationWorker @AssistedInject constructor(
         runBlocking {
             getTarget()
             if (targets.any { it.action_status == "2" }) {
-                RuntimeHelper.sendNotification(context, "Hey Orada mısın?", "Yapılmayı bekleyen bazı hedeflerin var!!!", 0)
+                RuntimeHelper.sendNotification(context, HomeActivity::class.java, "Hey Orada mısın?", "Yapılmayı bekleyen bazı hedeflerin var!!!", 0)
             }
         }
         return Result.success()

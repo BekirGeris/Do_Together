@@ -347,11 +347,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        chatId?.let { viewModel.resetUnreadCountChat(it) }
-    }
-
     fun onError(message: String? = null) {
         message?.let {
             showToast(it)
@@ -391,6 +386,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
     override fun onStop() {
         super.onStop()
+        chatId?.let { viewModel.resetUnreadCountChat(it) }
         val basket = viewModel.getCurrentBasketSync()
         basket?.let {
             basket.viewType = null

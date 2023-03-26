@@ -33,9 +33,6 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
     private val _updateChat = MutableLiveData<Resource<ChatResponse>>()
     val updateChat: MutableLiveData<Resource<ChatResponse>> = _updateChat
 
-    private val _resetUnreadCountChat = MutableLiveData<Resource<ChatResponse>>()
-    val resetUnreadCountChat: MutableLiveData<Resource<ChatResponse>> = _resetUnreadCountChat
-
     fun newChat(newChatRequest: NewChatRequest) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.newChat(newChatRequest).collect{

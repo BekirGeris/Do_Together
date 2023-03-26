@@ -10,7 +10,9 @@ import com.example.dotogether.databinding.ActivityOthersBinding
 import com.example.dotogether.model.NotificationData
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Constants.ViewType
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,6 +40,9 @@ class OthersActivity : BaseActivity() {
     }
 
     private fun initViews() {
+        if (SharedPreferencesUtil.getString(this, Constants.TOKEN_KEY, "").isEmpty()) {
+            finish()
+        }
         navController = Navigation.findNavController(this, R.id.othersFragmentContainerView)
         navOptions = NavOptions.Builder()
             .setLaunchSingleTop(true)
@@ -46,10 +51,10 @@ class OthersActivity : BaseActivity() {
 
         viewType = intent.getIntExtra("viewType", 0)
 
-        checkOpenAppFromNotification()
+        checkOpenAppFromLocaleNotification()
     }
 
-    private fun checkOpenAppFromNotification() {
+    private fun checkOpenAppFromLocaleNotification() {
         val notificationData: NotificationData? = intent?.getParcelableExtra("notification_data")
         Log.d(RuntimeHelper.TAG, "bundle: $notificationData")
 

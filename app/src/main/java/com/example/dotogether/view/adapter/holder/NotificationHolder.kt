@@ -42,13 +42,9 @@ class NotificationHolder(view: View, private val listener: HolderListener.Notifi
         binding.notificationTitle.text = notification.title
 
         if (notification.type.equals("target", ignoreCase = true)) {
-            notification.img?.let {
-                RuntimeHelper.glideForPersonImage(context).load(it).into(binding.notificationImage)
-            }
+            RuntimeHelper.glideForPersonImage(context).load(notification.img).into(binding.notificationImage)
         } else if (notification.type.equals("user", ignoreCase = true)) {
-            notification.others_img?.let {
-                RuntimeHelper.glideForPersonImage(context).load(it).into(binding.notificationImage)
-            }
+            RuntimeHelper.glideForPersonImage(context).load(notification.others_img).into(binding.notificationImage)
         }
 
         notification.description?.let {
