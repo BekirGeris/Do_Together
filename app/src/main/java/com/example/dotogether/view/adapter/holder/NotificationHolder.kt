@@ -70,7 +70,7 @@ class NotificationHolder(view: View, private val listener: HolderListener.Notifi
                 if (notification.type.equals("target", ignoreCase = true)) {
                     notification.type_id?.let { goToTargetFragment(view.findNavController(), it) }
                 } else if (notification.type.equals("user", ignoreCase = true)) {
-                    notification.type_id?.let { goToProfileFragment(view.findNavController(), it) }
+                    notification.others_id?.let { goToProfileFragment(view.findNavController(), it) }
                 }
             }
         }
