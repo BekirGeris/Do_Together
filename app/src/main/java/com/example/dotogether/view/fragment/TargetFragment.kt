@@ -218,7 +218,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                         }
                         setupMonthCalendar()
 
-                        binding.doItBtn.setViewProperties(isDoItBTNOpen())
+                        binding.doItBtn.setViewProperties(RuntimeHelper.isDoItBTNOpen(lastDate, target))
                     }
                     else -> {}
                 }
@@ -317,73 +317,5 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             chip.text = tag.name
             chipGroup.addView(chip)
         }
-    }
-
-    private fun isDoItBTNOpen(): Boolean {
-        lastDate?.let {
-            when (target.period) {
-                Constants.DAILY -> {
-                    return !isDateInCurrentDay(it)
-                }
-                Constants.WEEKLY -> {
-                    return !isDateInCurrentWeek(it)
-                }
-                Constants.MONTHLY -> {
-                    return !isDateInCurrentMonth(it)
-                }
-                else -> {
-                    return !isDateInRangeForWeek(it, getRangeForPeriod(target.period))
-                }
-            }
-        }
-        return true
-    }
-
-    private fun getRangeForPeriod(period: String?): List<Int> {
-        val list = ArrayList<Int>()
-        period?.let {
-            if (it == Constants.MONDAY_TO_FRIDAY) { return  listOf(2, 3, 4, 5, 6) }
-            if (it.contains(Constants.MON)) { list.add(2) }
-            if (it.contains(Constants.TUE)) { list.add(3) }
-            if (it.contains(Constants.WED)) { list.add(4) }
-            if (it.contains(Constants.THU)) { list.add(5) }
-            if (it.contains(Constants.FRI)) { list.add(6) }
-            if (it.contains(Constants.SAT)) { list.add(7) }
-            if (it.contains(Constants.SUN)) { list.add(1) }
-        }
-        return list
-    }
-
-    private fun isDateInCurrentDay(date: Date): Boolean {
-        val calendar = Calendar.getInstance() // şu anki takvim örneği
-        val currentDate = calendar.get(Calendar.DAY_OF_YEAR) // bugünün sırası
-        calendar.time = date // takvim örneğini verilen tarihle ayarla
-        val dateNumber = calendar.get(Calendar.DAY_OF_YEAR) // tarihin sırası
-        return currentDate == dateNumber // günler eşleşiyorsa true döndür
-    }
-
-    private fun isDateInCurrentWeek(date: Date): Boolean {
-        val calendar = Calendar.getInstance() // şu anki takvim örneği
-        val currentWeek = calendar.get(Calendar.WEEK_OF_YEAR) // mevcut haftanın sırası
-        calendar.time = date // takvim örneğini verilen tarihle ayarla
-        val dateWeek = calendar.get(Calendar.WEEK_OF_YEAR) // tarihin haftasının sırası
-        return currentWeek == dateWeek // haftalar eşleşiyorsa true döndür
-    }
-
-    private fun isDateInCurrentMonth(date: Date): Boolean {
-        val calendar = Calendar.getInstance() // şu anki takvim örneği
-        val currentMonth = calendar.get(Calendar.MONTH) // mevcut ayın sırası
-        calendar.time = date // takvim örneğini verilen tarihle ayarla
-        val dateMonth = calendar.get(Calendar.MONTH) // tarihin ayının sırası
-        return currentMonth == dateMonth // aylar eşleşiyorsa true döndür
-    }
-
-    private fun isDateInRangeForWeek(date: Date, weekdays: List<Int>): Boolean {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        calendar.time = Date()
-        val today = calendar.get(Calendar.DAY_OF_WEEK)
-        return weekdays.contains(dayOfWeek) || !weekdays.contains(today)  // bulıunduğumuz gün eğer aralıkta değilde true döndürülerek butonun kapatılması sağlanır.
     }
 }

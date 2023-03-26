@@ -24,7 +24,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import com.example.dotogether.model.NotificationData
 import com.example.dotogether.util.Constants
-import com.example.dotogether.view.activity.HomeActivity
+import com.example.dotogether.model.Target
 import com.example.dotogether.view.activity.OthersActivity
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.*
@@ -241,6 +241,45 @@ object RuntimeHelper {
 
     fun convertDateToLocalDate(date: Date): LocalDate {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+    }
+
+    fun isDoItBTNOpen(lastDate: Date?, target: Target): Boolean {
+        return lastDate?.let { date ->
+            when (target.period) {
+                Constants.DAILY -> !isDateInCurrentType(date, Calendar.DAY_OF_YEAR)
+                Constants.WEEKLY -> !isDateInCurrentType(date, Calendar.WEEK_OF_YEAR)
+                Constants.MONTHLY -> !isDateInCurrentType(date, Calendar.MONTH)
+                else -> !isDateInRangeForWeek(date, getRangeForPeriod(target.period))
+            }
+        } ?: true
+    }
+
+    private fun getRangeForPeriod(period: String?): List<Int> {
+        val weekdays = arrayOf(
+            Constants.MON to 2, Constants.TUE to 3, Constants.WED to 4, Constants.THU to 5, Constants.FRI to 6, Constants.SAT to 7, Constants.SUN to 1
+        )
+        return when (period) {
+            Constants.MONDAY_TO_FRIDAY -> listOf(2, 3, 4, 5, 6)
+            null -> emptyList()
+            else -> {
+                weekdays.filter { (day, _) -> period.contains(day) }.map { (_, index) -> index }
+            }
+        }
+    }
+
+    private fun isDateInCurrentType(date: Date, calenderType: Int): Boolean {
+        val currentDateOrder = Calendar.getInstance().get(calenderType)
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val dateOrder = Calendar.getInstance().apply { time = date }.get(calenderType)
+        val dateYear = Calendar.getInstance().apply { time = date }.get(Calendar.YEAR)
+        return dateOrder == currentDateOrder && dateYear == currentYear
+    }
+
+    private fun isDateInRangeForWeek(date: Date, weekdays: List<Int>): Boolean {
+        val dayOfWeek = Calendar.getInstance().apply { time = date }.get(Calendar.DAY_OF_WEEK)
+        val todayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+        Log.d(TAG, "dayOfWeek : $dayOfWeek todayOfWeek : $todayOfWeek weekdays : $weekdays")
+        return !weekdays.contains(todayOfWeek) || (dayOfWeek == todayOfWeek && isDateInCurrentType(date, Calendar.WEEK_OF_YEAR))
     }
 
     fun RemoteMessage.Notification.myToString() {
