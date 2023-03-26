@@ -20,60 +20,7 @@ class NotificationWorker @AssistedInject constructor(
     private val appRepository: AppRepository
 ) : Worker(context, workerParams) {
 
-    private var nextPageNo = "0"
-    private val targets = ArrayList<Target>()
-
     override fun doWork(): Result {
-        runBlocking {
-            getTarget()
-            if (targets.any { it.action_status == "2" }) {
-                RuntimeHelper.sendNotification(context, HomeActivity::class.java, "Hey Orada mısın?", "Yapılmayı bekleyen bazı hedeflerin var!!!", 0)
-            }
-        }
         return Result.success()
-    }
-
-    private suspend fun getTarget() {
-        appRepository.remoteRepositoryImpl.getMyJoinedTargets().collect {
-            when (it) {
-                is Resource.Success -> {
-                    it.data?.data?.let { list ->
-                        targets.addAll(list)
-                    }
-                    it.data?.next_page_url?.let { next_page_url ->
-                        nextPageNo = next_page_url.last().toString()
-                        getNextTarget(nextPageNo)
-                    }
-                }
-                is Resource.Error -> {
-
-                }
-                is Resource.Loading -> {
-
-                }
-            }
-        }
-    }
-
-    private suspend fun getNextTarget(pageNo: String) {
-        appRepository.remoteRepositoryImpl.getNextMyJoinedTargets(pageNo).collect {
-            when (it) {
-                is Resource.Success -> {
-                    it.data?.data?.let { list ->
-                        targets.addAll(list)
-                    }
-                    it.data?.next_page_url?.let { next_page_url ->
-                        nextPageNo = next_page_url.last().toString()
-                        getNextTarget(nextPageNo)
-                    }
-                }
-                is Resource.Error -> {
-
-                }
-                is Resource.Loading -> {
-
-                }
-            }
-        }
     }
 }

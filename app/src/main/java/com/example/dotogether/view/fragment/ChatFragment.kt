@@ -296,44 +296,18 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                                 if (userMessage == Constants.DELETE_MESSAGE_FIREBASE_KEY ) getString(R.string.delete_firebase_message) else userMessage,
                                 myUser.id == userId.toInt())
 
-                            if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
-                                val unreadMessage = Message("messageKey", username,0, Constants.DATE_FORMAT_4.format(Date(time)), "${chatUser?.unread_count} ${getString(R.string.message)}", true)
-                                unreadMessage.isUnreadCountMessage = true
-                                messages.add(unreadMessage)
-                            }
-
-                            if (penultimateTime != null && !RuntimeHelper.isSameDay(penultimateTime, time)) {
-                                val unreadMessage = Message("messageKey", username, 0, Constants.DATE_FORMAT_4.format(Date(time)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
-                                unreadMessage.isDateMessage = true
-                                messages.add(unreadMessage)
-                            }
+                            addMessageLabels(count, time, penultimateTime)
                             messages.add(message)
+                            penultimateTime = time
                         }
-                        penultimateTime = time
                     }
 
-                    penultimateTime?.let {
-                        val unreadMessage = Message("messageKey", "username", 0, Constants.DATE_FORMAT_4.format(Date(penultimateTime)), Constants.DATE_FORMAT_5.format(Date(penultimateTime)), false)
-                        unreadMessage.isDateMessage = true
-                        messages.add(unreadMessage)
-                    }
+                    addDateMessageLabel(penultimateTime)
 
                     messageAdapter.notifyDataSetChanged()
                     binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
 
-                    if (chatUser?.unread_count != 0) {
-                        thread {
-                            Thread.sleep(100)
-                            val smoothScroller: LinearSmoothScroller = object : LinearSmoothScroller(requireContext()) {
-                                override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
-                                    return 50f / displayMetrics.densityDpi
-                                }
-                            }
-                            smoothScroller.targetPosition = chatUser?.unread_count!!
-                            binding.messageRv.layoutManager?.startSmoothScroll(smoothScroller)
-                            chatUser?.unread_count = 0
-                        }
-                    }
+                    goToLastReadMessage()
                     binding.linearIndicator.visibility = View.GONE
                 }
 
@@ -344,6 +318,70 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
             })
         } else {
             onError()
+        }
+    }
+
+    private fun addDateMessageLabel(penultimateTime: Long?) {
+        penultimateTime?.let {
+            val unreadMessage = Message(
+                "messageKey",
+                "username",
+                0,
+                Constants.DATE_FORMAT_4.format(Date(penultimateTime)),
+                Constants.DATE_FORMAT_5.format(Date(penultimateTime)),
+                false
+            )
+            unreadMessage.isDateMessage = true
+            messages.add(unreadMessage)
+        }
+    }
+
+    private fun addMessageLabels(
+        count: Int,
+        time: Long,
+        penultimateTime: Long?
+    ) {
+        if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
+            val unreadMessage = Message(
+                "messageKey",
+                "username",
+                0,
+                Constants.DATE_FORMAT_4.format(Date(time)),
+                "${chatUser?.unread_count} ${getString(R.string.unread_message)}",
+                true
+            )
+            unreadMessage.isUnreadCountMessage = true
+            messages.add(unreadMessage)
+        }
+
+        if (penultimateTime != null && !RuntimeHelper.isSameDay(penultimateTime, time)) {
+            val unreadMessage = Message(
+                "messageKey",
+                "username",
+                0,
+                Constants.DATE_FORMAT_4.format(Date(time)),
+                Constants.DATE_FORMAT_5.format(Date(penultimateTime)),
+                false
+            )
+            unreadMessage.isDateMessage = true
+            messages.add(unreadMessage)
+        }
+    }
+
+    private fun goToLastReadMessage() {
+        if (chatUser?.unread_count != 0) {
+            thread {
+                Thread.sleep(100)
+                val smoothScroller: LinearSmoothScroller =
+                    object : LinearSmoothScroller(requireContext()) {
+                        override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
+                            return 50f / displayMetrics.densityDpi
+                        }
+                    }
+                smoothScroller.targetPosition = chatUser?.unread_count!!
+                binding.messageRv.layoutManager?.startSmoothScroll(smoothScroller)
+                chatUser?.unread_count = 0
+            }
         }
     }
 
