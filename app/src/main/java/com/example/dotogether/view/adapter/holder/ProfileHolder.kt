@@ -82,7 +82,7 @@ class ProfileHolder(
         if (user.background_img != null) {
             RuntimeHelper.glideForImage(context).load(user.background_img).into(binding.backgroundImage)
         } else {
-            binding.backgroundImage.background = ContextCompat.getDrawable(context, R.drawable.pilgrim)
+            binding.backgroundImage.background = ContextCompat.getDrawable(context, R.drawable.target_background)
         }
 
         binding.followBtn.text = context.getString(if (user.is_followed == true) R.string.un_follow else R.string.follow)

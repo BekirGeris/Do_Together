@@ -47,8 +47,8 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
                 RuntimeHelper.glide(
                     context,
                     RequestOptions()
-                        .placeholder(R.drawable.pilgrim)
-                        .error(R.drawable.pilgrim)
+                        .placeholder(R.drawable.target_background)
+                        .error(R.drawable.target_background)
                 ).load(it.img).into(binding.userImage)
             } else {
                 RuntimeHelper.glideForPersonImage(context).load(it.img).into(binding.userImage)

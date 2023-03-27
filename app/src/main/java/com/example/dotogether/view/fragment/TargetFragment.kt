@@ -187,7 +187,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         if (target.img != null) {
             RuntimeHelper.glideForImage(requireContext()).load(target.img).into(binding.targetImage)
         } else {
-            binding.targetImage.background = ContextCompat.getDrawable(requireContext(), R.drawable.pilgrim)
+            binding.targetImage.background = ContextCompat.getDrawable(requireContext(), R.drawable.target_background)
         }
 
         setupMonthCalendar()

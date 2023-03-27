@@ -107,8 +107,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 RuntimeHelper.glide(
                     requireContext(),
                     RequestOptions()
-                        .placeholder(R.drawable.pilgrim)
-                        .error(R.drawable.pilgrim)
+                        .placeholder(R.drawable.target_background)
+                        .error(R.drawable.target_background)
                 ).load(it.img).into(binding.chatsUserImage)
             } else {
                 RuntimeHelper.glideForPersonImage(requireContext()).load(it.img).into(binding.chatsUserImage)
