@@ -21,7 +21,7 @@
         android:id="@+id/chats_user_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_account"
+        android:src="@drawable/account"
         app:layout_constraintStart_toEndOf="@+id/back_btn"
         app:layout_constraintTop_toTopOf="@+id/back_btn" />
 

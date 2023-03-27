@@ -44,8 +44,8 @@ object RuntimeHelper {
     fun glideForPersonImage(context: Context) = glide(
         context,
         RequestOptions()
-            .placeholder(R.drawable.ic_account)
-            .error(R.drawable.ic_account)
+            .placeholder(R.drawable.account)
+            .error(R.drawable.account)
     )
 
     fun glideForImage(context: Context) = glide(

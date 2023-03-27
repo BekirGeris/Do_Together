@@ -158,7 +158,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     }
                 }
                 is Resource.Error -> {
-                    onError(resource.message)
+                    onError(resource.message + " 1")
                 }
                 is Resource.Loading -> {
 
@@ -178,7 +178,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     }
                 }
                 is Resource.Error -> {
-                    onError(resource.message)
+                    onError(resource.message + " 2")
                 }
                 is Resource.Loading -> {
 

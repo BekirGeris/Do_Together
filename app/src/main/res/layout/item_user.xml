@@ -22,7 +22,7 @@
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/ic_account"
+            android:src="@drawable/account"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,10 +39,12 @@
             app:srcCompat="@drawable/ic_baseline_person_add_alt_24" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/user_image"
+            app:layout_constraintEnd_toStartOf="@+id/follow_or_unfollow_btn"
             app:layout_constraintStart_toEndOf="@+id/user_image"
             app:layout_constraintTop_toTopOf="@+id/user_image">
 
@@ -50,11 +52,10 @@
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="200dp"
                 android:layout_marginStart="16dp"
                 android:text="@string/user_name"
                 android:textColor="?colorPrimary"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -62,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Level 100"
+                android:text="@string/name"
                 android:textColor="?colorPrimary" />
         </LinearLayout>
 
