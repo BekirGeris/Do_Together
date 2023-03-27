@@ -119,9 +119,11 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                         chats.addAll(list)
                         chatAdapter.notifyDataSetChanged()
                     }
+                    binding.activityErrorView.visibility = if(chats.isEmpty()) View.VISIBLE else View.GONE
                 }
                 is Resource.Error -> {
                     binding.swipeLyt.isRefreshing = false
+                    binding.activityErrorView.visibility = View.VISIBLE
                     dialog.hide()
                 }
                 is Resource.Loading -> {

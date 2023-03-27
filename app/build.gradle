@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 def appVersionCode = 1
@@ -166,4 +167,7 @@ dependencies {
     //noinspection GradleCompatible
     implementation "com.android.support:support-v4:20.0.0"
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
