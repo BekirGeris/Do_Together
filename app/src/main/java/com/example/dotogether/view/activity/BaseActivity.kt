@@ -1,5 +1,6 @@
 package com.example.dotogether.view.activity
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dotogether.view.callback.ConfirmDialogListener
@@ -13,5 +14,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun showAlertDialog(message: String, listener: ConfirmDialogListener) {
         ConfirmDialog(this, message, listener).show()
+    }
+
+    fun goToLoginFragment() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        this.finish()
     }
 }

@@ -41,7 +41,7 @@ class OthersActivity : BaseActivity() {
 
     private fun initViews() {
         if (SharedPreferencesUtil.getString(this, Constants.TOKEN_KEY, "").isEmpty()) {
-            finish()
+            goToLoginFragment()
         }
         navController = Navigation.findNavController(this, R.id.othersFragmentContainerView)
         navOptions = NavOptions.Builder()
