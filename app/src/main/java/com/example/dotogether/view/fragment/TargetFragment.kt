@@ -204,6 +204,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             initChipGroup(ArrayList(tagList), binding.reflowGroup)
         }
 
+        binding.doItBtn.setViewProperties(RuntimeHelper.isDoItBTNOpen(target))
+
         targetId?.let {
             viewModel.getActions(it).observe(viewLifecycleOwner) { resource ->
                 when(resource) {
@@ -217,8 +219,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                             }
                         }
                         setupMonthCalendar()
-
-                        binding.doItBtn.setViewProperties(RuntimeHelper.isDoItBTNOpen(lastDate, target))
                     }
                     else -> {}
                 }

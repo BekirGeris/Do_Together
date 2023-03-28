@@ -242,8 +242,9 @@ object RuntimeHelper {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     }
 
-    fun isDoItBTNOpen(lastDate: Date?, target: Target): Boolean {
-        return lastDate?.let { date ->
+    fun isDoItBTNOpen(target: Target): Boolean {
+        return target.last_date?.let {
+            val date = Constants.DATE_FORMAT_6.tryParse(it) ?: return true
             when (target.period) {
                 Constants.DAILY -> !isDateInCurrentType(date, Calendar.DAY_OF_YEAR)
                 Constants.WEEKLY -> !isDateInCurrentType(date, Calendar.WEEK_OF_YEAR)

@@ -12,6 +12,7 @@ import com.example.dotogether.databinding.FragmentPendingTargetsBinding
 import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Resource
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.TargetAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.viewmodel.LibraryViewModel
@@ -76,7 +77,7 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
                         val newTargets = ArrayList<Target>()
                         targets.mapTo(newTargets) {t -> if (updateTarget.id == t.id) updateTarget else t}
                         targets.clear()
-                        targets.addAll(newTargets.filter {it.is_joined == true && it.action_status == "2"})
+                        targets.addAll(newTargets.filter {it.is_joined == true && RuntimeHelper.isDoItBTNOpen(it)})
                         targetAdapter.notifyDataSetChanged()
                     }
                     dialog.hide()
@@ -96,7 +97,7 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
                     binding.swipeLyt.isRefreshing = false
                     it.data?.let { response ->
                         response.data?.let { list ->
-                            val targetsFromResponse = list.filter { target -> target.action_status == "2" }
+                            val targetsFromResponse = list.filter { target -> RuntimeHelper.isDoItBTNOpen(target) }
                             binding.activityErrorView.visibility = if(targetsFromResponse.isEmpty()) View.VISIBLE else View.GONE
                             targets.clear()
                             targets.addAll(targetsFromResponse)
@@ -130,7 +131,7 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
                     binding.nextProgressBar.visibility = View.GONE
                     it.data?.let { response ->
                         response.data?.let { list ->
-                            val targetsFromResponse = list.filter { target -> target.action_status == "2" }
+                            val targetsFromResponse = list.filter { target -> RuntimeHelper.isDoItBTNOpen(target) }
                             targets.addAll(targetsFromResponse)
                             targetAdapter.notifyDataSetChanged()
                         }

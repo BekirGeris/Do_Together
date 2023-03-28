@@ -72,18 +72,16 @@ class NotificationAlarmReceiver : HiltBroadcastReceiver() {
         Log.d(TAG, "targets size: ${targets.size}")
         var notificationCount = 1
         targets.forEach { target ->
-            target.last_date?.let {
-                if (notificationCount <= 5 && RuntimeHelper.isDoItBTNOpen(Constants.DATE_FORMAT_6.tryParse(it), target)) {
-                    context?.let { context ->
-                        val notificationData = NotificationData("Target", target.id.toString())
-                        RuntimeHelper.sendNotification( context,
-                            HomeActivity::class.java,
-                            target.target,
-                            context.getString(R.string.target_do_it_notification_message),
-                            target.id ?: 1,
-                            notificationData)
-                        notificationCount++
-                    }
+            if (notificationCount <= 5 && RuntimeHelper.isDoItBTNOpen(target)) {
+                context?.let { context ->
+                    val notificationData = NotificationData("Target", target.id.toString())
+                    RuntimeHelper.sendNotification( context,
+                        HomeActivity::class.java,
+                        target.target,
+                        context.getString(R.string.target_do_it_notification_message),
+                        target.id ?: 1,
+                        notificationData)
+                    notificationCount++
                 }
             }
         }
