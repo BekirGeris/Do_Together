@@ -261,6 +261,18 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         binding.periodDecs.text = target.period
         binding.startDateTxt.text = target.start_date
         binding.finishDateTxt.text = target.end_date
+
+        target.period?.let {
+            when (it) {
+                Constants.DAILY -> setPeriodCheckView(periodDialogBinding.dailyCheck)
+                Constants.WEEKLY -> setPeriodCheckView(periodDialogBinding.weeklyCheck)
+                Constants.MONTHLY -> setPeriodCheckView(periodDialogBinding.monthlyCheck)
+                else -> {
+                    setPeriodCheckView(periodDialogBinding.customCheck)
+                    setCustomPeriodCheckView(it)
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -395,6 +407,22 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         periodDialogBinding.customCheck.visibility = View.GONE
         view.visibility = View.VISIBLE
         periodDialog.dismiss()
+    }
+
+    private fun setCustomPeriodCheckView(period: String) {
+        val days = listOf(
+            Constants.MON to customPeriodBinding.mondayRadio,
+            Constants.TUE to customPeriodBinding.tuesdayRadio,
+            Constants.WED to customPeriodBinding.wednesdayRadio,
+            Constants.THU to customPeriodBinding.thursdayRadio,
+            Constants.FRI to customPeriodBinding.fridayRadio,
+            Constants.SAT to customPeriodBinding.saturdayRadio,
+            Constants.SUN to customPeriodBinding.sundayRadio
+        )
+
+        days.forEach { (day, radioButton) ->
+            if (period.contains(day)) radioButton.isChecked = true
+        }
     }
 
     private fun requestPermissionsForImagePicker() {
