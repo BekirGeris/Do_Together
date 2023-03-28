@@ -243,15 +243,19 @@ object RuntimeHelper {
     }
 
     fun isDoItBTNOpen(target: Target): Boolean {
-        return target.last_date?.let {
-            val date = Constants.DATE_FORMAT_6.tryParse(it) ?: return true
+        return if (target.last_date != null) {
+            val date = Constants.DATE_FORMAT_6.tryParse(target.last_date!!) ?: return true
             when (target.period) {
                 Constants.DAILY -> !isDateInCurrentType(date, Calendar.DAY_OF_YEAR)
                 Constants.WEEKLY -> !isDateInCurrentType(date, Calendar.WEEK_OF_YEAR)
                 Constants.MONTHLY -> !isDateInCurrentType(date, Calendar.MONTH)
                 else -> !isDateInRangeForWeek(date, getRangeForPeriod(target.period))
             }
-        } ?: true
+        } else {
+            val todayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+            val weekdays = getRangeForPeriod(target.period)
+            if (weekdays.isNotEmpty()) weekdays.contains(todayOfWeek) else true
+        }
     }
 
     private fun getRangeForPeriod(period: String?): List<Int> {
@@ -278,7 +282,6 @@ object RuntimeHelper {
     private fun isDateInRangeForWeek(date: Date, weekdays: List<Int>): Boolean {
         val dayOfWeek = Calendar.getInstance().apply { time = date }.get(Calendar.DAY_OF_WEEK)
         val todayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-        Log.d(TAG, "dayOfWeek : $dayOfWeek todayOfWeek : $todayOfWeek weekdays : $weekdays")
         return !weekdays.contains(todayOfWeek) || (dayOfWeek == todayOfWeek && isDateInCurrentType(date, Calendar.WEEK_OF_YEAR))
     }
 
