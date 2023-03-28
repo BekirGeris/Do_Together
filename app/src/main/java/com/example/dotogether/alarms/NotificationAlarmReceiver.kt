@@ -68,35 +68,22 @@ class NotificationAlarmReceiver : HiltBroadcastReceiver() {
         }
     }
 
-    private suspend fun sendNotification() {
+    private fun sendNotification() {
         Log.d(TAG, "targets size: ${targets.size}")
         var notificationCount = 1
         targets.forEach { target ->
-            var lastDate: Date? = null
-            target.id?.let { targetId ->
-                appRepository.remoteRepositoryImpl.getActions(targetId).collect { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            if (!resource.data.isNullOrEmpty()) {
-                                resource.data.last().created_at?.let {
-                                    lastDate = Constants.DATE_FORMAT_3.tryParse(it)
-                                }
-                            }
-                        }
-                        else -> {}
+            target.last_date?.let {
+                if (notificationCount <= 5 && RuntimeHelper.isDoItBTNOpen(Constants.DATE_FORMAT_6.tryParse(it), target)) {
+                    context?.let { context ->
+                        val notificationData = NotificationData("Target", target.id.toString())
+                        RuntimeHelper.sendNotification( context,
+                            HomeActivity::class.java,
+                            target.target,
+                            context.getString(R.string.target_do_it_notification_message),
+                            target.id ?: 1,
+                            notificationData)
+                        notificationCount++
                     }
-                }
-            }
-            if (notificationCount <= 5 && RuntimeHelper.isDoItBTNOpen(lastDate, target)) {
-                context?.let {
-                    val notificationData = NotificationData("Target", target.id.toString())
-                    RuntimeHelper.sendNotification(it,
-                        HomeActivity::class.java,
-                        target.target,
-                        it.getString(R.string.target_do_it_notification_message),
-                        target.id ?: 1,
-                        notificationData)
-                    notificationCount++
                 }
             }
         }

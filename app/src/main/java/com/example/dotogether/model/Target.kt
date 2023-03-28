@@ -25,4 +25,5 @@ class Target {
     var unread_count: Int = 0
     var action_status: String? = null
     var tags: String? = null
+    var last_date: String? = null
 }
