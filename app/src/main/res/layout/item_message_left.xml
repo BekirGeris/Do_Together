@@ -1,87 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.daimajia.swipe.SwipeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="5dp"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/date_txt"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/full_oval"
-        android:backgroundTint="@color/text_input_color"
-        android:layout_gravity="center"
-        android:paddingBottom="2dp"
-        android:paddingEnd="7dp"
-        android:paddingStart="7dp"
-        android:paddingTop="2dp"
-        android:text="@string/default_date_message"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
-
+    android:layout_height="wrap_content"
+    app:drag_edge="left"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Bottom View Start-->
     <LinearLayout
-        android:id="@+id/message_lyt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:id="@+id/bottom_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:orientation="horizontal"
+        tools:ignore="RtlHardcoded">
+        <!--What you want to show-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/left_message_selector"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="2dp"
-                android:text="@string/user_name"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/message_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="5dp"
-                android:maxWidth="300dp"
-                android:text="@string/default_message"
-                android:textAlignment="viewStart"
-                android:textColor="@color/white"/>
-
-            <TextView
-                android:id="@+id/message_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginStart="5dp"
-                android:text="@string/default_time"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:ignore="RtlHardcoded" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/delete_btn"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/transparent"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:tint="?colorTertiary"
+            app:srcCompat="@drawable/baseline_reply_24" />
 
     </LinearLayout>
-</LinearLayout>
+    <!-- Bottom View End-->
+
+    <!-- Surface View Start -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--What you want to show in SurfaceView-->
+
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/date_txt"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/full_oval"
+                android:backgroundTint="@color/text_input_color"
+                android:layout_gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingEnd="7dp"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:text="@string/default_date_message"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/message_lyt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/left_message_selector"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/user_name"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/message_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:maxWidth="300dp"
+                        android:text="@string/default_message"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/message_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/default_time"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        tools:ignore="RtlHardcoded" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    <!-- Surface View End -->
+</com.daimajia.swipe.SwipeLayout>

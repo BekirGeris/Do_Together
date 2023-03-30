@@ -3,6 +3,7 @@ package com.example.dotogether.view.adapter.holder
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
+import com.daimajia.swipe.SwipeLayout
 import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemMessageRightBinding
@@ -13,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 class RightMessageHolder(
     view: View,
     val layoutInflater: LayoutInflater,
-    private val listener: HolderListener.RightMessageHolderListener
+    private val listener: HolderListener.MessageHolderListener
 ) : BaseHolder(view), View.OnClickListener {
 
     private val binding = ItemMessageRightBinding.bind(view)
@@ -28,6 +29,8 @@ class RightMessageHolder(
 
         dialogBinding.delete.visibility = View.VISIBLE
         dialogBinding.delete.setOnClickListener(this)
+        dialogBinding.copy.visibility = View.VISIBLE
+        dialogBinding.copy.setOnClickListener(this)
     }
 
     fun bind(message: Message, isGroup: Boolean) {
@@ -36,15 +39,14 @@ class RightMessageHolder(
             binding.unreadMessage.text = message.message
             binding.messageLyt.visibility = View.GONE
             binding.unreadMessage.visibility = View.VISIBLE
+            binding.swipeLayout.isSwipeEnabled = false
         } else {
             binding.messageLyt.visibility = View.VISIBLE
             binding.unreadMessage.visibility = View.GONE
+            binding.swipeLayout.isSwipeEnabled = true
         }
         binding.messageTime.text = message.messageTime
         binding.messageTxt.text = message.message
-        binding.userName.text = message.userName
-
-        binding.userName.visibility = if (isGroup) View.VISIBLE else View.GONE
 
         binding.messageLyt.setOnLongClickListener {
             bottomSheetDialog.show()
@@ -52,12 +54,43 @@ class RightMessageHolder(
         }
 
         Linkify.addLinks(binding.messageTxt, Linkify.WEB_URLS)
+
+        binding.swipeLayout.showMode = SwipeLayout.ShowMode.PullOut
+
+        binding.swipeLayout.addSwipeListener(object : SwipeLayout.SwipeListener {
+            override fun onStartOpen(layout: SwipeLayout?) {
+            }
+
+            override fun onOpen(layout: SwipeLayout?) {
+                binding.swipeLayout.close()
+                message.userName = context.getString(R.string.you)
+                listener.replyMessage(message)
+                binding.swipeLayout.isSwipeEnabled = false
+            }
+
+            override fun onStartClose(layout: SwipeLayout?) {
+            }
+
+            override fun onClose(layout: SwipeLayout?) {
+                binding.swipeLayout.isSwipeEnabled = true
+            }
+
+            override fun onUpdate(layout: SwipeLayout?, leftOffset: Int, topOffset: Int) {
+            }
+
+            override fun onHandRelease(layout: SwipeLayout?, xvel: Float, yvel: Float) {
+            }
+        })
     }
 
     override fun onClick(v: View?) {
         when (v) {
             dialogBinding.delete -> {
                 listener.deleteMessage(message)
+                bottomSheetDialog.dismiss()
+            }
+            dialogBinding.copy -> {
+                listener.copyMessage(message)
                 bottomSheetDialog.dismiss()
             }
             else -> {}

@@ -69,6 +69,20 @@
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/copy"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:background="?colorOnSecondary"
+            android:drawableStart="@drawable/baseline_content_copy_24"
+            android:drawableTint="?colorTertiary"
+            android:drawablePadding="10dp"
+            android:gravity="center|left"
+            android:text="@string/copy"
+            android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/delete"
             android:visibility="gone"
             android:layout_width="match_parent"

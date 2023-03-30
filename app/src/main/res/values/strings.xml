@@ -143,4 +143,7 @@
     <string name="unread_message">Unread Message</string>
     <string name="target_do_it_notification_message">The target is waiting for you to be completed.</string>
     <string name="are_your_sure">Are your sure?</string>
+    <string name="copy">Copy</string>
+    <string name="you">You</string>
+    <string name="message_copied">Message Copied</string>
 </resources>

@@ -1,6 +1,9 @@
 package com.example.dotogether.view.fragment
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -42,7 +45,7 @@ import kotlin.math.abs
 
 
 @AndroidEntryPoint
-class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener, HolderListener.RightMessageHolderListener {
+class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener, HolderListener.MessageHolderListener {
 
     private val viewModel: ChatViewModel by viewModels()
     private lateinit var binding: FragmentChatBinding
@@ -126,6 +129,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         binding.attachBtn.setOnClickListener(this)
         binding.sendMessageBtn.setOnClickListener(this)
         binding.downBtn.setOnClickListener(this)
+        binding.closeReplyMessage.setOnClickListener(this)
 
         dialogBinding.notificationSwitch.visibility = View.VISIBLE
         dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
@@ -235,8 +239,12 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 binding.downBtn -> {
                     binding.messageRv.smoothScrollToPosition(0)
                 }
+                binding.closeReplyMessage -> {
+                    binding.replyMessageLyt.visibility = View.GONE
+                }
                 binding.sendMessageBtn -> {
                     if (binding.writeMessageEditTxt.text.isNotEmpty()) {
+                        binding.replyMessageLyt.visibility = View.GONE
                         sendMessage(binding.writeMessageEditTxt.text.toString())
                     }
                 }
@@ -257,7 +265,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
             chatId?.let { viewModel.sendMessage(SendMessageRequest(it, message)) }
         } else {
             if (chatId == null) {
-                chatUser?.username?.let { viewModel.newChat(NewChatRequest(it, message)) }
+                chatUser?.username?.let {
+                    viewModel.newChat(NewChatRequest(it, message))
+                }
             } else {
                 viewModel.sendMessage(SendMessageRequest(chatId!!, message))
             }
@@ -413,6 +423,22 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 }
             }
         })
+    }
+
+    override fun copyMessage(message: Message) {
+        val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("text", message.message)
+        clipboardManager.setPrimaryClip(clipData)
+        showToast(getString(R.string.message_copied))
+    }
+
+    override fun replyMessage(message: Message) {
+        binding.replyMessageUserName.text = message.userName
+        binding.replyMessage.text = message.message
+        message.message?.let {
+            binding.replyMessage.text = if (it.length > 150) it.substring(0, 150) + "..." else it
+        }
+        binding.replyMessageLyt.visibility = View.VISIBLE
     }
 
     private fun setBasket() {

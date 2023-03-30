@@ -5,35 +5,40 @@ import com.example.dotogether.model.*
 import com.example.dotogether.model.Target
 
 class HolderListener {
-    interface UserHolderListener{
-        fun isMe(user: User) : Boolean
+    interface UserHolderListener {
+        fun isMe(user: User): Boolean
         fun follow(user: User)
         fun unFollow(user: User)
     }
-    interface ListMemberHolderListener{
-        fun isMe(user: User) : Boolean
+
+    interface ListMemberHolderListener {
+        fun isMe(user: User): Boolean
         fun follow(user: User)
         fun unFollow(user: User)
         fun deleteMember(user: User)
-        fun isAdmin() : Boolean
+        fun isAdmin(): Boolean
     }
-    interface BigMemberHolderListener{
+
+    interface BigMemberHolderListener {
         fun callback(binding: ItemBigMemberBinding, user: User)
     }
-    interface ChatHolderListener{
+
+    interface ChatHolderListener {
         fun callback(binding: ItemChatBinding, chat: Chat)
     }
-    interface LeftMessageHolderListener{
-        fun callback(binding: ItemMessageLeftBinding, message: Message)
+
+    interface MessageHolderListener {
+        fun deleteMessage(message: Message)
+        fun copyMessage(message: Message)
+        fun replyMessage(message: Message)
     }
-    interface MemberHolderListener{
+
+    interface MemberHolderListener {
         fun callback(binding: ItemMemberBinding, user: User)
     }
-    interface RightMessageHolderListener{
-        fun deleteMessage(message: Message)
-    }
-    interface ProfileHolderListener{
-        fun isMe(binding: ItemProfileBinding, user: User) : Boolean
+
+    interface ProfileHolderListener {
+        fun isMe(binding: ItemProfileBinding, user: User): Boolean
         fun backgroundImageEdit(binding: ItemProfileBinding, user: User)
         fun profileImageEdit(binding: ItemProfileBinding, user: User)
         fun finishActivity(binding: ItemProfileBinding, user: User)
@@ -42,26 +47,35 @@ class HolderListener {
         fun follow(binding: ItemProfileBinding, user: User)
         fun unFollow(binding: ItemProfileBinding, user: User)
         fun showReels(binding: ItemProfileBinding, user: User)
-        fun isOtherActivity() : Boolean {
+        fun isOtherActivity(): Boolean {
             return false
         }
     }
-    interface TargetHolderListener{
+
+    interface TargetHolderListener {
         fun like(binding: ItemTargetBinding, target: Target)
         fun join(binding: ItemTargetBinding, target: Target)
         fun unLike(binding: ItemTargetBinding, target: Target)
         fun unJoin(binding: ItemTargetBinding, target: Target)
         fun deleteTarget(binding: ItemTargetBinding, target: Target) {}
-        fun isMeProfileFragment() : Boolean { return false }
-        fun isDiscoverFragment() : Boolean { return false }
+        fun isMeProfileFragment(): Boolean {
+            return false
+        }
+
+        fun isDiscoverFragment(): Boolean {
+            return false
+        }
     }
-    interface ReelsHolderListener{
+
+    interface ReelsHolderListener {
         fun onClickReels(binding: ItemReelsBinding, user: User)
     }
-    interface ReelsTopHolderListener{
+
+    interface ReelsTopHolderListener {
         fun addReels()
     }
-    interface NotificationHolderListener{
+
+    interface NotificationHolderListener {
         fun onClickNotification(binding: ItemNotificationBinding, notification: Notification)
     }
 }

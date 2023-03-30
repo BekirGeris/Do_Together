@@ -65,7 +65,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/write_message_edit_txt"
+        app:layout_constraintBottom_toTopOf="@+id/edit_message_lyt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/back_btn" />
@@ -90,25 +90,90 @@
         android:layout_height="4dp"
         android:indeterminate="true"
         app:indicatorColor="@color/dark_blue"
-        app:layout_constraintBottom_toTopOf="@+id/write_message_edit_txt"
+        app:layout_constraintBottom_toTopOf="@+id/edit_message_lyt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/write_message_edit_txt"
-        android:inputType="textMultiLine"
+    <LinearLayout
+        android:id="@+id/edit_message_lyt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="50dp"
-        android:background="@drawable/full_oval"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/border_az_oval"
         android:backgroundTint="?editTextColor"
-        android:hint="@string/write_a_message"
-        android:padding="10dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/send_message_btn"
         app:layout_constraintEnd_toStartOf="@+id/send_message_btn"
-        app:layout_constraintStart_toEndOf="@+id/attach_btn"
-        tools:ignore="RtlSymmetry" />
+        app:layout_constraintStart_toEndOf="@+id/attach_btn">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/reply_message_lyt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/white" >
+
+            <ImageButton
+                android:id="@+id/close_reply_message"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#000A2168"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_close"
+                app:tint="?colorPrimary" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@drawable/border_az_oval"
+                android:backgroundTint="?colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/reply_message_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/user_name"
+                android:textColor="?colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/reply_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:maxLines="4"
+                android:text="@string/message"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view2"
+                app:layout_constraintTop_toBottomOf="@+id/reply_message_user_name"
+                tools:ignore="TextViewEdits" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/write_message_edit_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:hint="@string/write_a_message"
+            android:inputType="textMultiLine"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            tools:ignore="RtlSymmetry" />
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/send_message_btn"
@@ -116,7 +181,7 @@
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/full_oval"
+        android:background="@drawable/border_az_oval"
         android:backgroundTint="#2B88CF"
         android:src="@drawable/ic_baseline_send_24"
         android:tint="@color/white"
@@ -125,7 +190,6 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/down_btn"
-        android:visibility="gone"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="20dp"
@@ -134,7 +198,7 @@
         android:backgroundTint="#6A6A6A"
         android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
         android:tint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/send_message_btn"
+        app:layout_constraintBottom_toTopOf="@+id/edit_message_lyt"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

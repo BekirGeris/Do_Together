@@ -94,7 +94,7 @@
     <string name="fri">Cum</string>
     <string name="sat">Cmt</string>
     <string name="sun">Paz</string>
-    <string name="delete_firebase_message">Bu musaj silindi</string>
+    <string name="delete_firebase_message">Bu mesaj silindi</string>
     <string name="liked_tags">Beğendiğin Tagler</string>
     <string name="search_here">Burada Ara</string>
     <string name="delete_account">Hesabımı Sil</string>
@@ -144,4 +144,7 @@
     <string name="unread_message">Okunmamış Mesaj</string>
     <string name="target_do_it_notification_message">Hedef tamamlanmak için seni bekliyor.</string>
     <string name="are_your_sure">Emin misin?</string>
+    <string name="copy">Kopyala</string>
+    <string name="you">Siz</string>
+    <string name="message_copied">Mesaj Kopyalandı</string>
 </resources>

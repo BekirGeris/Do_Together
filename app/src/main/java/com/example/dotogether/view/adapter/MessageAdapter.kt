@@ -14,7 +14,7 @@ import com.example.dotogether.view.adapter.holderListener.HolderListener
 class MessageAdapter(
     private val messages: ArrayList<Message>,
     private val isGroup: Boolean,
-    private val listener: HolderListener.RightMessageHolderListener
+    private val listener: HolderListener.MessageHolderListener,
 ) : BaseAdapter() {
 
     private lateinit var binding: ViewBinding
@@ -28,7 +28,7 @@ class MessageAdapter(
             }
             else -> {
                 binding = ItemMessageLeftBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                LeftMessageHolder(binding.root)
+                LeftMessageHolder(binding.root, LayoutInflater.from(parent.context), listener)
             }
         }
     }
