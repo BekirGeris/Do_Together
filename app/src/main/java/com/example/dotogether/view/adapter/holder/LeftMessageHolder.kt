@@ -92,6 +92,18 @@ class LeftMessageHolder(
             override fun onHandRelease(layout: SwipeLayout?, xvel: Float, yvel: Float) {
             }
         })
+
+        message.replyMessage.let {
+            if (it != null) {
+                binding.includeReplyMessage.replyMessageUserName.text = if (it.isMe) context.getText(R.string.you) else it.userName
+                binding.includeReplyMessage.replyMessage.text = it.message
+                binding.includeReplyMessageLyt.visibility = View.VISIBLE
+            } else {
+                binding.includeReplyMessageLyt.visibility = View.GONE
+            }
+        }
+
+        binding.includeReplyMessageLyt.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -104,6 +116,9 @@ class LeftMessageHolder(
         when(v) {
             binding.userName -> {
                 message.userId?.let { goToProfileFragment(navController, it.toInt()) }
+            }
+            binding.includeReplyMessageLyt -> {
+                message.replyMessage?.let { listener.goToMessageHolder(it) }
             }
             dialogBinding.copy -> {
                 listener.copyMessage(message)

@@ -76,14 +76,20 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <include
+                    <LinearLayout
+                        android:id="@+id/include_reply_message_lyt"
                         android:layout_marginEnd="5dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/include_reply_message"
-                        layout="@layout/reply_message_layout" />
+                        android:layout_height="wrap_content">
+
+                        <include
+                            android:id="@+id/include_reply_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            layout="@layout/reply_message_layout"/>
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/message_txt"

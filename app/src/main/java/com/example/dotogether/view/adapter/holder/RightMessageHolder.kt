@@ -82,10 +82,25 @@ class RightMessageHolder(
             override fun onHandRelease(layout: SwipeLayout?, xvel: Float, yvel: Float) {
             }
         })
+
+        message.replyMessage.let {
+            if (it != null) {
+                binding.includeReplyMessage.replyMessageUserName.text = if (it.isMe) context.getText(R.string.you) else it.userName
+                binding.includeReplyMessage.replyMessage.text = it.message
+                binding.includeReplyMessageLyt.visibility = View.VISIBLE
+            } else {
+                binding.includeReplyMessageLyt.visibility = View.GONE
+            }
+        }
+
+        binding.includeReplyMessageLyt.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v) {
+            binding.includeReplyMessageLyt -> {
+                message.replyMessage?.let { listener.goToMessageHolder(it) }
+            }
             dialogBinding.delete -> {
                 listener.deleteMessage(message)
                 bottomSheetDialog.dismiss()

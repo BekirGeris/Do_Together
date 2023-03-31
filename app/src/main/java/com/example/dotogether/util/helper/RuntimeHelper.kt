@@ -1,5 +1,7 @@
 package com.example.dotogether.util.helper
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +10,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
@@ -16,6 +20,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -283,6 +288,19 @@ object RuntimeHelper {
         val dayOfWeek = Calendar.getInstance().apply { time = date }.get(Calendar.DAY_OF_WEEK)
         val todayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         return !weekdays.contains(todayOfWeek) || (dayOfWeek == todayOfWeek && isDateInCurrentType(date, Calendar.WEEK_OF_YEAR))
+    }
+
+    fun animateBackgroundColorChange(view: View, colorRes: Int, duration: Long) {
+        val originalColor = (view.background as? ColorDrawable)?.color ?: Color.TRANSPARENT
+        val colorTo = ContextCompat.getColor(view.context, colorRes)
+
+        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorTo, originalColor)
+        colorAnimation.duration = duration
+        colorAnimation.addUpdateListener { animator ->
+            val value = animator.animatedValue as Int
+            view.setBackgroundColor(value)
+        }
+        colorAnimation.start()
     }
 
     fun RemoteMessage.Notification.myToString() {

@@ -33,6 +33,7 @@ import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
+import com.example.dotogether.view.adapter.holder.BaseHolder
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.viewmodel.ChatViewModel
@@ -42,7 +43,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.concurrent.thread
 import kotlin.math.abs
-
 
 @AndroidEntryPoint
 class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener, HolderListener.MessageHolderListener {
@@ -307,6 +307,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                                 if (userMessage == Constants.DELETE_MESSAGE_FIREBASE_KEY ) getString(R.string.delete_firebase_message) else userMessage,
                                 myUser.id == userId.toInt())
 
+                            message.replyMessage = generateReplyMessage(if (hashMap.get("reply_message") != null) hashMap.get("reply_message") as HashMap<*, *> else null)
+
                             addMessageLabels(count, time, penultimateTime)
                             messages.add(message)
                             penultimateTime = time
@@ -330,6 +332,35 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         } else {
             onError()
         }
+    }
+
+    private fun generateReplyMessage(hashMap: HashMap<*, *>?): Message? {
+        var message: Message? = null
+        hashMap?.let {
+            val messageKey: String? = it.get("message_key") as String?
+            val username: String? = it.get("username") as String?
+            val userId: Long? = it.get("user_id") as Long?
+            val userMessage: String? = it.get("user_message") as String?
+            var time: Long? = if (it.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
+
+            Log.d(TAG, "generateReplyMessage $messageKey")
+            Log.d(TAG, "generateReplyMessage $username")
+            Log.d(TAG, "generateReplyMessage $userId")
+            Log.d(TAG, "generateReplyMessage $userMessage")
+            Log.d(TAG, "generateReplyMessage $time")
+            if (messageKey != null && username != null && userId != null && userMessage != null && time != null) {
+                time = abs(time)
+
+                message = Message(
+                    messageKey,
+                    username,
+                    userId,
+                    Constants.DATE_FORMAT_4.format(Date(time)),
+                    if (userMessage == Constants.DELETE_MESSAGE_FIREBASE_KEY ) getString(R.string.delete_firebase_message) else userMessage,
+                    myUser.id == userId.toInt())
+            }
+        }
+        return message
     }
 
     private fun addDateMessageLabel(penultimateTime: Long?) {
@@ -440,6 +471,22 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
             binding.replyMessage.text = if (it.length > 150) it.substring(0, 150) + "..." else it
         }
         binding.replyMessageLyt.visibility = View.VISIBLE
+    }
+
+    override fun goToMessageHolder(message: Message) {
+        for ((i, m) in messages.withIndex()) {
+            if (m.key == message.key) {
+                binding.messageRv.scrollToPosition(i)
+                thread {
+                    Thread.sleep(200)
+                    activity?.runOnUiThread {
+                        val viewHolder = binding.messageRv.findViewHolderForAdapterPosition(i) as? BaseHolder
+                        viewHolder?.itemView?.let { RuntimeHelper.animateBackgroundColorChange(it, R.color.dark_teal, 2000) }
+                    }
+                }
+                break
+            }
+        }
     }
 
     private fun setBasket() {

@@ -31,6 +31,7 @@ class HolderListener {
         fun deleteMessage(message: Message)
         fun copyMessage(message: Message)
         fun replyMessage(message: Message, isMe: Boolean)
+        fun goToMessageHolder(message: Message)
     }
 
     interface MemberHolderListener {

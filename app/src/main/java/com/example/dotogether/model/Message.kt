@@ -10,4 +10,5 @@ class Message(
 ) {
     var isUnreadCountMessage = false
     var isDateMessage = false
+    var replyMessage: Message? = null
 }
