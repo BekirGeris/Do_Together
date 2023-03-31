@@ -63,8 +63,7 @@ class RightMessageHolder(
 
             override fun onOpen(layout: SwipeLayout?) {
                 binding.swipeLayout.close()
-                message.userName = context.getString(R.string.you)
-                listener.replyMessage(message)
+                listener.replyMessage(message, true)
                 binding.swipeLayout.isSwipeEnabled = false
             }
 

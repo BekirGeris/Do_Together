@@ -432,8 +432,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         showToast(getString(R.string.message_copied))
     }
 
-    override fun replyMessage(message: Message) {
-        binding.replyMessageUserName.text = message.userName
+    override fun replyMessage(message: Message, isMe: Boolean) {
+        binding.replyMessageUserName.text = if (isMe) requireContext().getString(R.string.you) else message.userName
         binding.replyMessage.text = message.message
         message.message?.let {
             binding.replyMessage.text = if (it.length > 150) it.substring(0, 150) + "..." else it

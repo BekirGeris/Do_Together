@@ -61,9 +61,9 @@ class LeftMessageHolder(
 
         binding.userName.visibility = if (isAgainMessage) View.VISIBLE else View.GONE
 
-        if (isAgainMessage) {
-            binding.userName.setTextColor(ColorGenerator.getColorForKey(message.userName ?: ""))
-        }
+//        if (isAgainMessage) {
+//            binding.userName.setTextColor(ColorGenerator.getColorForKey(message.userName ?: ""))
+//        }
 
         binding.swipeLayout.showMode = SwipeLayout.ShowMode.PullOut
 
@@ -73,7 +73,7 @@ class LeftMessageHolder(
 
             override fun onOpen(layout: SwipeLayout?) {
                 binding.swipeLayout.close()
-                listener.replyMessage(message)
+                listener.replyMessage(message, false)
                 binding.swipeLayout.isSwipeEnabled = false
             }
 

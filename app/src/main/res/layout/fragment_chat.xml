@@ -110,6 +110,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/reply_message_lyt"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -119,17 +120,17 @@
 
             <ImageButton
                 android:id="@+id/close_reply_message"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_margin="5dp"
-                android:backgroundTint="#000A2168"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_margin="3dp"
+                android:backgroundTint="@color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_close"
+                app:srcCompat="@drawable/baseline_close_24"
                 app:tint="?colorPrimary" />
 
             <View
-                android:id="@+id/view2"
+                android:id="@+id/reply_view"
                 android:layout_width="5dp"
                 android:layout_height="0dp"
                 android:background="@drawable/border_az_oval"
@@ -146,7 +147,7 @@
                 android:text="@string/user_name"
                 android:textColor="?colorPrimary"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/view2"
+                app:layout_constraintStart_toEndOf="@+id/reply_view"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -157,7 +158,7 @@
                 android:maxLines="4"
                 android:text="@string/message"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/view2"
+                app:layout_constraintStart_toEndOf="@+id/reply_view"
                 app:layout_constraintTop_toBottomOf="@+id/reply_message_user_name"
                 tools:ignore="TextViewEdits" />
 
@@ -190,6 +191,7 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/down_btn"
+        android:visibility="gone"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="20dp"
