@@ -129,6 +129,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         binding.attachBtn.setOnClickListener(this)
         binding.sendMessageBtn.setOnClickListener(this)
         binding.downBtn.setOnClickListener(this)
+        binding.closeReplyMessage.visibility = View.VISIBLE
         binding.closeReplyMessage.setOnClickListener(this)
 
         dialogBinding.notificationSwitch.visibility = View.VISIBLE
@@ -237,7 +238,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
                 }
                 binding.downBtn -> {
-                    binding.messageRv.smoothScrollToPosition(0)
+                    binding.messageRv.scrollToPosition(0)
                 }
                 binding.closeReplyMessage -> {
                     binding.replyMessageLyt.visibility = View.GONE

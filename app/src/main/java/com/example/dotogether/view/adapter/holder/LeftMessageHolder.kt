@@ -50,10 +50,12 @@ class LeftMessageHolder(
             binding.messageLyt.visibility = View.GONE
             binding.dateTxt.visibility = View.VISIBLE
             binding.swipeLayout.isSwipeEnabled = false
+            binding.replyBtn.visibility = View.GONE
         } else {
             binding.messageLyt.visibility = View.VISIBLE
             binding.dateTxt.visibility = View.GONE
             binding.swipeLayout.isSwipeEnabled = true
+            binding.replyBtn.visibility = View.VISIBLE
         }
         binding.messageTime.text = message.messageTime
         binding.messageTxt.text = message.message

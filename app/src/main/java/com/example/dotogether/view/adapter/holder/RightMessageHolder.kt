@@ -40,10 +40,12 @@ class RightMessageHolder(
             binding.messageLyt.visibility = View.GONE
             binding.unreadMessage.visibility = View.VISIBLE
             binding.swipeLayout.isSwipeEnabled = false
+            binding.replyBtn.visibility = View.GONE
         } else {
             binding.messageLyt.visibility = View.VISIBLE
             binding.unreadMessage.visibility = View.GONE
             binding.swipeLayout.isSwipeEnabled = true
+            binding.replyBtn.visibility = View.VISIBLE
         }
         binding.messageTime.text = message.messageTime
         binding.messageTxt.text = message.message

@@ -38,7 +38,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
 
             var lastMessage = chat.last_message
             lastMessage?.let { msg ->
-                lastMessage = if (msg.length > 70) msg.substring(0, 70) + "..." else msg
+                lastMessage = if (msg.length > 55) msg.substring(0, 55) + "..." else msg
             }
             binding.message.text = lastMessage
 
