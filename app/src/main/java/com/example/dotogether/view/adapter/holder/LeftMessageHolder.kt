@@ -9,7 +9,6 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemMessageLeftBinding
 import com.example.dotogether.model.Message
-import com.example.dotogether.util.helper.ColorGenerator
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
