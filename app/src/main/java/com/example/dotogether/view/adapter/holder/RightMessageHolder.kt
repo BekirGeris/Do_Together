@@ -8,6 +8,7 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemMessageRightBinding
 import com.example.dotogether.model.Message
+import com.example.dotogether.util.Constants
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -44,11 +45,11 @@ class RightMessageHolder(
         } else {
             binding.messageLyt.visibility = View.VISIBLE
             binding.unreadMessage.visibility = View.GONE
-            binding.swipeLayout.isSwipeEnabled = true
+            binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
             binding.replyBtn.visibility = View.VISIBLE
         }
         binding.messageTime.text = message.messageTime
-        binding.messageTxt.text = message.message
+        binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
 
         binding.messageLyt.setOnLongClickListener {
             bottomSheetDialog.show()
@@ -90,7 +91,7 @@ class RightMessageHolder(
         message.replyMessage.let {
             if (it != null) {
                 binding.includeReplyMessage.replyMessageUserName.text = if (it.isMe) context.getText(R.string.you) else it.userName
-                binding.includeReplyMessage.replyMessage.text = it.message
+                binding.includeReplyMessage.replyMessage.text = if (it.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else it.message
                 binding.includeReplyMessageLyt.visibility = View.VISIBLE
             } else {
                 binding.includeReplyMessageLyt.visibility = View.GONE

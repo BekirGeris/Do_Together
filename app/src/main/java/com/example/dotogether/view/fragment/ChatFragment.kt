@@ -25,12 +25,12 @@ import com.example.dotogether.model.Message
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.NewChatRequest
-import com.example.dotogether.model.request.SendMessageRequest
 import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
+import com.example.dotogether.util.helper.RuntimeHelper.convertToMobileDate
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
 import com.example.dotogether.view.adapter.holder.BaseHolder
@@ -311,7 +311,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                                 username,
                                 userId,
                                 Constants.DATE_FORMAT_4.format(Date(time)),
-                                if (userMessage == Constants.DELETE_MESSAGE_FIREBASE_KEY ) getString(R.string.delete_firebase_message) else userMessage,
+                                userMessage,
                                 myUser.id == userId.toInt())
 
                             message.replyMessage = generateReplyMessage(if (hashMap.get("reply_message") != null) hashMap.get("reply_message") as HashMap<*, *> else null)
@@ -358,7 +358,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     username,
                     userId,
                     Constants.DATE_FORMAT_4.format(Date(time)),
-                    if (userMessage == Constants.DELETE_MESSAGE_FIREBASE_KEY ) getString(R.string.delete_firebase_message) else userMessage,
+                    userMessage,
                     myUser.id == userId.toInt())
             }
         }
