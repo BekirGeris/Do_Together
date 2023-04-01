@@ -135,8 +135,8 @@ class HomeActivity : BaseActivity() {
         Log.d(TAG, "setAlarmManager")
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
-            3 * AlarmManager.INTERVAL_HOUR,
-            3 * AlarmManager.INTERVAL_HOUR,
+            AlarmManager.INTERVAL_DAY,
+            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
     }

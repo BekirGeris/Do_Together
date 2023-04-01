@@ -177,6 +177,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
                 }
                 is Resource.Loading -> {
                     binding.nextProgressBar.visibility = View.VISIBLE
+                    binding.followRv.scrollToPosition(users.size - 1)
                 }
                 else -> {}
             }

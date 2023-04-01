@@ -341,6 +341,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
                 }
                 is Resource.Loading -> {
                     binding.nextProgressBar.visibility = View.VISIBLE
+                    binding.targetRv.scrollToPosition(targets.size)
                 }
                 else -> {}
             }

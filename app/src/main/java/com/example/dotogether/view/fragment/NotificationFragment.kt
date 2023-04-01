@@ -130,6 +130,7 @@ class NotificationFragment : BaseFragment(), View.OnClickListener, HolderListene
                 }
                 is Resource.Loading -> {
                     binding.nextProgressBar.visibility = View.VISIBLE
+                    binding.notificationRv.scrollToPosition(notifications.size - 1)
                 }
                 else -> {}
             }

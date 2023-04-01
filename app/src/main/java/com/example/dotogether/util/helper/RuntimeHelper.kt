@@ -291,7 +291,7 @@ object RuntimeHelper {
     }
 
     fun animateBackgroundColorChange(view: View, colorRes: Int, duration: Long) {
-        val originalColor = (view.background as? ColorDrawable)?.color ?: Color.TRANSPARENT
+        val originalColor = Color.TRANSPARENT
         val colorTo = ContextCompat.getColor(view.context, colorRes)
 
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorTo, originalColor)

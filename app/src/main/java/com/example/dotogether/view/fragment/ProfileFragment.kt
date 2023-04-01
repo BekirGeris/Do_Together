@@ -222,6 +222,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 }
                 is Resource.Loading -> {
                     binding.nextProgressBar.visibility = View.VISIBLE
+                    binding.targetRv.scrollToPosition(targets.size)
                 }
                 else -> {}
             }

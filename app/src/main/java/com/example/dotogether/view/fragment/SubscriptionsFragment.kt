@@ -144,6 +144,7 @@ class SubscriptionsFragment : BaseFragment(), HolderListener.TargetHolderListene
                 }
                 is Resource.Loading -> {
                     binding.nextProgressBar.visibility = View.VISIBLE
+                    binding.targetRv.scrollToPosition(targets.size - 1)
                 }
                 else -> {}
             }

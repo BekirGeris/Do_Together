@@ -147,6 +147,7 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
                 }
                 is Resource.Loading -> {
                     binding.nextProgressBar.visibility = View.VISIBLE
+                    binding.targetRv.scrollToPosition(targets.size - 1)
                 }
                 else -> {}
             }

@@ -144,6 +144,7 @@ class FavoritesFragment : BaseFragment(), HolderListener.TargetHolderListener {
                 }
                 is Resource.Loading -> {
                     binding.nextProgressBar.visibility = View.VISIBLE
+                    binding.targetRv.scrollToPosition(targets.size - 1)
                 }
                 else -> {}
             }
