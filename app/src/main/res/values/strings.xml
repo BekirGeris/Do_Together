@@ -146,4 +146,5 @@
     <string name="copy">Copy</string>
     <string name="you">You</string>
     <string name="message_copied">Message Copied</string>
+    <string name="delete_message_info">Message Will Be Deleted.\nAre you sure?</string>
 </resources>

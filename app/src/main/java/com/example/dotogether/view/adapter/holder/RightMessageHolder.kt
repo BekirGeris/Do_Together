@@ -54,6 +54,10 @@ class RightMessageHolder(
             bottomSheetDialog.show()
             return@setOnLongClickListener true
         }
+        binding.includeReplyMessageLyt.setOnLongClickListener {
+            bottomSheetDialog.show()
+            return@setOnLongClickListener true
+        }
 
         Linkify.addLinks(binding.messageTxt, Linkify.WEB_URLS)
 

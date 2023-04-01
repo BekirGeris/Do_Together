@@ -66,6 +66,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     private var chatUser: OtherUser? = null
 
     private lateinit var chatResponse: ChatResponse
+    private var replyMessage: Message? = null
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         @SuppressLint("NotifyDataSetChanged")
@@ -239,9 +240,11 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 }
                 binding.downBtn -> {
                     binding.messageRv.scrollToPosition(0)
+                    binding.downBtn.visibility = View.GONE
                 }
                 binding.closeReplyMessage -> {
                     binding.replyMessageLyt.visibility = View.GONE
+                    replyMessage = null
                 }
                 binding.sendMessageBtn -> {
                     if (binding.writeMessageEditTxt.text.isNotEmpty()) {
@@ -257,25 +260,29 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         }
     }
 
-    fun sendMessage(message: String) {
+    private fun sendMessage(message: String) {
         binding.linearIndicator.visibility = View.VISIBLE
         binding.messageRv.smoothScrollToPosition(0)
         binding.writeMessageEditTxt.text.clear()
 
         if (isGroup) {
-            chatId?.let { viewModel.sendMessage(SendMessageRequest(it, message)) }
+            chatId?.let {
+//                viewModel.sendMessage(SendMessageRequest(it, message))
+                sendMessageFirebase(message)
+            }
         } else {
             if (chatId == null) {
                 chatUser?.username?.let {
                     viewModel.newChat(NewChatRequest(it, message))
                 }
             } else {
-                viewModel.sendMessage(SendMessageRequest(chatId!!, message))
+//                viewModel.sendMessage(SendMessageRequest(chatId!!, message))
+                sendMessageFirebase(message)
             }
         }
     }
 
-    fun getData() {
+    private fun getData() {
         if (!chatId.isNullOrEmpty()) {
             viewModel.resetUnreadCountChat(chatId!!)
 
@@ -343,11 +350,6 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
             val userMessage: String? = it.get("user_message") as String?
             var time: Long? = if (it.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
 
-            Log.d(TAG, "generateReplyMessage $messageKey")
-            Log.d(TAG, "generateReplyMessage $username")
-            Log.d(TAG, "generateReplyMessage $userId")
-            Log.d(TAG, "generateReplyMessage $userMessage")
-            Log.d(TAG, "generateReplyMessage $time")
             if (messageKey != null && username != null && userId != null && userMessage != null && time != null) {
                 time = abs(time)
 
@@ -440,7 +442,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     }
 
     override fun deleteMessage(message: Message) {
-        showAlertDialog("Mesaj Silinecek.\nEmin misin?", object : ConfirmDialogListener {
+        showAlertDialog(getString(R.string.delete_message_info), object : ConfirmDialogListener {
             override fun cancel() {
 
             }
@@ -452,6 +454,11 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                         .child(it)
                         .child( "user_message")
                         .setValue(Constants.DELETE_MESSAGE_FIREBASE_KEY)
+                    firebaseDatabase.getReference("chats")
+                        .child(chatId!!)
+                        .child(it)
+                        .child( "reply_message")
+                        .setValue(null)
                 }
             }
         })
@@ -465,6 +472,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     }
 
     override fun replyMessage(message: Message, isMe: Boolean) {
+        replyMessage = message
         binding.replyMessageUserName.text = if (isMe) requireContext().getString(R.string.you) else message.userName
         binding.replyMessage.text = message.message
         message.message?.let {
@@ -481,7 +489,10 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     Thread.sleep(200)
                     activity?.runOnUiThread {
                         val viewHolder = binding.messageRv.findViewHolderForAdapterPosition(i) as? BaseHolder
-                        viewHolder?.itemView?.let { RuntimeHelper.animateBackgroundColorChange(it, R.color.dark_teal, 2000) }
+                        viewHolder?.itemView?.let {
+                            binding.downBtn.visibility = View.VISIBLE
+                            RuntimeHelper.animateBackgroundColorChange(it, R.color.dark_teal, 2000)
+                        }
                     }
                 }
                 break
@@ -504,5 +515,27 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
             basket.viewType = null
             viewModel.updateBasket(basket)
         }
+    }
+
+    private fun sendMessageFirebase(message: String) {
+        val messageData = HashMap<String, Any>()
+        messageData["time"] = System.currentTimeMillis() * -1
+        messageData["user_id"] = myUser.id ?: 0
+        messageData["user_message"] = message
+        messageData["username"] = myUser.username!!
+
+        replyMessage?.let {
+            val replyData = HashMap<String, Any>()
+            replyData["message_key"] = it.key ?: ""
+            replyData["time"] = it.messageTime ?: ""
+            replyData["user_id"] = it.userId ?: 0
+            replyData["user_message"] = it.message ?: ""
+            replyData["username"] = it.userName ?: ""
+
+            messageData["reply_message"] = replyData
+        }
+        replyMessage = null
+
+        firebaseDatabase.getReference("chats").child(chatId!!).push().setValue(messageData)
     }
 }

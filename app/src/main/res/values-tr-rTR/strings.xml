@@ -147,4 +147,5 @@
     <string name="copy">Kopyala</string>
     <string name="you">Siz</string>
     <string name="message_copied">Mesaj Kopyalandı</string>
+    <string name="delete_message_info">Mesaj Silinecek.\nEmin misin?</string>
 </resources>

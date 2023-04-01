@@ -41,6 +41,10 @@ class LeftMessageHolder(
             bottomSheetDialog.show()
             return@setOnLongClickListener true
         }
+        binding.includeReplyMessageLyt.setOnLongClickListener {
+            bottomSheetDialog.show()
+            return@setOnLongClickListener true
+        }
     }
 
     fun bind(message: Message, isAgainMessage: Boolean) {
