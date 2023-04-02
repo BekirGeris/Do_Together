@@ -13,6 +13,7 @@ import com.example.dotogether.model.Message
 import com.example.dotogether.util.Constants
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.sql.Date
 
 class LeftMessageHolder(
     view: View,
@@ -50,19 +51,10 @@ class LeftMessageHolder(
 
     fun bind(message: Message, isAgainMessage: Boolean) {
         this.message = message
-        if (message.isDateMessage) {
-            binding.dateTxt.text = message.message
-            binding.messageLyt.visibility = View.GONE
-            binding.dateTxt.visibility = View.VISIBLE
-            binding.swipeLayout.isSwipeEnabled = false
-            binding.replyBtn.visibility = View.GONE
-        } else {
-            binding.messageLyt.visibility = View.VISIBLE
-            binding.dateTxt.visibility = View.GONE
-            binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
-            binding.replyBtn.visibility = View.VISIBLE
-        }
-        binding.messageTime.text = message.messageTime
+        binding.messageLyt.visibility = View.VISIBLE
+        binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
+        binding.replyBtn.visibility = View.VISIBLE
+        binding.messageTime.text = Constants.DATE_FORMAT_4.format(Date(message.messageTime ?: 0))
         binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
         binding.userName.text = message.userName
 

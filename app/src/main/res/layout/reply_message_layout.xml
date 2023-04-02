@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:maxWidth="290dp"
+        android:minWidth="50dp"
         android:maxLines="4"
         android:text="@string/message"
         android:textColor="@color/white"

@@ -11,6 +11,7 @@ import com.example.dotogether.model.Message
 import com.example.dotogether.util.Constants
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.sql.Date
 
 class RightMessageHolder(
     view: View,
@@ -48,7 +49,7 @@ class RightMessageHolder(
             binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
             binding.replyBtn.visibility = View.VISIBLE
         }
-        binding.messageTime.text = message.messageTime
+        binding.messageTime.text = Constants.DATE_FORMAT_4.format(Date(message.messageTime ?: 0))
         binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
 
         binding.messageLyt.setOnLongClickListener {

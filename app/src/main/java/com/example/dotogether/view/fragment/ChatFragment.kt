@@ -30,7 +30,6 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
-import com.example.dotogether.util.helper.RuntimeHelper.convertToMobileDate
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
 import com.example.dotogether.view.adapter.holder.BaseHolder
@@ -68,11 +67,30 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     private lateinit var chatResponse: ChatResponse
     private var replyMessage: Message? = null
 
+    private val messageLimit = 100
+    private val nextMessageSize = 20
+    private var lastTime: Long? = null
+
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         @SuppressLint("NotifyDataSetChanged")
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             binding.downBtn.visibility = if (recyclerView.canScrollVertically(1)) View.VISIBLE  else View.GONE
+            changeDateTxt()
+        }
+    }
+
+    private val nextScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+            val lastVisibleItemPosition = layoutManager!!.findLastVisibleItemPosition()
+            val totalItemCount = layoutManager.itemCount
+
+            if (totalItemCount >= nextMessageSize && lastVisibleItemPosition >= totalItemCount - nextMessageSize) {
+                getDataLimited()
+                binding.messageRv.removeOnScrollListener(this)
+            }
         }
     }
 
@@ -157,9 +175,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     resource.data?.let {
                         chatResponse = it
                         it.id?.let { id ->
-                            changeNotificationSwitch()
-                            chatId = id.toString()
-                            getData()
+                            onGetData(id)
                         }
                     }
                 }
@@ -177,9 +193,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     resource.data?.let {
                         chatResponse = it
                         it.id?.let { id ->
-                            changeNotificationSwitch()
-                            chatId = id.toString()
-                            getData()
+                            onGetData(id)
                         }
                     }
                 }
@@ -210,6 +224,14 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
             }
         }
         setBasket()
+    }
+
+    private fun onGetData(id: Int) {
+        changeNotificationSwitch()
+        chatId = id.toString()
+        viewModel.resetUnreadCountChat(chatId!!)
+        getDataLimited()
+        observeData()
     }
 
     private fun changeNotificationSwitch() {
@@ -262,7 +284,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
     private fun sendMessage(message: String) {
         binding.linearIndicator.visibility = View.VISIBLE
-        binding.messageRv.smoothScrollToPosition(0)
+        binding.messageRv.scrollToPosition(0)
         binding.writeMessageEditTxt.text.clear()
 
         if (isGroup) {
@@ -282,53 +304,26 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         }
     }
 
-    private fun getData() {
+    private fun getDataLimited() {
         if (!chatId.isNullOrEmpty()) {
-            viewModel.resetUnreadCountChat(chatId!!)
-
             val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
-            val query: Query = newReference.orderByChild("time")
+            val query: Query = if (lastTime != null) {
+                newReference.orderByChild("time").startAfter(lastTime!!.toDouble()).limitToFirst(messageLimit)
+            } else {
+                newReference.orderByChild("time").limitToFirst(messageLimit)
+            }
 
-            query.addValueEventListener(object: ValueEventListener {
+            query.addListenerForSingleValueEvent(object: ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d(TAG, "onDataChange")
-                    messages.clear()
-                    var penultimateTime: Long? = null
+                    Log.d(TAG, "onDataChange size: ${snapshot.childrenCount}")
                     for ((count, ds) in snapshot.children.withIndex()) {
-                        val hashMap = ds.value as HashMap<*, *>
-                        val messageKey = ds.key
-                        val username: String? = hashMap.get("username") as String?
-                        val userId: Long? = hashMap.get("user_id") as Long?
-                        val userMessage: String? = hashMap.get("user_message") as String?
-                        var time: Long? = if (hashMap.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
-
-                        if (username != null && userId != null && userMessage != null && time != null) {
-                            time = abs(time)
-
-                            val message = Message(
-                                messageKey,
-                                username,
-                                userId,
-                                Constants.DATE_FORMAT_4.format(Date(time)),
-                                userMessage,
-                                myUser.id == userId.toInt())
-
-                            message.replyMessage = generateReplyMessage(if (hashMap.get("reply_message") != null) hashMap.get("reply_message") as HashMap<*, *> else null)
-
-                            addMessageLabels(count, time, penultimateTime)
-                            messages.add(message)
-                            penultimateTime = time
-                        }
+                        val hashMap = ds.value as HashMap<*,*>
+                        lastTime = if (hashMap.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
+                        val message = generateMessage(ds.value as HashMap<*, *>, ds.key)
+                        message?.let { messages.add(it) }
                     }
-
-                    addDateMessageLabel(penultimateTime)
-
-                    messageAdapter.notifyDataSetChanged()
-                    binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
-
-                    goToLastReadMessage()
-                    binding.linearIndicator.visibility = View.GONE
+                    updateMessages()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -341,10 +336,78 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         }
     }
 
-    private fun generateReplyMessage(hashMap: HashMap<*, *>?): Message? {
+    private fun observeData() {
+        Log.d(TAG, "observeData")
+        if (!chatId.isNullOrEmpty()) {
+            val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
+            val query: Query = newReference.orderByChild("time")
+
+            query.addChildEventListener(object: ChildEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//                    val message = snapshot.getValue(Message::class.java)
+//                    Log.d(TAG, "onChildAdded message: $message")
+                }
+
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    // Varolan bir veri değiştirildiğinde buraya girilir
+                    val hashMap = snapshot.value as HashMap<*, *>
+                    val message = generateMessage(hashMap, snapshot.key)
+                    Log.d(TAG, "onChildChanged $message")
+                    messages.map {
+                        if (it.key == message?.key) {
+                            it.message = message?.message
+                            it.replyMessage = null
+                            messageAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) { }
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) { }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, error.message)
+                    onError(error.message)
+                }
+            })
+
+            val newReference2 = firebaseDatabase.getReference("chats").child(chatId!!)
+            val query2: Query = newReference2.orderByChild("time").limitToFirst(1)
+
+            query2.addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for ((count, ds) in snapshot.children.withIndex()) {
+                        val hashMap = ds.value as HashMap<*, *>
+                        val message = generateMessage(hashMap, ds.key)
+
+                        Log.d(TAG, "onDataChange limit 1 message: $message")
+                        if (!messages.any{ it.key == message?.key }) {
+                            if (message != null) {
+                                messages.add(0, message)
+                                messageAdapter.notifyDataSetChanged()
+                                binding.linearIndicator.visibility = View.GONE
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, error.message)
+                    onError(error.message)
+                }
+            })
+        } else {
+            onError()
+        }
+    }
+
+    private fun generateMessage(hashMap: HashMap<*, *>?, messageKey: String?): Message? {
         var message: Message? = null
         hashMap?.let {
-            val messageKey: String? = it.get("message_key") as String?
             val username: String? = it.get("username") as String?
             val userId: Long? = it.get("user_id") as Long?
             val userMessage: String? = it.get("user_message") as String?
@@ -352,63 +415,38 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
             if (messageKey != null && username != null && userId != null && userMessage != null && time != null) {
                 time = abs(time)
-
-                message = Message(
-                    messageKey,
-                    username,
-                    userId,
-                    Constants.DATE_FORMAT_4.format(Date(time)),
-                    userMessage,
-                    myUser.id == userId.toInt())
+                message = Message(messageKey, username, userId, time, userMessage, myUser.id == userId.toInt())
+                val replyMessage = if (hashMap.get("reply_message") != null) hashMap.get("reply_message") as HashMap<*, *> else null
+                message?.replyMessage = generateMessage( replyMessage, replyMessage?.get("message_key") as String?)
             }
         }
         return message
     }
 
-    private fun addDateMessageLabel(penultimateTime: Long?) {
-        penultimateTime?.let {
-            val unreadMessage = Message(
-                "messageKey",
-                "username",
-                0,
-                Constants.DATE_FORMAT_4.format(Date(penultimateTime)),
-                Constants.DATE_FORMAT_5.format(Date(penultimateTime)),
-                false
-            )
-            unreadMessage.isDateMessage = true
-            messages.add(unreadMessage)
-        }
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateMessages() {
+        binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
+        binding.linearIndicator.visibility = View.GONE
+        setRecyclerViewScrollListener()
+
+        addUnreadLabel()
+        goToLastReadMessage()
+
+        messageAdapter.notifyDataSetChanged()
     }
 
-    private fun addMessageLabels(
-        count: Int,
-        time: Long,
-        penultimateTime: Long?
-    ) {
-        if (chatUser?.unread_count != 0 && chatUser?.unread_count == count) {
+    private fun addUnreadLabel() {
+        if (chatUser?.unread_count != 0) {
             val unreadMessage = Message(
                 "messageKey",
                 "username",
                 0,
-                Constants.DATE_FORMAT_4.format(Date(time)),
+                0,
                 "${chatUser?.unread_count} ${getString(R.string.unread_message)}",
                 true
             )
             unreadMessage.isUnreadCountMessage = true
-            messages.add(unreadMessage)
-        }
-
-        if (penultimateTime != null && !RuntimeHelper.isSameDay(penultimateTime, time)) {
-            val unreadMessage = Message(
-                "messageKey",
-                "username",
-                0,
-                Constants.DATE_FORMAT_4.format(Date(time)),
-                Constants.DATE_FORMAT_5.format(Date(penultimateTime)),
-                false
-            )
-            unreadMessage.isDateMessage = true
-            messages.add(unreadMessage)
+            messages.add(chatUser?.unread_count!!, unreadMessage)
         }
     }
 
@@ -422,7 +460,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                             return 50f / displayMetrics.densityDpi
                         }
                     }
-                smoothScroller.targetPosition = chatUser?.unread_count!!
+                smoothScroller.targetPosition = chatUser?.unread_count!! + 1
                 binding.messageRv.layoutManager?.startSmoothScroll(smoothScroller)
                 chatUser?.unread_count = 0
             }
@@ -481,22 +519,47 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         binding.replyMessageLyt.visibility = View.VISIBLE
     }
 
-    override fun goToMessageHolder(message: Message) {
+    override fun goToMessageHolder(holderMessage: Message) {
+        var targetIndex: Int? = null
         for ((i, m) in messages.withIndex()) {
-            if (m.key == message.key) {
-                binding.messageRv.scrollToPosition(i)
-                thread {
-                    Thread.sleep(200)
-                    activity?.runOnUiThread {
-                        val viewHolder = binding.messageRv.findViewHolderForAdapterPosition(i) as? BaseHolder
-                        viewHolder?.itemView?.let {
-                            binding.downBtn.visibility = View.VISIBLE
-                            RuntimeHelper.animateBackgroundColorChange(it, R.color.dark_teal, 2000)
-                        }
-                    }
-                }
+            if (m.key == holderMessage.key) {
+                targetIndex = i
                 break
             }
+        }
+
+        if (targetIndex != null) {
+            binding.messageRv.scrollToPosition(targetIndex)
+            changeDateTxt()
+            binding.messageRv.postDelayed({
+                val viewHolder = binding.messageRv.findViewHolderForAdapterPosition(targetIndex) as? BaseHolder
+                viewHolder?.itemView?.let { RuntimeHelper.animateBackgroundColorChange(it, R.color.dark_teal, 2000) }
+            }, 200)
+        } else {
+            val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
+            val query: Query = newReference.orderByChild("time")
+
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    messages.clear()
+                    for ((count, ds) in snapshot.children.withIndex()) {
+                        val hashMap = ds.value as HashMap<*, *>
+                        val message = generateMessage(hashMap, ds.key)
+
+                        if (message != null) {
+                            messages.add(message)
+                        }
+                    }
+                    goToMessageHolder(holderMessage)
+                    messageAdapter.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, error.message)
+                    onError(error.message)
+                }
+            })
         }
     }
 
@@ -537,5 +600,21 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         replyMessage = null
 
         firebaseDatabase.getReference("chats").child(chatId!!).push().setValue(messageData)
+    }
+
+    private fun setRecyclerViewScrollListener() {
+        binding.messageRv.addOnScrollListener(nextScrollListener)
+    }
+
+    private fun changeDateTxt() {
+        val layoutManager = binding.messageRv.layoutManager as LinearLayoutManager?
+        val lastVisibleItemPosition = layoutManager!!.findLastVisibleItemPosition()
+        if (lastVisibleItemPosition >= 0 && lastVisibleItemPosition < messages.size) {
+            val message = messages[lastVisibleItemPosition]
+            message.messageTime?.let {
+                binding.dateTxt.visibility = View.VISIBLE
+                binding.dateTxt.text = Constants.DATE_FORMAT_5.format(Date(it))
+            }
+        }
     }
 }
