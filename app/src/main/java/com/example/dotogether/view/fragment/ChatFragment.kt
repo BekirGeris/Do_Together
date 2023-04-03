@@ -341,7 +341,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         Log.d(TAG, "observeData")
         if (!chatId.isNullOrEmpty()) {
             val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
-            val query: Query = newReference.orderByChild("time")
+            val query: Query = newReference.orderByChild("time").limitToFirst(messageLimit)
 
             query.addChildEventListener(object: ChildEventListener {
                 @SuppressLint("NotifyDataSetChanged")
