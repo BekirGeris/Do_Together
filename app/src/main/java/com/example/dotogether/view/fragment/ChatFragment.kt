@@ -25,6 +25,7 @@ import com.example.dotogether.model.Message
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.NewChatRequest
+import com.example.dotogether.model.request.SendMessageRequest
 import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
@@ -289,7 +290,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
         if (isGroup) {
             chatId?.let {
-//                viewModel.sendMessage(SendMessageRequest(it, message))
+                viewModel.sendMessage(SendMessageRequest(it, message))
                 sendMessageFirebase(message)
             }
         } else {
@@ -298,7 +299,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     viewModel.newChat(NewChatRequest(it, message))
                 }
             } else {
-//                viewModel.sendMessage(SendMessageRequest(chatId!!, message))
+                viewModel.sendMessage(SendMessageRequest(chatId!!, message))
                 sendMessageFirebase(message)
             }
         }
