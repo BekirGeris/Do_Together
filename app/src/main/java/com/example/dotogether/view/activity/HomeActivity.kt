@@ -16,6 +16,7 @@ import com.example.dotogether.R
 import com.example.dotogether.alarms.NotificationAlarmReceiver
 import com.example.dotogether.databinding.ActivityHomeBinding
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.view.fragment.*
@@ -132,13 +133,17 @@ class HomeActivity : BaseActivity() {
         val intent = Intent(this, NotificationAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        Log.d(TAG, "setAlarmManager")
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            AlarmManager.INTERVAL_DAY,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
+        val isAlarmSet = SharedPreferencesUtil.getBoolean(this, "isAlarmSet", false)
+        if (!isAlarmSet) {
+            Log.d(TAG, "setAlarmManager")
+            alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                getNotificationCalender().timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
+            SharedPreferencesUtil.setBoolean(this, "isAlarmSet", true)
+        }
     }
 
     private fun getNotificationCalender(): Calendar {

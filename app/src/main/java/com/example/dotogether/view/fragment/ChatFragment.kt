@@ -389,8 +389,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                         if (!messages.any{ it.key == message?.key }) {
                             if (message != null) {
                                 messages.add(0, message)
-                                messageAdapter.notifyDataSetChanged()
-                                binding.linearIndicator.visibility = View.GONE
+                                updateMessages()
                             }
                         }
                     }
