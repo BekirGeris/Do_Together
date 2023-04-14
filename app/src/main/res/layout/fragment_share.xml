@@ -319,7 +319,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/period_lyt"
-                app:switchTextAppearance="@style/MySwitchTitleOff"
                 app:useMaterialThemeColors="true" />
 
             <androidx.appcompat.widget.AppCompatImageButton
