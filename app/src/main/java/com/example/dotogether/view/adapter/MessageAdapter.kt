@@ -14,7 +14,7 @@ import com.example.dotogether.view.adapter.holderListener.HolderListener
 class MessageAdapter(
     private val messages: ArrayList<Message>,
     private val isGroup: Boolean,
-    private val listener: HolderListener.MessageHolderListener,
+    private val listener: HolderListener.MessageHolderListener
 ) : BaseAdapter() {
 
     private lateinit var binding: ViewBinding

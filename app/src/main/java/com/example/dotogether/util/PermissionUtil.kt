@@ -20,15 +20,15 @@ object PermissionUtil {
         vararg permissions: String,
         allPermissionGranted: () -> Unit) {
 
-        if (isPermissionsGranted(context, *permissions)) {
+        if (isPermissionsGranted(activity, *permissions)) {
             //all permission granted
             allPermissionGranted()
         } else {
             //all permission not granted
             if (isAgainRequestPermission(activity, *permissions)) {
                 Snackbar.make(view,
-                    context.getString(R.string.permission_needed_feature),
-                    Snackbar.LENGTH_INDEFINITE).setAction(context.getString(R.string.give_permission)) {
+                    activity.getString(R.string.permission_needed_feature),
+                    Snackbar.LENGTH_INDEFINITE).setAction(activity.getString(R.string.give_permission)) {
                     //again request permission
                     requestMultiplePermissions.launch(
                         permissions.toList().toTypedArray()
