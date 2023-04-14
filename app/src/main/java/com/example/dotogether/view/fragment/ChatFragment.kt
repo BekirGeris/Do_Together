@@ -359,7 +359,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     messages.map {
                         if (it.key == message?.key) {
                             it.message = message?.message
-                            it.replyMessage = null
+                            it.replyMessage = message?.replyMessage
                             messageAdapter.notifyDataSetChanged()
                         }
                     }
@@ -485,8 +485,16 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun confirm() {
                 message.key?.let {
+                    messages.map { list ->
+                        if (list.key == message.key) {
+                            list.message = Constants.DELETE_MESSAGE_FIREBASE_KEY
+                            list.replyMessage = null
+                            messageAdapter.notifyDataSetChanged()
+                        }
+                    }
                     firebaseDatabase.getReference("chats")
                         .child(chatId!!)
                         .child(it)
