@@ -48,7 +48,9 @@ class TargetHolder(
         binding.postTime.setOnClickListener(this)
         binding.postImage.setOnClickListener(this)
         binding.like.setOnClickListener(this)
+        binding.likeBtn.setOnClickListener(this)
         binding.join.setOnClickListener(this)
+        binding.joinBtn.setOnClickListener(this)
 
         dialogBinding.share.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
@@ -85,21 +87,21 @@ class TargetHolder(
 
         target.is_joined?.let {
             if (it) {
-                binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
-                binding.join.text = context.getString(R.string.leave)
+                binding.joinBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
+                binding.joinBtn.text = context.getString(R.string.leave)
             } else {
-                binding.join.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_outline_24), null, null, null)
-                binding.join.text = context.getString(R.string.join)
+                binding.joinBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_outline_24), null, null, null)
+                binding.joinBtn.text = context.getString(R.string.join)
             }
         }
 
         target.is_liked?.let {
             if (it) {
-                binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_alt_24), null, null, null)
-                binding.like.text = context.getString(R.string.un_like)
+                binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_alt_24), null, null, null)
+                binding.likeBtn.text = context.getString(R.string.un_like)
             } else {
-                binding.like.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_off_alt_24), null, null, null)
-                binding.like.text = context.getString(R.string.like)
+                binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_off_alt_24), null, null, null)
+                binding.likeBtn.text = context.getString(R.string.like)
             }
         }
 
@@ -138,13 +140,13 @@ class TargetHolder(
             binding.postUserName, binding.userImage, binding.postTime -> {
                 target.admin?.id?.let { goToProfileFragment(navController, it) }
             }
-            binding.like -> {
+            binding.like, binding.likeBtn -> {
                 if (target.is_liked == false)
                     listener.like(binding, target)
                 else
                     listener.unLike(binding, target)
             }
-            binding.join -> {
+            binding.join, binding.joinBtn -> {
                 if (target.is_joined == false)
                     listener.join(binding, target)
                 else
