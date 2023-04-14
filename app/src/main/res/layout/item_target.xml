@@ -50,36 +50,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <LinearLayout
             android:id="@+id/like"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/border_az_oval"
-            android:drawableStart="@drawable/ic_baseline_thumb_up_off_alt_24"
-            android:drawablePadding="10dp"
-            android:paddingStart="50dp"
-            android:text="@string/like"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="?colorPrimary"
-            tools:ignore="RtlSymmetry" />
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_baseline_thumb_up_off_alt_24"
+                android:text="@string/like"
+                android:textAllCaps="false"
+                android:textColor="?colorPrimary"
+                tools:ignore="RtlSymmetry" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/join"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/border_az_oval"
-            android:drawableStart="@drawable/ic_baseline_add_circle_outline_24"
-            android:drawablePadding="10dp"
-            android:paddingStart="50dp"
-            android:text="@string/join"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="?colorPrimary" />
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_baseline_add_circle_outline_24"
+                android:text="@string/join"
+                android:textAllCaps="false"
+                android:textColor="?colorPrimary" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
