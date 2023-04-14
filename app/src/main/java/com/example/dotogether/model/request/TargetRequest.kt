@@ -7,5 +7,6 @@ open class TargetRequest(
     var start_date: String,
     var end_date: String,
     var img: String?,
-    var tags: String
+    var tags: String,
+    val isPrivate: Boolean
 )

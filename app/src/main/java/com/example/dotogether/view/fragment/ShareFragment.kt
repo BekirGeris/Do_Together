@@ -6,6 +6,9 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -167,6 +170,11 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         binding.targetEditTxt.addTextChangedListener{ editTextChange(binding.targetEditTxt) }
         binding.descriptionEditTxt.addTextChangedListener{ editTextChange(binding.descriptionEditTxt) }
         binding.tagEditTxt.addTextChangedListener{ editTextChange(binding.tagEditTxt) }
+
+        setSwitchVisibilityDesc(false)
+        binding.switchVisibility.setOnCheckedChangeListener { buttonView, isChecked ->
+            setSwitchVisibilityDesc(isChecked)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -273,6 +281,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 }
             }
         }
+
+        binding.switchVisibility.isChecked = target.isPrivate == true
     }
 
     override fun onClick(v: View?) {
@@ -466,12 +476,12 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     }
 
     private fun shareTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String?, tags: String) {
-        val createTargetRequest = CreateTargetRequest(target, description, period, start_date, end_date, img, tags)
+        val createTargetRequest = CreateTargetRequest(target, description, period, start_date, end_date, img, tags, binding.switchVisibility.isChecked)
         viewModel.createTarget(createTargetRequest)
     }
 
     private fun uploadTarget(target: String, description: String, period: String, start_date: String, end_date: String, img: String?, tags: String) {
-        val updateTargetRequest = UpdateTargetRequest(target, description, period, start_date, end_date, img, tags)
+        val updateTargetRequest = UpdateTargetRequest(target, description, period, start_date, end_date, img, tags, binding.switchVisibility.isChecked)
         targetId?.let { viewModel.updateTarget(it, updateTargetRequest) }
     }
 
@@ -538,5 +548,22 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             chip.setOnCloseIconClickListener { chipGroup.removeView(chip) }
         }
         chipGroup.addView(chip)
+    }
+
+    private fun setSwitchVisibilityDesc(isChecked: Boolean) {
+        val visibilityDesc = if (isChecked) {
+            getString(R.string.switch_visibility_private_desc)
+        } else {
+            getString(R.string.switch_visibility_public_desc)
+        }
+        binding.switchVisibility.text = createSpannableString(visibilityDesc)
+    }
+
+    private fun createSpannableString(visibilityDesc: String): SpannableString {
+        val title = visibilityDesc.substringBefore(" ")
+        val spannableString = SpannableString(visibilityDesc)
+        val startIndex = visibilityDesc.indexOf(title)
+        spannableString.setSpan(RelativeSizeSpan(1.2f), startIndex, startIndex + title.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return spannableString
     }
 }

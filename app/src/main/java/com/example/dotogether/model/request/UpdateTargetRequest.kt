@@ -7,7 +7,8 @@ class UpdateTargetRequest(
     start_date: String,
     end_date: String,
     img: String?,
-    tags: String
+    tags: String,
+    isPrivate: Boolean
 ) : TargetRequest(
     target,
     description,
@@ -15,5 +16,6 @@ class UpdateTargetRequest(
     start_date,
     end_date,
     img,
-    tags
+    tags,
+    isPrivate
 )

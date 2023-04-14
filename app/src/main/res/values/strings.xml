@@ -147,4 +147,6 @@
     <string name="you">You</string>
     <string name="message_copied">Message Copied</string>
     <string name="delete_message_info">Message Will Be Deleted.\nAre you sure?</string>
+    <string name="switch_visibility_public_desc">Public \nEveryone can see</string>
+    <string name="switch_visibility_private_desc">Private \nOnly members and those with the link can see it</string>
 </resources>

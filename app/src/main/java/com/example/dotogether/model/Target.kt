@@ -26,4 +26,5 @@ class Target {
     var action_status: String? = null
     var tags: String? = null
     var last_date: String? = null
+    var isPrivate: Boolean? = null
 }

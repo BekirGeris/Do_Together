@@ -148,4 +148,6 @@
     <string name="you">Siz</string>
     <string name="message_copied">Mesaj Kopyalandı</string>
     <string name="delete_message_info">Mesaj Silinecek.\nEmin misin?</string>
+    <string name="switch_visibility_public_desc">Açık \nHerkes görebilir</string>
+    <string name="switch_visibility_private_desc">Gizli \nSadece üyeler ve bağlantıya sahip olanlar görebilir</string>
 </resources>

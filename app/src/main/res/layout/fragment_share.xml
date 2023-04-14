@@ -157,7 +157,7 @@
                 android:orientation="vertical"
                 android:padding="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/period_lyt">
+                app:layout_constraintTop_toBottomOf="@+id/switch_visibility">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
                 android:orientation="vertical"
                 android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/period_lyt">
+                app:layout_constraintTop_toBottomOf="@+id/switch_visibility">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -304,6 +304,23 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/period_decs" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/border_az_oval_thin"
+                android:checked="false"
+                android:text="@string/switch_visibility_public_desc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/period_lyt"
+                app:switchTextAppearance="@style/MySwitchTitleOff"
+                app:useMaterialThemeColors="true" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/start_date_clear"
