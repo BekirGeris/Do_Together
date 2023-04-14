@@ -502,6 +502,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                         isSearching = true
                         viewModel.searchTag(SearchRequest(tag))
                     }
+                } else {
+                    binding.scrollGroup.removeAllViews()
                 }
             }
         }
