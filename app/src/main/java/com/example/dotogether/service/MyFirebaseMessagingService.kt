@@ -14,7 +14,6 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
-import com.example.dotogether.util.helper.RuntimeHelper.myToString
 import com.example.dotogether.view.activity.OthersActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -42,7 +41,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification : ${it.myToString()}")
+
         }
 
         thread {

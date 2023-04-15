@@ -46,6 +46,9 @@ class NotificationAlarmReceiver : HiltBroadcastReceiver() {
                 }
 
                 sendNotification()
+                this@NotificationAlarmReceiver.context?.let {
+                    RuntimeHelper.setAlarmManager(it)
+                }
             }
         }
     }

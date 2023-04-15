@@ -1,29 +1,21 @@
 package com.example.dotogether.view.activity
 
-import android.annotation.SuppressLint
-import android.app.AlarmManager
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.work.*
 import com.example.dotogether.R
-import com.example.dotogether.alarms.NotificationAlarmReceiver
 import com.example.dotogether.databinding.ActivityHomeBinding
 import com.example.dotogether.util.Constants
-import com.example.dotogether.util.SharedPreferencesUtil
-import com.example.dotogether.util.helper.RuntimeHelper.TAG
+import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.callback.ConfirmDialogListener
 import com.example.dotogether.view.fragment.*
 import com.example.dotogether.workers.NotificationWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -105,7 +97,7 @@ class HomeActivity : BaseActivity() {
             })
         }
 
-        setAlarmManager()
+        RuntimeHelper.setAlarmManager(this)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
@@ -118,45 +110,13 @@ class HomeActivity : BaseActivity() {
                 // No work with the given tag
 
                 val repeatingWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
-                    .setInitialDelay(getNotificationCalender().timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                    .setInitialDelay(RuntimeHelper.getNotificationCalender().timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                     .addTag(Constants.TAG_NOTIFICATION_WORKER)
                     .build()
 
                 workManager.enqueue(repeatingWorkRequest)
             }
         }
-    }
-
-    @SuppressLint("UnspecifiedImmutableFlag")
-    private fun setAlarmManager() {
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, NotificationAlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-
-        val isAlarmSet = SharedPreferencesUtil.getBoolean(this, "isAlarmSet", false)
-        if (!isAlarmSet) {
-            Log.d(TAG, "setAlarmManager")
-            alarmManager.setInexactRepeating(
-                AlarmManager.RTC_WAKEUP,
-                getNotificationCalender().timeInMillis,
-                AlarmManager.INTERVAL_DAY,
-                pendingIntent
-            )
-            SharedPreferencesUtil.setBoolean(this, "isAlarmSet", true)
-        }
-    }
-
-    private fun getNotificationCalender(): Calendar {
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 10)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-
-        if (calendar.timeInMillis - System.currentTimeMillis() <= 0) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        return calendar
     }
 
     fun onNavigationItemSelected(item: MenuItem) {

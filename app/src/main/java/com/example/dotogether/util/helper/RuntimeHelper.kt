@@ -2,16 +2,13 @@ package com.example.dotogether.util.helper
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.app.Dialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.annotation.SuppressLint
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
@@ -19,6 +16,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -27,12 +25,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
+import com.example.dotogether.alarms.NotificationAlarmReceiver
 import com.example.dotogether.model.NotificationData
 import com.example.dotogether.util.Constants
 import com.example.dotogether.model.Target
+import com.example.dotogether.util.SharedPreferencesUtil
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.*
-import com.google.firebase.messaging.RemoteMessage
 import java.io.ByteArrayOutputStream
 import java.text.DateFormat
 import java.text.ParseException
@@ -303,27 +302,50 @@ object RuntimeHelper {
         colorAnimation.start()
     }
 
-    fun RemoteMessage.Notification.myToString() {
-        Log.d(TAG, "Notification \n" +
-                "title : ${this.title}\n" +
-                "body : ${this.body}\n" +
-                "icon : ${this.icon}\n" +
-                "imageUrl : ${this.imageUrl}\n" +
-                "sound : ${this.sound}\n" +
-                "tag : ${this.tag}\n" +
-                "color : ${this.color}\n" +
-                "clickAction : ${this.clickAction}\n" +
-                "channelId : ${this.channelId}\n" +
-                "link : ${this.link}\n" +
-                "ticker : ${this.ticker}\n" +
-                "notificationPriority : ${this.notificationPriority}\n" +
-                "visibility : ${this.visibility}\n" +
-                "notificationCount : ${this.notificationCount}\n" +
-                "lightSettings : ${this.lightSettings}\n" +
-                "eventTime : ${this.eventTime}\n" +
-                "sticky : ${this.sticky}\n" +
-                "localOnly : ${this.localOnly}\n" +
-                "defaultSound : ${this.defaultSound}\n" +
-                "defaultLightSettings : ${this.defaultLightSettings}")
+    @SuppressLint("UnspecifiedImmutableFlag")
+    fun setPeriodAlarmManager(context: Context) {
+        val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, NotificationAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val isAlarmSet = SharedPreferencesUtil.getBoolean(context, "isAlarmSet", false)
+        if (!isAlarmSet) {
+            Log.d(TAG, "setAlarmManager")
+            alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                getNotificationCalender().timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
+            SharedPreferencesUtil.setBoolean(context, "isAlarmSet", true)
+        }
+    }
+
+    @SuppressLint("UnspecifiedImmutableFlag")
+    fun setAlarmManager(context: Context) {
+        val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, NotificationAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        Log.d(TAG, "setAlarmManager")
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            getNotificationCalender().timeInMillis,
+            pendingIntent
+        )
+    }
+
+    fun getNotificationCalender(): Calendar {
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 21)
+            set(Calendar.MINUTE, (0..59).random())
+            set(Calendar.SECOND, 0)
+        }
+
+        if (calendar.timeInMillis - System.currentTimeMillis() <= 0) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        Log.d(TAG, "getNotificationCalender time: ${Constants.DATE_FORMAT_6.format(Date(calendar.timeInMillis))}")
+        return calendar
     }
 }
