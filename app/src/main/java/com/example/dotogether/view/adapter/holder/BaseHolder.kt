@@ -32,7 +32,7 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
                 intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_PROFILE_FRAGMENT.type)
-                intent.putExtra(Constants.USER_ID, userId)
+                intent.putExtra(Constants.USERID, userId)
                 view.context.startActivity(intent)
             }
         }
@@ -91,7 +91,7 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
                 intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_FOLLOWS_FRAGMENT.type)
-                intent.putExtra(Constants.USER_ID, userId)
+                intent.putExtra(Constants.USERID, userId)
                 intent.putExtra(Constants.FOLLOWS_TYPE, followsType)
                 view.context.startActivity(intent)
             }
