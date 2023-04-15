@@ -9,6 +9,7 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentUserEditBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.UpdateUserRequest
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.ValidationFactory
 import com.example.dotogether.util.helper.RuntimeHelper
@@ -43,7 +44,7 @@ class UserEditFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
-        user = arguments?.getParcelable("user")
+        user = arguments?.getParcelable(Constants.USER)
         binding.backBtn.setOnClickListener(this)
         binding.save.setOnClickListener(this)
 

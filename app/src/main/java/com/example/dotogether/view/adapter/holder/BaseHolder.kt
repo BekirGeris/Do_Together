@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.User
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.view.activity.OthersActivity
 
@@ -30,8 +31,8 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_PROFILE_FRAGMENT.type)
-                intent.putExtra("userId", userId)
+                intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_PROFILE_FRAGMENT.type)
+                intent.putExtra(Constants.USER_ID, userId)
                 view.context.startActivity(intent)
             }
         }
@@ -49,10 +50,10 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_CHAT_FRAGMENT.type)
-                intent.putExtra("chatId", chatId)
-                intent.putExtra("chatUser", chatUser)
-                intent.putExtra("isGroup", isGroup)
+                intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_CHAT_FRAGMENT.type)
+                intent.putExtra(Constants.CHAT_ID, chatId)
+                intent.putExtra(Constants.CHAT_USER, chatUser)
+                intent.putExtra(Constants.IS_GROUP, isGroup)
                 view.context.startActivity(intent)
             }
         }
@@ -70,8 +71,8 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_TARGET_FRAGMENT.type)
-                intent.putExtra("targetId", targetId)
+                intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_TARGET_FRAGMENT.type)
+                intent.putExtra(Constants.TARGET_ID, targetId)
                 view.context.startActivity(intent)
             }
         }
@@ -89,9 +90,9 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_FOLLOWS_FRAGMENT.type)
-                intent.putExtra("userId", userId)
-                intent.putExtra("followsType", followsType)
+                intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_FOLLOWS_FRAGMENT.type)
+                intent.putExtra(Constants.USER_ID, userId)
+                intent.putExtra(Constants.FOLLOWS_TYPE, followsType)
                 view.context.startActivity(intent)
             }
         }
@@ -109,8 +110,8 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_USER_EDIT_FRAGMENT.type)
-                intent.putExtra("user", user)
+                intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_USER_EDIT_FRAGMENT.type)
+                intent.putExtra(Constants.USER, user)
                 view.context.startActivity(intent)
             }
         }
@@ -128,8 +129,8 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 }
             } else {
                 val intent = Intent(view.context, OthersActivity::class.java)
-                intent.putExtra("viewType", ViewType.VIEW_PASSWORD_EDIT_FRAGMENT.type)
-                intent.putExtra("user", user)
+                intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_PASSWORD_EDIT_FRAGMENT.type)
+                intent.putExtra(Constants.USER, user)
                 view.context.startActivity(intent)
             }
         }

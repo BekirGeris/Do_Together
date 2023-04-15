@@ -49,13 +49,13 @@ class OthersActivity : BaseActivity() {
             .setPopUpTo(navController.graph.startDestinationId, true)
             .build()
 
-        viewType = intent.getIntExtra("viewType", 0)
+        viewType = intent.getIntExtra(Constants.VIEW_TYPE, 0)
 
         checkOpenAppFromLocaleNotification()
     }
 
     private fun checkOpenAppFromLocaleNotification() {
-        val notificationData: NotificationData? = intent?.getParcelableExtra("notification_data")
+        val notificationData: NotificationData? = intent?.getParcelableExtra(Constants.NOTIFICATION_DATA)
         Log.d(RuntimeHelper.TAG, "bundle: $notificationData")
 
         val notificationType = notificationData?.type
@@ -64,13 +64,13 @@ class OthersActivity : BaseActivity() {
         Log.d(RuntimeHelper.TAG, "notification type: $notificationType type id: $typeId")
 
         when {
-            notificationType.equals("Notification", ignoreCase = true) -> {
+            notificationType.equals(Constants.NOTIFICATION, ignoreCase = true) -> {
                 navController.navigate(OthersNavDirections.actionNotificationFragment(), navOptions)
             }
-            notificationType.equals("Target", ignoreCase = true) && typeId?.toIntOrNull() != null -> {
+            notificationType.equals(Constants.TARGET, ignoreCase = true) && typeId?.toIntOrNull() != null -> {
                 navController.navigate(OthersNavDirections.actionTargetFragment(typeId.toInt()), navOptions)
             }
-            notificationType.equals("Chat", ignoreCase = true) && typeId?.toIntOrNull() != null-> {
+            notificationType.equals(Constants.CHAT, ignoreCase = true) && typeId?.toIntOrNull() != null-> {
                 navController.navigate(OthersNavDirections.actionListChatFragment(chatId = typeId), navOptions)
             }
             else -> {
@@ -85,37 +85,37 @@ class OthersActivity : BaseActivity() {
                 navController.navigate(OthersNavDirections.actionShareFragment(), navOptions)
             }
             ViewType.VIEW_PROFILE_FRAGMENT.type -> {
-                val userId = intent.getIntExtra("userId", -1)
+                val userId = intent.getIntExtra(Constants.USERID, -1)
                 navController.navigate(OthersNavDirections.actionProfileFragment(userId), navOptions)
             }
             ViewType.VIEW_LIST_CHAT_FRAGMENT.type -> {
-                val chatId = intent.getStringExtra("chatId")
+                val chatId = intent.getStringExtra(Constants.CHAT_ID)
                 navController.navigate(OthersNavDirections.actionListChatFragment(chatId = chatId), navOptions)
             }
             ViewType.VIEW_CHAT_FRAGMENT.type -> {
-                val chatId = intent.getStringExtra("chatId")
-                val chatUser = intent.getParcelableExtra<OtherUser>("chatUser")
-                val isGroup = intent.getBooleanExtra("isGroup", false)
+                val chatId = intent.getStringExtra(Constants.CHAT_ID)
+                val chatUser = intent.getParcelableExtra<OtherUser>(Constants.CHAT_USER)
+                val isGroup = intent.getBooleanExtra(Constants.IS_GROUP, false)
                 navController.navigate(OthersNavDirections.actionChatFragment(chatId = chatId, chatUser = chatUser, isGroup = isGroup), navOptions)
             }
             ViewType.VIEW_TARGET_FRAGMENT.type -> {
-                val targetId = intent.getIntExtra("targetId", -1)
+                val targetId = intent.getIntExtra(Constants.TARGET_ID, -1)
                 navController.navigate(OthersNavDirections.actionTargetFragment(targetId), navOptions)
             }
             ViewType.VIEW_FOLLOWS_FRAGMENT.type -> {
-                val userId = intent.getIntExtra("userId", -1)
-                val followsType = intent.getIntExtra("followsType", -1)
+                val userId = intent.getIntExtra(Constants.USERID, -1)
+                val followsType = intent.getIntExtra(Constants.FOLLOWS_TYPE, -1)
                 navController.navigate(OthersNavDirections.actionFollowsFragment(userId, followsType), navOptions)
             }
             ViewType.VIEW_SEARCH_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionSearchFragment(), navOptions)
             }
             ViewType.VIEW_USER_EDIT_FRAGMENT.type -> {
-                val user: User? = intent.getParcelableExtra("user")
+                val user: User? = intent.getParcelableExtra(Constants.USER)
                 user?.let { navController.navigate(OthersNavDirections.actionUserEditFragment(user = it), navOptions) }
             }
             ViewType.VIEW_PASSWORD_EDIT_FRAGMENT.type -> {
-                val user: User? = intent.getParcelableExtra("user")
+                val user: User? = intent.getParcelableExtra(Constants.USER)
                 user?.let { navController.navigate(OthersNavDirections.actionPasswordEditFragment(user = it), navOptions) }
             }
             ViewType.VIEW_NOTIFICATION_FRAGMENT.type -> {

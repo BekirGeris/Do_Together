@@ -114,7 +114,7 @@
     <string name="delete_story">Hikaye Silinecek!</string>
     <string name="log_out_message">Çıkış Yapılacak!</string>
     <string name="delete_account_message">Hasabınız geri dönülmez bir\nşekilde silinecek!</string>
-    <string name="error_tag_message">En az bir en fazla 4 tag eklenmeli.</string>
+    <string name="error_tag_message">En az 1 en fazla 4 tag eklenmeli.</string>
     <string name="required">Gerekli</string>
     <string name="year_2050">2050/01/01</string>
     <string name="wrong_email">Hatalı email</string>

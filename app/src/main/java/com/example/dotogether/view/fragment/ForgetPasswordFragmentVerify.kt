@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentForgetPasswordVerifyBinding
 import com.example.dotogether.model.request.ForgetPasswordVerifyRequest
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.ValidationFactory
 import com.example.dotogether.viewmodel.LoginViewModel
@@ -47,7 +48,7 @@ class ForgetPasswordFragmentVerify : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
-        email = arguments?.getString("email")!!
+        email = arguments?.getString(Constants.E_MAIL)!!
         binding.backBtn.setOnClickListener(this)
         binding.save.setOnClickListener(this)
 

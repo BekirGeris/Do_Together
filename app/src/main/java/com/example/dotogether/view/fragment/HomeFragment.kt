@@ -109,7 +109,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     private fun createReels(fileUri: String) {
-        val filePath = fileUri.replace("file://", "")
+        val filePath = fileUri.replace(Constants.FILE_PATH_FIRST, "")
 
         try {
             val createReelsRequest = CreateReelsRequest(RuntimeHelper.imageToBase64(filePath))
@@ -169,7 +169,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     private fun checkOpenAppFromLocaleNotification() {
-        val notificationData: NotificationData? = activity?.intent?.getParcelableExtra("notification_data")
+        val notificationData: NotificationData? = activity?.intent?.getParcelableExtra(Constants.NOTIFICATION_DATA)
         Log.d(TAG, "bundle: $notificationData")
 
         val notificationType = notificationData?.type
@@ -178,13 +178,13 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         Log.d(TAG, "notification type: $notificationType type id: $typeId")
 
         when {
-            notificationType.equals("Notification", ignoreCase = true) -> {
+            notificationType.equals(Constants.NOTIFICATION, ignoreCase = true) -> {
                 goToNotificationFragment()
             }
-            notificationType.equals("Target", ignoreCase = true) && typeId?.toIntOrNull() != null -> {
+            notificationType.equals(Constants.TARGET, ignoreCase = true) && typeId?.toIntOrNull() != null -> {
                 goToTargetFragment(typeId.toInt())
             }
-            notificationType.equals("Chat", ignoreCase = true) && typeId?.toIntOrNull() != null-> {
+            notificationType.equals(Constants.CHAT, ignoreCase = true) && typeId?.toIntOrNull() != null-> {
                 goToChatListFragment(typeId)
             }
             else -> {
@@ -194,18 +194,18 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     private fun checkOpenAppFromRemoteNotification() {
-        val notificationType = activity?.intent?.extras?.getString("notification_type")
-        val typeId = activity?.intent?.extras?.getString("type_id")
+        val notificationType = activity?.intent?.extras?.getString(Constants.NOTIFICATION_TYPE)
+        val typeId = activity?.intent?.extras?.getString(Constants.TYPE_ID)
         Log.d(TAG, "notification type: $notificationType type id: $typeId")
 
         when {
-            notificationType.equals("Notification", ignoreCase = true) -> {
+            notificationType.equals(Constants.NOTIFICATION, ignoreCase = true) -> {
                 goToNotificationFragment()
             }
-            notificationType.equals("Target", ignoreCase = true) && typeId?.toIntOrNull() != null -> {
+            notificationType.equals(Constants.TARGET, ignoreCase = true) && typeId?.toIntOrNull() != null -> {
                 goToTargetFragment(typeId.toInt())
             }
-            notificationType.equals("Chat", ignoreCase = true) && typeId?.toIntOrNull() != null-> {
+            notificationType.equals(Constants.CHAT, ignoreCase = true) && typeId?.toIntOrNull() != null-> {
                 goToChatListFragment(typeId)
             }
         }

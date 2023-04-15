@@ -101,7 +101,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
         binding.memberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        targetId = arguments?.getInt("targetId")
+        targetId = arguments?.getInt(Constants.TARGET_ID)
     }
 
     private fun initObserve() {

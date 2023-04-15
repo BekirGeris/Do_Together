@@ -41,9 +41,9 @@ class NotificationHolder(view: View, private val listener: HolderListener.Notifi
 
         binding.notificationTitle.text = notification.title
 
-        if (notification.type.equals("target", ignoreCase = true)) {
+        if (notification.type.equals(Constants.TARGET, ignoreCase = true)) {
             RuntimeHelper.glideForPersonImage(context).load(notification.img).into(binding.notificationImage)
-        } else if (notification.type.equals("user", ignoreCase = true)) {
+        } else if (notification.type.equals(Constants.USER, ignoreCase = true)) {
             RuntimeHelper.glideForPersonImage(context).load(notification.others_img).into(binding.notificationImage)
         }
 
@@ -67,9 +67,9 @@ class NotificationHolder(view: View, private val listener: HolderListener.Notifi
     override fun onClick(v: View?) {
         when (v) {
             binding.holderView, binding.notificationImage, binding.infoLyt, binding.notificationTitle -> {
-                if (notification.type.equals("target", ignoreCase = true)) {
+                if (notification.type.equals(Constants.TARGET, ignoreCase = true)) {
                     notification.type_id?.let { goToTargetFragment(view.findNavController(), it) }
-                } else if (notification.type.equals("user", ignoreCase = true)) {
+                } else if (notification.type.equals(Constants.USER, ignoreCase = true)) {
                     notification.others_id?.let { goToProfileFragment(view.findNavController(), it) }
                 }
             }

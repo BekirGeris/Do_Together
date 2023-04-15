@@ -23,12 +23,16 @@ object Constants {
     const val NOTIFICATION = "NOTIFICATION"
     const val TARGET = "TARGET"
     const val NONE = "NONE"
+    const val ACTIVITY = "activity"
+    const val USER = "user"
 
     const val TAG_NOTIFICATION_WORKER = "TAG_NOTIFICATION_WORKER"
     const val DELETE_MESSAGE_FIREBASE_KEY = "DELETE_MESSAGE_FIREBASE_KEY_1221"
 
     const val PREFIX = "https://targetpalss.page.link"
+    const val FILE_PATH_FIRST = "file://"
 
+    //PERIOD CONSTANTS
     const val DAILY = "Daily"
     const val WEEKLY = "Weekly"
     const val MONTHLY = "Monthly"
@@ -40,6 +44,33 @@ object Constants {
     const val FRI = "Fri"
     const val SAT = "Sat"
     const val SUN = "Sun"
+
+    //NAVIGATION CONSTANTS
+    const val VIEW_TYPE = "viewType"
+    const val USERID = "userId"
+    const val TARGET_ID = "targetId"
+    const val CHAT_ID = "chatId"
+    const val CHAT_USER = "chatUser"
+    const val IS_GROUP = "isGroup"
+    const val IS_EDIT = "isEdit"
+    const val IS_ADMIN = "isAdmin"
+    const val FOLLOWS_TYPE = "followsType"
+    const val E_MAIL = "email"
+
+    //CHATS CONSTANTS
+    const val CHATS = "chats"
+    const val TIME = "time"
+    const val USER_ID = "user_id"
+    const val USER_MESSAGE = "user_message"
+    const val USERNAME = "username"
+    const val MESSAGE_KEY = "message_key"
+    const val REPLY_MESSAGE = "reply_message"
+
+
+    //NOTIFICATION CONSTANTS
+    const val NOTIFICATION_DATA = "notification_data"
+    const val NOTIFICATION_TYPE = "notification_type"
+    const val TYPE_ID = "type_id"
 
     enum class ViewType(val type: Int) {
         VIEW_SHARE_FRAGMENT(1),

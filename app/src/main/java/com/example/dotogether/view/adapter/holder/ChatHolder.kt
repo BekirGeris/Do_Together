@@ -31,7 +31,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
         this.chat = chat
 
         chat.otherUser?.let {
-            val title = if (chat.chat_type == "activity") it.target else it.username
+            val title = if (chat.chat_type == Constants.ACTIVITY) it.target else it.username
             title?.let { t ->
                 binding.titleTxt.text = if (t.length > 20) t.substring(0, 20) + "..." else t
             }
@@ -42,7 +42,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
             }
             binding.message.text = lastMessage
 
-            if (chat.chat_type == "activity") {
+            if (chat.chat_type == Constants.ACTIVITY) {
                 RuntimeHelper.glide(
                     context,
                     RequestOptions()
@@ -83,7 +83,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
                         navController,
                         it,
                         chat.otherUser!!,
-                        chat.chat_type == "activity"
+                        chat.chat_type == Constants.ACTIVITY
                     )
                 }
             }

@@ -103,7 +103,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     }
 
     private fun changeImage(fileUri: Uri) {
-        val filePath = fileUri.toString().replace("file://", "")
+        val filePath = fileUri.toString().replace(Constants.FILE_PATH_FIRST, "")
 
         try {
             imageBase64 = RuntimeHelper.imageToBase64(filePath)
@@ -133,8 +133,8 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
     }
 
     fun initViews() {
-        isEdit = arguments?.getBoolean("isEdit") ?: false
-        targetId = arguments?.getInt("targetId")
+        isEdit = arguments?.getBoolean(Constants.IS_EDIT) ?: false
+        targetId = arguments?.getInt(Constants.TARGET_ID)
 
         binding = FragmentShareBinding.inflate(layoutInflater)
         periodDialogBinding = BottomSheetPeriodBinding.inflate(layoutInflater)

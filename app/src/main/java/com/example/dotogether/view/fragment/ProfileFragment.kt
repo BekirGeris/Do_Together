@@ -134,7 +134,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     private fun initViews() {
         imagePickerBuilder = ImagePicker.with(this)
 
-        userId = arguments?.getInt("userId", -1)
+        userId = arguments?.getInt(Constants.USERID, -1)
 
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
 
@@ -346,7 +346,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     private fun changeBackgroundImage(fileUri: String) {
         val updateUserRequest = UpdateUserRequest()
-        val filePath = fileUri.replace("file://", "")
+        val filePath = fileUri.replace(Constants.FILE_PATH_FIRST, "")
 
         try {
             updateUserRequest.background_img = RuntimeHelper.imageToBase64(filePath)
@@ -358,7 +358,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     private fun changeProfileImage(fileUri: String) {
         val updateUserRequest = UpdateUserRequest()
-        val filePath = fileUri.replace("file://", "")
+        val filePath = fileUri.replace(Constants.FILE_PATH_FIRST, "")
 
         try {
             updateUserRequest.img = RuntimeHelper.imageToBase64(filePath)

@@ -77,7 +77,7 @@ class NotificationAlarmReceiver : HiltBroadcastReceiver() {
         targets.forEach { target ->
             if (notificationCount <= 5 && RuntimeHelper.isDoItBTNOpen(target)) {
                 context?.let { context ->
-                    val notificationData = NotificationData("Target", target.id.toString())
+                    val notificationData = NotificationData(Constants.TARGET, target.id.toString())
                     RuntimeHelper.sendNotification( context,
                         HomeActivity::class.java,
                         target.target,

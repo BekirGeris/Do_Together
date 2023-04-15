@@ -11,9 +11,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.FragmentFollowsBinding
-import com.example.dotogether.databinding.ItemUserBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.UserAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
@@ -75,8 +75,8 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
     private fun initViews() {
         binding.backBtn.setOnClickListener(this)
 
-        userId = arguments?.getInt("userId", -1)
-        followsType = arguments?.getInt("followsType", -1)
+        userId = arguments?.getInt(Constants.USERID, -1)
+        followsType = arguments?.getInt(Constants.FOLLOWS_TYPE, -1)
 
         userAdapter = UserAdapter(users, this)
         binding.followRv.layoutManager = LinearLayoutManager(context)

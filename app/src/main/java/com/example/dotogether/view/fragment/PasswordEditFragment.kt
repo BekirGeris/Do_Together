@@ -15,6 +15,7 @@ import com.example.dotogether.util.ValidationFactory
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.viewmodel.ProfileViewModel
 import com.example.dotogether.model.request.UpdatePasswordRequest
+import com.example.dotogether.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,7 +50,7 @@ class PasswordEditFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
-        user = arguments?.getParcelable("user")
+        user = arguments?.getParcelable(Constants.USER)
         binding.backBtn.setOnClickListener(this)
         binding.save.setOnClickListener(this)
 

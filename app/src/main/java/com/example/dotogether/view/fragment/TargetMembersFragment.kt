@@ -14,6 +14,7 @@ import com.example.dotogether.R
 import com.example.dotogether.databinding.FragmentTargetMembersBinding
 import com.example.dotogether.model.User
 import com.example.dotogether.model.request.SearchRequest
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.view.adapter.ListMemberAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
@@ -71,8 +72,8 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
     private fun initViews() {
         binding.backBtn.setOnClickListener(this)
 
-        targetId = arguments?.getInt("targetId", -1)
-        isAdmin = arguments?.getBoolean("isAdmin") ?: false
+        targetId = arguments?.getInt(Constants.TARGET_ID, -1)
+        isAdmin = arguments?.getBoolean(Constants.IS_ADMIN) ?: false
 
         memberAdapter = ListMemberAdapter(users, this)
         binding.memberRv.layoutManager = LinearLayoutManager(context)

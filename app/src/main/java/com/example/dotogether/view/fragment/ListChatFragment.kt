@@ -15,6 +15,7 @@ import com.example.dotogether.OthersNavDirections
 import com.example.dotogether.databinding.FragmentChatListBinding
 import com.example.dotogether.model.request.SearchRequest
 import com.example.dotogether.model.response.ChatResponse
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.view.adapter.ChatAdapter
@@ -53,7 +54,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
-        chatId = arguments?.getString("chatId")
+        chatId = arguments?.getString(Constants.CHAT_ID)
 
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         binding.backBtn.setOnClickListener(this)
@@ -96,7 +97,7 @@ class ListChatFragment : BaseFragment(), View.OnClickListener {
                             view?.findNavController()?.let { navC ->
                                 navC.navigate(
                                     OthersNavDirections.actionChatFragment(
-                                    isGroup = it.chat_type == "activity",
+                                    isGroup = it.chat_type == Constants.ACTIVITY,
                                     chatId = chatId,
                                     chatUser = it.otherUser
                                 ))

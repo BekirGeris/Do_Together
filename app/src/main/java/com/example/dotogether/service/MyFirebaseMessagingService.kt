@@ -33,7 +33,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "From: ${remoteMessage.from}")
         val data = remoteMessage.data
         val notification = remoteMessage.notification
-        val notificationData = NotificationData(data["notification_type"] ?: "", data["type_id"] ?: "")
+        val notificationData = NotificationData(data[Constants.NOTIFICATION_TYPE] ?: "", data[Constants.TYPE_ID] ?: "")
 
         if (data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: $data")
@@ -61,13 +61,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
 
                 when {
-                    notificationData.type.equals("Notification", ignoreCase = true) -> {
+                    notificationData.type.equals(Constants.NOTIFICATION, ignoreCase = true) -> {
                         basket.refreshType = Constants.NOTIFICATION
                     }
-                    notificationData.type.equals("Target", ignoreCase = true) -> {
+                    notificationData.type.equals(Constants.TARGET, ignoreCase = true) -> {
                         basket.refreshType = Constants.TARGET
                     }
-                    notificationData.type.equals("Chat", ignoreCase = true) -> {
+                    notificationData.type.equals(Constants.CHAT, ignoreCase = true) -> {
                         basket.refreshType = Constants.CHAT
                     }
                 }

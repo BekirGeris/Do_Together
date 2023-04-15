@@ -69,21 +69,21 @@ open class BaseFragment : Fragment() {
 
     fun goToProfileFragment(userId: Int) {
         val intent = Intent(requireContext(), OthersActivity::class.java)
-        intent.putExtra("viewType", Constants.ViewType.VIEW_PROFILE_FRAGMENT.type)
-        intent.putExtra("userId", userId)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_PROFILE_FRAGMENT.type)
+        intent.putExtra(Constants.USERID, userId)
         requireActivity().startActivity(intent)
     }
 
     fun goToChatListFragment(chatId: String? = null) {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
-        intent.putExtra("viewType", Constants.ViewType.VIEW_LIST_CHAT_FRAGMENT.type)
-        intent.putExtra("chatId", chatId)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_LIST_CHAT_FRAGMENT.type)
+        intent.putExtra(Constants.CHAT_ID, chatId)
         startActivity(intent)
     }
 
     fun goToSearchFragment() {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
-        intent.putExtra("viewType", Constants.ViewType.VIEW_SEARCH_FRAGMENT.type)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_SEARCH_FRAGMENT.type)
         startActivity(intent)
     }
 
@@ -95,26 +95,26 @@ open class BaseFragment : Fragment() {
 
     fun goToShareFragment() {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
-        intent.putExtra("viewType", Constants.ViewType.VIEW_SHARE_FRAGMENT.type)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_SHARE_FRAGMENT.type)
         startActivity(intent)
     }
 
     fun goToNotificationFragment() {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
-        intent.putExtra("viewType", Constants.ViewType.VIEW_NOTIFICATION_FRAGMENT.type)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_NOTIFICATION_FRAGMENT.type)
         startActivity(intent)
     }
 
     fun goToAddTagFragment() {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
-        intent.putExtra("viewType", Constants.ViewType.VIEW_ADD_TAG_FRAGMENT.type)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_ADD_TAG_FRAGMENT.type)
         startActivity(intent)
     }
 
     fun goToTargetFragment(targetId: Int) {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
-        intent.putExtra("viewType", Constants.ViewType.VIEW_TARGET_FRAGMENT.type)
-        intent.putExtra("targetId", targetId)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_TARGET_FRAGMENT.type)
+        intent.putExtra(Constants.TARGET_ID, targetId)
         startActivity(intent)
     }
 

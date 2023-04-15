@@ -81,17 +81,17 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
                         discovers.addAll(it)
                         discoverAdapter.notifyDataSetChanged()
                     }
-                    dialog.hide()
+//                    dialog.hide()
                 }
                 is Resource.Error -> {
                     binding.swipeLyt.isRefreshing = false
                     binding.activityErrorView.visibility = View.VISIBLE
-                    dialog.hide()
+//                    dialog.hide()
                     showToast(resource.message)
                 }
                 is Resource.Loading -> {
                     if (!binding.swipeLyt.isRefreshing) {
-                        dialog.show()
+//                        dialog.show()
                     }
                 }
                 else -> {}

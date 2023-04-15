@@ -113,7 +113,7 @@
     <string name="delete_story">Story will be deleted!</string>
     <string name="log_out_message">Check Out!</string>
     <string name="delete_account_message">Your account will be\ndeleted irreversibly!</string>
-    <string name="error_tag_message">At least one and at most 4 tags must be added</string>
+    <string name="error_tag_message">At least 1 and at most 4 tags must be added</string>
     <string name="required">Required</string>
     <string name="year_2050">2050/01/01</string>
     <string name="wrong_email">Wrong email</string>

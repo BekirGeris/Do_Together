@@ -122,7 +122,7 @@ object RuntimeHelper {
         val intent = Intent(context, activity)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         notificationData?.let {
-            intent.putExtra("notification_data", it)
+            intent.putExtra(Constants.NOTIFICATION_DATA, it)
         }
         val pendingIntent = PendingIntent.getActivity(context, Random().nextInt(), intent, PendingIntent.FLAG_IMMUTABLE)
 

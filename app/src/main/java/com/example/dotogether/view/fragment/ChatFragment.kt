@@ -120,9 +120,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference
 
-        isGroup = arguments?.getBoolean("isGroup") ?: false
-        chatId = arguments?.getString("chatId")
-        chatUser = arguments?.getParcelable("chatUser")
+        isGroup = arguments?.getBoolean(Constants.IS_GROUP) ?: false
+        chatId = arguments?.getString(Constants.CHAT_ID)
+        chatUser = arguments?.getParcelable(Constants.CHAT_USER)
         Log.d(TAG, "chat id : $chatId")
 
         chatUser?.let {
@@ -307,11 +307,11 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
     private fun getDataLimited() {
         if (!chatId.isNullOrEmpty()) {
-            val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
+            val newReference = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
             val query: Query = if (lastTime != null) {
-                newReference.orderByChild("time").startAfter(lastTime!!.toDouble()).limitToFirst(messageLimit)
+                newReference.orderByChild(Constants.TIME).startAfter(lastTime!!.toDouble()).limitToFirst(messageLimit)
             } else {
-                newReference.orderByChild("time").limitToFirst(messageLimit)
+                newReference.orderByChild(Constants.TIME).limitToFirst(messageLimit)
             }
 
             query.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -320,7 +320,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                     Log.d(TAG, "onDataChange size: ${snapshot.childrenCount}")
                     for ((count, ds) in snapshot.children.withIndex()) {
                         val hashMap = ds.value as HashMap<*,*>
-                        lastTime = if (hashMap.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
+                        lastTime = if (hashMap.get(Constants.TIME) is Long) hashMap.get(Constants.TIME) as Long? else 1675252866602L
                         val message = generateMessage(ds.value as HashMap<*, *>, ds.key)
                         message?.let { messages.add(it) }
                     }
@@ -340,8 +340,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     private fun observeData() {
         Log.d(TAG, "observeData")
         if (!chatId.isNullOrEmpty()) {
-            val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
-            val query: Query = newReference.orderByChild("time").limitToFirst(messageLimit)
+            val newReference = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
+            val query: Query = newReference.orderByChild(Constants.TIME).limitToFirst(messageLimit)
 
             query.addChildEventListener(object: ChildEventListener {
                 @SuppressLint("NotifyDataSetChanged")
@@ -375,8 +375,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 }
             })
 
-            val newReference2 = firebaseDatabase.getReference("chats").child(chatId!!)
-            val query2: Query = newReference2.orderByChild("time").limitToFirst(1)
+            val newReference2 = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
+            val query2: Query = newReference2.orderByChild(Constants.TIME).limitToFirst(1)
 
             query2.addValueEventListener(object : ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
@@ -408,16 +408,16 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     private fun generateMessage(hashMap: HashMap<*, *>?, messageKey: String?): Message? {
         var message: Message? = null
         hashMap?.let {
-            val username: String? = it.get("username") as String?
-            val userId: Long? = it.get("user_id") as Long?
-            val userMessage: String? = it.get("user_message") as String?
-            var time: Long? = if (it.get("time") is Long) hashMap.get("time") as Long? else 1675252866602L
+            val username: String? = it.get(Constants.USERNAME) as String?
+            val userId: Long? = it.get(Constants.USER_ID) as Long?
+            val userMessage: String? = it.get(Constants.USER_MESSAGE) as String?
+            var time: Long? = if (it.get(Constants.TIME) is Long) hashMap.get(Constants.TIME) as Long? else 1675252866602L
 
             if (messageKey != null && username != null && userId != null && userMessage != null && time != null) {
                 time = abs(time)
                 message = Message(messageKey, username, userId, time, userMessage, myUser.id == userId.toInt())
-                val replyMessage = if (hashMap.get("reply_message") != null) hashMap.get("reply_message") as HashMap<*, *> else null
-                message?.replyMessage = generateMessage( replyMessage, replyMessage?.get("message_key") as String?)
+                val replyMessage = if (hashMap.get(Constants.REPLY_MESSAGE) != null) hashMap.get(Constants.REPLY_MESSAGE) as HashMap<*, *> else null
+                message?.replyMessage = generateMessage( replyMessage, replyMessage?.get(Constants.MESSAGE_KEY) as String?)
             }
         }
         return message
@@ -438,8 +438,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     private fun addUnreadLabel() {
         if (chatUser?.unread_count != 0) {
             val unreadMessage = Message(
-                "messageKey",
-                "username",
+                Constants.MESSAGE_KEY,
+                Constants.USERNAME,
                 0,
                 0,
                 "${chatUser?.unread_count} ${getString(R.string.unread_message)}",
@@ -495,15 +495,15 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                             messageAdapter.notifyDataSetChanged()
                         }
                     }
-                    firebaseDatabase.getReference("chats")
+                    firebaseDatabase.getReference(Constants.CHATS)
                         .child(chatId!!)
                         .child(it)
-                        .child( "user_message")
+                        .child(Constants.USER_MESSAGE)
                         .setValue(Constants.DELETE_MESSAGE_FIREBASE_KEY)
-                    firebaseDatabase.getReference("chats")
+                    firebaseDatabase.getReference(Constants.CHATS)
                         .child(chatId!!)
                         .child(it)
-                        .child( "reply_message")
+                        .child(Constants.REPLY_MESSAGE)
                         .setValue(null)
                 }
             }
@@ -544,8 +544,8 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 viewHolder?.itemView?.let { RuntimeHelper.animateBackgroundColorChange(it, R.color.dark_teal, 2000) }
             }, 200)
         } else {
-            val newReference = firebaseDatabase.getReference("chats").child(chatId!!)
-            val query: Query = newReference.orderByChild("time")
+            val newReference = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
+            val query: Query = newReference.orderByChild(Constants.TIME)
 
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
@@ -590,24 +590,24 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
     private fun sendMessageFirebase(message: String) {
         val messageData = HashMap<String, Any>()
-        messageData["time"] = System.currentTimeMillis() * -1
-        messageData["user_id"] = myUser.id ?: 0
-        messageData["user_message"] = message
-        messageData["username"] = myUser.username!!
+        messageData[Constants.TIME] = System.currentTimeMillis() * -1
+        messageData[Constants.USER_ID] = myUser.id ?: 0
+        messageData[Constants.USER_MESSAGE] = message
+        messageData[Constants.USERNAME] = myUser.username!!
 
         replyMessage?.let {
             val replyData = HashMap<String, Any>()
-            replyData["message_key"] = it.key ?: ""
-            replyData["time"] = it.messageTime ?: ""
-            replyData["user_id"] = it.userId ?: 0
-            replyData["user_message"] = it.message ?: ""
-            replyData["username"] = it.userName ?: ""
+            replyData[Constants.MESSAGE_KEY] = it.key ?: ""
+            replyData[Constants.TIME] = it.messageTime ?: ""
+            replyData[Constants.USER_ID] = it.userId ?: 0
+            replyData[Constants.USER_MESSAGE] = it.message ?: ""
+            replyData[Constants.USERNAME] = it.userName ?: ""
 
-            messageData["reply_message"] = replyData
+            messageData[Constants.REPLY_MESSAGE] = replyData
         }
         replyMessage = null
 
-        firebaseDatabase.getReference("chats").child(chatId!!).push().setValue(messageData)
+        firebaseDatabase.getReference(Constants.CHATS).child(chatId!!).push().setValue(messageData)
     }
 
     private fun setRecyclerViewScrollListener() {
