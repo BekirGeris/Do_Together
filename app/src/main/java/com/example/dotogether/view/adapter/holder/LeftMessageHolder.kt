@@ -35,34 +35,10 @@ class LeftMessageHolder(
     private fun initViews() {
         bottomSheetDialog.setContentView(dialogBinding.root)
         binding.userName.setOnClickListener(this)
+        binding.includeReplyMessageLyt.setOnClickListener(this)
 
         dialogBinding.copy.visibility = View.VISIBLE
         dialogBinding.copy.setOnClickListener(this)
-
-        binding.messageLyt.setOnLongClickListener {
-            bottomSheetDialog.show()
-            return@setOnLongClickListener true
-        }
-        binding.includeReplyMessageLyt.setOnLongClickListener {
-            bottomSheetDialog.show()
-            return@setOnLongClickListener true
-        }
-    }
-
-    fun bind(message: Message, isAgainMessage: Boolean) {
-        this.message = message
-        binding.messageLyt.visibility = View.VISIBLE
-        binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
-        binding.replyBtn.visibility = View.VISIBLE
-        binding.messageTime.text = Constants.DATE_FORMAT_4.format(Date(message.messageTime ?: 0))
-        binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
-        binding.userName.text = message.userName
-
-        binding.userName.visibility = if (isAgainMessage) View.VISIBLE else View.GONE
-
-//        if (isAgainMessage) {
-//            binding.userName.setTextColor(ColorGenerator.getColorForKey(message.userName ?: ""))
-//        }
 
         Linkify.addLinks(binding.messageTxt, Linkify.WEB_URLS)
 
@@ -92,6 +68,27 @@ class LeftMessageHolder(
             }
         })
 
+        binding.messageLyt.setOnLongClickListener {
+            bottomSheetDialog.show()
+            return@setOnLongClickListener true
+        }
+        binding.includeReplyMessageLyt.setOnLongClickListener {
+            bottomSheetDialog.show()
+            return@setOnLongClickListener true
+        }
+    }
+
+    fun bind(message: Message, isAgainMessage: Boolean) {
+        this.message = message
+        binding.messageLyt.visibility = View.VISIBLE
+        binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
+        binding.replyBtn.visibility = View.VISIBLE
+        binding.messageTime.text = Constants.DATE_FORMAT_4.format(Date(message.messageTime ?: 0))
+        binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
+        binding.userName.text = message.userName
+
+        binding.userName.visibility = if (isAgainMessage) View.VISIBLE else View.GONE
+
         message.replyMessage.let {
             if (it != null) {
                 binding.includeReplyMessage.replyMessageUserName.text = if (it.isMe) context.getText(R.string.you) else it.userName
@@ -101,8 +98,6 @@ class LeftMessageHolder(
                 binding.includeReplyMessageLyt.visibility = View.GONE
             }
         }
-
-        binding.includeReplyMessageLyt.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -120,7 +115,9 @@ class LeftMessageHolder(
                 message.replyMessage?.let { listener.goToMessageHolder(it) }
             }
             dialogBinding.copy -> {
-                listener.copyMessage(message)
+                if (message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY) {
+                    listener.copyMessage(message)
+                }
                 bottomSheetDialog.dismiss()
             }
         }

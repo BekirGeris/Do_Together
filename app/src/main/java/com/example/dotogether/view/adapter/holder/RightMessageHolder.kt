@@ -28,38 +28,12 @@ class RightMessageHolder(
 
     init {
         bottomSheetDialog.setContentView(dialogBinding.root)
+        binding.includeReplyMessageLyt.setOnClickListener(this)
 
         dialogBinding.delete.visibility = View.VISIBLE
         dialogBinding.delete.setOnClickListener(this)
         dialogBinding.copy.visibility = View.VISIBLE
         dialogBinding.copy.setOnClickListener(this)
-    }
-
-    fun bind(message: Message, isGroup: Boolean) {
-        this.message = message
-        if (message.isUnreadCountMessage) {
-            binding.unreadMessage.text = message.message
-            binding.messageLyt.visibility = View.GONE
-            binding.unreadMessage.visibility = View.VISIBLE
-            binding.swipeLayout.isSwipeEnabled = false
-            binding.replyBtn.visibility = View.GONE
-        } else {
-            binding.messageLyt.visibility = View.VISIBLE
-            binding.unreadMessage.visibility = View.GONE
-            binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
-            binding.replyBtn.visibility = View.VISIBLE
-        }
-        binding.messageTime.text = Constants.DATE_FORMAT_4.format(Date(message.messageTime ?: 0))
-        binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
-
-        binding.messageLyt.setOnLongClickListener {
-            bottomSheetDialog.show()
-            return@setOnLongClickListener true
-        }
-        binding.includeReplyMessageLyt.setOnLongClickListener {
-            bottomSheetDialog.show()
-            return@setOnLongClickListener true
-        }
 
         Linkify.addLinks(binding.messageTxt, Linkify.WEB_URLS)
 
@@ -89,6 +63,33 @@ class RightMessageHolder(
             }
         })
 
+        binding.messageLyt.setOnLongClickListener {
+            bottomSheetDialog.show()
+            return@setOnLongClickListener true
+        }
+        binding.includeReplyMessageLyt.setOnLongClickListener {
+            bottomSheetDialog.show()
+            return@setOnLongClickListener true
+        }
+    }
+
+    fun bind(message: Message, isGroup: Boolean) {
+        this.message = message
+        if (message.isUnreadCountMessage) {
+            binding.unreadMessage.text = message.message
+            binding.messageLyt.visibility = View.GONE
+            binding.unreadMessage.visibility = View.VISIBLE
+            binding.swipeLayout.isSwipeEnabled = false
+            binding.replyBtn.visibility = View.GONE
+        } else {
+            binding.messageLyt.visibility = View.VISIBLE
+            binding.unreadMessage.visibility = View.GONE
+            binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
+            binding.replyBtn.visibility = View.VISIBLE
+        }
+        binding.messageTime.text = Constants.DATE_FORMAT_4.format(Date(message.messageTime ?: 0))
+        binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
+
         message.replyMessage.let {
             if (it != null) {
                 binding.includeReplyMessage.replyMessageUserName.text = if (it.isMe) context.getText(R.string.you) else it.userName
@@ -98,8 +99,6 @@ class RightMessageHolder(
                 binding.includeReplyMessageLyt.visibility = View.GONE
             }
         }
-
-        binding.includeReplyMessageLyt.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -112,7 +111,9 @@ class RightMessageHolder(
                 bottomSheetDialog.dismiss()
             }
             dialogBinding.copy -> {
-                listener.copyMessage(message)
+                if (message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY) {
+                    listener.copyMessage(message)
+                }
                 bottomSheetDialog.dismiss()
             }
             else -> {}
