@@ -64,10 +64,6 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
 
         bottomSheetSettingBinding.addTagOfLike.visibility = View.VISIBLE
         bottomSheetSettingBinding.addTagOfLike.setOnClickListener(this)
-
-        binding.swipeLyt.setOnRefreshListener {
-            viewModel.getAllDiscover()
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -75,7 +71,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
         viewModel.allDiscover.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    binding.swipeLyt.isRefreshing = false
+                    binding.activityErrorView.visibility = View.GONE
                     resource.data?.let {
                         discovers.clear()
                         discovers.addAll(it)
@@ -84,15 +80,12 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
 //                    dialog.hide()
                 }
                 is Resource.Error -> {
-                    binding.swipeLyt.isRefreshing = false
                     binding.activityErrorView.visibility = View.VISIBLE
 //                    dialog.hide()
                     showToast(resource.message)
                 }
                 is Resource.Loading -> {
-                    if (!binding.swipeLyt.isRefreshing) {
-//                        dialog.show()
-                    }
+//                    dialog.show()
                 }
                 else -> {}
             }

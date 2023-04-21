@@ -60,24 +60,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_more_vert_24" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_lyt"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/discover_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_btn"
-        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/discover_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?colorTertiary" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activityErrorView"
