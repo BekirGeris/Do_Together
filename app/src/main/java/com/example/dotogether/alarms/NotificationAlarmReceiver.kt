@@ -75,7 +75,7 @@ class NotificationAlarmReceiver : HiltBroadcastReceiver() {
         Log.d(TAG, "targets size: ${targets.size}")
         var notificationCount = 1
         targets.forEach { target ->
-            if (notificationCount <= 5 && RuntimeHelper.isDoItBTNOpen(target)) {
+            if (notificationCount <= 5 && RuntimeHelper.isDoItBTNOpen(target) && target.notify == 1) {
                 context?.let { context ->
                     val notificationData = NotificationData(Constants.TARGET, target.id.toString())
                     RuntimeHelper.sendNotification( context,
