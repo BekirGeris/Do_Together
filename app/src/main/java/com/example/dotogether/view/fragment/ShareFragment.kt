@@ -437,7 +437,6 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
 
     private fun requestPermissionsForImagePicker() {
         PermissionUtil.requestPermissions(
-            requireContext(),
             requireActivity(),
             binding.root,
             requestMultiplePermissions,

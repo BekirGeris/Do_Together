@@ -320,7 +320,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
 
     fun requestPermissionsForImagePicker() {
         PermissionUtil.requestPermissions(
-            requireContext(),
             requireActivity(),
             binding.root,
             requestMultiplePermissions,

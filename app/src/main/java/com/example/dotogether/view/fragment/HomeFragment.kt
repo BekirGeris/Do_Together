@@ -427,7 +427,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
 
     private fun requestPermissionsForImagePicker() {
         PermissionUtil.requestPermissions(
-            requireContext(),
             requireActivity(),
             binding.root,
             requestMultiplePermissions,

@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 object PermissionUtil {
 
     fun requestPermissions(
-        context: Context,
         activity: Activity,
         view: View,
         requestMultiplePermissions: ActivityResultLauncher<Array<String>>,
