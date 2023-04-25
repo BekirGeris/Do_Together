@@ -282,7 +282,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             }
         }
 
-        binding.switchVisibility.isChecked = target.isPrivate == true
+        binding.switchVisibility.isChecked = target.private == true
     }
 
     override fun onClick(v: View?) {

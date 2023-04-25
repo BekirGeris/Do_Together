@@ -150,4 +150,5 @@
     <string name="delete_message_info">Mesaj Silinecek.\nEmin misin?</string>
     <string name="switch_visibility_public_desc">Açık \nHerkes görebilir</string>
     <string name="switch_visibility_private_desc">Gizli \nSadece üyeler ve bağlantıya sahip olanlar görebilir</string>
+    <string name="auto_send_title">Görev tamamlandığında diğer kullanıcıları \nmesaj ile bilgilendir.</string>
 </resources>

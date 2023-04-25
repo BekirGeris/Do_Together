@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -16,6 +17,7 @@ import com.example.dotogether.databinding.FragmentTargetBinding
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
+import com.example.dotogether.model.request.UpdateTargetSettingsRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
@@ -40,7 +42,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class TargetFragment : BaseFragment(), View.OnClickListener {
+class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private val viewModel: TargetViewModel by viewModels()
     private lateinit var binding: FragmentTargetBinding
@@ -99,6 +101,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         dialogBinding.edit.setOnClickListener(this)
         binding.calendar.visibility = View.GONE
 
+        dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
+        dialogBinding.autoSendSwitch.setOnCheckedChangeListener(this)
+
         binding.memberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         targetId = arguments?.getInt(Constants.TARGET_ID)
@@ -112,7 +117,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { target ->
-                        this.target = target
                         setViewWithTarget(target)
                     }
                     dialog.hide()
@@ -132,7 +136,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             when(it) {
                 is Resource.Success -> {
                     it.data?.let { target ->
-                        this.target = target
                         setViewWithTarget(target)
                     }
                     dialog.hide()
@@ -168,6 +171,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
 
     @SuppressLint("ResourceType")
     private fun setViewWithTarget(target: Target) {
+        this.target = target
         target.users?.let { members ->
             memberAdapter = MemberAdapter(members, true)
             binding.memberRv.adapter = memberAdapter
@@ -177,6 +181,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
         binding.doItBtn.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
         binding.calendar.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
         binding.goToChatBtn.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
+
+        dialogBinding.autoSendSwitch.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
+        dialogBinding.notificationSwitch.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
 
         binding.target.text = target.target
         binding.description.text = target.description
@@ -224,6 +231,17 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
+
+        changeTargetSettings()
+    }
+
+    private fun changeTargetSettings() {
+        dialogBinding.notificationSwitch.setOnCheckedChangeListener(null)
+        dialogBinding.autoSendSwitch.setOnCheckedChangeListener(null)
+        dialogBinding.notificationSwitch.isChecked = target.notify == 1
+        dialogBinding.autoSendSwitch.isChecked = target.autosend == 1
+        dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
+        dialogBinding.autoSendSwitch.setOnCheckedChangeListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -316,6 +334,20 @@ class TargetFragment : BaseFragment(), View.OnClickListener {
             val chip = Chip(context)
             chip.text = tag.name
             chipGroup.addView(chip)
+        }
+    }
+
+    override fun onCheckedChanged(v: CompoundButton?, b: Boolean) {
+        targetId?.let {
+            when (v) {
+                dialogBinding.notificationSwitch, dialogBinding.autoSendSwitch -> {
+                    val updateTargetSettingsRequest = UpdateTargetSettingsRequest(
+                        if (dialogBinding.autoSendSwitch.isChecked) 1 else 0,
+                        if (dialogBinding.notificationSwitch.isChecked) 1 else 0)
+
+                    viewModel.updateTargetSettings(it, updateTargetSettingsRequest)
+                }
+            }
         }
     }
 }

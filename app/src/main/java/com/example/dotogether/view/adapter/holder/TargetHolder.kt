@@ -88,20 +88,20 @@ class TargetHolder(
         target.is_joined?.let {
             if (it) {
                 binding.joinBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_24), null, null, null)
-                binding.joinBtn.text = context.getString(R.string.leave)
+//                binding.joinBtn.text = context.getString(R.string.leave)
             } else {
                 binding.joinBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_add_circle_outline_24), null, null, null)
-                binding.joinBtn.text = context.getString(R.string.join)
+//                binding.joinBtn.text = context.getString(R.string.join)
             }
         }
 
         target.is_liked?.let {
             if (it) {
                 binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_alt_24), null, null, null)
-                binding.likeBtn.text = context.getString(R.string.un_like)
+//                binding.likeBtn.text = context.getString(R.string.un_like)
             } else {
                 binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds(context.getDrawable(R.drawable.ic_baseline_thumb_up_off_alt_24), null, null, null)
-                binding.likeBtn.text = context.getString(R.string.like)
+//                binding.likeBtn.text = context.getString(R.string.like)
             }
         }
 

@@ -145,7 +145,7 @@ interface RemoteRepository {
     suspend fun resetUnreadCountChat(@Path("chatId") chatId: String)
 
     @GET("chat/mute/{chatId}")
-    suspend fun muteChat(@Path("chatId") chatId: String) : Response<ChatResponse>
+    suspend fun changeNotifyChat(@Path("chatId") chatId: String) : Response<ChatResponse>
 
     @GET("activity/done/{targetId}")
     suspend fun doneTarget(@Path("targetId") targetId: Int) : Response<Target>
@@ -182,4 +182,7 @@ interface RemoteRepository {
 
     @GET("discover/all")
     suspend fun getAllDiscover() : Response<ArrayList<Discover>>
+
+    @POST("activity/settings/{targetId}")
+    suspend fun updateTargetSettings(@Path("targetId") targetId: Int, @Body updateTargetSettingsRequest: UpdateTargetSettingsRequest) : Response<Target>
 }

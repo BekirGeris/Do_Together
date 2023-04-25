@@ -476,7 +476,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     }
 
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-        chatId?.let { viewModel.muteChat(it) }
+        chatId?.let { viewModel.changeNotifyChat(it) }
     }
 
     override fun deleteMessage(message: Message) {

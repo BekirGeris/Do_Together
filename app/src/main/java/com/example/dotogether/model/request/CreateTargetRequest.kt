@@ -8,7 +8,7 @@ class CreateTargetRequest(
     end_date: String,
     img: String?,
     tags: String,
-    isPrivate: Boolean
+    private: Boolean
 ) : TargetRequest(
     target,
     description,
@@ -17,5 +17,5 @@ class CreateTargetRequest(
     end_date,
     img,
     tags,
-    isPrivate
+    private
 )

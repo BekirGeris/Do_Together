@@ -76,9 +76,9 @@ class ChatViewModel @Inject constructor() : BaseViewModel() {
         return chat
     }
 
-    fun muteChat(chatId: String) {
+    fun changeNotifyChat(chatId: String) {
         viewModelScope.launch {
-            appRepository.remoteRepositoryImpl.muteChat(chatId).collect{
+            appRepository.remoteRepositoryImpl.changeNotifyChat(chatId).collect{
                 _updateChat.value = it
             }
         }

@@ -192,8 +192,8 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.getChat(chatId) }
     }
 
-    suspend fun muteChat(chatId: String): Flow<Resource<ChatResponse>> {
-        return generateFlow { repository.muteChat(chatId) }
+    suspend fun changeNotifyChat(chatId: String): Flow<Resource<ChatResponse>> {
+        return generateFlow { repository.changeNotifyChat(chatId) }
     }
 
     suspend fun resetUnreadCountChat(chatId: String) {
@@ -246,6 +246,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
 
     suspend fun getAllDiscover(): Flow<Resource<ArrayList<Discover>>> {
         return generateFlow { repository.getAllDiscover() }
+    }
+
+    suspend fun updateTargetSettings(targetId: Int, updateTargetSettingsRequest: UpdateTargetSettingsRequest) : Flow<Resource<Target>> {
+        return generateFlow { repository.updateTargetSettings(targetId, updateTargetSettingsRequest) }
     }
 
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
