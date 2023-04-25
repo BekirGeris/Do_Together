@@ -17,6 +17,8 @@ import com.example.dotogether.databinding.FragmentTargetBinding
 import com.example.dotogether.model.OtherUser
 import com.example.dotogether.model.Tag
 import com.example.dotogether.model.Target
+import com.example.dotogether.model.User
+import com.example.dotogether.model.request.SendMessageRequest
 import com.example.dotogether.model.request.UpdateTargetSettingsRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
@@ -27,10 +29,12 @@ import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MemberAdapter
 import com.example.dotogether.view.container.DayViewContainer
+import com.example.dotogether.viewmodel.ChatViewModel
 import com.example.dotogether.viewmodel.TargetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.database.FirebaseDatabase
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.daysOfWeek
@@ -45,6 +49,7 @@ import kotlin.collections.ArrayList
 class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private val viewModel: TargetViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var binding: FragmentTargetBinding
 
     private lateinit var dialogBinding: BottomSheetSettingBinding
@@ -54,6 +59,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
 
     private var targetId: Int? = null
     private lateinit var target: Target
+    private var myUser: User? = null
     private var myUserId: Int? = null
 
     private val selectedDates = mutableSetOf<LocalDate>()
@@ -62,8 +68,9 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
     private val startMonth = currentMonth.minusMonths(100)
     private val endMonth = currentMonth.plusMonths(100)
     private val daysOfWeek = daysOfWeek()
-
     var lastDate: Date? = null
+
+    private lateinit var firebaseDatabase: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +94,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
     }
 
     private fun initViews() {
+        firebaseDatabase = FirebaseDatabase.getInstance()
         bottomSheetDialog.setContentView(dialogBinding.root)
 
         binding.backBtn.setOnClickListener(this)
@@ -111,6 +119,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
 
     private fun initObserve() {
         viewModel.getMyUserFromLocale().observe(viewLifecycleOwner) {
+            myUser = it
             myUserId = it.id
         }
         viewModel.target.observe(viewLifecycleOwner) {
@@ -264,7 +273,10 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
                     selectedDates.add(LocalDate.now())
                     setupMonthCalendar()
                     binding.doItBtn.setViewProperties(false)
-                    targetId?.let { targetId -> viewModel.doneTarget(targetId) }
+                    targetId?.let {
+                        viewModel.doneTarget(it)
+                        sendMessageFirebase()
+                    }
                 }
                 binding.allMemberTxt -> {
                     targetId?.let { navController.navigate(TargetFragmentDirections.actionTargetFragmentToTargetMembersFragment(targetId = it, isAdmin = target.admin?.id == myUserId)) }
@@ -347,6 +359,22 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
 
                     viewModel.updateTargetSettings(it, updateTargetSettingsRequest)
                 }
+            }
+        }
+    }
+
+    private fun sendMessageFirebase() {
+        val message = getString(R.string.task_completed)
+        val messageData = HashMap<String, Any>()
+        messageData[Constants.TIME] = System.currentTimeMillis() * -1
+        messageData[Constants.USER_ID] = myUser?.id ?: 0
+        messageData[Constants.USER_MESSAGE] = message
+        messageData[Constants.USERNAME] = myUser?.username ?: ""
+
+        if (target.autosend == 1) {
+            target.chat_id?.let {
+                chatViewModel.sendMessage(SendMessageRequest(it, message))
+                firebaseDatabase.getReference(Constants.CHATS).child(it).push().setValue(messageData)
             }
         }
     }

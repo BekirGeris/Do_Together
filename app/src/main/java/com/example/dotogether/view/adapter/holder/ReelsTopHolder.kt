@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dotogether.databinding.ItemReelsTopBinding
 import com.example.dotogether.model.User
-import com.example.dotogether.util.helper.RuntimeHelper.TAG
 import com.example.dotogether.view.adapter.ReelsAdapter
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 
-class ReelsTopHolder(view: View, val reelsList: ArrayList<User>, val reelsTopHolderListener: HolderListener.ReelsTopHolderListener, reelsHolderListener: HolderListener.ReelsHolderListener) : BaseHolder(view), View.OnClickListener {
+class ReelsTopHolder(view: View, val reelsList: ArrayList<User>, private val reelsTopHolderListener: HolderListener.ReelsTopHolderListener, reelsHolderListener: HolderListener.ReelsHolderListener) : BaseHolder(view), View.OnClickListener {
     val binding = ItemReelsTopBinding.bind(view)
     val context = binding.root.context
 
