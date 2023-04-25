@@ -12,5 +12,6 @@ class Notification(
     val img: String? = null,
     val others_img: String? = null,
     val user_id: Int? = null,
-    val others_id: Int? = null
+    val others_id: Int? = null,
+    val others_username: String? = null
 )
