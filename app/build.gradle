@@ -45,11 +45,13 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", 'https://targetpals.app/"'
         }
 
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
     }
     compileOptions {
@@ -73,7 +75,6 @@ android {
             versionName "$appVersionName"
 
             buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
-            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
 
         doTogetherTest {
@@ -82,7 +83,6 @@ android {
             versionName "$appVersionName"
 
             buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
-            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
     }
 }

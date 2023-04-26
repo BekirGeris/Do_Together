@@ -247,8 +247,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
     private fun changeTargetSettings() {
         dialogBinding.notificationSwitch.setOnCheckedChangeListener(null)
         dialogBinding.autoSendSwitch.setOnCheckedChangeListener(null)
-        dialogBinding.notificationSwitch.isChecked = target.notify != 0
-        dialogBinding.autoSendSwitch.isChecked = target.autosend != 0
+        dialogBinding.notificationSwitch.isChecked = target.settings?.notify != 0
+        dialogBinding.autoSendSwitch.isChecked = target.settings?.autosend != 0
         dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
         dialogBinding.autoSendSwitch.setOnCheckedChangeListener(this)
     }
@@ -371,7 +371,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
         messageData[Constants.USER_MESSAGE] = message
         messageData[Constants.USERNAME] = myUser?.username ?: ""
 
-        if (target.autosend != 0) {
+        if (target.settings?.autosend != 0) {
             target.chat_id?.let {
                 chatViewModel.sendMessage(SendMessageRequest(it, message))
                 firebaseDatabase.getReference(Constants.CHATS).child(it).push().setValue(messageData)
