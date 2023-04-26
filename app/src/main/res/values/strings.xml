@@ -93,7 +93,7 @@
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
     <string name="sun">Sun</string>
-    <string name="delete_firebase_message">This message has been deleted</string>
+    <string name="delete_firebase_message">This message was deleted</string>
     <string name="liked_tags">Favorite Tags</string>
     <string name="search_here">Search Here</string>
     <string name="delete_account">Delete Account</string>

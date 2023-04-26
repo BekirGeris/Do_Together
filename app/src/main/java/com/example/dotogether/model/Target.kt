@@ -27,6 +27,6 @@ class Target {
     var tags: String? = null
     var last_date: String? = null
     var private: Boolean? = null
-    var notify: Int = 1
-    var autosend: Int = 1
+    var notify: Int? = null
+    var autosend: Int? = null
 }
