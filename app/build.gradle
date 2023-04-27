@@ -45,7 +45,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", 'https://targetpals.app/"'
+            buildConfigField "String", "BASE_URL", '"https://targetpals.app/api/"'
         }
 
         debug {

@@ -9,6 +9,7 @@ import com.example.dotogether.databinding.BottomSheetSettingBinding
 import com.example.dotogether.databinding.ItemMessageRightBinding
 import com.example.dotogether.model.Message
 import com.example.dotogether.util.Constants
+import com.example.dotogether.util.helper.RuntimeHelper.convertToLocalTimezone
 import com.example.dotogether.view.adapter.holderListener.HolderListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.sql.Date
@@ -87,7 +88,9 @@ class RightMessageHolder(
             binding.swipeLayout.isSwipeEnabled = message.message != Constants.DELETE_MESSAGE_FIREBASE_KEY
             binding.replyBtn.visibility = View.VISIBLE
         }
-        binding.messageTime.text = Constants.DATE_FORMAT_4.format(Date(message.messageTime ?: 0))
+        val date = Date(message.messageTime ?: 0)
+        date.convertToLocalTimezone()
+        binding.messageTime.text = Constants.DATE_FORMAT_4.format(date)
         binding.messageTxt.text = if (message.message == Constants.DELETE_MESSAGE_FIREBASE_KEY) context.getString(R.string.delete_firebase_message) else message.message
 
         message.replyMessage.let {

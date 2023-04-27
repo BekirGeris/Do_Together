@@ -23,6 +23,7 @@ import com.example.dotogether.model.request.UpdateTargetSettingsRequest
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.convertToLocalTimezone
 import com.example.dotogether.util.helper.RuntimeHelper.displayText
 import com.example.dotogether.util.helper.RuntimeHelper.setViewProperties
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
@@ -230,6 +231,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
                             action.created_at?.let { time ->
                                 lastDate = Constants.DATE_FORMAT_3.tryParse(time)
                                 lastDate?.let { d ->
+                                    d.convertToLocalTimezone()
                                     selectedDates.add(RuntimeHelper.convertDateToLocalDate(d))
                                 }
                             }
@@ -366,7 +368,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
     private fun sendMessageFirebase() {
         val message = getString(R.string.task_completed)
         val messageData = HashMap<String, Any>()
-        messageData[Constants.TIME] = System.currentTimeMillis() * -1
+        messageData[Constants.TIME] = RuntimeHelper.getCurrentTimeGMT0().time * -1
         messageData[Constants.USER_ID] = myUser?.id ?: 0
         messageData[Constants.USER_MESSAGE] = message
         messageData[Constants.USERNAME] = myUser?.username ?: ""

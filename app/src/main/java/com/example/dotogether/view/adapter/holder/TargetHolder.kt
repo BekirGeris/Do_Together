@@ -12,6 +12,7 @@ import com.example.dotogether.databinding.ItemTargetBinding
 import com.example.dotogether.model.Target
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.convertToLocalTimezone
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MemberAdapter
@@ -81,6 +82,7 @@ class TargetHolder(
         target.created_at?.let {
             val date = Constants.DATE_FORMAT_3.tryParse(it)
             date?.let { d ->
+                d.convertToLocalTimezone()
                 binding.postTime.text =  Constants.DATE_FORMAT_2.format(d)
             }
         }

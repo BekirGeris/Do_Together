@@ -27,17 +27,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.dotogether.R
 import com.example.dotogether.alarms.NotificationAlarmReceiver
 import com.example.dotogether.model.NotificationData
-import com.example.dotogether.util.Constants
 import com.example.dotogether.model.Target
+import com.example.dotogether.util.Constants
 import com.example.dotogether.util.SharedPreferencesUtil
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.*
 import java.io.ByteArrayOutputStream
 import java.text.DateFormat
 import java.text.ParseException
-import java.time.LocalDate
-import java.time.Month
-import java.time.ZoneId
+import java.time.*
 import java.time.format.TextStyle
 import java.util.*
 import kotlin.math.abs
@@ -249,6 +247,7 @@ object RuntimeHelper {
     fun isDoItBTNOpen(target: Target): Boolean {
         return if (target.last_date != null) {
             val date = Constants.DATE_FORMAT_6.tryParse(target.last_date!!) ?: return true
+            date.convertToLocalTimezone()
             when (target.period) {
                 Constants.DAILY -> !isDateInCurrentType(date, Calendar.DAY_OF_YEAR)
                 Constants.WEEKLY -> !isDateInCurrentType(date, Calendar.WEEK_OF_YEAR)
@@ -347,5 +346,41 @@ object RuntimeHelper {
         }
         Log.d(TAG, "getNotificationCalender time: ${Constants.DATE_FORMAT_6.format(Date(calendar.timeInMillis))}")
         return calendar
+    }
+
+    fun Date.convertToLocalTimezone() {
+        // Cihazın bulunduğu varsayılan saat dilimini al
+        val deviceZoneId = ZoneId.systemDefault()
+
+        // Cihazın varsayılan saat dilimindeki saat farkını hesapla
+        val deviceOffset = deviceZoneId.rules.getOffset(Instant.ofEpochMilli(this.time))
+
+        val convertedDate = when {
+            deviceOffset.totalSeconds > 0 -> Date(this.time + deviceOffset.totalSeconds * 1000)
+            else -> Date(this.time - deviceOffset.totalSeconds * 1000)
+        }
+
+        this.time = convertedDate.time
+    }
+
+    fun Date.convertToGMT0Timezone() {
+        // Cihazın bulunduğu varsayılan saat dilimini al
+        val deviceZoneId = ZoneId.systemDefault()
+
+        // Cihazın varsayılan saat dilimindeki saat farkını hesapla
+        val deviceOffset = deviceZoneId.rules.getOffset(Instant.ofEpochMilli(this.time))
+
+        val convertedDate = when {
+            deviceOffset.totalSeconds > 0 -> Date(this.time - deviceOffset.totalSeconds * 1000)
+            else -> Date(this.time + deviceOffset.totalSeconds * 1000)
+        }
+
+        this.time = convertedDate.time
+    }
+
+    fun getCurrentTimeGMT0(): Date {
+        val date = Date()
+        date.convertToGMT0Timezone()
+        return date
     }
 }

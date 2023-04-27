@@ -31,6 +31,7 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Resource
 import com.example.dotogether.util.helper.RuntimeHelper
 import com.example.dotogether.util.helper.RuntimeHelper.TAG
+import com.example.dotogether.util.helper.RuntimeHelper.convertToLocalTimezone
 import com.example.dotogether.util.helper.RuntimeHelper.tryShow
 import com.example.dotogether.view.adapter.MessageAdapter
 import com.example.dotogether.view.adapter.holder.BaseHolder
@@ -590,7 +591,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
     private fun sendMessageFirebase(message: String) {
         val messageData = HashMap<String, Any>()
-        messageData[Constants.TIME] = System.currentTimeMillis() * -1
+        messageData[Constants.TIME] = RuntimeHelper.getCurrentTimeGMT0().time * -1
         messageData[Constants.USER_ID] = myUser.id ?: 0
         messageData[Constants.USER_MESSAGE] = message
         messageData[Constants.USERNAME] = myUser.username!!
@@ -620,8 +621,10 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         if (lastVisibleItemPosition >= 0 && lastVisibleItemPosition < messages.size) {
             val message = messages[lastVisibleItemPosition]
             message.messageTime?.let {
+                val date = Date(it)
+                date.convertToLocalTimezone()
                 binding.dateTxt.visibility = View.VISIBLE
-                binding.dateTxt.text = Constants.DATE_FORMAT_5.format(Date(it))
+                binding.dateTxt.text = Constants.DATE_FORMAT_5.format(date)
             }
         }
     }

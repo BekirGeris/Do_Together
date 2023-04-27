@@ -10,6 +10,7 @@ import com.example.dotogether.databinding.ItemChatBinding
 import com.example.dotogether.model.response.ChatResponse
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.convertToLocalTimezone
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 
 class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
@@ -56,6 +57,7 @@ class ChatHolder(view: View) : BaseHolder(view), View.OnClickListener {
             it.updated_at?.let { update_at ->
                 val date = Constants.DATE_FORMAT_3.tryParse(update_at)
                 date?.let { d ->
+                    d.convertToLocalTimezone()
                     binding.time.text = Constants.DATE_FORMAT_2.format(d)
                 }
             }
