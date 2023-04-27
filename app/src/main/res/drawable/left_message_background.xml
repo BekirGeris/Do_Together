@@ -7,6 +7,7 @@
                 android:startColor="@color/teal_700"
                 android:centerColor="#03A1A0"
                 android:endColor="@color/teal_200" />
+            <solid android:color="@color/teal_700" />
             <corners android:radius="10dp" />
         </shape>
     </item>

@@ -196,7 +196,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/border_az_oval"
-        android:backgroundTint="#2B88CF"
+        android:backgroundTint="@color/dark_blue"
         android:src="@drawable/ic_baseline_send_24"
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
