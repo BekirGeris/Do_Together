@@ -275,7 +275,6 @@ class SignUpFragment : BaseFragment(), View.OnClickListener, RegisterCallback, L
 
     override fun registerFailed(resource: Resource<RegisterResponse>) {
         dialog.hide()
-        Log.d(TAG, "Error: ${resource.message}")
         showToast(resource.message)
     }
 

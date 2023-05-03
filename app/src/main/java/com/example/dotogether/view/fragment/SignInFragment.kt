@@ -296,7 +296,6 @@ class SignInFragment : BaseFragment(), View.OnClickListener, LoginCallback {
 
     override fun loginFailed(resource: Resource<LoginResponse>) {
         dialog.hide()
-        Log.d(TAG, "Error: ${resource.message}")
         showToast(resource.message)
     }
 }
