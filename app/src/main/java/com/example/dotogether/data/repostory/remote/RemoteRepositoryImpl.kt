@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import org.json.JSONObject
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @ActivityScoped
@@ -263,7 +265,19 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
                     emit(Resource.Error(Constants.Status.SUCCESS, response.message))
                 }
             } catch (e: Exception) {
-                emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+                if (e is HttpException) {
+                    val response = e.response()
+                    val errorBody = response?.errorBody()?.string() ?: "Unknown error occurred"
+                    val errorMessage = try {
+                        val errorJson = JSONObject(errorBody)
+                        errorJson.getString("message")
+                    } catch (ex: Exception) {
+                        "Unknown error occurred"
+                    }
+                    emit(Resource.Error(Constants.Status.FAILED, errorMessage))
+                } else {
+                    emit(Resource.Error(Constants.Status.FAILED, "Error: ${e.localizedMessage}"))
+                }
             }
         }.flowOn(Dispatchers.IO)
     }
