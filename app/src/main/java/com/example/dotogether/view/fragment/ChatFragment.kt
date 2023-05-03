@@ -178,6 +178,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                         chatResponse = it
                         it.id?.let { id ->
                             onGetData(id)
+                            chatResponse.last_message?.let { message -> sendMessageFirebase(message) }
                         }
                     }
                 }
