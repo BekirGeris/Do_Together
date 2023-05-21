@@ -97,8 +97,8 @@
     <string name="liked_tags">Favorite Tags</string>
     <string name="search_here">Search Here</string>
     <string name="delete_account">Delete Account</string>
-    <string name="share_reels">HShare a Story</string>
-    <string name="share_target">Share Target</string>
+    <string name="share_reels">Share a Story</string>
+    <string name="share_target">Create Target</string>
     <string name="add_like_tag">Add Like Tag</string>
     <string name="notification">Notification</string>
     <string name="notification_closed">Chat Notification Captured</string>
