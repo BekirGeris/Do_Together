@@ -45,13 +45,11 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://targetpals.app/api/"'
         }
 
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
         }
     }
     compileOptions {
@@ -66,11 +64,14 @@ android {
         viewBinding true
     }
 
-    flavorDimensions "doTogether"
-
+    flavorDimensions "UYGULAMA", "ORTAM"
     productFlavors {
         doTogether {
+            dimension "UYGULAMA"
+
+            def appName = "Target Pals"
             applicationId "com.bekbek.dotogether"
+            manifestPlaceholders = [appName: appName]
             versionCode appVersionCode
             versionName "$appVersionName"
 
@@ -78,11 +79,29 @@ android {
         }
 
         doTogetherTest {
+            dimension "UYGULAMA"
+
+            def appName = "Target Pals"
             applicationId "com.bekbek.dotogether.test"
+            manifestPlaceholders = [appName: appName]
             versionCode appVersionCode
             versionName "$appVersionName"
 
             buildConfigField "String", "CLIENT_ID", '"1060531854944-961fhmbefkrdlqhm11cl5nntssgbl5k2.apps.googleusercontent.com"'
+        }
+
+        prod {
+            dimension "ORTAM"
+
+            buildConfigField "String", "BASE_URL", '"https://trgpls.dev/api/"'
+            buildConfigField "String", "CHATS", '"prod_chats"'
+        }
+
+        ent {
+            dimension "ORTAM"
+
+            buildConfigField "String", "BASE_URL", '"https://berapp.projesayfam.com/api/"'
+            buildConfigField "String", "CHATS", '"chats"'
         }
     }
 }

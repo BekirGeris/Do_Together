@@ -45,6 +45,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.util.*
 import kotlin.collections.ArrayList
+import com.example.dotogether.BuildConfig
 
 @AndroidEntryPoint
 class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -376,7 +377,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
         if (target.settings?.autosend != 0) {
             target.chat_id?.let {
                 chatViewModel.sendMessage(SendMessageRequest(it, message))
-                firebaseDatabase.getReference(Constants.CHATS).child(it).push().setValue(messageData)
+                firebaseDatabase.getReference(BuildConfig.CHATS).child(it).push().setValue(messageData)
             }
         }
     }

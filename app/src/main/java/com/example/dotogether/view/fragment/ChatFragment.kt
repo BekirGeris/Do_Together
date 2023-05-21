@@ -44,6 +44,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.concurrent.thread
 import kotlin.math.abs
+import com.example.dotogether.BuildConfig
 
 @AndroidEntryPoint
 class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCheckedChangeListener, HolderListener.MessageHolderListener {
@@ -69,7 +70,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     private lateinit var chatResponse: ChatResponse
     private var replyMessage: Message? = null
 
-    private val messageLimit = 100
+    private var messageLimit = 100
     private val nextMessageSize = 20
     private var lastTime: Long? = null
 
@@ -124,6 +125,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         isGroup = arguments?.getBoolean(Constants.IS_GROUP) ?: false
         chatId = arguments?.getString(Constants.CHAT_ID)
         chatUser = arguments?.getParcelable(Constants.CHAT_USER)
+        chatUser?.let {
+            messageLimit = if (it.unread_count >= 100) it.unread_count + 50 else messageLimit
+        }
         Log.d(TAG, "chat id : $chatId")
 
         chatUser?.let {
@@ -309,7 +313,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
 
     private fun getDataLimited() {
         if (!chatId.isNullOrEmpty()) {
-            val newReference = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
+            val newReference = firebaseDatabase.getReference(BuildConfig.CHATS).child(chatId!!)
             val query: Query = if (lastTime != null) {
                 newReference.orderByChild(Constants.TIME).startAfter(lastTime!!.toDouble()).limitToFirst(messageLimit)
             } else {
@@ -342,7 +346,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     private fun observeData() {
         Log.d(TAG, "observeData")
         if (!chatId.isNullOrEmpty()) {
-            val newReference = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
+            val newReference = firebaseDatabase.getReference(BuildConfig.CHATS).child(chatId!!)
             val query: Query = newReference.orderByChild(Constants.TIME).limitToFirst(messageLimit)
 
             query.addChildEventListener(object: ChildEventListener {
@@ -377,7 +381,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 }
             })
 
-            val newReference2 = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
+            val newReference2 = firebaseDatabase.getReference(BuildConfig.CHATS).child(chatId!!)
             val query2: Query = newReference2.orderByChild(Constants.TIME).limitToFirst(1)
 
             query2.addValueEventListener(object : ValueEventListener {
@@ -497,12 +501,12 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                             messageAdapter.notifyDataSetChanged()
                         }
                     }
-                    firebaseDatabase.getReference(Constants.CHATS)
+                    firebaseDatabase.getReference(BuildConfig.CHATS)
                         .child(chatId!!)
                         .child(it)
                         .child(Constants.USER_MESSAGE)
                         .setValue(Constants.DELETE_MESSAGE_FIREBASE_KEY)
-                    firebaseDatabase.getReference(Constants.CHATS)
+                    firebaseDatabase.getReference(BuildConfig.CHATS)
                         .child(chatId!!)
                         .child(it)
                         .child(Constants.REPLY_MESSAGE)
@@ -546,7 +550,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 viewHolder?.itemView?.let { RuntimeHelper.animateBackgroundColorChange(it, R.color.dark_teal, 2000) }
             }, 200)
         } else {
-            val newReference = firebaseDatabase.getReference(Constants.CHATS).child(chatId!!)
+            val newReference = firebaseDatabase.getReference(BuildConfig.CHATS).child(chatId!!)
             val query: Query = newReference.orderByChild(Constants.TIME)
 
             query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -609,7 +613,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
         }
         replyMessage = null
 
-        firebaseDatabase.getReference(Constants.CHATS).child(chatId!!).push().setValue(messageData)
+        firebaseDatabase.getReference(BuildConfig.CHATS).child(chatId!!).push().setValue(messageData)
     }
 
     private fun setRecyclerViewScrollListener() {
