@@ -109,6 +109,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
         dialogBinding.share.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
         dialogBinding.edit.setOnClickListener(this)
+        dialogBinding.leave.setOnClickListener(this)
         binding.calendar.visibility = View.GONE
 
         dialogBinding.notificationSwitch.setOnCheckedChangeListener(this)
@@ -195,6 +196,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
 
         dialogBinding.autoSendSwitch.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
         dialogBinding.notificationSwitch.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
+        dialogBinding.leave.visibility = if (target.is_joined == true) View.VISIBLE else View.GONE
 
         binding.target.text = target.target
         binding.description.text = target.description
@@ -210,11 +212,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
 
         setupMonthCalendar()
 
-        if (myUserId == target.admin?.id) {
-            dialogBinding.edit.visibility = View.VISIBLE
-        } else {
-            dialogBinding.edit.visibility = View.GONE
-        }
+        dialogBinding.edit.visibility = if (myUserId == target.admin?.id) View.VISIBLE else View.GONE
 
         target.tags?.let { tags ->
             binding.tagsTxt.visibility = View.VISIBLE
@@ -258,7 +256,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
 
     override fun onClick(v: View?) {
         val navController = view?.findNavController()
-        navController?.let {
+        if (navController != null) {
             when(v) {
                 binding.backBtn -> {
                     activity?.onBackPressedDispatcher?.onBackPressed()
@@ -294,6 +292,10 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
                 dialogBinding.edit -> {
                     bottomSheetDialog.dismiss()
                     targetId?.let { navController.navigate(TargetFragmentDirections.actionShareFragment(isEdit = true, targetId = it)) }
+                }
+                dialogBinding.leave -> {
+                    bottomSheetDialog.dismiss()
+                    targetId?.let { viewModel.unJoinTarget(it) }
                 }
                 else -> {}
             }

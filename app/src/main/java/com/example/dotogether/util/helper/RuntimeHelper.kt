@@ -337,7 +337,8 @@ object RuntimeHelper {
     fun getNotificationCalender(): Calendar {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 10)
-            set(Calendar.MINUTE, (0..59).random())
+//            set(Calendar.MINUTE, (0..59).random())
+            set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
         }
 
