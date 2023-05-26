@@ -10,6 +10,7 @@ import com.example.dotogether.model.request.UpdatePasswordRequest
 import com.example.dotogether.model.request.UpdateUserRequest
 import com.example.dotogether.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -100,5 +101,12 @@ class ProfileViewModel @Inject constructor() : BaseViewModel() {
             }
         }
         return result
+    }
+
+    fun clearMyFirebaseToken() {
+        val updateUserRequest = UpdateUserRequest(fcm_token = "")
+        viewModelScope.launch {
+            appRepository.remoteRepositoryImpl.updateUser(updateUserRequest).collect()
+        }
     }
 }

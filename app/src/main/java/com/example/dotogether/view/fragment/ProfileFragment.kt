@@ -395,6 +395,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 viewModel.deleteMyAccount().observe(viewLifecycleOwner) {
                     when(it) {
                         is Resource.Success -> {
+                            viewModel.logout()
                             goToLoginFragment()
                         }
                         is Resource.Error -> {
@@ -420,9 +421,10 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             override fun confirm() {
                 dialog.show()
                 viewModel.logout()
-                SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, "")
+                viewModel.clearMyFirebaseToken()
                 thread {
                     Thread.sleep(1000)
+                    SharedPreferencesUtil.setString(requireContext(), Constants.TOKEN_KEY, "")
                     goToLoginFragment()
                 }
             }
@@ -502,11 +504,15 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
             val oldToken = SharedPreferencesUtil.getString(requireContext(), Constants.FIREBASE_TOKEN, "")
             if (oldToken != task.result) {
                 Log.d(TAG, "sendFirebaseToken old token $oldToken new token : ${task.result}")
-                SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, task.result)
-                val updateUserRequest = UpdateUserRequest(fcm_token = task.result)
-                viewModel.updateUser(updateUserRequest)
+                updateFirebaseToken(task.result)
             }
         })
+    }
+
+    private fun updateFirebaseToken(token: String) {
+        SharedPreferencesUtil.setString(requireContext(), Constants.FIREBASE_TOKEN, token)
+        val updateUserRequest = UpdateUserRequest(fcm_token = token)
+        viewModel.updateUser(updateUserRequest)
     }
 
     override fun goToRecyclerViewTop() {
