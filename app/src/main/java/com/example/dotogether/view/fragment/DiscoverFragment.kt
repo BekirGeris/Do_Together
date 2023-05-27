@@ -152,7 +152,7 @@ class DiscoverFragment @Inject constructor() : BaseFragment(), View.OnClickListe
     }
 
     override fun goToRecyclerViewTop() {
-        binding.discoverRv.smoothScrollToPosition(0)
+        binding.discoverRv.scrollToPosition(0)
     }
 
     override fun isDiscoverFragment(): Boolean {

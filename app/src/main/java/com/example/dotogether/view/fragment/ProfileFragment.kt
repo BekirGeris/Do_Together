@@ -517,6 +517,6 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
     }
 
     override fun goToRecyclerViewTop() {
-        binding.targetRv.smoothScrollToPosition(0)
+        binding.targetRv.scrollToPosition(0)
     }
 }

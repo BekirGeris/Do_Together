@@ -489,7 +489,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
     }
 
     override fun goToRecyclerViewTop() {
-        binding.targetRv.smoothScrollToPosition(0)
+        binding.targetRv.scrollToPosition(0)
     }
 
     override fun onStop() {
