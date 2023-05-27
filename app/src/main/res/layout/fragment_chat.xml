@@ -39,8 +39,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/user_name"
+        android:layout_marginTop="8dp"
         android:maxLines="2"
+        android:text="@string/user_name"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/more_setting_btn"
@@ -49,6 +50,7 @@
 
     <TextView
         android:id="@+id/chat_decs"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
