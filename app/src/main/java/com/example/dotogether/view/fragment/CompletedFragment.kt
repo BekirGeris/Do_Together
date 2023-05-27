@@ -63,6 +63,7 @@ class CompletedFragment : BaseFragment(), HolderListener.TargetHolderListener {
         binding.targetRv.adapter = targetAdapter
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.targetRv.removeOnScrollListener(scrollListener)
             viewModel.getMyDoneTargets()
         }
     }

@@ -109,6 +109,7 @@ class TargetMembersFragment : BaseFragment(), View.OnClickListener, HolderListen
         })
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.memberRv.removeOnScrollListener(scrollListener)
             getMember()
         }
     }

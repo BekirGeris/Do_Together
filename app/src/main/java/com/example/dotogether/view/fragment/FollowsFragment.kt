@@ -114,6 +114,7 @@ class FollowsFragment : BaseFragment(), View.OnClickListener, HolderListener.Use
         })
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.followRv.removeOnScrollListener(scrollListener)
             getFullUser()
         }
     }

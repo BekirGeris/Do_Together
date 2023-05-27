@@ -139,6 +139,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
         binding.targetRv.layoutManager = LinearLayoutManager(binding.root.context)
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.targetRv.removeOnScrollListener(scrollListener)
             userId?.let { viewModel.getUser(it) }
         }
     }

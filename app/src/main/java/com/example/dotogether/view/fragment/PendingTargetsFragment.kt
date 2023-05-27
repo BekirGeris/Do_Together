@@ -64,6 +64,7 @@ class PendingTargetsFragment : BaseFragment(), HolderListener.TargetHolderListen
         binding.targetRv.adapter = targetAdapter
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.targetRv.removeOnScrollListener(scrollListener)
             viewModel.getMyJoinedTargets()
         }
     }

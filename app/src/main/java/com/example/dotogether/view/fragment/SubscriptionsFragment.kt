@@ -63,6 +63,7 @@ class SubscriptionsFragment : BaseFragment(), HolderListener.TargetHolderListene
         binding.targetRv.adapter = targetAdapter
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.targetRv.removeOnScrollListener(scrollListener)
             viewModel.getMyJoinedTargets()
         }
     }

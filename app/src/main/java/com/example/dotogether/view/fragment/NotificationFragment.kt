@@ -62,6 +62,7 @@ class NotificationFragment : BaseFragment(), View.OnClickListener, HolderListene
         binding.notificationRv.adapter = notificationAdapter
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.notificationRv.removeOnScrollListener(scrollListener)
             viewModel.getAllNotifications()
         }
     }

@@ -164,6 +164,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, HolderListener.Target
         binding.targetRv.adapter = homeTargetAdapter
 
         binding.swipeLyt.setOnRefreshListener {
+            binding.targetRv.removeOnScrollListener(scrollListener)
             viewModel.getFollowingsReels()
             viewModel.getAllTargets()
             viewModel.getMyUserFromRemote()
