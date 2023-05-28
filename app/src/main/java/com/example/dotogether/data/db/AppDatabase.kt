@@ -18,12 +18,12 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         fun getMigrations(): Array<AppMigration> {
             return arrayOf(
-                object : AppMigration(1, 2) {
-                    override fun migrate(database: SupportSQLiteDatabase) {
-                        database.execSQL("ALTER TABLE Basket ADD COLUMN viewType INTEGER DEFAULT null")
-                        database.execSQL("ALTER TABLE Basket ADD COLUMN viewId TEXT")
-                    }
-                }
+//                object : AppMigration(1, 2) {
+//                    override fun migrate(database: SupportSQLiteDatabase) {
+//                        database.execSQL("ALTER TABLE Basket ADD COLUMN viewType INTEGER DEFAULT null")
+//                        database.execSQL("ALTER TABLE Basket ADD COLUMN viewId TEXT")
+//                    }
+//                }
             )
         }
     }

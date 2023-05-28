@@ -11,7 +11,7 @@ plugins {
 def appVersionCode = 1
 def appVersionName = "1.0.0"
 
-def dbVersion = 2
+def dbVersion = 1
 
 android {
     signingConfigs {
