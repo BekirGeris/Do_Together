@@ -386,7 +386,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
             })
 
             val newReference2 = firebaseDatabase.getReference(BuildConfig.CHATS).child(chatId!!)
-            val query2: Query = newReference2.limitToLast(1)
+            val query2: Query = newReference2.limitToLast(5)
 
             query2.addValueEventListener(object : ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
@@ -456,7 +456,9 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                 true
             )
             unreadMessage.isUnreadCountMessage = true
-            messages.add(chatUser?.unread_count!!, unreadMessage)
+            if (messages.size >= chatUser?.unread_count!!) {
+                messages.add(chatUser?.unread_count!!, unreadMessage)
+            }
         }
     }
 

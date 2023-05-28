@@ -257,7 +257,7 @@ object RuntimeHelper {
         } else {
             val todayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
             val weekdays = getRangeForPeriod(target.period)
-            if (weekdays.isNotEmpty()) weekdays.contains(todayOfWeek) else true
+            if (weekdays.isNotEmpty() && target.period != Constants.MONTHLY) weekdays.contains(todayOfWeek) else true
         }
     }
 
@@ -269,7 +269,7 @@ object RuntimeHelper {
             Constants.MONDAY_TO_FRIDAY -> listOf(2, 3, 4, 5, 6)
             null -> emptyList()
             else -> {
-                weekdays.filter { (day, _) -> period == day }.map { (_, index) -> index }
+                weekdays.filter { (day, _) -> period.contains(day) }.map { (_, index) -> index }
             }
         }
     }
