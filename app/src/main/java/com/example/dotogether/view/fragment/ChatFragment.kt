@@ -328,7 +328,11 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                         val hashMap = ds.value as HashMap<*,*>
                         lastTime = if (hashMap.get(Constants.TIME) is Long) hashMap.get(Constants.TIME) as Long? else 1675252866602L
                         val message = generateMessage(ds.value as HashMap<*, *>, ds.key)
-                        message?.let { messages.add(it) }
+                        message?.let { getMessage ->
+                            if (!messages.any{ it.key == getMessage.key }) {
+                                messages.add(getMessage)
+                            }
+                        }
                     }
                     updateMessages()
                 }
