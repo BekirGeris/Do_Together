@@ -334,7 +334,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                             }
                         }
                     }
-                    updateMessages()
+                    updateMessages(false)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -399,7 +399,7 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
                         if (!messages.any{ it.key == message?.key }) {
                             if (message != null) {
                                 messages.add(0, message)
-                                updateMessages()
+                                updateMessages(true)
                             }
                         }
                     }
@@ -434,13 +434,15 @@ class ChatFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnChec
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun updateMessages() {
+    private fun updateMessages(isLastAdded: Boolean) {
         binding.activityErrorView.visibility = if (messages.isEmpty()) View.VISIBLE else View.GONE
         binding.linearIndicator.visibility = View.GONE
         setRecyclerViewScrollListener()
 
-        addUnreadLabel()
-        goToLastReadMessage()
+        if (!isLastAdded) {
+            addUnreadLabel()
+            goToLastReadMessage()
+        }
 
         messageAdapter.notifyDataSetChanged()
     }
