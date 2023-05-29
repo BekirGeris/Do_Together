@@ -8,8 +8,8 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
-def appVersionCode = 1
-def appVersionName = "1.0.0"
+def appVersionCode = 2
+def appVersionName = "1.0.1"
 
 def dbVersion = 1
 
