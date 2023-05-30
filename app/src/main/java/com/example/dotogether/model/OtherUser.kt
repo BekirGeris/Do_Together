@@ -39,6 +39,7 @@ class OtherUser() : Parcelable {
     var is_followed: Boolean? = null
     @SerializedName(value = "chat_id", alternate = ["chat"])
     var chat_id: String? = null
+    @SerializedName("unread_count")
     var unread_count: Int = 0
 
     constructor(user: User) : this() {

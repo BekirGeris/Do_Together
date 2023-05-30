@@ -2,9 +2,12 @@ package com.example.dotogether.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 class TargetSettings() : Parcelable {
+    @SerializedName("notify")
     var notify: Int? = null
+    @SerializedName("autosend")
     var autosend: Int? = null
 
     constructor(parcel: Parcel) : this() {

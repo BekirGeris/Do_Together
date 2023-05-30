@@ -2,9 +2,12 @@ package com.example.dotogether.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 class NotificationData(
+    @SerializedName("type")
     var type: String? = null,
+    @SerializedName("typeId")
     var typeId: String? = null
 ) : Parcelable {
 
