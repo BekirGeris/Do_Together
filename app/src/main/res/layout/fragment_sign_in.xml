@@ -206,7 +206,7 @@
             android:id="@+id/account_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/don_t_hava_an_acoount"
+            android:text="@string/don_t_hava_an_account"
             android:textColor="?colorPrimary" />
 
         <androidx.appcompat.widget.AppCompatButton

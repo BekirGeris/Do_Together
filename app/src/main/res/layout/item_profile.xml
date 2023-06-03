@@ -140,7 +140,7 @@
         android:focusable="false"
         android:enabled="false"
         android:background="@color/transparent"
-        android:hint="@string/description"
+        android:hint="@string/bio"
         android:textSize="15sp"
         android:maxLength="150"
         android:textAlignment="center"

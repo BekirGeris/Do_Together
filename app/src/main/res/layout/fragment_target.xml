@@ -331,7 +331,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/full_oval"
-                android:text="Yaptım"
+                android:text="@string/done"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:visibility="gone"

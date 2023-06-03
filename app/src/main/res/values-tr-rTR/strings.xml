@@ -15,7 +15,7 @@
     <string name="followers">Takipçiler</string>
     <string name="login">Giriş</string>
     <string name="sign_up">Kayıt Ol</string>
-    <string name="login_message">Hedefinizi yazmak ve yolculuk deneyimlerinizi paylaşmak için en iyi yer</string>
+    <string name="login_message">Hedefinizi yazmak ve yolculuk deneyimlerinizi paylaşmak için\nen iyi yer</string>
     <string name="description_bold"><b><i>Açıklama: </i></b></string>
     <string name="target_bold"><b><i>Hedef: </i></b></string>
     <string name="hello">Merhaba !</string>
@@ -28,7 +28,7 @@
     <string name="forget_password">Şifremi Unuttum?</string>
     <string name="or">veya</string>
     <string name="login_with">İle Giriş Yap</string>
-    <string name="don_t_hava_an_acoount">Hesabınız yok mu?</string>
+    <string name="don_t_hava_an_account">Hesabınız yok mu?</string>
     <string name="hi">Selam !</string>
     <string name="create_a_new_account">Yeni bir hesap oluştur</string>
     <string name="username">kullanıcı adı</string>
@@ -68,7 +68,6 @@
     <string name="error_genel_message">Bir şeyler ters gitti.</string>
     <string name="error_message">Gösterilecek Bir Şey Yok</string>
     <string name="name">ad</string>
-    <string name="description">Biyo</string>
     <string name="discover">Keşfet</string>
     <string name="add_reels">Reels Ekle</string>
     <string name="change_user_info">Kullanıcı Bilgilerini Değiştir</string>
@@ -152,4 +151,5 @@
     <string name="switch_visibility_private_desc">Gizli \nSadece üyeler ve bağlantıya sahip olanlar görebilir</string>
     <string name="auto_send_title">Görev tamamlandığında diğer kullanıcıları \nmesaj ile bilgilendir.</string>
     <string name="task_completed">GÖREV TAMAMLANDI</string>
+    <string name="done">Yaptım</string>
 </resources>
