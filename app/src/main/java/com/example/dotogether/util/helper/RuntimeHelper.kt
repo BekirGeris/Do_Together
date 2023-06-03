@@ -150,14 +150,18 @@ object RuntimeHelper {
     }
 
     fun shareAppLink(context: Context) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(
-            Intent.EXTRA_TEXT,
-            "https://play.google.com/store/apps/developer?id=Begers"
-        )
+        generateSharingLink(
+            deepLink = Constants.PREFIX.toUri(),
+        ) { generatedLink ->
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(
+                Intent.EXTRA_TEXT,
+                generatedLink
+            )
 
-        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share)))
+            context.startActivity(Intent.createChooser(intent, context.getString(R.string.share)))
+        }
     }
 
     fun shareTargetLink(context: Context, targetId: Int) {
