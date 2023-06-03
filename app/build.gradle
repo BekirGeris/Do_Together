@@ -118,7 +118,7 @@ static def getFileName(variant, version, buildTime) {
     def ortam = variant.productFlavors[1].getName().toString()
     def buildType = variant.buildType.name.toString()
 
-    return uygulama + "_" + ortam  + "_" + version + "_" + buildTime + "_" + buildType + ".aab"
+    return uygulama + "_" + ortam  + "_" + version + "_" + buildTime + "_" + buildType + ".apk"
 }
 
 def hilt_version = '2.44'
