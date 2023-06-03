@@ -164,6 +164,7 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
         viewModel.doneTarget.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
+                    sendMessageFirebase()
                     dialog.hide()
                 }
                 is Resource.Error -> {
@@ -276,7 +277,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
                     binding.doItBtn.setViewProperties(false)
                     targetId?.let {
                         viewModel.doneTarget(it)
-                        sendMessageFirebase()
                     }
                 }
                 binding.allMemberTxt -> {

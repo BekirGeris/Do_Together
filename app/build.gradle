@@ -7,9 +7,10 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
 }
+def buildTime = new Date().format("yyMMddHHmm", TimeZone.getTimeZone("Asia/Istanbul"))
 
-def appVersionCode = 2
-def appVersionName = "1.0.1"
+def appVersionCode = 4
+def appVersionName = "1.0.3"
 
 def dbVersion = 1
 
@@ -104,6 +105,20 @@ android {
             buildConfigField "String", "CHATS", '"chats"'
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = getFileName(variant, appVersionName, buildTime)
+        }
+    }
+}
+
+static def getFileName(variant, version, buildTime) {
+    def uygulama = variant.productFlavors[0].getName().toString()
+    def ortam = variant.productFlavors[1].getName().toString()
+    def buildType = variant.buildType.name.toString()
+
+    return uygulama + "_" + ortam  + "_" + version + "_" + buildTime + "_" + buildType + ".aab"
 }
 
 def hilt_version = '2.44'

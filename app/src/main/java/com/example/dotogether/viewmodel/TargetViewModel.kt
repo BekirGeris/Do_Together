@@ -36,7 +36,7 @@ class TargetViewModel @Inject constructor() : BaseViewModel() {
     fun doneTarget(targetId: Int) {
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.doneTarget(targetId).collect{
-                _target.value = it
+                _doneTarget.value = it
             }
         }
     }

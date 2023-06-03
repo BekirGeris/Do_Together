@@ -34,7 +34,7 @@
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.google.gson.examples.android.model.** { <fields>; }
-#-keep class com.example.dotogether.model.** { <fields>; }
+-keep class com.example.dotogether.model.** { <fields>; }
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
@@ -70,9 +70,6 @@
     @retrofit2.http.* <methods>;
 }
 
-# Ignore annotation used for build tooling.
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
 # Ignore JSR 305 annotations for embedding nullability information.
 -dontwarn javax.annotation.**
 
@@ -102,5 +99,29 @@
 -keep,allowoptimization,allowshrinking,allowobfuscation class <3>
 ##---------------End: proguard configuration for Retrofit  ----------
 
--dontwarn android.arch.util.paging.CountedDataSource
--dontwarn android.arch.persistence.room.paging.LimitOffsetDataSource
+##---------------End: proguard configuration for Room  ----------
+-dontoptimize
+
+# Some methods are only called from tests, so make sure the shrinker keeps them.
+-keep class com.example.android.architecture.blueprints.** { *; }
+
+-keep class androidx.drawerlayout.widget.DrawerLayout { *; }
+-keep class androidx.test.espresso.**
+# keep the class and specified members from being removed or renamed
+
+-keep class androidx.room.Room { *; }
+-keep class android.arch.** { *; }
+
+# Proguard rules that are applied to your test apk/code.
+-ignorewarnings
+
+-keepattributes *Annotation*
+
+-dontnote junit.framework.**
+-dontnote junit.runner.**
+
+-dontwarn androidx.test.**
+-dontwarn org.junit.**
+-dontwarn org.hamcrest.**
+# Uncomment this if you use Mockito
+-dontwarn org.mockito.**
