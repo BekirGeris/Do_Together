@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.example.dotogether.model.User
 import com.example.dotogether.util.Constants
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.convertToLocalTimezone
 import com.example.dotogether.util.helper.RuntimeHelper.tryParse
 import com.example.dotogether.view.activity.LoginActivity
 import com.example.dotogether.view.activity.OthersActivity
@@ -42,13 +43,8 @@ open class BaseFragment : Fragment() {
 
         user.active_statuses?.forEach {
             val date = Constants.DATE_FORMAT_3.tryParse(it.created_at)
-
-            stories.add(
-                MyStory(
-                    it.img,
-                    date
-                )
-            )
+            date?.convertToLocalTimezone()
+            stories.add(MyStory(it.img, date))
         }
 
         reelsViewBuilder = StoryView.Builder(parentFragmentManager)

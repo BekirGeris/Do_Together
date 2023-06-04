@@ -160,6 +160,7 @@ class ProfileFragment : BaseFragment(), HolderListener.ProfileHolderListener, Ho
                 }
                 is Resource.Error -> {
                     showToast(it.message)
+                    dialog.hide()
                     activity?.onBackPressedDispatcher?.onBackPressed()
                 }
                 is Resource.Loading -> {
