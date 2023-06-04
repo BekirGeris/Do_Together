@@ -58,7 +58,7 @@ open class BaseFragment : Fragment() {
             .setTitleText(user.username)
             .setStoryClickListeners(reelsClickListener)
             .setStartingIndex(0)
-            .setRequestManager(RuntimeHelper.glideForImage(requireContext()))
+            .setRequestManager(RuntimeHelper.glideForStoryImage(requireContext()))
             .setDeleteIconVisibility(isDeleteIconVisibility)
             .build()
 
@@ -114,6 +114,13 @@ open class BaseFragment : Fragment() {
     fun goToTargetFragment(targetId: Int) {
         val intent = Intent(requireActivity(), OthersActivity::class.java)
         intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_TARGET_FRAGMENT.type)
+        intent.putExtra(Constants.TARGET_ID, targetId)
+        startActivity(intent)
+    }
+
+    fun goToReportFragment(targetId: Int) {
+        val intent = Intent(requireActivity(), OthersActivity::class.java)
+        intent.putExtra(Constants.VIEW_TYPE, Constants.ViewType.VIEW_REPORT_FRAGMENT.type)
         intent.putExtra(Constants.TARGET_ID, targetId)
         startActivity(intent)
     }

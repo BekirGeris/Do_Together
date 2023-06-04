@@ -62,6 +62,13 @@ object RuntimeHelper {
             .error(R.drawable.error_image_background)
     )
 
+    fun glideForStoryImage(context: Context) = glide(
+        context,
+        RequestOptions()
+            .placeholder(R.drawable.error_image_background)
+            .error(R.drawable.error_image_background)
+    )
+
     fun glide(context: Context, requestOptions: RequestOptions): RequestManager {
         return Glide
             .with(context)

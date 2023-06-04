@@ -7,7 +7,5 @@ class LoginRequest(
     @SerializedName("email")
     var email: String,
     @SerializedName("password")
-    var password: String,
-    @SerializedName("language")
-    val language: String = Locale.getDefault().language
+    var password: String
 )

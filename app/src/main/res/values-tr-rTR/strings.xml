@@ -152,4 +152,14 @@
     <string name="auto_send_title">Görev tamamlandığında diğer kullanıcıları \nmesaj ile bilgilendir.</string>
     <string name="task_completed">GÖREV TAMAMLANDI</string>
     <string name="done">Yaptım</string>
+    <string name="send_report">Rapor Et</string>
+    <string name="report_question">Bunu neden rapor ediyor sunuz?</string>
+    <string name="not_like">Hoşuma gitmedi</string>
+    <string name="nudity_or_sexual_activity">Çıplaklık veya cinsel aktivite</string>
+    <string name="hate_speech_or_symbols">Nefret söylemi veya sembolleri</string>
+    <string name="bullying_or_harassment">Zorbalık veya taciz</string>
+    <string name="illegal_discourse">Yasadışı söylem</string>
+    <string name="other">Diğer</string>
+    <string name="comment">Yorum</string>
+    <string name="send">Gönder</string>
 </resources>

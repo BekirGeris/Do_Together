@@ -108,6 +108,8 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
 
         dialogBinding.share.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
+        dialogBinding.sendReport.visibility = View.VISIBLE
+        dialogBinding.sendReport.setOnClickListener(this)
         dialogBinding.edit.setOnClickListener(this)
         dialogBinding.leave.setOnClickListener(this)
         binding.calendar.visibility = View.GONE
@@ -296,6 +298,10 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
                 dialogBinding.leave -> {
                     bottomSheetDialog.dismiss()
                     targetId?.let { viewModel.unJoinTarget(it) }
+                }
+                dialogBinding.sendReport -> {
+                    bottomSheetDialog.dismiss()
+                    targetId?.let { goToReportFragment(it) }
                 }
                 else -> {}
             }

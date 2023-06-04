@@ -151,4 +151,14 @@
     <string name="auto_send_title">Notify other users via message when \nthe task is completed.</string>
     <string name="task_completed">TASK COMPLETED</string>
     <string name="done">I Did</string>
+    <string name="send_report">Report</string>
+    <string name="report_question">Why are you reporting this?</string>
+    <string name="not_like">I just don\'t like it</string>
+    <string name="nudity_or_sexual_activity">Nudity or sexual activity</string>
+    <string name="hate_speech_or_symbols">Hate speech or symbols</string>
+    <string name="bullying_or_harassment">Bullying or harassment</string>
+    <string name="illegal_discourse">Illegal speech</string>
+    <string name="other">Other</string>
+    <string name="comment">Comment</string>
+    <string name="send">Submit</string>
 </resources>

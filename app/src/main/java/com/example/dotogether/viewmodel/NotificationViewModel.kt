@@ -34,7 +34,7 @@ class NotificationViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    fun notificationsReadAll() : MutableLiveData<Resource<Any>>{
+    fun notificationsReadAll() : MutableLiveData<Resource<Any>> {
         val notificationsReadAll = MutableLiveData<Resource<Any>>()
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.notificationsReadAll().collect {

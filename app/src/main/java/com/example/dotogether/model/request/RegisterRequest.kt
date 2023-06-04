@@ -13,7 +13,5 @@ class RegisterRequest(
     @SerializedName("password")
     var password: String,
     @SerializedName("password_confirmation")
-    var password_confirmation: String,
-    @SerializedName("language")
-    val language: String = Locale.getDefault().language
+    var password_confirmation: String
 )

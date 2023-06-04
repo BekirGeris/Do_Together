@@ -135,4 +135,23 @@ abstract class BaseHolder(val view: View) : RecyclerView.ViewHolder(view) {
             }
         }
     }
+
+    fun goToReportFragment(navController: NavController?, targetId: Int) {
+        navController.let {
+            if (it != null) {
+                with(it.graph.displayName.lowercase()) {
+                    when {
+                        contains("others_nav") -> {
+                            it.navigate(OthersNavDirections.actionReportFragment(targetId))
+                        }
+                    }
+                }
+            } else {
+                val intent = Intent(view.context, OthersActivity::class.java)
+                intent.putExtra(Constants.VIEW_TYPE, ViewType.VIEW_REPORT_FRAGMENT.type)
+                intent.putExtra(Constants.TARGET_ID, targetId)
+                view.context.startActivity(intent)
+            }
+        }
+    }
 }

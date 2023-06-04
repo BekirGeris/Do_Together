@@ -124,6 +124,10 @@ class OthersActivity : BaseActivity() {
             ViewType.VIEW_ADD_TAG_FRAGMENT.type -> {
                 navController.navigate(OthersNavDirections.actionAddTagFragment(), navOptions)
             }
+            ViewType.VIEW_REPORT_FRAGMENT.type -> {
+                val targetId = intent.getIntExtra(Constants.TARGET_ID, -1)
+                navController.navigate(OthersNavDirections.actionReportFragment(targetId = targetId), navOptions)
+            }
         }
     }
 }

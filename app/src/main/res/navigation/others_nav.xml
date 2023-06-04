@@ -86,6 +86,14 @@
     <action android:id="@+id/action_addTagFragment"
         app:destination="@id/addTagFragment"/>
 
+    <action android:id="@+id/action_reportFragment"
+        app:destination="@id/reportFragment">
+        <argument
+            android:name="targetId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </action>
+
     <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.dotogether.view.fragment.ShareFragment"
@@ -215,4 +223,8 @@
         android:id="@+id/targetMembersFragment"
         android:name="com.example.dotogether.view.fragment.TargetMembersFragment"
         android:label="TargetMembersFragment" />
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.dotogether.view.fragment.ReportFragment"
+        android:label="ReportFragment" />
 </navigation>

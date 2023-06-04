@@ -254,6 +254,10 @@ class RemoteRepositoryImpl @Inject constructor(private val repository: RemoteRep
         return generateFlow { repository.updateTargetSettings(targetId, updateTargetSettingsRequest) }
     }
 
+    suspend fun sendReport(targetId: Int, reportRequest: ReportRequest): Flow<Resource<ReportResponse>> {
+        return generateFlow { repository.sendReport(targetId, reportRequest) }
+    }
+
     private suspend fun <T> generateFlow(function: suspend () -> Response<T>): Flow<Resource<T>> {
         return flow {
             emit(Resource.Loading())

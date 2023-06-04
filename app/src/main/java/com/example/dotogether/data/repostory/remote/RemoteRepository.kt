@@ -185,4 +185,7 @@ interface RemoteRepository {
 
     @POST("activity/settings/{targetId}")
     suspend fun updateTargetSettings(@Path("targetId") targetId: Int, @Body updateTargetSettingsRequest: UpdateTargetSettingsRequest) : Response<Target>
+
+    @POST("activity/report/{targetId}")
+    suspend fun sendReport(@Path("targetId") targetId: Int, @Body reportRequest: ReportRequest) : Response<ReportResponse>
 }

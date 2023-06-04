@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
 import javax.inject.Singleton
 
 @Module
@@ -47,6 +48,7 @@ object NetworkModule {
         val interceptor = Interceptor {
             val request = it.request().newBuilder()
                 .header("Authorization", "Bearer ${SharedPreferencesUtil.getString(app, Constants.TOKEN_KEY, "")}")
+                .header("lang", Locale.getDefault().language)
                 .build()
             it.proceed(request)
         }

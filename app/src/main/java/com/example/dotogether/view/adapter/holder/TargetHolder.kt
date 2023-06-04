@@ -55,6 +55,8 @@ class TargetHolder(
 
         dialogBinding.share.visibility = View.VISIBLE
         dialogBinding.share.setOnClickListener(this)
+        dialogBinding.sendReport.visibility = View.VISIBLE
+        dialogBinding.sendReport.setOnClickListener(this)
 
         if (listener.isMeProfileFragment()) {
             dialogBinding.delete.visibility = View.VISIBLE
@@ -161,6 +163,10 @@ class TargetHolder(
             dialogBinding.delete -> {
                 bottomSheetDialog.dismiss()
                 listener.deleteTarget(binding, target)
+            }
+            dialogBinding.sendReport -> {
+                bottomSheetDialog.dismiss()
+                target.id?.let { goToReportFragment(navController, it) }
             }
         }
     }
