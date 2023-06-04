@@ -275,6 +275,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
                 Constants.DAILY -> setPeriodCheckView(periodDialogBinding.dailyCheck)
                 Constants.WEEKLY -> setPeriodCheckView(periodDialogBinding.weeklyCheck)
                 Constants.MONTHLY -> setPeriodCheckView(periodDialogBinding.monthlyCheck)
+                Constants.MONDAY_TO_FRIDAY -> setPeriodCheckView(periodDialogBinding.mondayToFridayCheck)
                 else -> {
                     setPeriodCheckView(periodDialogBinding.customCheck)
                     setCustomPeriodCheckView(it)
