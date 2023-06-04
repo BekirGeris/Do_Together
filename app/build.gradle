@@ -9,8 +9,8 @@ plugins {
 }
 def buildTime = new Date().format("yyMMddHHmm", TimeZone.getTimeZone("Asia/Istanbul"))
 
-def appVersionCode = 5
-def appVersionName = "1.1.1"
+def appVersionCode = 6
+def appVersionName = "1.1.2"
 
 def dbVersion = 1
 
