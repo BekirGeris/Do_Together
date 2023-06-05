@@ -163,22 +163,6 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
                 else -> {}
             }
         }
-        viewModel.doneTarget.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    sendMessageFirebase()
-                    dialog.hide()
-                }
-                is Resource.Error -> {
-                    showToast(it.message)
-                    dialog.hide()
-                }
-                is Resource.Loading -> {
-                    dialog.show()
-                }
-                else -> {}
-            }
-        }
         targetId?.let {
             viewModel.getTarget(it)
         }
@@ -278,7 +262,22 @@ class TargetFragment : BaseFragment(), View.OnClickListener, CompoundButton.OnCh
                     setupMonthCalendar()
                     binding.doItBtn.setViewProperties(false)
                     targetId?.let {
-                        viewModel.doneTarget(it)
+                        viewModel.doneTarget(it).observe(viewLifecycleOwner) { resource ->
+                            when(resource) {
+                                is Resource.Success -> {
+                                    sendMessageFirebase()
+                                    dialog.hide()
+                                }
+                                is Resource.Error -> {
+                                    showToast(resource.message)
+                                    dialog.hide()
+                                }
+                                is Resource.Loading -> {
+                                    dialog.show()
+                                }
+                                else -> {}
+                            }
+                        }
                     }
                 }
                 binding.allMemberTxt -> {

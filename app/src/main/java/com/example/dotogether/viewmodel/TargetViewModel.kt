@@ -18,9 +18,6 @@ class TargetViewModel @Inject constructor() : BaseViewModel() {
     private val _target = MutableLiveData<Resource<Target>>()
     val target: MutableLiveData<Resource<Target>> = _target
 
-    private val _doneTarget = MutableLiveData<Resource<Target>>()
-    val doneTarget: MutableLiveData<Resource<Target>> = _doneTarget
-
     private val _members = MutableLiveData<Resource<Page<User>>>()
     val members: MutableLiveData<Resource<Page<User>>> = _members
 
@@ -33,12 +30,14 @@ class TargetViewModel @Inject constructor() : BaseViewModel() {
     private val _removeUser = MutableLiveData<Resource<User>>()
     val removeUser: MutableLiveData<Resource<User>> = _removeUser
 
-    fun doneTarget(targetId: Int) {
+    fun doneTarget(targetId: Int): MutableLiveData<Resource<Target>> {
+        val doneTarget = MutableLiveData<Resource<Target>>()
         viewModelScope.launch {
             appRepository.remoteRepositoryImpl.doneTarget(targetId).collect{
-                _doneTarget.value = it
+                doneTarget.value = it
             }
         }
+        return doneTarget
     }
 
     fun getTarget(targetId: Int) {
