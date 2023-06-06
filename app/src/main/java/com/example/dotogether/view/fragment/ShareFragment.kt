@@ -177,7 +177,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         binding.tagEditTxt.addTextChangedListener{ editTextChange(binding.tagEditTxt) }
 
         setSwitchVisibilityDesc(false)
-        binding.switchVisibility.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.switchVisibility.setOnCheckedChangeListener { _, isChecked ->
             setSwitchVisibilityDesc(isChecked)
         }
     }

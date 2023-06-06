@@ -14,6 +14,7 @@ import com.example.dotogether.util.Constants
 import com.example.dotogether.util.Constants.ViewType
 import com.example.dotogether.util.SharedPreferencesUtil
 import com.example.dotogether.util.helper.RuntimeHelper
+import com.example.dotogether.util.helper.RuntimeHelper.parcelable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +56,7 @@ class OthersActivity : BaseActivity() {
     }
 
     private fun checkOpenAppFromLocaleNotification() {
-        val notificationData: NotificationData? = intent?.getParcelableExtra(Constants.NOTIFICATION_DATA)
+        val notificationData: NotificationData? = intent?.parcelable(Constants.NOTIFICATION_DATA)
         Log.d(RuntimeHelper.TAG, "bundle: $notificationData")
 
         val notificationType = notificationData?.type
@@ -94,7 +95,7 @@ class OthersActivity : BaseActivity() {
             }
             ViewType.VIEW_CHAT_FRAGMENT.type -> {
                 val chatId = intent.getStringExtra(Constants.CHAT_ID)
-                val chatUser = intent.getParcelableExtra<OtherUser>(Constants.CHAT_USER)
+                val chatUser: OtherUser? = intent.parcelable(Constants.CHAT_USER)
                 val isGroup = intent.getBooleanExtra(Constants.IS_GROUP, false)
                 navController.navigate(OthersNavDirections.actionChatFragment(chatId = chatId, chatUser = chatUser, isGroup = isGroup), navOptions)
             }
@@ -111,11 +112,11 @@ class OthersActivity : BaseActivity() {
                 navController.navigate(OthersNavDirections.actionSearchFragment(), navOptions)
             }
             ViewType.VIEW_USER_EDIT_FRAGMENT.type -> {
-                val user: User? = intent.getParcelableExtra(Constants.USER)
+                val user: User? = intent.parcelable(Constants.USER)
                 user?.let { navController.navigate(OthersNavDirections.actionUserEditFragment(user = it), navOptions) }
             }
             ViewType.VIEW_PASSWORD_EDIT_FRAGMENT.type -> {
-                val user: User? = intent.getParcelableExtra(Constants.USER)
+                val user: User? = intent.parcelable(Constants.USER)
                 user?.let { navController.navigate(OthersNavDirections.actionPasswordEditFragment(user = it), navOptions) }
             }
             ViewType.VIEW_NOTIFICATION_FRAGMENT.type -> {
