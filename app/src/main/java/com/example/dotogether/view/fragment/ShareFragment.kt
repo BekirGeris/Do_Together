@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.text.SpannableString
@@ -65,12 +66,16 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
         var isGrantedGalleryAndCamera = true
 
         permissions.forEach { actionMap ->
-            when (actionMap.key) {
-                Manifest.permission.READ_EXTERNAL_STORAGE ->
+            when {
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) && actionMap.key == Manifest.permission.READ_MEDIA_IMAGES ->
                     if (!actionMap.value) {
                         isGrantedGalleryAndCamera = false
                     }
-                Manifest.permission.CAMERA ->
+                (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) && actionMap.key == Manifest.permission.READ_EXTERNAL_STORAGE ->
+                    if (!actionMap.value) {
+                        isGrantedGalleryAndCamera = false
+                    }
+                actionMap.key == Manifest.permission.CAMERA ->
                     if (!actionMap.value) {
                         isGrantedGalleryAndCamera = false
                     }
@@ -441,7 +446,7 @@ class ShareFragment : BaseFragment(), View.OnClickListener, DateCallback {
             requireActivity(),
             binding.root,
             requestMultiplePermissions,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
         ) {
             startImageMaker()
